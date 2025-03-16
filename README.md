@@ -178,6 +178,8 @@
 
 三改   by：wengzhenquan
 github：https://github.com/wengzhenquan/autojs6
+
+*/
 ---  
 
 v20250319修改内容如下:
@@ -225,4 +227,4 @@ v20250314修改内容如下:
 3. 注释掉已经下线的活动。
 4. 兼容最新版autojs6
 
-*/
+
