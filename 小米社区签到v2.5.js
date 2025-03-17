@@ -1,13 +1,13 @@
  /*
 
-                          *****小米社区自动签到脚本*****
+                           *****小米社区自动签到脚本*****
 
-                          原作者  by：PJ小宇    QQ：898811295
-                          修改    by：风中拾叶
-                          三改    by：wengzhenquan
-                          版本号：20250319
+                           原作者  by：PJ小宇    QQ：898811295
+                           修改    by：风中拾叶
+                           三改    by：wengzhenquan
+                           版本号：20250320
 
-                          */
+                           */
 
  // 引入配置文件
  var config = require("./config.js");
@@ -189,7 +189,7 @@
                  back();
                  // break;
              }
-             
+
              // exit();
 
              // if (!gz.findOne(2666)) {
@@ -980,12 +980,12 @@
 
      // let sign = className("android.widget.ImageView").desc("签到").findOne(3000).click();
      var start = new Date().getTime();
-     
+
 
      let done = className("android.widget.TextView").text("保存");
      //className("android.widget.Button").text("后退");
      //text("关注").findOne(2600);
-     
+
      // var done = className("android.widget.TextView").text("已签到");
      if (done.exists()) {
          toastLog(true);
@@ -1005,7 +1005,7 @@
  //主程序
  function main() {
 
-    //test();
+     //test();
      //posts(1);
 
      //notice(String('全部操作已完成('+ date.substr(5,14) +')'),  "hh");
