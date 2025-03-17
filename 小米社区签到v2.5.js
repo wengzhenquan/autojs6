@@ -1,13 +1,13 @@
  /*
 
-                  *****小米社区自动签到脚本*****
+                          *****小米社区自动签到脚本*****
 
-                  原作者  by：PJ小宇    QQ：898811295
-                  修改    by：风中拾叶
-                  三改    by：wengzhenquan
-                  版本号：20250319
+                          原作者  by：PJ小宇    QQ：898811295
+                          修改    by：风中拾叶
+                          三改    by：wengzhenquan
+                          版本号：20250319
 
-                  */
+                          */
 
  // 引入配置文件
  var config = require("./config.js");
@@ -79,7 +79,7 @@
          i++;
          if (i > 3) {
              let yyxq = className("android.widget.TextView").text("应用详情")
-             if (yyxq.findOne(200)) {
+             if (yyxq.findOne(300)) {
                  back();
                  break;
              }
@@ -110,11 +110,12 @@
      sleep(1500)
      let xmsqAPP = className("android.widget.ImageView").desc("签到").packageName("com.xiaomi.vipaccount");
      let n = 0;
-     while (!xmsqAPP.exists()) {
+     while (!xmsqAPP.findOne(888)) {
 
          //链式调用权限触发，点“始终允许”
-         let dk = className("android.widget.TextView").textContains("想要打开 小米社区");
-         if (dk.findOne(666)) {
+         let dk = className("android.widget.TextView").textContains("想要打开");
+         if (dk.exists()) {
+             sleep(200)
              className("android.widget.Button").textContains("允许").findOne().click();
              break;
          }
@@ -135,9 +136,9 @@
                  click(yyxq1.bounds().centerX(), yyxq1.bounds().centerY());
                  sleep(300)
              }
-             if (yyxq.findOne(200)) {
+             if (yyxq.exists()) {
                  let run1 = className("android.widget.TextView").text("启动");
-                 while (!run1.findOne(666)) {
+                 while (!run1.exists()) {
                      // 上滑寻找“启动”
                      swipe(dwidth * 1 / 2, dheight * 4 / 5, dwidth * 1 / 2, dheight * 1 / 2, 300);
 
@@ -172,26 +173,39 @@
      //   var regex = /((0[0-9]|1[0-9]|2[0-3]):(0[0-9]|[1-5][0-9]))|(0[0-9]|1[0-9]|2[0-3])-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])|(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])/;
      //let textView = className("android.widget.TextView").textMatches(regex).findOne(2000);
 
-     let pkly = className("android.widget.ImageView").desc("评论").findOne(600);
+     let pkly = className("android.widget.ImageView").desc("评论").findOne(888);
      if (pkly) {
          let tiezi = pkly.parent().parent();
-         click(tiezi.centerX() * 0.95, tiezi.centerY() * 0.9);
-         sleep(300);
+         click(tiezi.centerX(), tiezi.centerY());
+         sleep(500);
          let gz = className("android.widget.TextView").text("关注");
-         while (!gz.findOne(666)) {
-             click(pkly.centerX() * 0.6, pkly.centerY() * 0.85);
-             sleep(300);
-             if (!gz.findOne(666)) {
-                 pkly.click();
-                 sleep(300);
+         while (!gz.findOne(2666)) {
+             log("帖子打开失败，重试！")
+             click(pkly.centerX() * 0.8, pkly.centerY() * 0.85);
+             // sleep(300);
+             // 误点开图片
+             let bc = className("android.widget.TextView").text("保存");
+             if (bc.findOne(888)) {
+                 back();
+                 // break;
              }
+             
+             // exit();
+
+             // if (!gz.findOne(2666)) {
+             //     toastLog(4)
+             //     pkly.click();
+             //     sleep(300);
+             // }
 
          }
 
      } else {
          toastLog("第" + n + "次重试")
-
-         swipe(dwidth * 1 / 2, dheight * 4 / 5, dwidth * 1 / 5, dheight * 2 / 5, 500);
+         // 小米社区重置首页
+         backAppIndex();
+         // 下滑刷新列表
+         swipe(dwidth * 1 / 2, dheight * 3 / 5, dwidth * 1 / 2, dheight * 4 / 5, 00);
          if (n > 5) {
              toastLog("打开帖子失败")
              return;
@@ -200,8 +214,7 @@
          return posts(n + 1);
 
      }
-
-     sleep(12000);
+     sleep(11000);
      // sleep(6000);
      //
      toastLog("浏览10s完成", "forcible");
@@ -217,22 +230,22 @@
  function backAppIndex() {
      //发现退回图片
      let backImg = className("android.widget.Image").text("返回");
-     while (backImg.findOne(666)) {
+     while (backImg.exists()) {
          backImg.findOne().click();
          sleep(300)
      }
      //发现退回按钮
      let backBut = className("android.widget.Button").text("后退");
-     while (backBut.findOne(666)) {
+     while (backBut.exists()) {
          backBut.findOne().click();
          sleep(300)
      }
      // 返回“论坛”页
-     let index1 = className("android.widget.TextView").text("论坛");
+     let index = className("android.widget.TextView").text("论坛");
      let xmsqAPP = className("android.widget.ImageView").desc("签到");
-     while (xmsqAPP.findOne(666) &&
-         (xmsqAPP.findOne(666).centerX() < 0 || xmsqAPP.findOne(666).centerY() < 0)) {
-         let indexAble = index1.findOne(1500);
+     while (xmsqAPP.exists() &&
+         (xmsqAPP.findOne(888).centerX() < 0 || findOne(888).centerY() < 0)) {
+         let indexAble = index.findOne(1500);
          if (indexAble) {
              indexAble.click();
              indexAble.parent().click();
@@ -240,8 +253,8 @@
          }
      }
      let pingLun = className("android.widget.ImageView").desc("评论");
-     while (pingLun.findOne(666) &&
-         (pingLun.findOne(666).centerX() < 0 || pingLun.findOne(666).centerY() < 0)) {
+     while (pingLun.exists() &&
+         (pingLun.findOne(888).centerX() < 0 || pingLun.findOne(888).centerY() < 0)) {
          let indexAble = index.findOne(1500);
          if (indexAble) {
              indexAble.click();
@@ -256,18 +269,19 @@
  //寻找坐标
  function findCenter() {
      toastLog("开始签到", "short", "forcible");
-     className("android.widget.TextView").text("立即签到").findOne(2666).click();
+     className("android.widget.TextView").text("立即签到").findOne().click();
 
-     //sleep(500);       
+     sleep(600);
      if (!images.requestScreenCapture()) {
          toastLog("请求截图失败", "forcible");
          exit();
      }
-     sleep(2000)
+     sleep(1000)
      var pictures2 = images.clip(captureScreen(), 0, 0, dwidth, dheight);
      images.save(pictures2, "./tmp/pictures2.png", "png", 100);
      var img2 = images.read("./tmp/pictures2.png");
-     var wx = images.read("./hk.png");
+     // 读取滑块图片
+     var wx = readHk();
      //截图并找图
      var p = findImage(img2, wx, {
          //region: [0, 50],
@@ -287,7 +301,18 @@
      } else {
          toastLog("没有找到滑块", "forcible");
      }
-     sleep(500);
+     // sleep(500);
+ }
+
+ // 读取滑块图片hk.png
+ function readHk() {
+     //先根据分辨率读
+     var hk = (`hk/hk_${dwidth}x${dheight}` + `.png`);
+     var wx = images.read("./" + hk);
+     // 分辨率找不到，就读预制的图
+     if (null === wx) wx = images.read("./hk.png");
+     return wx;
+
  }
 
  //签到
@@ -497,7 +522,7 @@
 
  //米粉节活动
  function fans() {
-     var button = className("android.widget.Button").text("去参与").findOne(1000);
+     var button = className("android.widget.Button").text("去参与").findOne(1500);
      if (button) {
          button.click();
          toastLog("打开米粉节活动", "forcible")
@@ -519,7 +544,7 @@
      if (button) {
          button.click();
          log("点击了按钮: " + button.text());
-         button2 = className("android.widget.Button").text("抽取今日祝福").clickable(true).findOne(1200).click();
+         button2 = className("android.widget.Button").text("抽取今日祝福").findOne(1200).click();
          if (button2) {
              toastLog("今日祝福已抽取", "forcible");
          }
@@ -613,12 +638,12 @@
          log(result);
          //toastLog("当前成长值：" + numValue, "forcible");
          files.append("./tmp/level.txt", "\n" + date + "：+" + b + "     签到+1的概率：" + percentage + "\n" + numValue);
-
+         back();
          sleep(500);
      } else {
          log("未找到成长值");
      }
-     back();
+
      //关闭小程序
      className("android.widget.ImageButton").desc("关闭").findOne().click();
 
@@ -726,7 +751,7 @@
              log("第" + (i + 1) + "次解锁");
              sleep(500)
              click(dwidth * 0.5, dheight * 0.87);
-             if (className("android.widget.TextView").text("可获得1次解锁机会").findOne(666)) {
+             if (className("android.widget.TextView").text("可获得1次解锁机会").exists()) {
                  toastLog("解锁次数不足", "forcible")
                  sleep(500);
                  break
@@ -749,10 +774,9 @@
          sleep(1000);
          let m = 0;
          while (!xxcx.exists()) {
-
              // 存在微信分身，选择第1个
              let fenshen = className("android.widget.TextView").textContains("选择")
-             if (fenshen.findOne(666)) {
+             if (fenshen.exists()) {
                  let one = className("android.widget.ImageView").desc("微信").findOne()
                  click(one.centerX(), one.centerY());
                  sleep(1000)
@@ -794,14 +818,14 @@
                      n++;
                      log("第" + n + "尝次试！");
                      sleep(600);
-                     if (xlxcx.findOne(666) || n > 5) break;
+                     if (xlxcx.exists() || n > 5) break;
 
                  }
              }
              m++;
              sleep(500);
 
-             if (xxcx.findOne(666) || m > 10) break;
+             if (xxcx.exists() || m > 10) break;
 
          }
 
@@ -863,13 +887,12 @@
      }
 
      toastLog("成功打开小程序", "forcible")
-
-     log("内容加载完成")
      let me = className("android.widget.TextView").text("我的").findOne();
      click(me.centerX(), me.centerY());
-     let edit = className("android.widget.TextView").text('编辑资料');
+     toastLog("开始进入我的页面", "forcible")
+     let edit = text('编辑资料');
      let cont = 0
-     while (!edit.findOne(666)) {
+     while (!edit.exists()) {
          log("尚未进入我的页面")
          click(me.centerX(), me.centerY());
 
@@ -880,12 +903,12 @@
              toastLog("未找到我的页面", "forcible");
              return
          }
-
      }
-     //toastLog("进入我的页面", "forcible")
-
-     let qd = className("android.widget.TextView").text("去签到").findOne(5000);
-     if (qd) qd.click();
+     let qd = className("android.widget.TextView").text("去签到");
+     if (qd.exists()) {
+         let qd1 = qd.findOne();
+         click(qd1.centerX(), qd1.centerY());
+     }
 
      toastLog("小程序已签到", "forcible")
  }
@@ -931,8 +954,13 @@
 
  // 单元用例
  function test() {
-     sleep(2000);
-     var start = new Date().getTime();
+
+     // 回到APP首页
+     // backAppIndex();
+
+     sleep(1000);
+
+
      // let xmsqAPP = className("android.widget.ImageView").desc("签到").packageName("com.xiaomi.vipaccount");
      //let xmsqAPP = className("android.widget.TextView").text("官方").packageName("com.xiaomi.vipaccount").findOne();
      //let czz = className("android.widget.TextView").text("编辑资料");
@@ -941,13 +969,34 @@
      //let yyxx = text("强行停止");
      //let yyxx = className("android.widget.TextView").text("结束运行");
      //let yyxx = className("android.widget.LinearLayout").desc("结束运行");
-     let gz = className("android.widget.TextView").text("关注");
+     // let pkly = className("android.widget.ImageView").desc("评论").findOne(888);
 
-     if (gz.findOne(666)) toastLog(true);
+     // let tiezi = pkly.parent().parent();
+     // click(tiezi.centerX() * 0.95, tiezi.centerY() * 0.9);
+     //sleep(700)
+     // let gz = className("android.widget.TextView").text("关注");
+     //let bc = className("android.widget.TextView").text("保存");
+
+
+     // let sign = className("android.widget.ImageView").desc("签到").findOne(3000).click();
+     var start = new Date().getTime();
+     
+
+     let done = className("android.widget.TextView").text("保存");
+     //className("android.widget.Button").text("后退");
+     //text("关注").findOne(2600);
+     
+     // var done = className("android.widget.TextView").text("已签到");
+     if (done.exists()) {
+         toastLog(true);
+
+         log(done);
+     } else toastLog(false);
      var time = (new Date().getTime() - start);
 
 
      toastLog(time, "forcible");
+     notice('结束啦！', String(time))
      exit();
  }
 
@@ -956,12 +1005,15 @@
  //主程序
  function main() {
 
-     //test();
+    //test();
      //posts(1);
 
      //notice(String('全部操作已完成('+ date.substr(5,14) +')'),  "hh");
+     // var hk = (`hk_${dwidth}x${dheight}` + `.png`);
+     // toastLog(hk);
+     //notice('结束啦！')
 
-     //exit();
+     // exit();
      //return;
      var xmPckageName = "com.xiaomi.vipaccount";
 
