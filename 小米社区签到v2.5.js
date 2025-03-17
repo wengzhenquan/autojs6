@@ -205,7 +205,7 @@
          // 小米社区重置首页
          backAppIndex();
          // 下滑刷新列表
-         swipe(dwidth * 1 / 2, dheight * 3 / 5, dwidth * 1 / 2, dheight * 4 / 5, 00);
+         swipe(dwidth * 1 / 2, dheight * 3 / 5, dwidth * 1 / 2, dheight * 4 / 5, 300);
          if (n > 5) {
              toastLog("打开帖子失败")
              return;
