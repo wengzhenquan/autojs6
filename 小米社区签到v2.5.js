@@ -1,13 +1,13 @@
  /*
 
-                           *****小米社区自动签到脚本*****
+                                 *****小米社区自动签到脚本*****
 
-                           原作者  by：PJ小宇    QQ：898811295
-                           修改    by：风中拾叶
-                           三改    by：wengzhenquan
-                           版本号：20250320
+                                 原作者  by：PJ小宇    QQ：898811295
+                                 修改    by：风中拾叶
+                                 三改    by：wengzhenquan
+                                 版本号：20250320
 
-                           */
+                                 */
 
  // 引入配置文件
  var config = require("./config.js");
@@ -616,7 +616,9 @@
      var num = className("android.widget.TextView").text("成长值").findOne(2000);
      if (num) {
          var num1 = num.parent().child(1).child(0).text();
+         var num2 = num.parent().child(1).child(1).text();
          var numValue = parseInt(num1);
+         var num2Value = parseInt(String(num2).replace("/", ""));
          // 今日获得成长值
          click(num.centerX(), num.centerY());
          sleep(1000);
@@ -632,7 +634,8 @@
          var b = numValue - a;
          if (val > b) b = val;
          //toastLog("今日获得成长值：" + b);
-         result = ('当前成长值：' + numValue + '\n今日获得：' + b + '');
+         result = ('当前成长值：' + numValue + '  (' + level段(numValue) + ')' + '       升级目标：' + num2Value +
+             '\n今日获得：' + b + '                距离升级还需：' + (num2Value - numValue) + '');
 
 
          log(result);
@@ -662,6 +665,23 @@
      var lastLine = lines[lines.length - 1];
      return parseInt(lastLine);
  }
+
+
+ // 级别划分
+ function level段(n) {
+     if (n < 50) return "1段";
+     if (n < 200) return "2段";
+     if (n < 500) return "3段";
+     if (n < 1000) return "4段";
+     if (n < 3000) return "5段";
+     if (n < 6000) return "6段";
+     if (n < 15000) return "7段";
+     if (n < 30000) return "8段";
+     if (n < 50000) return "9段";
+     return "10段";
+ }
+
+
 
  //签到+1概率
  function logpercentage() {
