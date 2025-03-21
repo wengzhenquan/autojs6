@@ -1077,15 +1077,7 @@
      // exit();
      //return;
      
-     // 开局验证截图权限
-     try {
-         images.requestScreenCapture();
-     } catch (e) {
-         toastLog("无截图权限，请检查'投影媒体权限'！推荐Shizuku（免root），或者root授权来开启该权限。若已开启还不行，重启AutoJS6，或者重启手机试试！","long","forcible");
-         notice(String('截图权限无法通过'), String("请开启'投影媒体权限'！\n如已开启依旧如此，或许需要重启手机！"));
-         exit();
-         return;
-     }
+     
      // 开始
      var xmPckageName = "com.xiaomi.vipaccount";
 
@@ -1098,8 +1090,21 @@
          }
          sleep(500);
          unLock();
+         sleep(1500);
      }
      device.keepScreenOn();
+     
+     // 开局验证截图权限
+     try {
+         images.requestScreenCapture();
+     } catch (e) {
+         toastLog("无截图权限，请检查'投影媒体权限'！推荐Shizuku（免root），或者root授权来开启该权限。若已开启还不行，重启AutoJS6，或者重启手机试试！","long","forcible");
+         notice(String('截图权限无法通过'), String("请开启'投影媒体权限'！\n如已开启依旧如此，或许需要重启手机！"));
+         exit();
+         return;
+     }
+     
+     
      let musicVolume = device.getMusicVolume();
      //关掉声音
      //device.setMusicVolume(0);
@@ -1131,6 +1136,8 @@
          notice(String('出错了！(' + date.substr(5, 14) + ')'), String("芭比Q了，小米社区里的操作都没完成。"));
      }
      let text;
+     
+     
      if (config.小程序签到) 小程序签到();
      if (config.成长值记录) text = level2();
      if (typeof text === "undefined") text = "未获取到成长值数据！ 建议如下操作后重试：\n1、'最近任务'划卡杀死小程序。";
