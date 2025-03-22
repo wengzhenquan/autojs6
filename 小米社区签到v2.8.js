@@ -175,9 +175,9 @@ function posts(n) {
     let pkly = className("android.widget.ImageView").desc("评论").findOne(888);
     if (pkly) {
         let tiezi = pkly.parent();
-        clickCenter(tiezi);
+        //clickCenter(tiezi);
         // 由于组件刷新，可能会点到第二个帖子
-        //click(tiezi.bounds().centerX() + 100, tiezi.bounds().centerY()-100);
+        click(tiezi.bounds().centerX() + 100, tiezi.bounds().centerY() - 90);
         sleep(500);
         let gz = className("android.widget.TextView").text("关注");
         while (!gz.findOne(1666)) {
@@ -215,7 +215,7 @@ function posts(n) {
     for (i = 0; i < 4; i++) {
         if (i < 3) toast("正在浏览帖子……", "forcible");
         else toastLog("浏览10s完成！", "forcible");
-        wait(()=>false,10,100);
+        wait(() => false, 10, 100);
         sleep(1000);
         let ran = random(3, 6) * 100 * Math.pow(-1, i);
         gesture(1000, [dwidth * 1 / 2, dheight * 0.6 + ran], [dwidth * 1 / 2, dheight * 0.6 - ran]);
@@ -927,7 +927,7 @@ function 小程序签到() {
     toastLog("进入我的页面", "forcible")
     let edit = text('编辑资料');
     let cont = 0
-    while (!wait(()=>edit.exists(),5,500)) {
+    while (!wait(() => edit.exists(), 5, 500)) {
         log("点击我的页面")
         clickCenter(me.parent().previousSibling());
         sleep(500);
@@ -1071,7 +1071,7 @@ function main() {
         }
         sleep(500);
         unLock();
-        wait(() => false, 20,100);
+        wait(() => false, 20, 100);
 
     }
     device.keepScreenOn(3600 * 1000);
