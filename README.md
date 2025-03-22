@@ -32,7 +32,7 @@
 
 
 
-建议使用autojs6最新版 
+建议使用autojs6最新版  
 [点击下载](https://github.com/SuperMonster003/AutoJs6/releases)  
 
 
