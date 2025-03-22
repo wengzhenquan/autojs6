@@ -32,9 +32,8 @@
 
 
 
-建议使用autojs6 6.5.0版（别升级）  
-(被坑了，6.6.x是重构版，还没完善，好多问题）  
-[点击下载](https://github.com/SuperMonster003/AutoJs6/releases/tag/v6.5.0)  
+建议使用autojs6最新版 
+[点击下载](https://github.com/SuperMonster003/AutoJs6/releases)  
 
 
 --- 
