@@ -546,6 +546,7 @@ function see() {
     log("★★★★★★萝卜活动★★★★★★");
     scrollDown();
     sleep(500);
+    scrollDown(0);
     toastLog("拔萝卜活动签到……", "forcible");
     var button = className("android.widget.Button").text("去看看").findOne(1666);
     if (button) {
@@ -667,7 +668,7 @@ function level2() {
         //log(clickCenter(num));
 
         className("android.widget.TextView").text("成长值明细").waitFor();
-
+        sleep(1000);
         var newdate = date.replace(/-/g, "/").substr(0, 10);
         let jilu = className("android.widget.TextView").text(newdate).find();
         // 成长值获得错误
@@ -841,7 +842,7 @@ function 解锁() {
             //clickCenter(control);
             control.click();
             log("尝试第" + (i + 1) + "次解锁！(/≧▽≦)/~┴┴ ");
-            //sleep(600);
+            //sleep(300);
             // 关闭炫耀一下
             let xyyx = className("android.widget.Button").text("炫耀一下").findOne(888);
             if (xyyx) {
