@@ -82,13 +82,13 @@ function unLock() {
 
 //关闭程序
 function killAPP(packageName) {
-    log(nowDate() + '进来执行了')
+    //log(nowDate() + '进来执行了')
     app.openAppSetting(packageName);
     sleep(600)
     let yyxx = textContains("结束运行" || "强行停止");
     let i = 0;
     while (!yyxx.exists()) {
-        log(nowDate() + '进来执行了' + i)
+        //log(nowDate() + '进来执行了' + i)
         let yyxq = className("android.widget.TextView").text("应用详情")
         if (yyxq.exists()) {
             back();
@@ -906,15 +906,16 @@ function 小程序签到() {
         if (config.坐标点击) {
             toastLog("根据用户配置{坐标点击:1}，开始从第3屏用户提供的坐标寻找小程序！", "forcible")
             //第3屏获取小程序
-            let tr = className("mageButtonandroid.widget.ImageView").desc("第3屏")
+            let tr = className("android.widget.ImageView").desc("第3屏")
             //寻找第3屏
-            if (!wait(() => tr.exists(), 10, 500)) {
+            if (!wait(() => tr.exists(), 5, 1000)) {
                 notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("我找不到第3屏（˃̣̣̥᷄⌓˂̣̣̥᷅）！"));
                 exit();
-                return;
+                
             }
 
             tr.click()
+            //clickCenter(xlxcx.findOne(2666));
             sleep(1500);
             for (i = 0; i < 3; i++) {
                 click(config.x, config.y)
@@ -1067,10 +1068,10 @@ function permissionv() {
     // 判断通知是否被启用
     var isNotificationEnabled = notificationManager.areNotificationsEnabled();
     if (isNotificationEnabled) {
-        log("发送通知权限已启用");
+        log("发送通知权限，已启用");
     } else {
-        console.error("发送通知权限未启用!");
-        toastLog("发送通知权限未启用!");
+        console.error("发送通知权限，未启用!");
+        toastLog("发送通知权限，未启用!");
         
         // 这里可以添加引导用户去开启权限的代码，不同系统开启通知权限的方式不同
         exit();
@@ -1093,9 +1094,9 @@ function permissionv() {
             var uid = new java.lang.Integer(android.os.Process.myUid());
             var result = method.invoke(appOps, intOp, uid, context.getPackageName());
             if (result == android.app.AppOpsManager.MODE_ALLOWED) {
-                console.log("已拥有开启后台弹出界面权限");
+                console.log("后台弹出界面权限，已启用");
             } else {
-                console.error("未开启 后台弹出界面 权限!");
+                console.error("后台弹出界面权限，未启用!");
                 console.error("应用详情→权限管理→其它权限→后台弹出界面");
                 var intent = new android.content.Intent("miui.intent.action.APP_PERM_EDITOR");
                 intent.setClassName("com.miui.securitycenter", "com.miui.permcenter.permissions.PermissionsEditorActivity");
@@ -1103,6 +1104,7 @@ function permissionv() {
                 app.startActivity(intent);
                 notice(String("功能受限！(" + nowDate().substr(5, 14) + ")"),
                     String("缺少'后台弹出界面'权限，\n权限管理→其它权限→后台弹出界面"));
+                sleep(3000);
             }
         } catch (e) {
             console.error("权限检查出错: " + e);
@@ -1139,6 +1141,14 @@ function test() {
     //let gz = className("android.widget.TextView").text("等待解锁").exists()
 
     //let gz = desc("小米社区").untilFind();
+    
+   // let gz = className("android.widget.ImageView").desc("第3屏")
+            //寻找第3屏
+            // if (!wait(() => tr.exists(), 5, 1000)) {
+            //     notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("我找不到第3屏（˃̣̣̥᷄⌓˂̣̣̥᷅）！"));
+            //     exit();
+                
+            // }
 
     let gz = wait(() => packageName("com.tencent.mm").exists(), 500);
 
