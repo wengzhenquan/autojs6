@@ -97,8 +97,9 @@ function unLock() {
         gesture(300, [dwidth * 1 / 2, dheight * 0.96], [dwidth * 1 / 2, dheight * 1 / 2]);
     }
     home();
-    sleep(500);
+    sleep(666);
     home();
+    sleep(666);
     let jiesuo = desc('第1屏');
     if (!jiesuo.exists()) {
         if (config.解锁方式 === 1) {
@@ -111,8 +112,9 @@ function unLock() {
             }
         }
         home();
-        sleep(500);
+        sleep(666);
         home();
+        sleep(666);
     }
 
     let result = wait(() => jiesuo.exists(), 10, 500)
@@ -329,7 +331,7 @@ function backAppIndex() {
 function findCenter() {
     toastLog("开始签到……", "forcible");
     //点击签到按钮
-    className("android.widget.TextView").text("立即签到").findOne().click();   
+    className("android.widget.TextView").text("立即签到").findOne().click();
     // 等待验证图片滑块的加载
     sleep(2500);
     // 请求截图权限
@@ -678,8 +680,11 @@ function level() {
 function level2() {
     log("★★★★★★今日明细★★★★★★");
     toastLog("开始记录成长值……", "forcible");
-    let vl = className("android.widget.Button").desc('返回');
-    if (vl.exists()) vl.findOne().click();
+    //let me = className("android.widget.TextView").text("我的");
+    // 发现在子页面
+    if (wait(() => packageName(wchatpn).exists(), 10, 500) &&
+        !text("我的").exists()) back();
+
     let result;
     var a = readfile("./tmp/level.txt"); //记录中的昨日成长值
     var num = className("android.widget.TextView").text("成长值").findOne(2000);
@@ -926,7 +931,7 @@ function 小程序签到() {
                 swipe(dwidth * 1 / 2, dheight * 1 / 5, dwidth * 1 / 2, dheight * 4 / 5, 500);
                 let xlxcx = descStartsWith('小米社区');
                 // 去“更多”里寻找
-                if (!wait(()=>xlxcx.exists(),5,500)) {
+                if (!wait(() => xlxcx.exists(), 5, 500)) {
                     className('android.widget.RelativeLayout').desc('更多小程序').findOne().click();
 
                     while (!xlxcx.exists()) {
