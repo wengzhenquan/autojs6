@@ -352,6 +352,9 @@ github：https://github.com/wengzhenquan/autojs6
 
 ---  
 
+v3.0.1： 
+1.fix.桌面只存在1个屏时，解锁判断失效
+
 v3.0： 
 1. 活动有开盒子间隔3秒限制，添加3秒延迟，以防封号   
 2. 优化部分代码，调整逻辑  
