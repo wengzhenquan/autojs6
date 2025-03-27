@@ -1066,7 +1066,7 @@ function desktopRun() {
                     xcx.get(i).click();
 
                     log("正在尝试打开→第[" + (i + 1) + "]个！");
-                    if (wait(() => packageName(xmPckageName).exists(), 2, 500)) {
+                    if (wait(() => packageName(xmPckageName).exists(), 4, 500)) {
                         toastLog("这个不对，尝试下一个！", "forcible");
                         home();
                         sleep(600);
