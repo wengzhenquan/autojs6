@@ -1110,11 +1110,12 @@ function 小程序签到() {
                 clickCenter(one);
                 waitForPackage("com.tencent.mm", 1000);
                 //sleep(1000)
+                break;
             }
             m++;
-            v53.click();
             sleep(500);
             if (packageName(wchatpn).findOne(666) || m > 10) break;
+            v53.click();
         }
 
     } else {
