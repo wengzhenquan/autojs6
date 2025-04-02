@@ -1449,6 +1449,7 @@ function level1() {
         record.项目 = demo.previousSibling().text();
         成长值记录.addAndUpdate(record);
     }
+    back();
 }
 
 // 列出成长值明细结果
@@ -1746,9 +1747,9 @@ function main() {
     if (unfinished_mark) {
         //启动小米社区
         launchAPP(xmPckageName);
-        back();
+        
         notice(String('未完成(' + nowDate().substr(5, 14) + ')[' + getDurTime(date) + ']'), String(levelResult()));
-        console.error("有某个流程未完成！˚‧º·(˚ ˃̣̣̥᷄⌓˂̣̣̥᷅ )‧º·˚", "forcible");
+        console.error("有某个流程未完成！˚‧º·(˚ ˃̣̣̥᷄⌓˂̣̣̥᷅ )‧º·˚");
 
     } else {
         // 关闭小米社区APP
