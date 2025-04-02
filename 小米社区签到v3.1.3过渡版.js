@@ -1103,18 +1103,19 @@ function 小程序签到() {
         let m = 0;
         while (!packageName(wchatpn).exists()) {
             // 存在微信分身，选择第1个
-            let fenshen = className("android.widget.TextView").textContains("选择")
-            if (fenshen.exists()) {
+            let fenshen = className("android.widget.TextView").textContains("选择");
+            let one = className("android.widget.ImageView").desc("微信");
+            if (fenshen.exists() && one.find().length > 1) {
                 sleep(666);
-                let one = className("android.widget.ImageView").desc("微信").findOne()
-                clickCenter(one);
-                waitForPackage("com.tencent.mm", 1000);
+                //let one = className("android.widget.ImageView").desc("微信").findOne()
+                clickCenter(one.findOne());
+                //waitForPackage("com.tencent.mm", 1000);
                 //sleep(1000)
                 break;
             }
             m++;
             sleep(500);
-            if (packageName(wchatpn).findOne(666) || m > 10) break;
+            if (packageName(wchatpn).findOne(666) || m > 5) break;
             v53.click();
         }
 
@@ -1210,7 +1211,7 @@ function 小程序签到() {
     log("---------  开始签到操作  --------");
     let me = className("android.widget.TextView").text("我的");
     // 控件没找到，或许布局分析失效！
-    if (!wait(() => me.exists(), 4, 500)) {
+    if (!wait(() => me.exists(), 6, 500)) {
         toastLog("不好了！布局分析失效了！Σ(ŎдŎ|||)ﾉﾉ", "forcible")
         sleep(500)
         toastLog("只能摸黑操作，点击坐标试试看……")
@@ -1748,7 +1749,7 @@ function main() {
     if (unfinished_mark) {
         //启动小米社区
         launchAPP(xmPckageName);
-        
+
         notice(String('未完成(' + nowDate().substr(5, 14) + ')[' + getDurTime(date) + ']'), String(levelResult()));
         console.error("有某个流程未完成！˚‧º·(˚ ˃̣̣̥᷄⌓˂̣̣̥᷅ )‧º·˚");
 
