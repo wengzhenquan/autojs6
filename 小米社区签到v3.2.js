@@ -655,7 +655,7 @@ function auth_hk() {
 // 读取滑块图片hk.png
 function readHk() {
     //先根据分辨率读
-    let hk = (`hk/hk_${dwidth}x${dheight}` + `.png`);
+    let hk = (`tmp/hk_${dwidth}x${dheight}` + `.png`);
     let wx = images.read("./" + hk);
     // 分辨率找不到，就读预制的图
     //if (null === wx) wx = images.read("./hk.png");
@@ -663,7 +663,7 @@ function readHk() {
     if (null === wx) {
         var hk_auto = images.clip(captureScreen(),
             cX(165), cY(1276), (cX(349) - cX(165)), (cY(1460) - cX(1276)));
-        images.save(hk_auto, "./hk/hk_auto.png", "png", 100);
+        images.save(hk_auto, "./tmp/hk_auto.png", "png", 100);
     }
     return hk_auto;
 }
