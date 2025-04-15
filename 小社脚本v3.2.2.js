@@ -1310,18 +1310,21 @@ function 小程序签到() {
         .text("去微信").findOne(1500);
     if (v53) {
         v53.click();
-        //sleep(1000);
+        sleep(1500);
         // 存在微信分身，选择第1个
         let fenshen = className("android.widget.TextView")
             .textContains("选择");
         let one = className("android.widget.ImageView")
             .desc("微信");
-        if (wait(()=>fenshen.exists(),4,500) && one.find().length > 1) {
-            //sleep(666);
+
+        if (!wait(() => packageName(wchatpn).exists(), 4,500) &&
+            fenshen.findOne(666) &&
+            one.find().length > 1) {
+            sleep(666);
             clickCenter(one.findOne());
             //sleep(2000);
         }
-        
+
     } else {
         toastLog("不支持应用内跳转小程序，", "forcible")
         toastLog("尝试从桌面寻找小程序……", "forcible")
@@ -1336,7 +1339,7 @@ function 小程序签到() {
 
     sleep(500);
     // 微信打开验证（小程序依赖微信，使用微信的包名）
-    if (!wait(() => packageName(wchatpn).exists(), 10, 1000)) {
+    if (!wait(() => packageName(wchatpn).findOne(1000), 10, 1000)) {
         // 找不到微信的包名，自然也没能进入小程序
         toastLog("进不了微信小程序，我尽力了！(ó﹏ò｡) ", "long", "forcible");
         notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("进不了微信小程序，我尽力了！"));
@@ -1349,7 +1352,7 @@ function 小程序签到() {
     sleep(500);
     // 已打开微信，但未打开小程序。模拟从微信进入小程序
     // 如果微信页面布局分析失效，可能无法模拟
-    if (!xxcx.exists() &&
+    if (packageName(wchatpn).exists() && !xxcx.exists() && 
         existsOne(text('通讯录'), desc("返回"), desc('更多功能按钮'))
     ) {
 
