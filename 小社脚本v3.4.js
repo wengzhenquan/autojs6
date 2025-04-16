@@ -1369,11 +1369,11 @@ function 小程序签到() {
 
         // 确保回到微信首页
         let bak = className("android.widget.ImageView")
-            .desc("返回").findOne(666);
+            .desc("返回").findOne(2666);
         if (bak) back();
 
         let wxindex = className("android.widget.TextView")
-            .text("微信").findOne(1500);
+            .text("微信").findOne(2500);
         if (wxindex) {
             while (!wxindex.clickable()) {
                 wxindex = wxindex.parent()
@@ -2130,9 +2130,9 @@ function main() {
         }
 
         //通常只有 1 行消息. 
-        //  console.error(e.message);
+          console.error(e.message);
         // 通常有不到 10 
-        exit(e);
+        //exit(e);
 
     } finally {
         // 恢复原来的亮度和模式
