@@ -5,7 +5,7 @@
 原作者  by：PJ小宇    QQ：898811295
 修改    by：风中拾叶
 三改    by：wengzhenquan
-版本号：v3.3
+版本号：v3.4
 
 [github更新地址]：
 
