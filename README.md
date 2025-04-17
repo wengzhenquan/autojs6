@@ -341,6 +341,9 @@ github：https://github.com/wengzhenquan/autojs6
 
 ---  
 
+v3.4.2：
+1. 添加社区APP、微信版本号验证。
+
 v3.4.1：
 1. 修改一些日志文案。
 2. 左下角，添加停止脚本悬浮窗按钮。
