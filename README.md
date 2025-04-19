@@ -38,7 +38,7 @@ $\color{red}{配置文件都是共用的，新版本也会兼容旧版本配置�
 
 
 **小米社区5.3.4**  
-(如果遇到兼容性问题，使用这个版本吧，版本号很高了！)   
+(应用商店无法升级到5.3.2？就用这个版本吧！)   
 [点击下载](https://api.hyperosupdates.com/apk/com.xiaomi.vipaccount_5.3.4_HyperOSUpdates.com.apk)   
 
 
