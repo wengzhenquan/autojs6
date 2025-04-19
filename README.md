@@ -37,10 +37,13 @@ $\color{red}{配置文件都是共用的，新版本也会兼容旧版本配置�
 [点击下载](https://github.com/SuperMonster003/AutoJs6/releases)  
 
 
+
+--- 
 **小米社区5.3.4**  
-(应用商店无法升级到5.3.2？就用这个版本吧！)   
 [点击下载](https://api.hyperosupdates.com/apk/com.xiaomi.vipaccount_5.3.4_HyperOSUpdates.com.apk)   
 
+**小米社区5.3.20250219 测试版**  
+[点击下载](https://api.hyperosupdates.com/apk/com.xiaomi.vipaccount_5.3.20250219_HyperOSUpdates.com.apk)   
 
 --- 
 ## 使用方法：  
@@ -345,6 +348,9 @@ github：https://github.com/wengzhenquan/autojs6
 
 
 ---  
+v3.4.3：（未发布）
+1. 兼容旧版本安卓。  
+2. 美化日志。  
 
 v3.4.2：
 1. 添加社区APP、微信版本号验证。
