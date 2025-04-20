@@ -2164,7 +2164,7 @@ function run() {
 
             // 签到
             start();
-            // if (config.小程序签到) 小程序签到();
+            if (config.小程序签到) 小程序签到();
             //回到小米社区app
             launchAPP(xmPckageName);
             // 按配置启用功能
