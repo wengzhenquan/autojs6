@@ -659,8 +659,9 @@ function newSign() {
     ];
     // url随机排列，变相负载均衡
     let array = getRandomNumbers(urls.length - 1);
-    while (urls[array[0]].includes('xcjd')) {
-        // 第一次请求，不用xcjd开头的服务器（超慢）
+    while (urls[array[0]].includes('xcjd') ||
+        urls[array[1]].includes('xcjd')) {
+        // 前两次请求，不用xcjd开头的服务器（超慢）
         // 换顺序，再排列一次
         array = getRandomNumbers(urls.length - 1);
     }
