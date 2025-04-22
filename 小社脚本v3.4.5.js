@@ -683,8 +683,13 @@ let urls = [
 
 function newSign() {
     log("将请求服务器，来识别坐标！")
+    threads.shutDownAll(); //在此之前，所有子线程必须结束
     // 发送请求，获取坐标
     log('可用服务器数量：' + urls.length)
+    if (urls.length < 1) {
+        console.error("芭比Q了，所有服务器都挂了，没法签到了！");
+        throw e;
+    }
 
     // url随机排列，变相负载均衡
     let array = getRandomNumbers(urls.length - 1);
