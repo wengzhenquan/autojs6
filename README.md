@@ -356,6 +356,7 @@ github：https://github.com/wengzhenquan/autojs6
 
 v3.4.6：
 1. 跳过广告
+2. 确保tmp目录存在
 
 v3.4.5：
 1. 添加服务器提前异步检查。  
