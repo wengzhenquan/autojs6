@@ -354,6 +354,9 @@ github：https://github.com/wengzhenquan/autojs6
 
 ---  
 
+v3.4.6：
+1. 跳过广告
+
 v3.4.5：
 1. 添加服务器提前异步检查。  
 2. 小小的优化，不值一提。
