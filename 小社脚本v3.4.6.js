@@ -445,7 +445,7 @@ function skipAd() {
 function posts(n) {
     log(">>>>>>>★浏览帖子★<<<<<<<")
     toastLog("准备浏览帖子10s……", "long", "forcible")
-    sleep(1500)
+    sleep(500)
     // 小米社区重置首页
     //backAppIndex();
 
