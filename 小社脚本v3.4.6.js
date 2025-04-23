@@ -14,6 +14,7 @@ https://github.com/wengzhenquan/autojs6
 */
 // 引入配置文件
 var config = require("./config.js");
+files.ensureDir('./tmp/') // 确保临时工作目录存在
 //设置参考坐标，不能动，开发环境标准比例。
 setScaleBaseX(1080);
 setScaleBaseY(2400);
