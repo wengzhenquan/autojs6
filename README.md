@@ -363,7 +363,7 @@ github：https://github.com/wengzhenquan/autojs6
 
 ---  
 
-v3.4.9：
+v3.4.9：（未发布）
 1. 修复从社区APP跳转小程序时，遇到分身无法自动选择问题。
 
 
