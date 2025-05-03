@@ -308,6 +308,11 @@ github：https://github.com/wengzhenquan/autojs6
 
 --- 
 
+v3.4.11：
+1. 添加ClawCloud Run 服务器地址
+2. 抹黑签到兼容经典导航键
+3. 优化若干
+
 v3.4.10：
 1. 小程序摸黑签到坐标优化。
 2. 优化双旗舰活动关闭“炫耀一下”坐标。
