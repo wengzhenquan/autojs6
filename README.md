@@ -48,6 +48,10 @@ $\color{red}{配置文件都是共用的，新版本也会兼容旧版本配置�
 --- 
 **支持跳转小程序版 社区APP下载：**  
 
+**小米社区5.4.3**：[点击下载](https://www.123912.com/s/6DKvvd-uRmuA)
+
+**小米社区5.4.20250422 测试版**：[点击下载](https://cdn.cnbj1.fds.api.mi-img.com/planet/PLATFORM_SIGNED_29100_vipaccount_Phone_20250422_alpha_release.apk)
+
 **小米社区5.3.4**：[点击下载](https://api.hyperosupdates.com/apk/com.xiaomi.vipaccount_5.3.4_HyperOSUpdates.com.apk)   
 
 **小米社区5.3.20250219 测试版**：[点击下载](https://api.hyperosupdates.com/apk/com.xiaomi.vipaccount_5.3.20250219_HyperOSUpdates.com.apk)   
