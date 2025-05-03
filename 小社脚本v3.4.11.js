@@ -1527,7 +1527,7 @@ function 活动1() {
                 //机型确认，识别不到组件，也无法识别到（“确定”）文字，
                 //位置在右下角
                 for (i = 0; i < 5; i++) {
-                    click(dwidth * 0.734, dheight * (0.88 + 0.02 * i));
+                    click(dwidth * 0.734, dheight * (0.895 + 0.008 * i));
                 }
             }
             sleep(1500)
@@ -1568,7 +1568,7 @@ function 解锁(button) {
                 // 无法识别到“炫耀一下”弹窗，也无法识别关闭图形❌组件
                 // 只能靠坐标关闭
                 for (i = 0; i < 5; i++) {
-                    click(dwidth * 0.5, dheight * (0.82 + 0.006 * i));
+                    click(dwidth * 0.5, dheight * (0.82 + 0.01 * i));
                 }
             }
             sleep(600);
@@ -2259,6 +2259,7 @@ function run() {
 
     //提前开始异步校验服务器，删除无效的服务器，确保签到认证时，服务器可用。
     threads.start(() => webTest());
+    home();
 
     // 进入正题
     killAPP(xmPckageName);
