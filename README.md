@@ -340,7 +340,7 @@ github：https://github.com/wengzhenquan/autojs6
 
 --- 
 
-v3.4.13：(未发布)
+v3.4.13：
 1. 双旗舰活动，布局分析失效，模拟点击
 2. 将解锁程序提前，放在验权之前
 
