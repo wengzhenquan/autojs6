@@ -342,6 +342,9 @@ github：https://github.com/wengzhenquan/autojs6
 
 --- 
 
+v3.4.15:
+1. 若干优化
+
 v3.4.14：
 1. 双旗舰活动，调整第二次摸黑点击坐标
 2. 双旗舰活动，次数识别加强
