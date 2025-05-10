@@ -48,7 +48,7 @@ $\color{red}{配置文件都是共用的，新版本也会兼容旧版本配置�
     └── model/      # 模型文件目录
         ├── yzm.bin
         └── yzm.param
-     Yolo-Plugins.apk # Yolo插件(安装）
+     Yolo-Plugins.apk # Yolo插件(需安装）
       
 ````  
 yolov11用于支持本地识图签到。   
@@ -56,7 +56,7 @@ yolov11用于支持本地识图签到。
 
 
 **AutoJs6**   
-建议使用最新版   
+建议使用最新版（最低支持6.5.0，再低无法保证支持）   
 [点击下载](https://github.com/SuperMonster003/AutoJs6/releases)  
 
 
