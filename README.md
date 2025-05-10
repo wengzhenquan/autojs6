@@ -327,15 +327,17 @@ yolov11用于支持本地识图签到。
    如果是偶发现象，那就再加一个定时任务好了！  
    
    
-   **10. 缺失yzm.bin、yzm.param文件/Yolo-plugin.apk 插件未安装  
-   这些是本地YOLO支持的文件，在发布的完整包里有相关文件，可自行提取。  
+   **10. 缺失yzm.bin、yzm.param文件/Yolo-plugin.apk 插件未安装**  
+   这些是本地YOLO支持的文件，在发布的完整包里有相关文件，可自行提取。    
    目录结构本页上方（下载链接）位置有说明。   
    
    当然，如果你坚持使用服务器方式识图签到，也可以删掉yolov11文件夹。  
    或者忽略该报错。   
-   本地YOLO加载失败的情况下，依旧使用链接服务器方式识图签到。
+   本地YOLO加载失败的情况下，依旧使用链接服务器方式识图签到。   
    
-   **11.方法plugins.load调用失败.Plugin com.circlefork.yolo not found in installed apps**
+   **如果Yolo-plugin.apk已安装，依旧提示未安装，看下面问题11。**  
+   
+   **11.方法plugins.load调用失败.Plugin com.circlefork.yolo not found in installed apps**  
    
    就是 $\color{red}{ Yolo-plugin.apk未安装。}$ 
      
