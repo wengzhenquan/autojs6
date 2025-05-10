@@ -100,6 +100,7 @@ function consoleShow() {
             touchable: false,
             exitOnClose: 6e3,
         });
+        
         //console.setContentTextColor({log: 'green'});
         console.setContentTextColor({
             verbose: 'white',
