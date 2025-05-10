@@ -1,0 +1,3 @@
+yzm.param
+yzm.bin
+放在本目录下
