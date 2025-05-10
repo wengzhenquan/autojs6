@@ -7,6 +7,8 @@
 三改    by：wengzhenquan
 版本号：v3.5
 
+yolov11.js 版本号：v1
+
 [github更新地址]：
 
 https://github.com/wengzhenquan/autojs6

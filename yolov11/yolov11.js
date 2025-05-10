@@ -1,3 +1,5 @@
+//版本号：v1
+
 // yolov11.js - YOLO 检测与结果处理模块
 //var config = require("../config.js");
 // --- 常量定义 ---
