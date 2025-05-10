@@ -335,6 +335,16 @@ yolov11用于支持本地识图签到。
    或者忽略该报错。   
    本地YOLO加载失败的情况下，依旧使用链接服务器方式识图签到。
    
+   **11.方法plugins.load调用失败.Plugin com.circlefork.yolo not found in installed apps**
+   
+   就是 $\color{red}{ Yolo-plugin.apk未安装。}$ 
+     
+   什么？已经安装了还是报这个错误？   
+   那你一定是root用户，且使用了`隐藏应用列表`。   
+   将 Yolo-Plugins 加入白名单，让AutoJS6对其可见即可。
+   
+   
+   
    
    
 
