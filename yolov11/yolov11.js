@@ -2,25 +2,25 @@
 //var config = require("../config.js");
 // --- 常量定义 ---
 const YOLO_PLUGIN_NAME = "com.circlefork.yolo"; // 插件包名
-const MODEL_SUBDIR = "/yolov11/model";          // 模型文件夹相对于本脚本的路径
-const MODEL_NAME = "yzm";                       // 模型名
+const MODEL_SUBDIR = "/yolov11/model"; // 模型文件夹相对于本脚本的路径
+const MODEL_NAME = "yzm"; // 模型名
 const MODEL_USE_GPU = true
 const MODEL_LABELS = ["面条", "牙齿", "喷漆", "戒指", "汉堡", "双串", "气球", "三星", "四方角", "拉力器",
-        "垃圾桶", "纽扣", "保龄球", "吊灯", "蚂蚱", "电脑", "网球", "地雷", "干杯", "猫头鹰",
-        "胭脂", "橄榄球", "熊脚印", "锤子", "磁带", "五色球", "打拳击", "拉提琴", "项链模特",
-        "吉他", "柜子", "开关", "小杯", "乒乓球拍", "BUG", "鸭子", "鼓", "钱袋", "照相",
-        "方蛇", "乌龟", "车钥匙", "蜻蜓", "蜗牛", "两片叶子", "墨水", "小号", "路灯", "蛇",
-        "双色帆", "工具箱", "木鱼", "铃铛", "音乐盒", "天平", "怀表", "辣椒", "鹤", "麻脑",
-        "电机", "未知02", "小熊", "沙漏", "墓碑", "排球", "讲台", "汽车", "生化", "浴缸",
-        "闹钟", "西瓜", "大树", "一枝花", "摩天轮", "吊钩", "别墅", "热水浴缸", "三圆", "飞机",
-        "弓箭", "瞳孔", "创可贴", "蝴蝶", "圆柱", "指南针", "飞碟", "苹果", "冰淇淋", "机器人",
-        "磁铁", "蒸汽火车", "鹰头", "一个铃铛", "双手提东西", "五环", "打火机", "风力发电", "派大星",
-        "鸟嘴", "手掌", "树叶", "火龙", "大炮", "风车", "胡萝卜", "甜筒", "木鱼", "自行车",
-        "战斗", "香烟"
-    ];         
+    "垃圾桶", "纽扣", "保龄球", "吊灯", "蚂蚱", "电脑", "网球", "地雷", "干杯", "猫头鹰",
+    "胭脂", "橄榄球", "熊脚印", "锤子", "磁带", "五色球", "打拳击", "拉提琴", "项链模特",
+    "吉他", "柜子", "开关", "小杯", "乒乓球拍", "BUG", "鸭子", "鼓", "钱袋", "照相",
+    "方蛇", "乌龟", "车钥匙", "蜻蜓", "蜗牛", "两片叶子", "墨水", "小号", "路灯", "蛇",
+    "双色帆", "工具箱", "木鱼", "铃铛", "音乐盒", "天平", "怀表", "辣椒", "鹤", "麻脑",
+    "电机", "未知02", "小熊", "沙漏", "墓碑", "排球", "讲台", "汽车", "生化", "浴缸",
+    "闹钟", "西瓜", "大树", "一枝花", "摩天轮", "吊钩", "别墅", "热水浴缸", "三圆", "飞机",
+    "弓箭", "瞳孔", "创可贴", "蝴蝶", "圆柱", "指南针", "飞碟", "苹果", "冰淇淋", "机器人",
+    "磁铁", "蒸汽火车", "鹰头", "一个铃铛", "双手提东西", "五环", "打火机", "风力发电", "派大星",
+    "鸟嘴", "手掌", "树叶", "火龙", "大炮", "风车", "胡萝卜", "甜筒", "木鱼", "自行车",
+    "战斗", "香烟"
+];
 // --- 模型参数 ---
-const DEFAULT_CONF_THRESHOLD = config.confThreshold;           // 默认置信度阈值
-const DEFAULT_IMG_SIZE = 640;                  // 默认检测图像尺寸
+const DEFAULT_CONF_THRESHOLD = 0.7; // 默认置信度阈值
+const DEFAULT_IMG_SIZE = 640; // 默认检测图像尺寸
 const tag = "[YOLO]";
 // --- 模块级变量 (用于存储初始化状态和实例) ---
 let yoloInstance = null;
@@ -38,8 +38,8 @@ function initializeYolo() {
     }
     // 如果实例存在但未初始化成功（上次失败），则不再尝试
     if (yoloInstance && !isYoloInitialized) {
-         console.warn(tag + "初始化曾失败，不再尝试。");
-         return false;
+        console.warn(tag + "初始化曾失败，不再尝试。");
+        return false;
     }
 
     console.log(tag + "正在初始化...");
@@ -150,14 +150,14 @@ function sortAndProcessResults(data) {
  * @param {number} [confThreshold=DEFAULT_CONF_THRESHOLD] - 置信度阈值 (可选)。 
  * @returns {Array<object>|null} - 处理后的检测结果数组，或在失败时返回 null。
  */
-function detectAndProcess(imagePath, confThreshold = 0.7) {
+function detectAndProcess(imagePath) {
     // 检查初始化状态
     if (!isYoloInitialized || !yoloInstance) {
         console.error(tag + "未初始化或初始化失败，尝试重新初始化...");
         // 尝试再次初始化
-        initializeYolo(); 
+        initializeYolo();
         if (!isYoloInitialized || !yoloInstance) return null;
-            return null;
+        return null;
     }
 
     // 检查图片路径
@@ -165,7 +165,7 @@ function detectAndProcess(imagePath, confThreshold = 0.7) {
         console.error("检测处理: 无效的图片路径。");
         return null;
     }
-     if (!files.exists(imagePath)) {
+    if (!files.exists(imagePath)) {
         console.error(`检测处理: 图片文件不存在: ${imagePath}`);
         return null;
     }
@@ -181,10 +181,10 @@ function detectAndProcess(imagePath, confThreshold = 0.7) {
         }
 
         // 执行检测
-        console.log(`${tag}检测 (Threshold: ${confThreshold})`);
+        console.log(`${tag}检测 (Threshold: ${DEFAULT_CONF_THRESHOLD})`);
         // 注意：yolo.detect 可能需要 Bitmap 对象，images.read 返回的是 Image 对象
         // 需要确认 yolo.detect 接受的参数类型，如果是 Bitmap，需要 img.bitmap
-        let rawResults = yoloInstance.detect(img.bitmap, confThreshold, 0.45, 640);
+        let rawResults = yoloInstance.detect(img.bitmap, DEFAULT_CONF_THRESHOLD, 0.45, 640);
         console.log(`${tag}检测完成，原始结果数量: ${rawResults ? rawResults.length : 'N/A'}`);
         //log(rawResults)
         // 处理并返回结果
@@ -204,7 +204,7 @@ function detectAndProcess(imagePath, confThreshold = 0.7) {
 // --- 模块初始化 ---
 // 在模块加载时执行一次初始化尝试
 initializeYolo();
- 
+
 // --- 导出功能 ---
 // 导出主函数
 module.exports = detectAndProcess;
