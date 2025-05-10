@@ -35,7 +35,7 @@
 $\color{red}{小提示：不同版本可以共存，主程序放在同一个目录下即可。}$  
 $\color{red}{配置文件都是共用的，新版本也会兼容旧版本配置。}$    
 
-### 文件说明
+### 文件结构
 ```
 /
 ├── tmp/                # 临时工作目录
@@ -43,12 +43,12 @@ $\color{red}{配置文件都是共用的，新版本也会兼容旧版本配置�
 ├── config.js           # 配置文件   
 └── README.md           # 说明文档
 
-├── yolov11/         (yolov11本地增强)   
-│   ├── model/          # 模型文件目录
-│   │   ├ Yolo-Plugins.apk  # Yolo插件
-│   │   ├── yzm.bin
-│   │   └── yzm.param
-└───── yolov11.js      # 本地YOLO脚本
+└── yolov11/         (yolov11本地增强)   
+    ├── yolov11.js      # 本地YOLO脚本
+    └── model/          # 模型文件目录
+        ├── yzm.bin
+        └── yzm.param
+     Yolo-Plugins.apk     # Yolo插件(安装）
       
 ````  
 yolov11用于支持本地识图签到。   
