@@ -365,7 +365,7 @@ yolov11_w.js可能会更新，更新的时候关注该脚本第一行版本号�
    本地YOLO加载失败的情况下，依旧使用连接服务器方式识图签到。   
    ``` 
    
-   **如果Yolo-plugin.apk已安装，依旧提示未安装，看下面问题11。**  
+   ***如果Yolo-plugin.apk已安装，依旧提示未安装，看下面问题11。***  
    
    **11.方法plugins.load调用失败.Plugin com.circlefork.yolo not found in installed apps**  
    
