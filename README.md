@@ -44,7 +44,7 @@ $\color{red}{配置文件都是共用的，新版本也会兼容旧版本配置�
 └── README.md       # 说明文档
 
 └── yolov11/      (yolov11本地增强)   
-    ├── yolov11.js  # 本地YOLO脚本
+    ├── yolov11_w.js  # 本地YOLO脚本
     └── model/      # 模型文件目录
         ├── yzm.bin
         └── yzm.param
@@ -53,7 +53,7 @@ $\color{red}{配置文件都是共用的，新版本也会兼容旧版本配置�
 ````  
 yolov11用于支持本地识图签到。   
 相关文件，只会发布在完整包里，请自行下载提取。  
-yolov11.js可能会更新，更新的时候关注该脚本第一行版本号。   
+yolov11_w.js可能会更新，更新的时候关注该脚本第一行版本号。   
 
 
 **AutoJs6**   
@@ -400,8 +400,10 @@ github：https://github.com/wengzhenquan/autojs6
 
 --- 
 
-v3.5.1:(未发布)
+v3.5.1:
 1. 将无法识别的图片，分类保存到`tmp/error/`目录下
+2. 添加识图签到坐标识别错误重试3次
+3. 改名yolov11.js为yolov11_w.js，与原版共存
 
 
 v3.5:
