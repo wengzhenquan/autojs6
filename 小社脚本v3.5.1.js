@@ -708,6 +708,10 @@ function imageRecoSign() {
                 let salt = (enlocalYOLO ? 'local' : 'server') + '_unknown';
                 // 备份错误图片
                 saveErroFile(CAPTURE_PIC_PATH, salt);
+
+                //重新截图
+                captureScr();
+                clipParam = getClipPic();
             }
         }
         n++;
@@ -1750,7 +1754,7 @@ function 解锁(button) {
     let ddjs = wait(() => text('等待解锁').exists(), 3);
     let jpso = wait(() => text('可解锁').exists(), 3);
     if (!ddjs && !jpso) {
-    //  if (1) {
+        //  if (1) {
         log("不好了，布局分析失败了！")
         log("无法判断是否有解锁次数，")
         log("只能[摸黑]点击了再说。")
