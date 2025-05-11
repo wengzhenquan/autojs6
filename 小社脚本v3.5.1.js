@@ -974,7 +974,7 @@ function serverYOLOSign() {
                 //     return;
                 // }                
 
-                console.error("错误：statusCode：" + res.statusCode());
+                console.error("错误：statusCode：" + res.statusCode);
                 console.error("信息：" + res.body.json());
 
                 console.error("识别失败，刷新图片重试！");
