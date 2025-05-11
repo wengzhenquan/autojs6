@@ -57,7 +57,8 @@ yolov11.js可能会更新，更新的时候关注该脚本第一行版本号。
 
 
 **AutoJs6**   
-建议使用最新版（最低支持6.5.0，再低无法保证支持）   
+建议使用最新版   
+（最低支持6.5.0，再低无法保证支持）   
 [点击下载](https://github.com/SuperMonster003/AutoJs6/releases)  
 
 
