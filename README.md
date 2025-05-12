@@ -38,12 +38,14 @@ $\color{red}{配置文件都是共用的，新版本也会兼容旧版本配置�
 ### 文件结构
 ```
 /
-├── tmp/            # 临时目录
-├── 小社脚本.js       # 主程序
-├── config.js       # 配置文件   
-└── README.md       # 说明文档
+├─ tmp/            # 临时目录
+├─ 小社脚本.js       # 主程序
+├─ config.js       # 配置文件   
+└─ README.md       # 说明文档
 
-└── yolov11/     (yolov11本地签到模块)   
+  ---- (yolov11本地签到模块) ----  
+
+└─ yolov11/     
     ├─ yolov11_w.js  # 本地YOLO脚本
     └─ model/        # 模型文件目录
         ├─ yzm.bin
