@@ -30,7 +30,7 @@
 --- 
 ## **正式开始：**  
 
-[脚本下载入口](https://github.com/wengzhenquan/autojs6/releases)   
+[脚本打包下载入口](https://github.com/wengzhenquan/autojs6/releases)   
 
 $\color{red}{小提示：不同版本可以共存，主程序放在同一个目录下即可。}$  
 $\color{red}{配置文件都是共用的，新版本也会兼容旧版本配置。}$    
