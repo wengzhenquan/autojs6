@@ -44,11 +44,11 @@ $\color{red}{配置文件都是共用的，新版本也会兼容旧版本配置�
 └── README.md       # 说明文档
 
 └── yolov11/     (yolov11本地签到模块)   
-    ├── yolov11_w.js  # 本地YOLO脚本
-    └── model/        # 模型文件目录
-        ├── yzm.bin
-        └── yzm.param
-     Yolo-Plugins.apk   # Yolo插件(需安装）
+    ├─ yolov11_w.js  # 本地YOLO脚本
+    └─ model/        # 模型文件目录
+        ├─ yzm.bin
+        └─ yzm.param
+  Yolo-Plugins.apk  # Yolo插件(需安装）
       
 ````  
 * $\color{red}{yolov11用于支持本地识图签到。}$     
