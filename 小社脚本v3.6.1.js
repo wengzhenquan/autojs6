@@ -180,6 +180,16 @@ function getRandomNumbers(n) {
     return result;
 }
 
+function formatFileSize(size) {
+    if (size < 1024) {
+        return size + 'B';
+    } else if (size < Math.pow(1024, 2)) {
+        return (size / 1024).toFixed(1) + 'KB';
+    } else {
+        return (size / Math.pow(1024, 2)).toFixed(1) + 'MB';
+    }
+}
+
 //------------ 成长值记录对象 ----------//
 // 记录成长值对象
 const 成长值记录 = {
