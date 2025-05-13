@@ -54,7 +54,7 @@ $\color{red}{配置文件都是共用的，新版本也会兼容旧版本配置�
         ├─ yzm.bin
         └─ yzm.param
 Yolo-Plugins.apk  # Yolo插件(需安装）
-      
+```       
 
 * $\color{red}{一键增量更新程序.js 启动即可自动更新脚本}$   
 1. 依赖version文件
