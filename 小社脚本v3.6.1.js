@@ -180,6 +180,16 @@ function getRandomNumbers(n) {
     return result;
 }
 
+function formatFileSize(size) {
+    if (size < 1024) {
+        return size + 'B';
+    } else if (size < Math.pow(1024, 2)) {
+        return (size / 1024).toFixed(1) + 'KB';
+    } else {
+        return (size / Math.pow(1024, 2)).toFixed(1) + 'MB';
+    }
+}
+
 //------------ 成长值记录对象 ----------//
 // 记录成长值对象
 const 成长值记录 = {
@@ -539,7 +549,7 @@ function updateScript() {
 
     console.error("提示：启动→" + update_script_name)
     device.keepScreenDim(5 * 60 * 1000);
-    if (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 20; i++) {
         floaty.closeAll();
         log('→起飞'.padStart(i * 2 + 1, '-'));
         if (i > 15) console.hide();
@@ -553,7 +563,7 @@ function updateScript() {
     let newscript = '小社脚本v' + serverVersion.version + '.js';
     console.info("即将执行新的脚本：" + newscript)
     console.error("提示：启动→" + newscript)
-    if (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 20; i++) {
         log('→起飞'.padStart(i * 2 + 1, '-'));
     }
     engines.execScriptFile("./" + newscript);
