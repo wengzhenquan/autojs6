@@ -40,7 +40,8 @@ $\color{red}{配置文件都是共用的，新版本也会兼容旧版本配置�
 /
 ├─ tmp/    # 临时工作目录（内容可删）
 ├─ 小社脚本.js   # 主程序
-├─ config.js    # 配置文件   
+├─ config.js    # 配置文件
+├─ version      # 版本信息文件（支持检查更新功能）
 └─ README.md    # 说明文档
 
   ---- (yolov11本地签到模块) ----  
@@ -418,6 +419,14 @@ github：https://github.com/wengzhenquan/autojs6
 
 
 --- 
+
+v3.6:
+1. 添加检查更新功能
+2. 添加社区签到关闭开关
+3. 修复部分bug
+4. 整理代码
+(更新：小社脚本.js、config.js、yolov11_w.js、version文件)
+
 
 v3.5.1:
 1. 将无法识别的图片，分类保存到`tmp/error/`目录下

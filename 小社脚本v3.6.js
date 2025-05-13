@@ -5,15 +5,16 @@
 原作者  by：PJ小宇
 修改    by：风中拾叶
 三改    by：wengzhenquan
-版本号：v3.5.1
+版本号：v3.6
 
-yolov11_w.js 版本号：v1
+yolov11_w.js 版本号：v2
 
 [github更新地址]：
 
 https://github.com/wengzhenquan/autojs6
 
 */
+var github = "https://github.com/wengzhenquan/autojs6"
 
 // 引入配置文件
 var config = require("./config.js");
@@ -52,6 +53,9 @@ var manufacturer = android.os.Build.MANUFACTURER;
 // 获取设备品牌
 var brand = device.brand;
 
+var jsversion = (engines.myEngine().getSource().getName()
+    .match(/\d[\s\S]*/) || [""])[0];
+
 // 签到未完成标志
 var unfinished_mark = 0;
 
@@ -65,6 +69,7 @@ consoleShow();
 //consoleShow();
 
 log("—-----★--- Start ---★-----—");
+log(("小社脚本 版本：").padStart(17) + jsversion)
 log(("AutoJS6 版本：").padStart(21) + autojs.versionName)
 log(("Android 版本：").padStart(21) + device.release)
 log(("微信 Ver：") + String(wchatVersionName).padStart(20))
@@ -82,6 +87,157 @@ files.ensureDir('./tmp/')
 //exit()
 
 
+//------------ 工具函数 ----------//
+
+// 点击中心坐标
+function clickCenter(obj) {
+    let x = obj.bounds().centerX()
+    let y = obj.bounds().centerY()
+    //log(x,y)
+    return click(x, y);
+}
+
+// 日期格式化
+function formatDate(date) {
+    // 获取年、月、日、时、分、秒
+    let year = date.getFullYear();
+    let month = (date.getMonth() + 1).toString().padStart(2, '0');
+    let day = date.getDate().toString().padStart(2, '0');
+    let hours = date.getHours().toString().padStart(2, '0');
+    let minutes = date.getMinutes().toString().padStart(2, '0');
+    let seconds = date.getSeconds().toString().padStart(2, '0');
+    // 拼接格式化后的日期字符串
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+// 格式化后的实时时间
+function nowDate() {
+    return formatDate(new Date());
+}
+
+// 返回时长间隔 01:23 （分：秒）
+function getDurTime(startTimeStr) {
+    // 将时间字符串转换为时间戳
+    const startTime = new Date(startTimeStr.replace(/-/g, '/')).getTime();
+    // 获取当前时间的时间戳
+    const currentTime = new Date().getTime();
+    // 计算时间差（单位：毫秒）
+    const timeDiff = currentTime - startTime;
+    const absTimeDiff = Math.abs(timeDiff);
+    // 先将时间差转换为秒数
+    const totalSeconds = Math.floor(absTimeDiff / 1000);
+    // 计算分钟数
+    const minutes = Math.floor(totalSeconds / 60);
+    // 计算剩余的秒数
+    const seconds = totalSeconds % 60;
+    // 格式化输出
+    return `${minutes}:${seconds < 10? '0' + seconds : seconds}`;
+}
+
+// 获取已安装应用版本名称
+function getAppVersionName(packageName) {
+    try {
+        // 获取应用程序的包信息
+        var packageInfo = context.getPackageManager()
+            .getPackageInfo(packageName, 0);
+        // 获取版本名称
+        return packageInfo.versionName;
+    } catch (e) {
+        console.error("获取版本名称失败: " + e);
+        return null;
+    }
+}
+//对比版本大小，前面的大，返回1，相等0，后面大-1
+function compareVersions(version1, version2) {
+    let arr1 = version1.split('.').map(Number);
+    let arr2 = version2.split('.').map(Number);
+    let length = Math.max(arr1.length, arr2.length);
+    for (let i = 0; i < length; i++) {
+        let num1 = arr1[i] || 0;
+        let num2 = arr2[i] || 0;
+        if (num1 > num2) return 1;
+        if (num1 < num2) return -1;
+    }
+    return 0;
+}
+//对比版本version1是否＞＝version2
+function isAtLeast(version1, version2) {
+    return (compareVersions(version1, version2) > -1);
+}
+
+// [0-n]，不重复随机排列，返回数组，包含n
+function getRandomNumbers(n) {
+    let numbers = Array.from({
+        length: n + 1
+    }, (_, i) => i);
+    let result = [];
+    while (numbers.length > 0) {
+        let randomIndex = Math.floor(Math.random() * numbers.length);
+        let randomNumber = numbers.splice(randomIndex, 1)[0];
+        result.push(randomNumber);
+    }
+    return result;
+}
+
+//------------ 成长值记录对象 ----------//
+// 记录成长值对象
+const 成长值记录 = {
+    // 只需赋值这三个，特别是详细记录，是数组，存放 “记录” 对象
+    当前成长值: 0,
+    升级目标: 0,
+    详细记录: [],
+    // 计算函数
+    距离升级还需() {
+        return (this.升级目标 - this.当前成长值);
+    },
+    当前等级() {
+        return level段(this.当前成长值);
+    },
+    今日获得() {
+        let total = this.详细记录.reduce((叠加量, 记录) => {
+            return 叠加量 + 记录.值();
+        }, 0);
+        return total;
+    },
+    // 新添加的方法
+    addAndUpdate(new记录) {
+        const existingRecord = this.详细记录.find((record) => record.项目 === new记录.项目);
+        if (!existingRecord) {
+            // 没有找到，当成新增处理
+            this.详细记录.push(new记录);
+        } else {
+            // 找到了，对比值，把对象里的“结果”值改成“值”更大的那个
+            const existingValue = existingRecord.值();
+            const newValue = new记录.值();
+            if (newValue > existingValue) {
+                existingRecord.结果 = new记录.结果;
+            }
+        }
+    }
+};
+
+function 记录() {
+    this.项目 = "每日签到";
+    this.结果 = "+1";
+    this.值 = function() {
+        return parseInt(this.结果.replace("+", ""));
+    };
+};
+
+// 级别划分
+function level段(n) {
+    if (n < 50) return "1段";
+    if (n < 200) return "2段";
+    if (n < 500) return "3段";
+    if (n < 1000) return "4段";
+    if (n < 3000) return "5段";
+    if (n < 6000) return "6段";
+    if (n < 15000) return "7段";
+    if (n < 30000) return "8段";
+    if (n < 50000) return "9段";
+    return "10段";
+}
+
+//------------ 悬浮窗控制台区域 ----------//
 //打开悬浮窗控制台
 function consoleShow() {
     if (config.悬浮窗控制台) {
@@ -159,137 +315,7 @@ function consoleExpand() {
     }
 }
 
-function clickCenter(obj) {
-    let x = obj.bounds().centerX()
-    let y = obj.bounds().centerY()
-    //log(x,y)
-    return click(x, y);
-}
-
-function formatDate(date) {
-    // 获取年、月、日、时、分、秒
-    let year = date.getFullYear();
-    let month = (date.getMonth() + 1).toString().padStart(2, '0');
-    let day = date.getDate().toString().padStart(2, '0');
-    let hours = date.getHours().toString().padStart(2, '0');
-    let minutes = date.getMinutes().toString().padStart(2, '0');
-    let seconds = date.getSeconds().toString().padStart(2, '0');
-    // 拼接格式化后的日期字符串
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-}
-// 格式化后的实时时间
-function nowDate() {
-    return formatDate(new Date());
-}
-
-// 返回间隔时长 01:23 （分：秒）
-function getDurTime(startTimeStr) {
-    // 将时间字符串转换为时间戳
-    const startTime = new Date(startTimeStr.replace(/-/g, '/')).getTime();
-    // 获取当前时间的时间戳
-    const currentTime = new Date().getTime();
-    // 计算时间差（单位：毫秒）
-    const timeDiff = currentTime - startTime;
-    const absTimeDiff = Math.abs(timeDiff);
-    // 先将时间差转换为秒数
-    const totalSeconds = Math.floor(absTimeDiff / 1000);
-    // 计算分钟数
-    const minutes = Math.floor(totalSeconds / 60);
-    // 计算剩余的秒数
-    const seconds = totalSeconds % 60;
-    // 格式化输出
-    return `${minutes}:${seconds < 10? '0' + seconds : seconds}`;
-}
-
-// 获取已安装应用版本名称
-function getAppVersionName(packageName) {
-    try {
-        // 获取应用程序的包信息
-        var packageInfo = context.getPackageManager()
-            .getPackageInfo(packageName, 0);
-        // 获取版本名称
-        return packageInfo.versionName;
-    } catch (e) {
-        console.error("获取版本名称失败: " + e);
-        return null;
-    }
-}
-//对比版本大小，前面的大，返回1，相等0，后面大-1
-function compareVersions(version1, version2) {
-    let arr1 = version1.split('.').map(Number);
-    let arr2 = version2.split('.').map(Number);
-    let length = Math.max(arr1.length, arr2.length);
-    for (let i = 0; i < length; i++) {
-        let num1 = arr1[i] || 0;
-        let num2 = arr2[i] || 0;
-        if (num1 > num2) return 1;
-        if (num1 < num2) return -1;
-    }
-    return 0;
-}
-//对比版本version1是否＞＝version2
-function isAtLeast(version1, version2) {
-    return (compareVersions(version1, version2) > -1);
-}
-
-// 记录成长值对象
-const 成长值记录 = {
-    // 只需赋值这三个，特别是详细记录，是数组，存放 “记录” 对象
-    当前成长值: 0,
-    升级目标: 0,
-    详细记录: [],
-    // 计算函数
-    距离升级还需() {
-        return (this.升级目标 - this.当前成长值);
-    },
-    当前等级() {
-        return level段(this.当前成长值);
-    },
-    今日获得() {
-        let total = this.详细记录.reduce((叠加量, 记录) => {
-            return 叠加量 + 记录.值();
-        }, 0);
-        return total;
-    },
-    // 新添加的方法
-    addAndUpdate(new记录) {
-        const existingRecord = this.详细记录.find((record) => record.项目 === new记录.项目);
-        if (!existingRecord) {
-            // 没有找到，当成新增处理
-            this.详细记录.push(new记录);
-        } else {
-            // 找到了，对比值，把对象里的“结果”值改成“值”更大的那个
-            const existingValue = existingRecord.值();
-            const newValue = new记录.值();
-            if (newValue > existingValue) {
-                existingRecord.结果 = new记录.结果;
-            }
-        }
-    }
-};
-
-function 记录() {
-    this.项目 = "每日签到";
-    this.结果 = "+1";
-    this.值 = function() {
-        return parseInt(this.结果.replace("+", ""));
-    };
-};
-
-// 级别划分
-function level段(n) {
-    if (n < 50) return "1段";
-    if (n < 200) return "2段";
-    if (n < 500) return "3段";
-    if (n < 1000) return "4段";
-    if (n < 3000) return "5段";
-    if (n < 6000) return "6段";
-    if (n < 15000) return "7段";
-    if (n < 30000) return "8段";
-    if (n < 50000) return "9段";
-    return "10段";
-}
-
+//------------ 左下角“停止脚本”按钮 ----------//
 //悬浮窗停止按钮
 function stopButton() {
     var window = floaty.window(
@@ -321,6 +347,253 @@ function stopButton() {
     // setInterval(() => {}, 1000);
 }
 
+// 检查脚本更新，version文件存在才检查更新。
+function checkVersion() {
+    console.info("---→>★脚本检查更新★<←---")
+    //本地不存在version文件，不检查更新
+    if (!files.exists("./version")) {
+        console.error("缺失version文件，无法检查更新")
+        return;
+    }
+
+    //本地版本信息
+    let localVersion = JSON.parse(files.read("./version"));
+
+    if (jsversion !== localVersion.version) {
+        console.error("version文件与当前脚本不匹配")
+        console.log("脚本版本：" + jsversion)
+        console.log("version版本：" + localVersion.version)
+        console.log("无法检查更新")
+        console.log("请自行更新到匹配的版本")
+        return;
+        //exit();
+    }
+
+    // let proxy = 
+    let proxys = [
+        "https://gh.llkk.cc/",
+        "https://git.886.be/",
+        "https://ghfast.top/",
+        "https://github.fxxk.dedyn.io/",
+        "https://gh-proxy.ygxz.in/",
+
+        "https://github.moeyy.xyz/", //有缓存
+        "https://gh-proxy.com/",    //缓存时间长
+    ]
+    // 乱序数组
+    let arr = getRandomNumbers(proxys.length - 1);
+
+    let serverVersion = null;
+    for (let i = 0; i < proxys.length; i++) {
+        //let startTime = new Date().getTime();
+        let url = proxys[arr[i]] +
+            "https://raw.githubusercontent.com/wengzhenquan/autojs6/refs/heads/main/version";
+
+        try {
+            let thread = threads.start(() => {
+                try {
+                    serverVersion = http.get(url, {
+                        timeout: 3 * 1000,
+                    }).body.json();
+                } catch (e) {}
+            });
+            thread.join(3 * 1000);
+            thread.interrupt();
+        } catch (e) {} finally {
+            // log(proxy[i])
+            // let time = (new Date().getTime() - startTime);
+            //  log("服务器请求时间：" + time + " ms");
+            if (serverVersion) {
+                break;
+            }
+        }
+    }
+    if (!serverVersion) {
+        console.error("连接github更新失败")
+        return;
+    }
+
+    let hasNewVersion = isAtLeast(serverVersion.version, localVersion.version);
+    let updateList = []; // 待更新文件清单
+    let deleteList = []; // 待删除文件清单
+
+    // 待更新文件清单
+    for (var key in serverVersion.updateFile) {
+        if (localVersion.updateFile[key]) {
+            if (serverVersion.updateFile[key] > localVersion.updateFile[key]) {
+                updateList.push(key);
+            }
+        } else {
+            updateList.push(key);
+        }
+    }
+    // 待删除文件清单
+    for (var key in localVersion.updateFile) {
+        if (!serverVersion.updateFile[key]) {
+            deleteList.push(key);
+        }
+    }
+
+    if (hasNewVersion) {
+        notice({
+            title: '小社脚本有新的版本！！！🎊v' + serverVersion.version,
+            content: '脚本运行日志里有更新清单\n点击此处去更新🌐',
+            intent: {
+                action: "android.intent.action.VIEW",
+                data: github
+            },
+            autoCancel: true
+        });
+        console.warn("有新的版本！！！")
+        console.info("当前版本：" + localVersion.version)
+        console.info("最新版本：" + serverVersion.version)
+        console.log("-----→");
+        console.error("增量更新列表：")
+        if (updateList.length > 0) {
+            log("----------------------------");
+            console.log("需要更新的文件清单:");
+            updateList.forEach((file) => {
+                let name = !file.includes('/') ? ''.padStart(10) + file : file;
+                console.error(name);
+            });
+            log("----------------------------");
+        }
+        if (deleteList.length > 0) {
+            log("----------------------------");
+            console.log("需要删除的文件清单:");
+            deleteList.forEach((file) => {
+                let name = !file.includes('/') ? ''.padStart(10) + file : file;
+                console.error(name);
+            });
+            log("----------------------------");
+        }
+    } else {
+        console.info("脚本已经是最新版！")
+        // log("小社脚本版本：" + localVersion.version)
+    }
+}
+
+//------------ 识图签到初始化 ----------//
+
+// --- 初始化识图模块 ---
+function initImageReco() {
+    log(">>>>★识图签到初始化★<<<<")
+    if (files.exists(YOLO_MODULE_PATH2)) {
+        try {
+            console.info("发现YOLO本地文件")
+            console.info("开始加载本地识图模块")
+            let name = getAppName(YOLO_PLUGIN_NAME2);
+            let error = false;
+            if (!name) {
+                console.error("Yolo-plugin.apk 插件未安装");
+                error = true;
+            }
+            let yzmbin = YOLO_MODEL_SUBDIR2 + "/yzm.bin";
+            if (!files.exists(yzmbin)) {
+                console.error(yzmbin + " 文件缺失");
+                error = true;
+
+            }
+            let yzmparam = YOLO_MODEL_SUBDIR2 + "/yzm.param";
+            if (!files.exists(yzmparam)) {
+                console.error(yzmparam + " 文件缺失");
+                error = true;
+
+            }
+            if (error) throw '';
+
+            // 加载 YOLO 模块
+            console.info("----→>★加载YOLO★<←----")
+            yoloProcessor = require(YOLO_MODULE_PATH2);
+            if (typeof yoloProcessor !== 'function') {
+                throw new Error(`模块 ${YOLO_MODULE_PATH} 未导出函数`);
+            }
+            enlocalYOLO = true;
+            console.info("YOLO 模块加载成功");
+        } catch (e) {
+            console.error(`加载本地 YOLO 模块失败: ${e}`);
+            console.error(`将使用服务器识图！`);
+        }
+    }
+    if (!enlocalYOLO) {
+        console.info("启用服务器识图签到");
+        //提前开始异步校验服务器，删除无效的服务器，确保签到认证时，服务器可用。
+        threads.start(() => webTest());
+    }
+}
+
+// 服务器校验
+function webTest() {
+    let sum_old = urls.length;
+    let delayed_test;
+    let startTime = new Date().getTime();
+    for (let j = urls.length - 1; j > -1; j--) {
+        let url = urls[j];
+        switch (true) {
+            case url.includes("clawc"):
+                delayed_test = 3
+                break;
+            case url.includes("xcjd"):
+                delayed_test = 1
+                break;
+            default:
+                delayed_test = 0.6
+        }
+
+        let res;
+        try {
+            let thread = threads.start(() => {
+                try {
+                    res = http.get(url, {
+                        timeout: delayed_test * 1000
+                    });
+                } catch (e) {}
+            });
+            // AutoJS 6.5.0版本超时时间无效，改用线程方式
+            thread.join(delayed_test * 1000);
+            thread.interrupt();
+            res.body.json();
+        } catch (e) {
+            // log('删除：'+url)
+            //删除不能用的服务器
+            urls.splice(j, 1);
+        }
+    }
+    let time = (new Date().getTime() - startTime);
+    console.info("提示：识图服务器准备就绪");
+    console.info("检查服务器耗时：" + time + " ms");
+    console.info('可用服务器数量：' + urls.length + '/' + sum_old);
+    //传递消息给主线程
+    sum.setAndNotify(urls.length);
+
+}
+
+var sum = threads.disposable();
+let urls = [
+    "http://strz.wengzq.v6.rocks/upload", //0
+    "http://strz.wzq.dpdns.org/upload", //1
+    "http://strz.wzqw.zone.id/upload", //2
+
+    "http://xmst.wengzq.v6.rocks/upload", //3
+    "http://xmst.wzq.dpdns.org/upload", //4
+    "http://xmst.wzqw.zone.id/upload", //5
+
+    //001俄勒冈
+    "http://xcjd.wengzq.v6.rocks/upload", //6
+    "http://xcjd.wzq.dpdns.org/upload", //7
+    "http://xcjd.wzqw.zone.id/upload", //8
+
+    //clawcloud run 
+    "https://xcjdcf.clawc.dpdns.org/upload", //9
+    "https://ijakryikwhug.ap-southeast-1.clawcloudrun.com/upload", // 10
+
+
+    "http://up.kuandana.v6.rocks/upload", //11
+    "http://up.风中拾叶.top/upload", //12
+
+];
+
+//------------ 业务逻辑开始 ----------//
 //解锁
 function unLock() {
     log(">>>>>>>★设备解锁★<<<<<<<")
@@ -614,7 +887,36 @@ function backAppIndex() {
 
 }
 
-//社区APP签到
+//------------ 社区APP签到 ----------//
+
+function start() {
+    while (!packageName(xmPckageName).exists());
+    log(">>>>>>>★开始签到★<<<<<<<")
+    // percentage = logpercentage();
+    var done = text("已签到").findOne(1666);
+    try {
+        if (!done) {
+            //控制台缩小
+            consoleMin();
+            //开始程序
+            findCenter();
+        }
+        toastLog("今日已签到！", "forcible");
+    } catch (e) {
+        unfinished_mark = 1;
+        console.error("社区APP签到失败！");
+        notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("社区APP签到失败了！"));
+        console.error(e.message);
+        return;
+    } finally {
+        //展开悬浮窗控制台
+        console3();
+        consoleExpand();
+    }
+
+}
+
+//社区APP，点击“立即签到”
 function findCenter() {
     toastLog("开始签到……", "forcible");
     //点击签到按钮
@@ -654,6 +956,7 @@ function findCenter() {
         auth_hk();
     }
 }
+
 // 屏幕截图，并保存
 function captureScr() {
     log("准备屏幕截图......")
@@ -684,10 +987,13 @@ function captureScr() {
 
 }
 
+//------------ 识图签到 ----------//
+
 // 识图签到
 function imageRecoSign() {
     //剪图，并获得参数
     let clipParam = getClipPic();
+    // 坐标集合
     let list = null;
     let success = false;
     let n = 0;
@@ -704,7 +1010,11 @@ function imageRecoSign() {
             success = clickPic(list, clipParam);
             // 失败，准备重试
             if (!success) {
+                console.error("遇到未知错误，提交失败");
+                console.error("准备重试……");
+                log('第 ' + (n + 1) + ' 次重试')
                 list = null;
+                if (n > 1) enlocalYOLO = false;
                 let salt = (enlocalYOLO ? 'local' : 'server') + '_unknown';
                 // 备份错误图片
                 saveErroFile(CAPTURE_PIC_PATH, salt);
@@ -714,131 +1024,107 @@ function imageRecoSign() {
                 clipParam = getClipPic();
             }
         }
-        n++;
-        if (n > 3) {
+
+        if (n > 2) {
+            //失败
             throw e;
         }
+        n++;
     }
 
 }
 
-// --- 初始化识图模块 ---
-function initImageReco() {
-    log(">>>>★识图签到初始化★<<<<")
-    if (files.exists(YOLO_MODULE_PATH2)) {
-        try {
-            console.info("发现YOLO本地文件")
-            console.info("开始加载本地识图模块")
-            let name = getAppName(YOLO_PLUGIN_NAME2);
-            let error = false;
-            if (!name) {
-                console.error("Yolo-plugin.apk 插件未安装");
-                error = true;
-            }
-            let yzmbin = YOLO_MODEL_SUBDIR2 + "/yzm.bin";
-            if (!files.exists(yzmbin)) {
-                console.error(yzmbin + " 文件缺失");
-                error = true;
-
-            }
-            let yzmparam = YOLO_MODEL_SUBDIR2 + "/yzm.param";
-            if (!files.exists(yzmparam)) {
-                console.error(yzmparam + " 文件缺失");
-                error = true;
-
-            }
-            if (error) throw '';
-
-            // 加载 YOLO 模块
-            console.info("----→>★加载YOLO★<←----")
-            yoloProcessor = require(YOLO_MODULE_PATH2);
-            if (typeof yoloProcessor !== 'function') {
-                throw new Error(`模块 ${YOLO_MODULE_PATH} 未导出函数`);
-            }
-            enlocalYOLO = true;
-            console.info("YOLO 模块加载成功");
-        } catch (e) {
-            console.error(`加载本地 YOLO 模块失败: ${e}`);
-            console.error(`将使用服务器识图！`);
+// 剪图pic，且返回clip参数
+function getClipPic() {
+    let x = cX(101);
+    let y = cY(638);
+    var param = {
+        x: x,
+        y: y,
+        w: (cX(979) - x),
+        h: (cY(1622) - y)
+    };
+    // 若找到参照组件，就更新参数
+    let ycdj = textStartsWith("请在下图依次点击").findOne(2500);
+    if (ycdj) {
+        //找到合适的父组件
+        while (ycdj.right() < dwidth * 2 / 3) {
+            ycdj = ycdj.parent();
         }
+        param.x = ycdj.left();
+        param.y = ycdj.top();
+        param.w = ycdj.right() - param.x;
     }
-    if (!enlocalYOLO) {
-        console.info("启用服务器识图签到");
-        //提前开始异步校验服务器，删除无效的服务器，确保签到认证时，服务器可用。
-        threads.start(() => webTest());
+
+    let tida = className("android.widget.Button")
+        .text("提交答案").findOne(2500);
+    if (tida) {
+        param.h = tida.top() - param.y;
     }
+
+    //剪小图
+    var pictures2 = images.read("./tmp/pictures2.png");
+    var pic = images.clip(pictures2,
+        param.x, param.y,
+        param.w, param.h);
+
+    images.save(pic, CAPTURE_PIC_PATH, "png", 100);
+    pictures2.recycle();
+    pic.recycle();
+
+    return param;
 }
 
-// 服务器校验
-function webTest() {
-    let sum_old = urls.length;
-    let delayed_test;
-    let startTime = new Date().getTime();
-    for (let j = urls.length - 1; j > -1; j--) {
-        let url = urls[j];
-        switch (true) {
-            case url.includes("clawc"):
-                delayed_test = 3
-                break;
-            case url.includes("xcjd"):
-                delayed_test = 1
-                break;
-            default:
-                delayed_test = 0.6
-        }
-
-        let res;
-        try {
-            let thread = threads.start(() => {
-                try {
-                    res = http.get(url, {
-                        timeout: delayed_test * 1000
-                    });
-                } catch (e) {}
-            });
-            // AutoJS 6.5.0版本超时时间无效，改用线程方式
-            thread.join(delayed_test * 1000);
-            thread.interrupt();
-            res.body.json();
-        } catch (e) {
-            // log('删除：'+url)
-            //删除不能用的服务器
-            urls.splice(j, 1);
-        }
+// 点击图标，返回是否成功
+function clickPic(list, clipParam) {
+    for (let i = 0; i < list.length; i++) {
+        x = list[i][0] + clipParam.x;
+        y = list[i][1] + clipParam.y;
+        let icon = list[i][2]
+        log("点击第" + (i + 1) + "个图标：" + icon);
+        log("坐标：(" + x + ", " + y + ")")
+        log("点击结果：" + click(x, y));
+        sleep(500)
     }
-    let time = (new Date().getTime() - startTime);
-    console.info("提示：识图服务器准备就绪");
-    console.info("检查服务器耗时：" + time + " ms");
-    console.info('可用服务器数量：' + urls.length + '/' + sum_old);
-    //传递消息给主线程
-    sum.setAndNotify(urls.length);
-
+    log("图标点击完成！");
+    click("提交答案");
+    sleep(1000);
+    if (text("已签到").findOne(3000)) {
+        toastLog("识图签到成功！！！(๑´∀`๑)");
+        return true;
+    }
+    return false;
 }
 
-var sum = threads.disposable();
-let urls = [
-    "http://strz.wengzq.v6.rocks/upload", //0
-    "http://strz.wzq.dpdns.org/upload", //1
-    "http://strz.wzqw.zone.id/upload", //2
+// 保存错误文件，用salt区分 类别
+function saveErroFile(path, salt) {
+    if (!files.isFile(path)) return false;
+    // 组装文件名
+    let name = files.getNameWithoutExtension(path); //无后缀文件名
+    let ext = files.getExtension(path); //后缀
+    let time = nowDate().substr(5, 14).replace(/[- :]/g, '');
+    // let time = String("05-11 15:37:56").replace(/[- :]/g, '');
 
-    "http://xmst.wengzq.v6.rocks/upload", //3
-    "http://xmst.wzq.dpdns.org/upload", //4
-    "http://xmst.wzqw.zone.id/upload", //5
+    let filename = name + '_error_' + salt + '_' + time + '.' + ext;
 
-    //001俄勒冈
-    "http://xcjd.wengzq.v6.rocks/upload", //6
-    "http://xcjd.wzq.dpdns.org/upload", //7
-    "http://xcjd.wzqw.zone.id/upload", //8
+    //存放错误文件目录
+    let errorDir = './tmp/error/' + salt + '/';
+    files.ensureDir(errorDir)
+    // 文件列表
+    let arr = files.listDir(errorDir, function(fname) {
+        return fname.startsWith(name + '_error_' + salt);
+    }).sort().reverse();
+    //保留30个错误文件
+    for (i = arr.length - 1; arr.length > 30; i--) {
+        files.remove(errorDir + arr[i])
+    }
+    //复制文件
+    return files.copy(path, errorDir + filename);
+}
 
-    //clawcloud run 
-    "https://xcjdcf.clawc.dpdns.org/upload", //9
-    "https://ijakryikwhug.ap-southeast-1.clawcloudrun.com/upload", // 10
 
 
-    "http://up.kuandana.v6.rocks/upload", //11
-    "http://up.风中拾叶.top/upload", //12
-
-];
+//------------ 本地识图签到 ----------//
 
 /**
  * 本地YOLO模型，返回坐标
@@ -901,34 +1187,8 @@ function transResult(arr) {
 }
 
 
-// 保存错误文件，用salt区分 类别
-function saveErroFile(path, salt) {
-    if (!files.isFile(path)) return false;
-    // 组装文件名
-    let name = files.getNameWithoutExtension(path); //无后缀文件名
-    let ext = files.getExtension(path); //后缀
-    let time = nowDate().substr(5, 14).replace(/[- :]/g, '');
-    // let time = String("05-11 15:37:56").replace(/[- :]/g, '');
 
-    let filename = name + '_error_' + salt + '_' + time + '.' + ext;
-
-    //存放错误文件目录
-    let errorDir = './tmp/error/' + salt + '/';
-    files.ensureDir(errorDir)
-    // 文件列表
-    let arr = files.listDir(errorDir, function(fname) {
-        return fname.startsWith(name + '_error_' + salt);
-    }).sort().reverse();
-    //保留30个错误文件
-    for (i = arr.length - 1; arr.length > 30; i--) {
-        files.remove(errorDir + arr[i])
-    }
-    //复制文件
-    return files.copy(path, errorDir + filename);
-}
-
-
-
+//------------ 服务器识图签到 ----------//
 
 // 服务器识图，返回坐标
 function serverYOLOSign() {
@@ -938,7 +1198,7 @@ function serverYOLOSign() {
     if (urls.length < 1) {
         console.error("芭比Q了，所有服务器都挂了，没法签到了！");
         throw e;
-        return;
+        return null;
     }
     // 发送请求，获取坐标
     // url随机排列，变相负载均衡
@@ -1016,60 +1276,8 @@ function serverYOLOSign() {
         }
     }
 }
-// [0-n]，不重复随机排列，返回数组，包含n
-function getRandomNumbers(n) {
-    let numbers = Array.from({
-        length: n + 1
-    }, (_, i) => i);
-    let result = [];
-    while (numbers.length > 0) {
-        let randomIndex = Math.floor(Math.random() * numbers.length);
-        let randomNumber = numbers.splice(randomIndex, 1)[0];
-        result.push(randomNumber);
-    }
-    return result;
-}
 
-// 剪图pic，且返回clip参数
-function getClipPic() {
-    let x = cX(101);
-    let y = cY(638);
-    var param = {
-        x: x,
-        y: y,
-        w: (cX(979) - x),
-        h: (cY(1622) - y)
-    };
 
-    let ycdj = textStartsWith("请在下图依次点击").findOne(2500);
-    if (ycdj) {
-        //找到合适的父组件
-        while (ycdj.right() < dwidth * 2 / 3) {
-            ycdj = ycdj.parent();
-        }
-        param.x = ycdj.left();
-        param.y = ycdj.top();
-        param.w = ycdj.right() - param.x;
-    }
-
-    let tida = className("android.widget.Button")
-        .text("提交答案").findOne(2500);
-    if (tida) {
-        param.h = tida.top() - param.y;
-    }
-
-    //剪小图
-    var pictures2 = images.read("./tmp/pictures2.png");
-    var pic = images.clip(pictures2,
-        param.x, param.y,
-        param.w, param.h);
-
-    images.save(pic, CAPTURE_PIC_PATH, "png", 100);
-    pictures2.recycle();
-    pic.recycle();
-
-    return param;
-}
 
 //上传图片
 function upload(url) {
@@ -1114,27 +1322,8 @@ function upload(url) {
 
     return res;
 }
-// 点击图标
-function clickPic(list, clipParam) {
-    for (let i = 0; i < list.length; i++) {
-        x = list[i][0] + clipParam.x;
-        y = list[i][1] + clipParam.y;
-        let icon = list[i][2]
-        log("点击第" + (i + 1) + "个图标：" + icon);
-        log("坐标：(" + x + ", " + y + ")")
-        log("点击结果：" + click(x, y));
-        sleep(500)
-    }
-    log("图标点击完成！");
-    click("提交答案");
-    sleep(1000);
-    if (text("已签到").findOne(3000)) {
-        toastLog("识图签到成功！！！(๑´∀`๑)");
-        return true;
-    }
-    return false;
-}
 
+//------------ 滑块签到 ----------//
 // 滑块认证
 function auth_hk() {
     var pictures2 = images.read("./tmp/pictures2.png");
@@ -1189,6 +1378,8 @@ function readHk() {
         let w = cX(349) - x;
         let h = cY(1460) - y;
 
+        // 若找到参照组件，就更新参数
+
         //寻找滑块组件
         let gbyz = className("android.widget.Button")
             .text("关闭验证").findOne(1500);
@@ -1232,6 +1423,7 @@ function readHk() {
                 h = hk_auto.bottom() - y;
             }
         }
+        // 剪滑块
         wx = images.clip(pictures2, x, y, w, h);
         images.save(wx, "./tmp/hk_auto.png", "png", 100);
         pictures2.recycle();
@@ -1240,10 +1432,12 @@ function readHk() {
     return wx;
 }
 
+//------------ 新版滑块签到 ----------//
+
 //新版签到
 function qd2(n) {
     if (n > 3) {
-        log("没找到缺口！！");
+        console.error("没找到缺口！！");
         throw e;
     }
     // 滑块的中心坐标
@@ -1341,12 +1535,13 @@ function qd2(n) {
     if (done) {
         toastLog("签到完成！！！(๑´∀`๑)", "forcible");
     } else {
-        log("新版签到失败！！");
+        console.error("新版签到失败！！");
         throw e;
     }
 
 }
 
+//------------ 风中拾页版，滑块签到 ----------//
 //签到
 function qd() {
     var len;
@@ -1412,12 +1607,12 @@ function qd() {
             toastLog("签到完成！！！(๑´∀`๑)", "forcible");
             return;
         } else {
-            log("签到失败1");
+            console.error("签到失败1");
             notice(String('签到失败！(' + nowDate().substr(5, 14) + ')'), String("重新执行一次脚本试试吧！"));
 
         }
     } else {
-        log("签到失败2");
+        console.error("签到失败2");
     }
 }
 
@@ -1529,6 +1724,8 @@ function swipeBezierzier(sx, sy, ex, ey) {
     randomSwipe(sx, sy, ex, ey)
 }
 
+
+//------------ 活动 ----------//
 //拔萝卜活动
 function see() {
     log(">>>>>>>★萝卜活动★<<<<<<<")
@@ -1821,6 +2018,8 @@ function 解锁(button) {
     }
     sleep(1000);
 }
+
+//------------ 小程序签到 ----------//
 
 function 小程序签到() {
     log(">>>>>>★小程序签到★<<<<<<")
@@ -2126,6 +2325,8 @@ function desktopRun() {
     }
 }
 
+//------------ 成长值统计 ----------//
+
 //小程序版成长值
 function level2() {
     log("-----→");
@@ -2263,32 +2464,7 @@ function levelResult() {
 
 
 
-function start() {
-    while (!packageName(xmPckageName).exists());
-    log(">>>>>>>★开始签到★<<<<<<<")
-    // percentage = logpercentage();
-    var done = text("已签到").findOne(1666);
-    try {
-        if (!done) {
-            //控制台缩小
-            consoleMin();
-            //开始程序
-            findCenter();
-        }
-        toastLog("今日已签到！", "forcible");
-    } catch (e) {
-        unfinished_mark = 1;
-        console.error("社区APP签到失败！");
-        notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("社区APP签到失败了！"));
-        console.error(e.message);
-        return;
-    } finally {
-        //展开悬浮窗控制台
-        console3();
-        consoleExpand();
-    }
 
-}
 
 // 权限验证
 function permissionv() {
@@ -2515,7 +2691,7 @@ function run() {
             }
 
             // 签到
-            start();
+            if (config.社区APP签到) start();
             if (config.小程序签到) 小程序签到();
             //回到小米社区app
             launchAPP(xmPckageName);
@@ -2584,6 +2760,9 @@ function main() {
 
     //权限验证
     permissionv();
+
+    //脚本检查更新
+    if (config.检查更新) checkVersion()
 
     log("-----→");
     // 媒体声音

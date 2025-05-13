@@ -1,4 +1,4 @@
-//版本号：v1
+//版本号：v2
 
 // yolov11.js - YOLO 检测与结果处理模块
 //var config = require("../config.js");
@@ -22,7 +22,6 @@ const MODEL_LABELS = ["面条", "牙齿", "喷漆", "戒指", "汉堡", "双串"
 ];
 // --- 模型参数 ---
 const DEFAULT_CONF_THRESHOLD = 0.7; // 默认置信度阈值
-const DEFAULT_IMG_SIZE = 640; // 默认检测图像尺寸
 const tag = "[YOLO]";
 // --- 模块级变量 (用于存储初始化状态和实例) ---
 let yoloInstance = null;
@@ -100,7 +99,23 @@ function sortAndProcessResults(data) {
         return null;
     }
 
+    var newData = [];
+    for (var i = 0; i < data.length; i++) {
+        let item = data[i].label;
+        newData.push(item);
+    }
 
+    var countMap = newData.reduce(function(acc, item) {
+        acc[item] = (acc[item] || 0) + 1;
+        return acc;
+    }, {});
+
+    for (var key in countMap) {
+        if (countMap[key] !== 2) {
+            console.log("识别结果错误！");
+            return null;
+        }
+    }
     try {
         // 1. 按 Y 坐标升序排序
         data.sort((a, b) => a.y - b.y);
