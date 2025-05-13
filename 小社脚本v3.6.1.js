@@ -15,7 +15,7 @@ https://github.com/wengzhenquan/autojs6
 
 */
 var github = "https://github.com/wengzhenquan/autojs6";
-var update_script_name = "[小社脚本]一键更新程序.js";
+var update_script_name = "【小社脚本】一键更新程序.js";
 var serverVersion = null;
 
 // 引入配置文件
