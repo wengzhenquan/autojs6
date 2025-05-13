@@ -1,3 +1,10 @@
+//程序运行文件标志
+files.ensureDir("./tmp/")
+files.create("./tmp/update_locked");
+events.on("exit", () => files.remove('./tmp/update_locked'));
+
+
+
 console.launch();
 
 //下载超时，单位：秒。 
@@ -83,7 +90,7 @@ function checkVersion() {
         return;
     }
 
-    hasNewVersion = compareVersions(serverVersion.version, localVersion.version)>0;
+    hasNewVersion = compareVersions(serverVersion.version, localVersion.version) > 0;
 
     // 检查文件清单
     for (var key in serverVersion.updateFile) {
@@ -266,10 +273,10 @@ function startUpdate() {
         } else {
             if (fileName.includes('config')) {
                 log("需更新配置文件config.js");
-                files.rename("./"+fileName, "config_old.js")
+                files.rename("./" + fileName, "config_old.js")
                 console.error("旧config.js 已重命名为 config_old.js");
                 log("请自行搬运 屏幕解锁 等配置");
-                
+
             }
             files.ensureDir("./" + fileName)
             files.writeBytes("./" + fileName, filebytes);
@@ -322,3 +329,4 @@ checkVersion();
 startUpdate()
 
 log(">>>>>★更新完成★<<<<<")
+exit();
