@@ -419,8 +419,9 @@ function checkVersion() {
 
     // 待更新文件清单
     for (var key in serverVersion.updateFile) {
-        if (localVersion.updateFile[key]) {
-            if (serverVersion.updateFile[key] > localVersion.updateFile[key]) {
+        if (files.exists("./" + key) && localVersion.updateFile[key]) {
+            if (serverVersion.updateFile[key] > localVersion.updateFile[key] ||
+                !files.exists("./" + key)) {
                 updateList.push(key);
             }
         } else {
