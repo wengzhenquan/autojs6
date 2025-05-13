@@ -437,6 +437,9 @@ github：https://github.com/wengzhenquan/autojs6
 
 
 --- 
+v3.6.1:
+1. 修复社区APP签到无法提交
+
 
 v3.6:
 1. 添加检查更新功能，支持打印增量更新清单

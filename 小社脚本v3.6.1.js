@@ -5,7 +5,7 @@
 原作者  by：PJ小宇
 修改    by：风中拾叶
 三改    by：wengzhenquan
-版本号：v3.6
+版本号：v3.6.1
 
 yolov11_w.js 版本号：v2
 
@@ -1062,7 +1062,11 @@ function getClipPic() {
     }
 
     let tida = className("android.widget.Button")
-        .text("提交答案").findOne(2500);
+        .text("确认").findOne(2500);
+    if (!tida) {
+        tida = className("android.widget.Button")
+            .text("提交答案").findOne(2500);
+    }
     if (tida) {
         param.h = tida.top() - param.y;
     }
@@ -1092,6 +1096,7 @@ function clickPic(list, clipParam) {
         sleep(500)
     }
     log("图标点击完成！");
+    click("确认");
     click("提交答案");
     sleep(1000);
     if (text("已签到").findOne(3000)) {
