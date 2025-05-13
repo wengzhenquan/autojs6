@@ -1,10 +1,11 @@
 {
     "version": "3.6",
     "updateFile": {
-        "verson": 20250513,
+        "version": 20250513,
         "config.js": 20250513,
         "小社脚本.js": 20250513,
         "yolov11/yolov11_w.js": 20250513,
+        "yolov11/Yolo-plugin.apk": 20250513,
         "yolov11/model/yzm.bin": 20250513,
         "yolov11/model/yzm.param": 20250513
     }

@@ -378,7 +378,7 @@ function checkVersion() {
         "https://gh-proxy.ygxz.in/",
 
         "https://github.moeyy.xyz/", //有缓存
-        "https://gh-proxy.com/",    //缓存时间长
+        "https://gh-proxy.com/", //缓存时间长
     ]
     // 乱序数组
     let arr = getRandomNumbers(proxys.length - 1);
@@ -413,14 +413,15 @@ function checkVersion() {
         return;
     }
 
-    let hasNewVersion = isAtLeast(serverVersion.version, localVersion.version);
+    let hasNewVersion = compareVersions(serverVersion.version, localVersion.version) > 0;
     let updateList = []; // 待更新文件清单
     let deleteList = []; // 待删除文件清单
 
     // 待更新文件清单
     for (var key in serverVersion.updateFile) {
-        if (localVersion.updateFile[key]) {
-            if (serverVersion.updateFile[key] > localVersion.updateFile[key]) {
+        if (files.exists("./" + key) && localVersion.updateFile[key]) {
+            if (serverVersion.updateFile[key] > localVersion.updateFile[key] ||
+                !files.exists("./" + key)) {
                 updateList.push(key);
             }
         } else {
