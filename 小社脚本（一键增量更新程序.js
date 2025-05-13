@@ -46,7 +46,7 @@ function checkVersion() {
     //本地不存在version文件，不检查更新
     if (!files.exists("./version")) {
         console.error("缺失version文件，无法检查更新")
-        exit();
+        return;
     }
     //本地版本信息
     localVersion = JSON.parse(files.read("./version"));
@@ -80,7 +80,7 @@ function checkVersion() {
     }
     if (!serverVersion) {
         console.error("更新服务器连接失败")
-        exit();
+        return;
     }
 
     hasNewVersion = compareVersions(serverVersion.version, localVersion.version)>0;
@@ -198,7 +198,7 @@ function formatFileSize(size) {
 //开始更新
 function startUpdate() {
     if (!hasNewVersion)
-        exit();
+        return;
 
     log(">>>>>★开始更新★<<<<<")
     log("开始下载文件……")
@@ -271,6 +271,7 @@ function startUpdate() {
                 log("请自行搬运 屏幕解锁 等配置");
                 
             }
+            files.ensureDir("./" + fileName)
             files.writeBytes("./" + fileName, filebytes);
             successList.push(fileName);
             console.info("下载成功")
