@@ -455,6 +455,10 @@ function checkVersion() {
             updateList.forEach((file) => {
                 let name = !file.includes('/') ? ''.padStart(10) + file : file;
                 console.error(name);
+                if (file === 'config.js') {
+                    log('(更新前，建议重命名config.js，')
+                    log('              备份解锁坐标)')
+                }
             });
             log("----------------------------");
         }

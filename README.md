@@ -421,7 +421,7 @@ github：https://github.com/wengzhenquan/autojs6
 --- 
 
 v3.6:
-1. 添加检查更新功能
+1. 添加检查更新功能，支持打印增量更新清单
 2. 添加社区签到关闭开关
 3. 修复部分bug
 4. 整理代码
