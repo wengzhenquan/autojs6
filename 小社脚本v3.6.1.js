@@ -14,7 +14,9 @@ yolov11_w.js 版本号：v2
 https://github.com/wengzhenquan/autojs6
 
 */
-var github = "https://github.com/wengzhenquan/autojs6"
+var github = "https://github.com/wengzhenquan/autojs6";
+var update_script_name = "[小社脚本]一键更新程序.js";
+var serverVersion = null;
 
 // 引入配置文件
 var config = require("./config.js");
@@ -347,6 +349,19 @@ function stopButton() {
     // setInterval(() => {}, 1000);
 }
 
+// -------- 脚本更新  --------//
+
+var proxys = [
+    "https://gh.llkk.cc/",
+    "https://git.886.be/",
+    "https://ghfast.top/",
+    "https://github.fxxk.dedyn.io/",
+    "https://gh-proxy.ygxz.in/",
+
+    "https://github.moeyy.xyz/", //有缓存
+    "https://gh-proxy.com/", //缓存时间长
+]
+
 // 检查脚本更新，version文件存在才检查更新。
 function checkVersion() {
     console.info("---→>★脚本检查更新★<←---")
@@ -369,21 +384,11 @@ function checkVersion() {
         //exit();
     }
 
-    // let proxy = 
-    let proxys = [
-        "https://gh.llkk.cc/",
-        "https://git.886.be/",
-        "https://ghfast.top/",
-        "https://github.fxxk.dedyn.io/",
-        "https://gh-proxy.ygxz.in/",
 
-        "https://github.moeyy.xyz/", //有缓存
-        "https://gh-proxy.com/", //缓存时间长
-    ]
     // 乱序数组
     let arr = getRandomNumbers(proxys.length - 1);
 
-    let serverVersion = null;
+
     for (let i = 0; i < proxys.length; i++) {
         //let startTime = new Date().getTime();
         let url = proxys[arr[i]] +
@@ -416,6 +421,13 @@ function checkVersion() {
     let hasNewVersion = compareVersions(serverVersion.version, localVersion.version) > 0;
     let updateList = []; // 待更新文件清单
     let deleteList = []; // 待删除文件清单
+
+    //更新脚本
+    if (hasNewVersion && config.检查更新 > 1) {
+        toastLog("配置[检查更新]：" + config.检查更新)
+        toastLog("开始更新脚本")
+        updateScript();
+    }
 
     // 待更新文件清单
     for (var key in serverVersion.updateFile) {
@@ -476,6 +488,78 @@ function checkVersion() {
         console.info("脚本已经是最新版！")
         // log("小社脚本版本：" + localVersion.version)
     }
+}
+
+function updateScript() {
+    log("更新一键更新程序：" + update_script_name)
+
+    // 乱序数组
+    let arr = getRandomNumbers(proxys.length - 1);
+    var filebytes = null;
+    for (let i = 0; i < proxys.length; i++) {
+        let url = proxys[arr[i]] +
+            "https://github.com/wengzhenquan/autojs6/blob/main/" +
+            update_script_name;
+
+        log('使用加速器：' + proxys[arr[i]]);
+        // log(url);
+        try {
+            var res = null;
+            let thread = threads.start(() => {
+                try {
+                    res = http.get(url, {
+                        timeout: 3 * 1000,
+                    });
+                } catch (e) {}
+            });
+            thread.join(3 * 1000);
+            thread.interrupt();
+            if (res.statusCode === 200) {
+                filebytes = res.body.bytes();
+            }
+        } catch (e) {} finally {
+            //成功，跳出
+            if (filebytes && filebytes.length > 1000) {
+                break;
+            }
+            console.error('下载失败，更换加速器重试');
+        }
+    }
+
+    if (filebytes && filebytes.length > 1000) {
+        files.writeBytes("./" + update_script_name, filebytes);
+        console.info("下载成功")
+        console.info('文件大小：' + formatFileSize(filebytes.length))
+    }
+    if (!files.exists("./" + update_script_name)) {
+        console.error('更新程序更新失败');
+        console.error(update_script_name + ' 不存在，无法更新');
+        return;
+    }
+
+    console.error("提示：启动→" + update_script_name)
+    device.keepScreenDim(5 * 60 * 1000);
+    if (let i = 0; i < 20; i++) {
+        floaty.closeAll();
+        log('→起飞'.padStart(i * 2 + 1, '-'));
+        if (i > 15) console.hide();
+    }
+    // 执行一键更新程序.js
+    engines.execScriptFile("./" + update_script_name);
+    // 等待脚本执行完成
+    sleep(1000)
+    while (files.exists('./tmp/update_locked'));
+    sleep(1000)
+    let newscript = '小社脚本v' + serverVersion.version + '.js';
+    console.info("即将执行新的脚本：" + newscript)
+    console.error("提示：启动→" + newscript)
+    if (let i = 0; i < 20; i++) {
+        log('→起飞'.padStart(i * 2 + 1, '-'));
+    }
+    engines.execScriptFile("./" + newscript);
+    
+    //退出本线程
+    exit();
 }
 
 //------------ 识图签到初始化 ----------//
