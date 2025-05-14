@@ -8,5 +8,7 @@
         "yolov11/Yolo-plugin.apk": 20250513,
         "yolov11/model/yzm.bin": 20250513,
         "yolov11/model/yzm.param": 20250513
-    }
+    },
+    "main":"小社脚本v3.6.1.js",
+    "updateScript":"【小社脚本】一键更新程序.js"
 }
