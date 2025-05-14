@@ -32,7 +32,7 @@
 
 ### 脚本下载：
 
-[在线下载版（推荐）](https://github.com/wengzhenquan/autojs6/releases/tag/online)  
+[在线加速下载版（推荐）](https://github.com/wengzhenquan/autojs6/releases/tag/online)  
 
 [完整包下载](https://github.com/wengzhenquan/autojs6/releases)   
 
