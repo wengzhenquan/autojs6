@@ -30,7 +30,12 @@
 --- 
 ## **正式开始：**  
 
-[脚本打包下载入口](https://github.com/wengzhenquan/autojs6/releases)   
+### 脚本下载：
+
+[在线加速下载版（推荐）](https://github.com/wengzhenquan/autojs6/releases/tag/online)  
+
+[完整包下载](https://github.com/wengzhenquan/autojs6/releases)   
+
 
 $\color{red}{小提示：不同版本可以共存，主程序放在同一个目录下即可。}$  
 $\color{red}{配置文件都是共用的，新版本也会兼容旧版本配置。}$    
@@ -431,8 +436,9 @@ v3.6.2:
    （将`【小社脚本】启动程序.js`设为定时任务，更新版本也不会改名）
 2. 完善一键更新程序。
 3. 兼容性优化。
-4. `version`文件添加启动程序文件配置。
-5. 只需`version`、`【小社脚本】一键更新程序.js`就能下载一整个完整脚本。   
+4. 添加脚本完整性检查。
+5. `version`文件添加启动程序文件配置。
+6. 只需`version`、`【小社脚本】一键更新程序.js`就能下载一整个完整脚本。   
 (更新，`【小社脚本】一键更新程序.js`，`小社脚本.3.6.2.js`(下个版本将抛弃），`【小社脚本】启动程序.js`，`【小社脚本】Run_3.6.2.js`)
 
 
