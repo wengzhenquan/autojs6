@@ -34,7 +34,7 @@
 
 [在线加速下载版（推荐）](https://github.com/wengzhenquan/autojs6/releases/tag/online)  
 
-[完整包下载](https://github.com/wengzhenquan/autojs6/releases)   
+[完整包下载](https://github.com/wengzhenquan/autojs6/archive/refs/heads/main.zip)   
 
 
 $\color{red}{小提示：不同版本可以共存，主程序放在同一个目录下即可。}$  
