@@ -216,11 +216,11 @@ function startUpdate() {
     let i = 0;
     for (let j = 0; j < updateList.length; j++) {
         let fileName = updateList[j];
-        if (fileName.startWith('小社脚本')) {
+        if (fileName.startsWith('小社脚本')) {
             fileName = serverVersion.main;
         }
         //忽略更新
-        if (ignoreList.some(element => fileName.startWith(element))) {
+        if (ignoreList.some(element => fileName.startsWith(element))) {
             continue;
         }
         log("------------------→");
