@@ -36,19 +36,6 @@ var wchatVersionName = getAppVersionName(wchatpn);
 //社区APP最低支持跳转入口的版本
 var xmAtLeastVersionName = "5.3.2"
 
-// var YOLO_MODULE_PATH2 = "./yolov11/yolov11_w.js"; // YOLOv11 模块路径
-// var YOLO_PLUGIN_NAME2 = "com.circlefork.yolo"; // 插件包名
-// var YOLO_MODEL_SUBDIR2 = "./yolov11/model";
-// var CAPTURE_PIC_PATH = "./tmp/pic.png"; // 验证码截图路径
-// var yoloProcessor = null; // 初始化为 null
-// var enlocalYOLO = false;
-
-// 滑块的四周坐标
-// var sliderRegion;
-// var centerX;
-// var centerY;
-// var rX;
-// var percentage;
 
 // 设备信息
 var dwidth = device.width;
@@ -59,13 +46,13 @@ var manufacturer = android.os.Build.MANUFACTURER;
 var brand = device.brand;
 
 //var jsversion = (engines.myEngine().getSource().getName()
- //   .match(/\d[\s\S]*/) || [""])[0];
+//   .match(/\d[\s\S]*/) || [""])[0];
 
 // 签到未完成标志
 var unfinished_mark = 0;
 
 var delayed = 6; //服务器请求超时时间s
-var delayed_max = 15; //最大超时时间
+var delayed_max = 15; //最大超时时间 
 
 //打开悬浮窗控制台
 console.reset();
@@ -253,12 +240,7 @@ function consoleMin() {
     }
 }
 
-//悬浮窗控制台调节高
-function consoleH(h) {
-    if (console.isShowing()) {
-        console.setSize(0.96, h);
-    }
-}
+
 
 //悬浮窗控制台高度变成80%
 function consoleMax() {
@@ -338,10 +320,10 @@ function init() {
 
     run = require("./" + localVersion.run);
 
-    if (!localVersion.updateScript) {
+    if (localVersion.updateScript) {
         update_script_name = localVersion.updateScript;
     }
-    if (!localVersion.main) {
+    if (localVersion.main) {
         mainFile = localVersion.main;
     }
     let fileList = localVersion.updateFile;
@@ -408,13 +390,13 @@ function checkVersion() {
 
     //本地版本信息
     let localVersion = JSON.parse(files.read("./version"));
-    console.log("脚本版本：" + localVersion.version)
+    console.info("脚本版本：" + localVersion.version)
 
 
     // 乱序数组
     let arr = getRandomNumbers(proxys.length - 1);
 
-
+    //远程version文件数据
     for (let i = 0; i < proxys.length; i++) {
         //let startTime = new Date().getTime();
         let url = proxys[arr[i]] +
@@ -517,11 +499,14 @@ function checkVersion() {
 }
 
 function updateScript() {
-    let update_script = serverVersion.updateScript;
+    let update_script = update_script_name;
+    if (serverVersion && serverVersion.updateScript)
+        update_script = serverVersion.updateScript;
     log("更新一键更新程序：" + update_script)
 
     // 乱序数组
     let arr = getRandomNumbers(proxys.length - 1);
+    // 下载更新脚本
     var filebytes = null;
     for (let i = 0; i < proxys.length; i++) {
         let url = proxys[arr[i]] +
@@ -560,16 +545,16 @@ function updateScript() {
     }
     if (!files.exists("./" + update_script)) {
         console.error('更新程序更新失败');
-        console.error(update_script_name + ' 不存在，无法更新');
+        console.error(update_script + ' 不存在，无法更新');
         return;
     }
 
     console.error("提示：启动→" + update_script)
     device.keepScreenDim(5 * 60 * 1000);
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 15; i++) {
         floaty.closeAll();
-        log('→起飞'.padStart(i * 2 + 1, '-'));
-        if (i > 15) console.hide();
+        log('→起飞'.padStart(i * 2 + 2, '-'));
+        if (i > 10) console.hide();
     }
     // 执行一键更新程序.js
     engines.execScriptFile("./" + update_script);
@@ -580,8 +565,8 @@ function updateScript() {
     let newscript = serverVersion.main;
     console.info("即将执行新的脚本：" + newscript)
     console.error("提示：启动→" + newscript)
-    for (let i = 0; i < 20; i++) {
-        log('→起飞'.padStart(i * 2 + 1, '-'));
+    for (let i = 0; i < 15; i++) {
+        log('→起飞'.padStart(i * 2 + 2, '-'));
     }
     engines.execScriptFile("./" + newscript);
 

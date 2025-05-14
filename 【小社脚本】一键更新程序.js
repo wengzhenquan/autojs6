@@ -199,6 +199,22 @@ function formatFileSize(size) {
     }
 }
 
+// 日期格式化
+function formatDate(date) {
+    // 获取年、月、日、时、分、秒
+    let year = date.getFullYear();
+    let month = (date.getMonth() + 1).toString().padStart(2, '0');
+    let day = date.getDate().toString().padStart(2, '0');
+    let hours = date.getHours().toString().padStart(2, '0');
+    let minutes = date.getMinutes().toString().padStart(2, '0');
+    let seconds = date.getSeconds().toString().padStart(2, '0');
+    // 拼接格式化后的日期字符串
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+// 格式化后的实时时间
+function nowDate() {
+    return formatDate(new Date());
+}
 
 
 //开始更新
@@ -270,10 +286,14 @@ function startUpdate() {
             continue;
         } else {
             if (fileName.includes('config')) {
+                let name = files.getNameWithoutExtension(fileName); //无后缀文件名
+                let ext = files.getExtension(fileName); //后缀
+                let time = nowDate().substr(5, 14).replace(/[- :]/g, '');
+                let old = name + "_old_" + time + "." + ext;
                 log("需更新配置文件config.js");
-                files.rename("./" + fileName, "config_old.js")
-                console.error("旧config.js 已重命名为 config_old.js");
-                log("请自行搬运 屏幕解锁 等配置");
+                files.rename("./" + fileName, old)
+                console.error("旧config.js 已重命名为 " + old);
+                console.error("请自行搬运 屏幕解锁 等配置");
 
             }
             files.ensureDir("./" + fileName)

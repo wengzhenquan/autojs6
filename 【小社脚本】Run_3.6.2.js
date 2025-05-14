@@ -1,25 +1,11 @@
-
-
-
 // 引入配置文件
 //var config = require("./config.js");
-//设置参考坐标，不能动，开发环境标准比例。
-// setScaleBaseX(1080);
-// setScaleBaseY(2400);
 
-// date = nowDate();
 
-// var xmPckageName = "com.xiaomi.vipaccount"; // 社区APP包名
-// var wchatpn = "com.tencent.mm"; //微信包名，用来校验小程序是否打开
-// var xmVersionName = getAppVersionName(xmPckageName);
-// var wchatVersionName = getAppVersionName(wchatpn);
-// //社区APP最低支持跳转入口的版本
-// var xmAtLeastVersionName = "5.3.2"
-
-var YOLO_MODULE_PATH2 = "./yolov11/yolov11_w.js"; // YOLOv11 模块路径
+var YOLO_MODULE_PATH2 = "/yolov11/yolov11_w.js"; // YOLOv11 模块路径
 var YOLO_PLUGIN_NAME2 = "com.circlefork.yolo"; // 插件包名
-var YOLO_MODEL_SUBDIR2 = "./yolov11/model";
-var CAPTURE_PIC_PATH = "./tmp/pic.png"; // 验证码截图路径
+var YOLO_MODEL_SUBDIR2 = "/yolov11/model";
+var CAPTURE_PIC_PATH = files.cwd() + "/tmp/pic.png"; // 验证码截图路径
 var yoloProcessor = null; // 初始化为 null
 var enlocalYOLO = false;
 
@@ -30,22 +16,10 @@ var centerY;
 var rX;
 var percentage;
 
-// // 设备信息
-// var dwidth = device.width;
-// var dheight = device.height;
-// // 获取设备制造商
-// var manufacturer = android.os.Build.MANUFACTURER;
-// // 获取设备品牌
-// var brand = device.brand;
 
-// var jsversion = (engines.myEngine().getSource().getName()
-//     .match(/\d[\s\S]*/) || [""])[0];
 
-// // 签到未完成标志
-// var unfinished_mark = 0;
-
-// var delayed = 6; //服务器请求超时时间s
-// var delayed_max = 15; //最大超时时间
+//var delayed = 6; //服务器请求超时时间s
+//var delayed_max = 15; //最大超时时间
 
 
 
@@ -109,15 +83,12 @@ function level段(n) {
 }
 
 
-
-
-
 //------------ 识图签到初始化 ----------//
 
 // --- 初始化识图模块 ---
 function initImageReco() {
     log(">>>>★识图签到初始化★<<<<")
-    if (files.exists(YOLO_MODULE_PATH2)) {
+    if (files.exists(files.cwd() + YOLO_MODULE_PATH2)) {
         try {
             console.info("发现YOLO本地文件")
             console.info("开始加载本地识图模块")
@@ -127,15 +98,15 @@ function initImageReco() {
                 console.error("Yolo-plugin.apk 插件未安装");
                 error = true;
             }
-            let yzmbin = YOLO_MODEL_SUBDIR2 + "/yzm.bin";
+            let yzmbin = files.cwd() + YOLO_MODEL_SUBDIR2 + "/yzm.bin";
             if (!files.exists(yzmbin)) {
-                console.error(yzmbin + " 文件缺失");
+                console.error(YOLO_MODEL_SUBDIR2 + "/yzm.bin" + " 文件缺失");
                 error = true;
 
             }
-            let yzmparam = YOLO_MODEL_SUBDIR2 + "/yzm.param";
+            let yzmparam = files.cwd() + YOLO_MODEL_SUBDIR2 + "/yzm.param";
             if (!files.exists(yzmparam)) {
-                console.error(yzmparam + " 文件缺失");
+                console.error(YOLO_MODEL_SUBDIR2 + "/yzm.param" + " 文件缺失");
                 error = true;
 
             }
@@ -143,9 +114,9 @@ function initImageReco() {
 
             // 加载 YOLO 模块
             console.info("----→>★加载YOLO★<←----")
-            yoloProcessor = require(YOLO_MODULE_PATH2);
+            yoloProcessor = require(files.cwd() + YOLO_MODULE_PATH2);
             if (typeof yoloProcessor !== 'function') {
-                throw new Error(`模块 ${YOLO_MODULE_PATH} 未导出函数`);
+                throw new Error(`模块 ${YOLO_MODULE_PATH2} 未导出函数`);
             }
             enlocalYOLO = true;
             console.info("YOLO 模块加载成功");
