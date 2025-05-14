@@ -149,8 +149,8 @@ function checkVersion() {
         if (index !== -1) {
             // 从原数组中删除目标字符串
             updateList.splice(index, 1);
-            updateList.push('version');
         }
+        updateList.push('version');
 
     } else {
         console.info("脚本已经是最新版！")
