@@ -84,6 +84,7 @@ log("产品：" + device.product + "，型号：" + device.model);
 log(`设备分辨率：${dwidth}x${dheight}`);
 log(`现在是：${date}`);
 console.error("提示：[音量+]键可停止脚本运行");
+console.error("该版本将弃用，请使用/【小社脚本】启动程序.js来启动");
 
 // 确保临时工作目录存在
 files.ensureDir('./tmp/')
@@ -2921,6 +2922,9 @@ function main() {
         }
         if (config.结束震动)
             device.vibrate(config.结束震动);
+    
+    console.error("该版本将弃用，请使用/【小社脚本】启动程序.js来启动");
+
     });
 
     try {
@@ -2952,6 +2956,7 @@ function main() {
                 console.error("提示：结束震动提醒~~~");
 
             log(0);
+console.error("该版本将弃用，请使用/【小社脚本】启动程序.js来启动");
 
             try {
                 exit();
