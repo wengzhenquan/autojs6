@@ -22,7 +22,6 @@ var deleteList = [];
 
 // 忽略的更新列表
 var ignoreList = [
-    "tmp/", //一整个tmp目录
     "LICENSE", //单个文件，只需要文件名
 ]
 
@@ -78,7 +77,7 @@ function checkVersion() {
         } catch (e) {} finally {
             log(proxys[arr[i]])
             let time = (new Date().getTime() - startTime);
-            log("服务器请求时间：" + time + " ms");
+            log("请求时间：" + time + " ms");
             if (serverVersion) {
                 //log(serverVersion.version)
                 break;
@@ -217,11 +216,11 @@ function startUpdate() {
     let i = 0;
     for (let j = 0; j < updateList.length; j++) {
         let fileName = updateList[j];
-        if (fileName.includes('小社脚本')) {
-            fileName = '小社脚本v' + serverVersion.version + '.js';
+        if (fileName.startWith('小社脚本')) {
+            fileName = serverVersion.main;
         }
         //忽略更新
-        if (ignoreList.some(element => fileName.includes(element))) {
+        if (ignoreList.some(element => fileName.startWith(element))) {
             continue;
         }
         log("------------------→");
@@ -231,8 +230,7 @@ function startUpdate() {
         while (i < proxys.length) {
             let startTime = new Date().getTime();
             let url = proxys[arr[i]] +
-                "https://github.com/wengzhenquan/autojs6/blob/main/" +
-                fileName;
+                github + "/blob/main/" + fileName;
 
             log('使用加速器：' + proxys[arr[i]]);
             // log(url);
