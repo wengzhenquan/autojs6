@@ -5,7 +5,7 @@
 原作者  by：PJ小宇
 修改    by：风中拾叶
 三改    by：wengzhenquan
-版本号：v3.6.1
+版本号：v3.6.2
 
 yolov11_w.js 版本号：v2
 
