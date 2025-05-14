@@ -384,15 +384,15 @@ function checkVersion() {
     //本地版本信息
     let localVersion = JSON.parse(files.read("./version"));
 
-    if (jsversion !== localVersion.version) {
-        console.error("version文件与当前脚本不匹配")
-        console.log("脚本版本：" + jsversion)
-        console.log("version版本：" + localVersion.version)
-        console.log("无法检查更新")
-        console.log("请自行更新到匹配的版本")
-        return;
-        //exit();
-    }
+    // if (jsversion !== localVersion.version) {
+    //     console.error("version文件与当前脚本不匹配")
+    //     console.log("脚本版本：" + jsversion)
+    //     console.log("version版本：" + localVersion.version)
+    //     console.log("无法检查更新")
+    //     console.log("请自行更新到匹配的版本")
+    //     return;
+    //     //exit();
+    // }
 
 
     // 乱序数组
@@ -501,7 +501,10 @@ function checkVersion() {
 }
 
 function updateScript() {
-    log("更新一键更新程序：" + update_script_name)
+    let update_script = update_script_name;
+    if (serverVersion && serverVersion.updateScript)
+        update_script = serverVersion.updateScript;
+    log("更新一键更新程序：" + update_script)
 
     // 乱序数组
     let arr = getRandomNumbers(proxys.length - 1);
@@ -509,7 +512,7 @@ function updateScript() {
     for (let i = 0; i < proxys.length; i++) {
         let url = proxys[arr[i]] +
             "https://github.com/wengzhenquan/autojs6/blob/main/" +
-            update_script_name;
+            update_script;
 
         log('使用加速器：' + proxys[arr[i]]);
         // log(url);
@@ -537,37 +540,37 @@ function updateScript() {
     }
 
     if (filebytes && filebytes.length > 1000) {
-        files.writeBytes("./" + update_script_name, filebytes);
+        files.writeBytes("./" + update_script, filebytes);
         console.info("下载成功")
         console.info('文件大小：' + formatFileSize(filebytes.length))
     }
-    if (!files.exists("./" + update_script_name)) {
+    if (!files.exists("./" + update_script)) {
         console.error('更新程序更新失败');
-        console.error(update_script_name + ' 不存在，无法更新');
+        console.error(update_script + ' 不存在，无法更新');
         return;
     }
 
-    console.error("提示：启动→" + update_script_name)
+    console.error("提示：启动→" + update_script)
     device.keepScreenDim(5 * 60 * 1000);
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 15; i++) {
         floaty.closeAll();
-        log('→起飞'.padStart(i * 2 + 1, '-'));
-        if (i > 15) console.hide();
+        log('→起飞'.padStart(i * 2 + 2, '-'));
+        if (i > 10) console.hide();
     }
     // 执行一键更新程序.js
-    engines.execScriptFile("./" + update_script_name);
+    engines.execScriptFile("./" + update_script);
     // 等待脚本执行完成
     sleep(1000)
     while (files.exists('./tmp/update_locked'));
     sleep(1000)
-    let newscript = '小社脚本v' + serverVersion.version + '.js';
+    let newscript = serverVersion.main;
     console.info("即将执行新的脚本：" + newscript)
     console.error("提示：启动→" + newscript)
-    for (let i = 0; i < 20; i++) {
-        log('→起飞'.padStart(i * 2 + 1, '-'));
+    for (let i = 0; i < 15; i++) {
+        log('→起飞'.padStart(i * 2 + 2, '-'));
     }
     engines.execScriptFile("./" + newscript);
-    
+
     //退出本线程
     exit();
 }
@@ -712,7 +715,7 @@ function unLock() {
     sleep(666);
 
     let n = 0;
-    while (!existsOne(desc('第1屏'), desc('电话'), desc('短信'), '微信', '小米社区')) {
+    while (!existsOne('电话', '拨号', '短信', '信息', '微信', '小米社区')) {
         if (config.解锁方式 === 1) {
             log("→图案解锁");
             gesture(600, config.锁屏图案坐标);
@@ -723,20 +726,20 @@ function unLock() {
                 // while (!num.clickable()) num = num.parent();
                 // num.click();
                 clickCenter(num);
-                sleep(300);
+                wait(() => false, 300);
             }
         }
         for (i = 0; i < 3; i++) {
-            sleep(300);
+            wait(() => false, 300);
             home();
         }
-        sleep(666);
+        wait(() => false, 666);
 
         n++;
         if (n > 3) break;
     }
 
-    let result = wait(() => existsOne(desc('第1屏'), desc('电话'), desc('短信'), '微信', '小米社区'), 5, 1000);
+    let result = wait(() => existsOne('电话', '拨号', '短信', '信息', '微信', '小米社区'), 5, 1000);
     if (!result) {
         console.error("屏幕解锁失败！！！");
         notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String('屏幕解锁失败了！'));
