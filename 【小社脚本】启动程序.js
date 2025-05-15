@@ -5,9 +5,9 @@
 原作者  by：PJ小宇
 修改    by：风中拾叶
 三改    by：wengzhenquan
-版本号：v3.6.2
 
-yolov11_w.js 版本号：v2
+@version 20250516
+yolov11_w.js @version 20250513
 
 [github更新地址]：
 
@@ -298,7 +298,7 @@ function stopButton() {
     // setInterval(() => {}, 1000);
 }
 
-// 程序完整性检查
+// -----------程序完整性检查---------------------//
 function init() {
     log(">>>>★程序完整性校验★<<<<")
 
@@ -317,7 +317,7 @@ function init() {
         updateScript();
         return;
     }
-
+    // 加载run函数
     run = require("./" + localVersion.run);
 
     if (localVersion.updateScript) {
