@@ -290,9 +290,9 @@ function startUpdate() {
         if (!filebytes || filebytes.length < filemin) {
             console.error("下载失败")
             errorList.push(fileName)
-            continue;
+            //continue;
         } else {
-            if (fileName.includes('config')) {
+            if (fileName.includes('config') && files.exists("./" + fileName)) {
                 let name = files.getNameWithoutExtension(fileName); //无后缀文件名
                 let ext = files.getExtension(fileName); //后缀
                 let time = nowDate().substr(5, 14).replace(/[- :]/g, '');
