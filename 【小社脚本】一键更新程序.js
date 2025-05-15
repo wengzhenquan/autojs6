@@ -16,6 +16,7 @@ var download_timeout = 15;
 var localVersion = null;
 var serverVersion = null;
 var hasNewVersion = false;
+var updateAll = false; //全量更新
 
 var updateList = [];
 var deleteList = [];
@@ -49,13 +50,6 @@ let proxys = [
 // 检查脚本更新，version文件存在才检查更新。
 function checkVersion() {
     console.info("---→>★脚本检查更新★<←---")
-    //本地不存在version文件，不检查更新
-    if (!files.exists("./version")) {
-        console.error("缺失version文件，无法检查更新")
-        return;
-    }
-    //本地版本信息
-    localVersion = JSON.parse(files.read("./version"));
 
     let arr = getRandomNumbers(proxys.length - 1);
 
@@ -89,11 +83,22 @@ function checkVersion() {
         return;
     }
 
-    hasNewVersion = compareVersions(serverVersion.version, localVersion.version) > 0;
+    //本地version文件，不检查更新
+    if (files.exists("./version")) {
+        //本地版本信息
+        localVersion = JSON.parse(files.read("./version"));
 
-    // 检查文件清单
+        hasNewVersion = compareVersions(serverVersion.version, localVersion.version) > 0;
+
+    } else {
+        console.error("缺失version文件，无法增量更新")
+        console.error("只能全量更新")
+        updateAll = true;
+    }
+
+    // 待更新文件清单
     for (var key in serverVersion.updateFile) {
-        if (files.exists("./" + key) && localVersion.updateFile[key]) {
+        if (localVersion && files.exists("./" + key) && localVersion.updateFile[key]) {
             if (serverVersion.updateFile[key] > localVersion.updateFile[key] ||
                 !files.exists("./" + key)) {
                 updateList.push(key);
@@ -103,15 +108,19 @@ function checkVersion() {
         }
     }
 
-    for (var key in localVersion.updateFile) {
-        if (!serverVersion.updateFile[key]) {
-            deleteList.push(key);
+    //待删除的文件
+    if (localVersion) {
+        for (var key in localVersion.updateFile) {
+            if (!serverVersion.updateFile[key]) {
+                deleteList.push(key);
+            }
         }
     }
 
-    if (hasNewVersion) {
+    if (hasNewVersion || updateAll) {
         console.warn("有新版本！！！")
-        console.info("当前版本：" + localVersion.version)
+        if (localVersion)
+            console.info("当前版本：" + localVersion.version);
         console.info("最新版本：" + serverVersion.version)
         console.error("增量更新列表：")
         if (updateList.length > 0) {
@@ -154,8 +163,9 @@ function checkVersion() {
 
     } else {
         console.info("脚本已经是最新版！")
-        log("小社脚本版本：" + localVersion.version)
+        log("小社脚本版本：" + localVersion.version);
     }
+
 }
 
 
@@ -219,7 +229,7 @@ function nowDate() {
 
 //开始更新
 function startUpdate() {
-    if (!hasNewVersion)
+    if (!hasNewVersion && !updateAll)
         return;
 
     log(">>>>>★开始更新★<<<<<")
@@ -232,7 +242,6 @@ function startUpdate() {
     let i = 0;
     for (let j = 0; j < updateList.length; j++) {
         let fileName = updateList[j];
-        
         //忽略更新
         if (ignoreList.some(element => fileName.startsWith(element))) {
             continue;
