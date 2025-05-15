@@ -98,7 +98,8 @@ function checkVersion() {
 
     // 待更新文件清单
     for (var key in serverVersion.updateFile) {
-        if (localVersion && files.exists("./" + key) && localVersion.updateFile[key]) {
+        if (localVersion && localVersion.updateFile &&
+            files.exists("./" + key) && localVersion.updateFile[key]) {
             if (serverVersion.updateFile[key] > localVersion.updateFile[key] ||
                 !files.exists("./" + key)) {
                 updateList.push(key);
@@ -109,7 +110,7 @@ function checkVersion() {
     }
 
     //待删除的文件
-    if (localVersion) {
+    if (localVersion && localVersion.updateFile) {
         for (var key in localVersion.updateFile) {
             if (!serverVersion.updateFile[key]) {
                 deleteList.push(key);
