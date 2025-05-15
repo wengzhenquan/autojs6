@@ -1,4 +1,4 @@
-//版本号：v2
+//版本号：@version 20250513
 
 // yolov11.js - YOLO 检测与结果处理模块
 //var config = require("../config.js");
