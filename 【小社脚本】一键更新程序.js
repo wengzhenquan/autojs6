@@ -3,13 +3,13 @@ files.ensureDir("./tmp/")
 files.create("./tmp/update_locked");
 events.on("exit", () => files.remove('./tmp/update_locked'));
 
-
-
+// 打开日志页面
 console.launch();
 
 //下载超时，单位：秒。 
 //网速快，可以改成10~15，网速慢改成30~60
 // 参考：300Mbps宽带10s，100Mbps宽带15s，50Mbps宽带30s
+// 500Mbps及以上 5s，不建议改成小于5
 var download_timeout = 15;
 
 //版本信息
@@ -138,7 +138,6 @@ function checkVersion() {
             log("----------------------------");
         }
         if (deleteList.length > 0) {
-            log("----------------------------");
             console.log("需要删除的文件清单:");
             deleteList.forEach((file) => {
                 let name = !file.includes('/') ? ''.padStart(10) + file : file;
@@ -255,7 +254,6 @@ function startUpdate() {
             let startTime = new Date().getTime();
             let url = proxys[arr[i]] +
                 github + "/blob/main/" + fileName;
-
             log('使用加速器：' + proxys[arr[i]]);
             // log(url);
             try {
@@ -312,8 +310,8 @@ function startUpdate() {
         }
         log("←------------------");
     }
+    log("----------------------------");
     if (successList.length > 0) {
-        log("----------------------------");
         console.log("更新成功清单:");
         successList.forEach((file) => {
             let name = !file.includes('/') ? ''.padStart(10) + file : file;
@@ -323,7 +321,6 @@ function startUpdate() {
     }
 
     if (errorList.length > 0) {
-        log("----------------------------");
         console.log("更新失败清单:");
         errorList.forEach((file) => {
             let name = !file.includes('/') ? ''.padStart(10) + file : file;
@@ -333,7 +330,6 @@ function startUpdate() {
     }
 
     if (deleteList.length > 0) {
-        log("----------------------------");
         console.log("删除文件清单:");
         deleteList.forEach((file) => {
             let name = !file.includes('/') ? ''.padStart(10) + file : file;

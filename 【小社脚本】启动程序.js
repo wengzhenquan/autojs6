@@ -54,13 +54,17 @@ var unfinished_mark = 0;
 var delayed = 6; //服务器请求超时时间s
 var delayed_max = 15; //最大超时时间 
 
+//启动悬浮窗关闭按钮
+//stopButton();
+threads.start(() => stopButton());
+
 //打开悬浮窗控制台
 console.reset();
 consoleShow();
 consoleShow();
 //consoleShow();
 
-log("—-----★--- Start ---★-----—");
+log("—----->--- Start ---<-----—");
 log(("AutoJS6 版本：").padStart(21) + autojs.versionName)
 log(("Android 版本：").padStart(21) + device.release)
 log(("微信 Ver：") + String(wchatVersionName).padStart(20))
@@ -69,15 +73,21 @@ log("制造商：" + manufacturer + "，品牌：" + brand);
 log("产品：" + device.product + "，型号：" + device.model);
 log(`设备分辨率：${dwidth}x${dheight}`);
 log(`现在是：${date}`);
-console.error("提示：[音量+]键可停止脚本运行");
+console.error("提示：[音量+/-]键可停止脚本运行");
 
-//音量加，停止脚本
+//音量键，停止脚本
 events.setKeyInterceptionEnabled("volume_up", true);
+events.setKeyInterceptionEnabled("volume_down", true);
 events.observeKey();
 events.onKeyDown("volume_up", () => {
-    //volume_down
-    //volume_up
     console.error("[音量+]停止脚本！！！");
+    console.setTouchable(true);
+    //console.hide();
+    exit();
+    console.error("3…2…1…停！哎~快停！");
+});
+events.onKeyDown("volume_down", () => {
+    console.error("[音量-]停止脚本！！！");
     console.setTouchable(true);
     //console.hide();
     exit();
@@ -209,13 +219,12 @@ function consoleShow() {
             titleBackgroundAlpha: 0.8,
             titleBackgroundColor: 'dark-blue',
             // titleBackgroundTint: 'dark-blue', //6.5.0版本没有
-            contentTextSize: 16,
+            contentTextSize: 15,
             contentBackgroundAlpha: 0.8,
             touchable: false,
             exitOnClose: 6e3,
         });
 
-        //console.setContentTextColor({log: 'green'});
         console.setContentTextColor({
             verbose: 'white',
             log: 'green',
@@ -300,7 +309,7 @@ function stopButton() {
 
 // -----------程序完整性检查---------------------//
 function init() {
-    log(">>>>★程序完整性校验★<<<<")
+    log(">>>>→程序完整性校验←<<<<")
 
     if (!files.exists("./version")) {
         console.error("缺失version文件");
@@ -381,7 +390,7 @@ var proxys = [
 
 // 检查脚本更新，version文件存在才检查更新。
 function checkVersion() {
-    console.info("---→>★脚本检查更新★<←---")
+    console.info("---→>→脚本检查更新←<←---")
     //本地不存在version文件，不检查更新
     if (!files.exists("./version")) {
         console.error("缺失version文件，无法检查更新")
@@ -579,8 +588,20 @@ function updateScript() {
 //------------ 业务逻辑开始 ----------//
 //解锁
 function unLock() {
-    log(">>>>>>>★设备解锁★<<<<<<<")
-    device.keepScreenDim(60 * 1000);
+    // 调用 Android KeyguardManager 检查锁屏状态
+    let KeyguardManager = context.getSystemService(context.KEYGUARD_SERVICE);
+    let isLocked = KeyguardManager.isKeyguardLocked(); // 是否锁屏
+    let isSecure = KeyguardManager.isKeyguardSecure(); // 是否安全锁屏（如密码、指纹）
+
+
+    if (!isLocked) return;
+
+    console.info("-----→");
+    console.info("设备已锁定！！！");
+    console.info("启动解锁程序……");
+
+    log(">>>>>>>→设备解锁←<<<<<<<")
+
     log("开始解锁设备……");
     //多次上滑
     for (i = 0; i < 2; i++) {
@@ -595,8 +616,10 @@ function unLock() {
     }
     wait(() => false, 666);
 
+    //解锁
+    // while (!existsOne('电话', '拨号', '短信', '信息', '微信', '小米社区')) {
     let n = 0;
-    while (!existsOne('电话', '拨号', '短信', '信息', '微信', '小米社区')) {
+    while (isSecure && isLocked) {
         if (config.解锁方式 === 1) {
             log("→图案解锁");
             gesture(600, config.锁屏图案坐标);
@@ -615,13 +638,16 @@ function unLock() {
             home();
         }
         wait(() => false, 666);
+        //更新锁屏状态
+        isLocked = KeyguardManager.isKeyguardLocked();
 
         n++;
         if (n > 3) break;
     }
 
-    let result = wait(() => existsOne('电话', '拨号', '短信', '信息', '微信', '小米社区'), 5, 1000);
-    if (!result) {
+    //let result = wait(() => existsOne('电话', '拨号', '短信', '信息', '微信', '小米社区'), 5, 1000);
+    // if (!result) {
+    if (isLocked) {
         console.error("屏幕解锁失败！！！");
         notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String('屏幕解锁失败了！'));
         exit();
@@ -635,7 +661,7 @@ function unLock() {
 // 权限验证
 function permissionv() {
 
-    log(">>>>>>>★权限验证★<<<<<<<")
+    log(">>>>>>>→权限验证←<<<<<<<")
     log("--------- 必要权限 ---------");
     // 无障碍权限
     auto.waitFor();
@@ -816,27 +842,20 @@ function permissionv() {
 
 function main() {
 
-    // test();
-    //  exit();
-    //return;
-
-    //解锁
-    if (!device.isScreenOn()) {
-        console.info("-----→");
-        console.info("设备已锁定！！！");
-        console.info("启动解锁程序……");
+    //屏幕点亮
+    while (!device.isScreenOn()) {
         device.wakeUpIfNeeded();
         device.wakeUp();
-        sleep(500);
-        unLock();
-        wait(() => false, 20, 100);
+        wait(() => false, 1000);
     }
+    //两分钟亮屏
     device.keepScreenDim(2 * 60 * 1000);
+
+    //屏幕解锁
+    unLock();
 
     //权限验证
     permissionv();
-    // 初始化，文件检查
-    init();
 
     //脚本检查更新
     if (config.检查更新) checkVersion()
@@ -889,11 +908,11 @@ function main() {
         if (config.结束震动)
             device.vibrate(config.结束震动);
     });
+    
+    // 初始化，文件检查
+    init();
 
     try {
-        //启动悬浮窗关闭按钮
-        stopButton();
-
         //逻辑程序
         run();
     } catch (e) {
