@@ -1,3 +1,5 @@
+// @version 20250515
+
 // 引入配置文件
 //var config = require("./config.js");
 
@@ -1513,8 +1515,8 @@ function 解锁(button) {
 
     let ddjs = wait(() => text('等待解锁').exists(), 3);
     let jpso = wait(() => text('可解锁').exists(), 3);
-    if (!ddjs && !jpso) {
-        //  if (1) {
+   // if (!ddjs && !jpso) {
+          if (1) {
         log("不好了，布局分析失败了！")
         log("无法判断是否有解锁次数，")
         log("只能[摸黑]点击了再说。")
@@ -1661,8 +1663,8 @@ function 小程序签到() {
         // 微信下滑
         let zjsy = text("最近使用小程序");
         while (scrollUp() || !zjsy.exists()) {
-            // swipe(dwidth * 0.6, dheight * 0.2, dwidth * 0.4, dheight * 0.8, 500);
-            gesture(500, [dwidth * 0.6, dheight * 0.4], [dwidth * 0.4, dheight * 0.8]);
+            // swipe(dwidth * 0.4, dheight * 0.2, dwidth * 0.6, dheight * 0.8, 500);
+            gesture(500, [dwidth * 0.4, dheight * 0.4], [dwidth * 0.6, dheight * 0.8]);
         }
         sleep(500)
         while (bak.exists()) back();
