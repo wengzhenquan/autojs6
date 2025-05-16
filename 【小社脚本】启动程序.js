@@ -415,11 +415,11 @@ function checkVersion() {
             let thread = threads.start(() => {
                 try {
                     serverVersion = http.get(url, {
-                        timeout: 3 * 1000,
+                        timeout: 5 * 1000,
                     }).body.json();
                 } catch (e) {}
             });
-            thread.join(3 * 1000);
+            thread.join(5 * 1000);
             thread.interrupt();
         } catch (e) {} finally {
             // log(proxy[i])
@@ -518,9 +518,8 @@ function updateScript() {
     // 下载更新脚本
     var filebytes = null;
     for (let i = 0; i < proxys.length; i++) {
-        let url = proxys[arr[i]] +
-            "https://github.com/wengzhenquan/autojs6/blob/main/" +
-            update_script;
+        let url = proxys[arr[i]] + github +
+            "/blob/main/" + update_script;
 
         log('使用加速器：' + proxys[arr[i]]);
         // log(url);
@@ -529,11 +528,11 @@ function updateScript() {
             let thread = threads.start(() => {
                 try {
                     res = http.get(url, {
-                        timeout: 3 * 1000,
+                        timeout: 5 * 1000,
                     });
                 } catch (e) {}
             });
-            thread.join(3 * 1000);
+            thread.join(5 * 1000);
             thread.interrupt();
             if (res.statusCode === 200) {
                 filebytes = res.body.bytes();
@@ -908,7 +907,7 @@ function main() {
         if (config.结束震动)
             device.vibrate(config.结束震动);
     });
-    
+
     // 初始化，文件检查
     init();
 

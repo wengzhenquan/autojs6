@@ -118,11 +118,11 @@ function checkVersion() {
             let thread = threads.start(() => {
                 try {
                     serverVersion = http.get(url, {
-                        timeout: 3 * 1000,
+                        timeout: 5 * 1000,
                     }).body.json();
                 } catch (e) {}
             });
-            thread.join(3 * 1000);
+            thread.join(5 * 1000);
             thread.interrupt();
         } catch (e) {} finally {
             log(proxys[arr[i]])
