@@ -423,7 +423,7 @@ github：https://github.com/wengzhenquan/autojs6
 
 --- 
 
-v3.6.3:(未发布)
+v3.6.3:
 1. 解除更新脚本对version文件的依赖，若不存在version全量更新
 2. 优化从微信进入小程序滑动坐标
 3. 屏幕解锁兼容性提升
