@@ -452,6 +452,7 @@ function backAppIndex() {
 
 function start() {
     while (!packageName(xmPckageName).exists());
+    while (!text('签到提醒').exists());
     log(">>>>>>>→开始签到←<<<<<<<")
     // percentage = logpercentage();
     var done = text("已签到").findOne(1666);
