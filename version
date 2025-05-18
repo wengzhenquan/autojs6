@@ -1,11 +1,11 @@
 {
-    "version": "3.6.4",
+    "version": "3.7",
     "updateFile": {
         "version": 20250516,
         "config.js": 20250518,
         "【小社脚本】启动程序.js": 20250518,
         "【小社脚本】一键更新程序.js":20250518,
-        "【小社脚本】Run_3.6.4.js":20250518,
+        "【小社脚本】Run_3.7.js":20250518,
         "小社脚本v3.6.2_将弃用.js":20250515,
         "小社脚本v3.6.2.js":20250515,
         "yolov11/yolov11_w.js": 20250513,
@@ -14,7 +14,7 @@
         "yolov11/model/yzm.param": 20250513
     },
     "main": "【小社脚本】启动程序.js",
-    "run": "【小社脚本】Run_3.6.4.js",
+    "run": "【小社脚本】Run_3.7.js",
     "updateScript": "【小社脚本】一键更新程序.js",
     "apk": {
         "yolov11/Yolo-plugin.apk": "com.circlefork.yolo"
