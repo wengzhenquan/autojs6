@@ -110,6 +110,23 @@ function nowDate() {
     return formatDate(new Date());
 }
 
+/**
+ * 将毫秒转换为带单位的字符串（ms 或 s）
+ * @param {number} milliseconds - 毫秒数
+ * @returns {string} - 格式化后的时间字符串（如 "1.23 s"、"342 ms"）
+ */
+function toSeconds(milliseconds) {
+    if (milliseconds >= 100) {
+        // 转换为秒，保留两位小数
+        const seconds = (milliseconds / 1000).toFixed(2);
+        return `${seconds} s`;
+    } else {
+        // 直接返回毫秒
+        return `${milliseconds} ms`;
+    }
+}
+
+
 // ----------- 脚本更新 ---------------------//
 
 // -----------程序完整性检查---------------------//
@@ -165,7 +182,7 @@ function checkVersion() {
         } catch (e) {} finally {
             log(proxys[arr[i]])
             let time = (new Date().getTime() - startTime);
-            log("请求时间：" + time + " ms");
+            log("请求时间：" + toSeconds(time));
             if (serverVersion) {
                 //log(serverVersion.version)
                 break;
@@ -316,7 +333,7 @@ function startUpdate() {
                 }
             } catch (e) {} finally {
                 let time = (new Date().getTime() - startTime);
-                log("请求时间：" + time + " ms");
+                log("请求时间：" + toSeconds(time));
 
                 //成功，跳出
                 if (filebytes && filebytes.length > filemin) {

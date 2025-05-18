@@ -231,6 +231,23 @@ function formatFileSize(size) {
 }
 
 /**
+ * 将毫秒转换为带单位的字符串（ms 或 s）
+ * @param {number} milliseconds - 毫秒数
+ * @returns {string} - 格式化后的时间字符串（如 "1.23 s"、"342 ms"）
+ */
+function toSeconds(milliseconds) {
+    if (milliseconds >= 100) {
+        // 转换为秒，保留两位小数
+        const seconds = (milliseconds / 1000).toFixed(2);
+        return `${seconds} s`;
+    } else {
+        // 直接返回毫秒
+        return `${milliseconds} ms`;
+    }
+}
+
+
+/**
  * 启动脚本总运行时间监控
  * @param {number} maxRuntimeMs - 最大允许运行时间 (毫秒)
  */

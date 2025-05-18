@@ -174,7 +174,7 @@ function webTest() {
     }
     let time = (new Date().getTime() - startTime);
     console.info("提示：识图服务器准备就绪");
-    console.info("检查服务器耗时：" + time + " ms");
+    console.info("检查服务器耗时：" + toSeconds(time));
     console.info('可用服务器数量：' + urls.length + '/' + sum_old);
     //传递消息给主线程
     sum.setAndNotify(urls.length);
@@ -884,7 +884,7 @@ function upload(url) {
         throw e;
     } finally {
         let time = (new Date().getTime() - startTime);
-        log("服务器请求时间：" + time + " ms");
+        log("服务器请求时间：" + toSeconds(time));
     }
 
     return res;
