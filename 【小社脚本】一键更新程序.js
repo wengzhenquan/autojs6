@@ -4,7 +4,7 @@ let locked = "./tmp/update_locked";
 if (!files.exists(locked)) {
     events.on("exit", () => files.remove(locked));
     files.create(locked);
-} else{
+} else {
     //确保只运行一个程序
     exit();
 }
@@ -20,8 +20,8 @@ var download_timeout = 15;
 
 // 忽略的更新列表
 var ignoreList = [
-    "说明/",              //一整个文件夹
-    "LICENSE",          //单个文件，只需要文件名
+    "说明/", //一整个文件夹
+    "LICENSE", //单个文件，只需要文件名
     "tmp/",
     //"yolov11/",     // yolov11 本地签到模块
 ]
@@ -327,8 +327,7 @@ function startUpdate() {
                 });
                 thread.join(download_timeout * 1000);
                 thread.interrupt();
-                if (res.statusCode === 200) {
-
+                if (res && res.statusCode === 200) {
                     filebytes = res.body.bytes();
                 }
             } catch (e) {} finally {

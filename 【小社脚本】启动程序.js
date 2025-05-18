@@ -498,10 +498,11 @@ function checkVersion() {
             thread.join(3 * 1000);
             thread.interrupt();
             if (res && res.statusCode === 200) {
-                serverVersion = res.body.json();
+                let versionstring = res.body.string();
+                serverVersion = JSON.parse(versionstring);
                 if (!files.exists("./version")) {
                     // 缺失version文件，下载
-                    files.write("./version", res.body.string(), "utf-8");
+                    files.write("./version", versionstring, "utf-8");
                     //重新加载本地版本文件
                     loadLocalVersion();
                 }
@@ -529,7 +530,8 @@ function checkVersion() {
     let deleteList = []; // 待删除文件清单
 
     //更新脚本
-    if (updateAll || hasNewVersion && config.检查更新 > 1) {
+    if (updateAll || hasNewVersion &&
+        (config && config.检查更新 > 1)) {
         if (config && config.检查更新 > 1)
             toastLog("配置[检查更新]：" + config.检查更新)
         toastLog("开始更新脚本");
@@ -626,7 +628,7 @@ function updateScript() {
                 });
                 thread.join(5 * 1000);
                 thread.interrupt();
-                if (res.statusCode === 200) {
+                if (res && res.statusCode === 200) {
                     file = res.body.string();
                 }
             } catch (e) {} finally {
@@ -912,6 +914,7 @@ function permissionv() {
         for (i = 0; i < urls.length; i++) {
             try {
                 let url = urls[i];
+                let res = null;
                 let thread = threads.start(() => {
                     try {
                         res = http.get(url, {
@@ -921,7 +924,7 @@ function permissionv() {
                 });
                 thread.join(500);
                 thread.interrupt();
-                if (res.statusCode === 204) return true;
+                if (res && res.statusCode === 204) return true;
                 continue;
             } catch (e) {
                 if (i === (urls.length - 1))
