@@ -77,7 +77,7 @@ var delayed = 6; //服务器请求超时时间s
 var delayed_max = 15; //最大超时时间 
 
 // 程序最大运行时间，超过该时间会强制停止(ms)。  3分钟
-threads.start(() => startTimeoutMonitor(3 * 60 * 1000));
+startTimeoutMonitor(3 * 60 * 1000);
 
 //启动悬浮窗关闭按钮
 //stopButton();
