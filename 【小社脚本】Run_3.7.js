@@ -1297,6 +1297,7 @@ function swipeBezierzier(sx, sy, ex, ey) {
 function see() {
     log(">>>>>>>→萝卜活动←<<<<<<<")
     toastLog("拔萝卜活动签到……", "forcible");
+    while (scrollDown());
     sleep(1000);
     var button = className("android.widget.Button").text("去看看");
     if (!wait(() => button.exists(), 5, 500)) {
