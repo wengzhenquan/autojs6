@@ -1,7 +1,13 @@
 //程序运行文件标志
 files.ensureDir("./tmp/")
-files.create("./tmp/update_locked");
-events.on("exit", () => files.remove('./tmp/update_locked'));
+let locked = "./tmp/update_locked";
+if (!files.exists(locked)) {
+    events.on("exit", () => files.remove(locked));
+    files.create(locked);
+} else{
+    //确保只运行一个程序
+    exit();
+}
 
 // 打开日志页面
 console.launch();
@@ -12,23 +18,25 @@ console.launch();
 // 500Mbps及以上 5s，不建议改成小于5
 var download_timeout = 15;
 
+// 忽略的更新列表
+var ignoreList = [
+    "说明/",              //一整个文件夹
+    "LICENSE",          //单个文件，只需要文件名
+    "tmp/",
+    //"yolov11/",     // yolov11 本地签到模块
+]
+
 //版本信息
 var localVersion = null;
 var serverVersion = null;
-var hasNewVersion = false;
+var hasNewVersion = false; //有新版本
 var updateAll = false; //全量更新
 
-var updateList = [];
-var deleteList = [];
+var updateList = []; // 待更新列表
+var deleteList = []; // 待删除列表
 
-// 忽略的更新列表
-var ignoreList = [
-    "说明/",  //一整个文件夹
-    "LICENSE", //单个文件，只需要文件名
-]
-
-var successList = [];
-var errorList = [];
+var successList = []; // 更新成功列表
+var errorList = []; //  更新失败列表
 
 var github = "https://github.com/wengzhenquan/autojs6";
 
@@ -102,8 +110,38 @@ function nowDate() {
     return formatDate(new Date());
 }
 
+// ----------- 脚本更新 ---------------------//
 
-// 检查脚本更新，version文件存在才检查更新。
+// -----------程序完整性检查---------------------//
+function integrityCheck() {
+    log(">>>>→程序完整性校验←<<<<")
+
+    let fileList = localVersion.updateFile;
+
+    if (!fileList || fileList.length < 1) {
+        console.error("version文件里没有文件清单");
+        console.error("无需校验");
+    }
+    //待更新文件列表
+    for (var key in fileList) {
+        if (!files.exists("./" + key)) {
+            updateList.push(key);
+        }
+    }
+    let missing = false;
+    if (updateList.length > 0) {
+        missing = true;
+        log("----------------------------");
+        log("文件缺失列表：")
+        updateList.forEach((file) => console.error(file));
+        log("----------------------------");
+    }
+    log("文件检查结束");
+    if (!missing) console.info("没有缺失的文件");
+}
+
+
+// 检查脚本更新。
 function checkVersion() {
     console.info("---→>★脚本检查更新★<←---")
 
@@ -145,6 +183,12 @@ function checkVersion() {
         localVersion = JSON.parse(files.read("./version"));
 
         hasNewVersion = compareVersions(serverVersion.version, localVersion.version) > 0;
+
+        if (!hasNewVersion) {
+            log("已经是最新版，开始文件完整性检查");
+            integrityCheck();
+            return;
+        }
 
     } else {
         console.error("缺失version文件，无法增量更新")
@@ -221,14 +265,13 @@ function checkVersion() {
         console.info("脚本已经是最新版！")
         log("小社脚本版本：" + localVersion.version);
     }
-
 }
 
 
 
 //开始更新
 function startUpdate() {
-    if (!hasNewVersion && !updateAll)
+    if (!hasNewVersion && !updateAll && updateList < 1)
         return;
 
     log(">>>>>★开始更新★<<<<<")
@@ -243,6 +286,7 @@ function startUpdate() {
         let fileName = updateList[j];
         //忽略更新
         if (ignoreList.some(element => fileName.startsWith(element))) {
+            console.warn('忽略列表：' + fileName);
             continue;
         }
         log("------------------→");
@@ -298,18 +342,18 @@ function startUpdate() {
             let ext = files.getExtension(fileName);
             if (fileName.includes('config') && files.exists("./" + fileName)) {
                 log("需更新配置文件");
-                
+
                 // 备份旧文件
                 let oldName = name + ".old." + ext;
                 fixConfigFile("./" + fileName, "./" + oldName)
                 wait(() => false, 500);
                 console.error("旧" + fileName + " 已重命名为 " + oldName);
-                
+
                 // 下载的新文件
                 files.write("./" + fileName, new java.lang.String(filebytes, "utf-8"), "utf-8");
                 wait(() => false, 500);
                 console.info("下载成功")
-                
+
                 //备份一份新文件
                 let newName = "tmp/" + name + ".new." + ext;
                 fixConfigFile("./" + fileName, "./" + newName)
@@ -662,9 +706,6 @@ checkVersion();
 
 //开始更新
 startUpdate()
-
-
-
 
 log(">>>>>★更新完成★<<<<<")
 exit();

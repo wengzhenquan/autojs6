@@ -6,7 +6,7 @@
 修改    by：风中拾叶
 三改    by：wengzhenquan
 
-@version 20250516
+@version 20250518
 yolov11_w.js @version 20250513
 
 [github更新地址]：
@@ -14,15 +14,37 @@ yolov11_w.js @version 20250513
 https://github.com/wengzhenquan/autojs6
 
 */
+
+auto.waitFor();
+
+//程序运行文件标志
+files.ensureDir("./tmp/")
+let launch_locked = "./tmp/launch_main_locked";
+if (!files.exists(launch_locked)) {
+    events.on("exit", () => files.remove(launch_locked));
+    files.create(launch_locked);
+} else {
+    //确保只运行一个程序
+    exit();
+}
+
+try {
+    //加载配置
+    var config = require("./config.js");
+} catch (e) {}
+//快速模式. 该模式下会启用控件缓存
+if (config && config.fast模式)
+    auto.setMode("fast");
+
 var github = "https://github.com/wengzhenquan/autojs6";
-var update_script_name = "【小社脚本】一键更新程序.js";
+var update_script = "【小社脚本】一键更新程序.js";
 var serverVersion = null;
 var localVersion = null;
 var run = null;
 var mainFile = null;
+var updateAll = false;
 
-// 引入配置文件
-var config = require("./config.js");
+
 //设置参考坐标，不能动，开发环境标准比例。
 setScaleBaseX(1080);
 setScaleBaseY(2400);
@@ -54,6 +76,8 @@ var unfinished_mark = 0;
 var delayed = 6; //服务器请求超时时间s
 var delayed_max = 15; //最大超时时间 
 
+
+
 //启动悬浮窗关闭按钮
 //stopButton();
 threads.start(() => stopButton());
@@ -73,7 +97,9 @@ log("制造商：" + manufacturer + "，品牌：" + brand);
 log("产品：" + device.product + "，型号：" + device.model);
 log(`设备分辨率：${dwidth}x${dheight}`);
 log(`现在是：${date}`);
-console.error("提示：[音量+/-]键可停止脚本运行");
+console.error("提示：[音量+/-]键可停止脚本");
+
+//files.ensureDir("./tmp/")
 
 //音量键，停止脚本
 events.setKeyInterceptionEnabled("volume_up", true);
@@ -81,21 +107,20 @@ events.setKeyInterceptionEnabled("volume_down", true);
 events.observeKey();
 events.onKeyDown("volume_up", () => {
     console.error("[音量+]停止脚本！！！");
-    console.setTouchable(true);
-    //console.hide();
     exit();
-    console.error("3…2…1…停！哎~快停！");
 });
 events.onKeyDown("volume_down", () => {
     console.error("[音量-]停止脚本！！！");
-    console.setTouchable(true);
-    //console.hide();
     exit();
-    console.error("3…2…1…停！哎~快停！");
 });
 
-// 确保临时工作目录存在
-files.ensureDir('./tmp/')
+events.on("exit", function() {
+    console.setTouchable(true);
+    device.cancelKeepingAwake();
+    floaty.closeAll();
+    // verbose(nowDate());
+});
+
 
 //sleep(500);
 //exit()
@@ -111,6 +136,11 @@ function clickCenter(obj) {
     return click(x, y);
 }
 
+// 格式化后的实时时间
+function nowDate() {
+    return formatDate(new Date());
+}
+
 // 日期格式化
 function formatDate(date) {
     // 获取年、月、日、时、分、秒
@@ -122,10 +152,6 @@ function formatDate(date) {
     let seconds = date.getSeconds().toString().padStart(2, '0');
     // 拼接格式化后的日期字符串
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-}
-// 格式化后的实时时间
-function nowDate() {
-    return formatDate(new Date());
 }
 
 // 返回时长间隔 01:23 （分：秒）
@@ -192,6 +218,7 @@ function getRandomNumbers(n) {
     return result;
 }
 
+// 文件大小添加单位
 function formatFileSize(size) {
     if (size < 1024) {
         return size + 'B';
@@ -202,15 +229,48 @@ function formatFileSize(size) {
     }
 }
 
+//------------ 左下角“停止脚本”按钮 ----------//
+//悬浮窗停止按钮
+function stopButton() {
+    var window = floaty.window(
+        <frame>
+            <button
+            id="action"
+            text="停止脚本"
+            w="100"
+            h="50"
+            bg="#80333333"
+            textColor="#ffff00"
+            textSize="20sp"
+            textStyle="bold"
+            />
+        </frame>
+    );
+    window.setPosition(dwidth * 0.1, dheight * 0.75)
+
+    //悬浮窗被关闭时停止脚本
+    // window.exitOnClose();
+    //  window.action.click(() => window.close());
+    let n = 0;
+    window.action.click(() => {
+        exit();
+        n++;
+        window.action.setText("关不掉！x" + n);
+    });
+
+    // setInterval(() => {}, 1000);
+}
+
+
 
 //------------ 悬浮窗控制台区域 ----------//
 //打开悬浮窗控制台
 function consoleShow() {
-    if (config.悬浮窗控制台) {
+    if (!config || config && config.悬浮窗控制台) {
         //悬浮窗控制台配置
         // console.reset();
         console.build({
-            // size: [0.96, 0.3],
+            size: [0.96, 0.3],
             position: [0.02, 0.02],
             title: '会装逼的控制台',
             titleTextSize: 20,
@@ -275,52 +335,39 @@ function consoleExpand() {
     }
 }
 
-//------------ 左下角“停止脚本”按钮 ----------//
-//悬浮窗停止按钮
-function stopButton() {
-    var window = floaty.window(
-        <frame>
-            <button
-            id="action"
-            text="停止脚本"
-            w="100"
-            h="50"
-            bg="#80333333"
-            textColor="#ffff00"
-            textSize="20sp"
-            textStyle="bold"
-            />
-        </frame>
-    );
-    window.setPosition(dwidth * 0.1, dheight * 0.75)
 
-    //悬浮窗被关闭时停止脚本
-    // window.exitOnClose();
-    //  window.action.click(() => window.close());
-    let n = 0;
-    window.action.click(() => {
-        exit();
-        n++;
-        window.action.setText("关不掉！x" + n);
-    });
-
-    // setInterval(() => {}, 1000);
-}
 
 // -----------程序完整性检查---------------------//
+// 加载本地version文件
+function loadLocalVersion() {
+    localVersion = JSON.parse(files.read("./version"));
+    mainFile = localVersion.main;
+    update_script = localVersion.updateScript;
+    if (files.exists("./" + localVersion.run)) {
+        run = require("./" + localVersion.run);
+    }
+}
+
 function init() {
     log(">>>>→程序完整性校验←<<<<")
 
     if (!files.exists("./version")) {
         console.error("缺失version文件");
+        updateAll = true;
+        console.error("启动版本检查/下载version/全量更新");
+        checkVersion();
+    }
+    //加载本地版本文件
+    loadLocalVersion();
+
+    if (!files.exists("./config.js")) {
+        console.error("缺失config.js文件");
         console.error("启动更新程序下载文件");
         updateScript();
         return;
     }
-    localVersion = JSON.parse(files.read("./version"));
 
-    let runFile = "./" + localVersion.run;
-    if (!files.exists(runFile)) {
+    if (!files.exists("./" + localVersion.run)) {
         console.error("缺失Run文件");
         console.error("启动更新程序下载文件");
         updateScript();
@@ -329,12 +376,6 @@ function init() {
     // 加载run函数
     run = require("./" + localVersion.run);
 
-    if (localVersion.updateScript) {
-        update_script_name = localVersion.updateScript;
-    }
-    if (localVersion.main) {
-        mainFile = localVersion.main;
-    }
     let fileList = localVersion.updateFile;
 
     if (!fileList || fileList.length < 1) {
@@ -345,7 +386,7 @@ function init() {
     let missingFiles = [];
     for (var key in fileList) {
         if (!files.exists("./" + key)) {
-            missingFiles.push;
+            missingFiles.push(key);
         }
     }
     let error = false;
@@ -353,7 +394,13 @@ function init() {
         error = true;
         log("----------------------------");
         log("文件缺失列表：")
-        forEach((file) => console.error(file));
+        missingFiles.forEach((file) => {
+            //根据配置不检查YOLO
+            if (!config.本地YOLO识图 &&
+                file.toLowerCase().includes('yolo'))
+                return;
+            console.error(file)
+        });
         log("----------------------------");
     }
 
@@ -364,15 +411,15 @@ function init() {
             let value = apks[key];
             let name = getAppName(value);
             if (!name) {
+                //根据配置不检查YOLO
+                if (!config.本地YOLO识图 &&
+                    value.toLowerCase().includes('yolo'))
+                    continue;
                 console.error(value + " 未安装");
             }
-
         }
     }
-
-    log("文件检查结束");
-
-
+    log("脚本完整性检查结束");
 }
 
 // -------- 脚本更新  --------//
@@ -380,55 +427,60 @@ function init() {
 var proxys = [
     "https://gh.llkk.cc/",
     "https://git.886.be/",
-    "https://ghfast.top/",
+    "https://ghfast.top/", //p h
     "https://github.fxxk.dedyn.io/",
     "https://gh-proxy.ygxz.in/",
 
     "https://github.moeyy.xyz/", //有缓存
-    "https://gh-proxy.com/", //缓存时间长
+    "https://gh-proxy.com/", //缓存时间长 p
 ]
+
+//var setProxys = function(){return proxys;}
 
 // 检查脚本更新，version文件存在才检查更新。
 function checkVersion() {
     console.info("---→>→脚本检查更新←<←---")
-    //本地不存在version文件，不检查更新
-    if (!files.exists("./version")) {
-        console.error("缺失version文件，无法检查更新")
-        return;
-    }
-
-    //本地版本信息
-    let localVersion = JSON.parse(files.read("./version"));
-    console.info("脚本版本：" + localVersion.version)
-
-
     // 乱序数组
     let arr = getRandomNumbers(proxys.length - 1);
 
     //远程version文件数据
+    console.info("正在查询版本更新……")
     for (let i = 0; i < proxys.length; i++) {
-        //let startTime = new Date().getTime();
         let url = proxys[arr[i]] +
             "https://raw.githubusercontent.com/wengzhenquan/autojs6/refs/heads/main/version";
 
+        let res = null;
         try {
             let thread = threads.start(() => {
                 try {
-                    serverVersion = http.get(url, {
-                        timeout: 5 * 1000,
-                    }).body.json();
+                    res = http.get(url, {
+                        timeout: 3 * 1000,
+                    });
                 } catch (e) {}
             });
-            thread.join(5 * 1000);
+            thread.join(3 * 1000);
             thread.interrupt();
-        } catch (e) {} finally {
-            // log(proxy[i])
-            // let time = (new Date().getTime() - startTime);
-            //  log("服务器请求时间：" + time + " ms");
-            if (serverVersion) {
-                break;
+            if (res && res.statusCode === 200) {
+                serverVersion = res.body.json();
+                if (!files.exists("./version")) {
+                    // 缺失version文件，下载
+                    files.write("./version", res.body.string(), "utf-8");
+                    //重新加载本地版本文件
+                    loadLocalVersion();
+                }
             }
+        } catch (e) {} finally {
+            if (!res || !serverVersion) {
+                continue;
+            }
+
+            break;
         }
+    }
+
+    if (files.exists("./version")) {
+        //本地版本信息
+        console.info("本地脚本版本：" + localVersion.version)
     }
     if (!serverVersion) {
         console.error("连接github更新失败")
@@ -440,27 +492,31 @@ function checkVersion() {
     let deleteList = []; // 待删除文件清单
 
     //更新脚本
-    if (hasNewVersion && config.检查更新 > 1) {
-        toastLog("配置[检查更新]：" + config.检查更新)
-        toastLog("开始更新脚本")
+    if (updateAll || hasNewVersion && config.检查更新 > 1) {
+        if (config && config.检查更新 > 1)
+            toastLog("配置[检查更新]：" + config.检查更新)
+        toastLog("开始更新脚本");
         updateScript();
+        return;
     }
 
-    // 待更新文件清单
-    for (var key in serverVersion.updateFile) {
-        if (files.exists("./" + key) && localVersion.updateFile[key]) {
-            if (serverVersion.updateFile[key] > localVersion.updateFile[key] ||
-                !files.exists("./" + key)) {
+    if (hasNewVersion) {
+        // 待更新文件清单
+        for (var key in serverVersion.updateFile) {
+            if (files.exists("./" + key) && localVersion.updateFile[key]) {
+                if (serverVersion.updateFile[key] > localVersion.updateFile[key] ||
+                    !files.exists("./" + key)) {
+                    updateList.push(key);
+                }
+            } else {
                 updateList.push(key);
             }
-        } else {
-            updateList.push(key);
         }
-    }
-    // 待删除文件清单
-    for (var key in localVersion.updateFile) {
-        if (!serverVersion.updateFile[key]) {
-            deleteList.push(key);
+        // 待删除文件清单
+        for (var key in localVersion.updateFile) {
+            if (!serverVersion.updateFile[key]) {
+                deleteList.push(key);
+            }
         }
     }
 
@@ -485,9 +541,9 @@ function checkVersion() {
             updateList.forEach((file) => {
                 let name = !file.includes('/') ? ''.padStart(5) + file : file;
                 console.error(name);
-                if (file === 'config.js') {
-                    log('(更新前，建议重命名config.js，')
-                    log('              备份解锁坐标)')
+                if (file.includes('config')) {
+                    log('更新前，建议重命名' + name)
+                    log('备份屏幕解锁坐标'.padStart(14))
                 }
             });
             log("----------------------------");
@@ -503,80 +559,110 @@ function checkVersion() {
         }
     } else {
         console.info("脚本已经是最新版！")
-        // log("小社脚本版本：" + localVersion.version)
     }
 }
 
 function updateScript() {
-    let update_script = update_script_name;
-    if (serverVersion && serverVersion.updateScript)
-        update_script = serverVersion.updateScript;
-    log("更新一键更新程序：" + update_script)
 
-    // 乱序数组
-    let arr = getRandomNumbers(proxys.length - 1);
-    // 下载更新脚本
-    var filebytes = null;
-    for (let i = 0; i < proxys.length; i++) {
-        let url = proxys[arr[i]] + github +
-            "/blob/main/" + update_script;
+    if (!files.exists("./" + update_script)) {
+        console.error(update_script + ' 不存在');
+        console.info("开始下载更新程序：" + update_script)
 
-        log('使用加速器：' + proxys[arr[i]]);
-        // log(url);
-        try {
-            var res = null;
-            let thread = threads.start(() => {
-                try {
-                    res = http.get(url, {
-                        timeout: 5 * 1000,
-                    });
-                } catch (e) {}
-            });
-            thread.join(5 * 1000);
-            thread.interrupt();
-            if (res.statusCode === 200) {
-                filebytes = res.body.bytes();
+        // 乱序数组
+        let arr = getRandomNumbers(proxys.length - 1);
+        // 下载更新脚本
+        var file = null;
+        for (let i = 0; i < proxys.length; i++) {
+            let url = proxys[arr[i]] + github +
+                "/blob/main/" + update_script;
+
+            log('使用加速器：' + proxys[arr[i]]);
+            //log(url);
+            try {
+                var res = null;
+                let thread = threads.start(() => {
+                    try {
+                        res = http.get(url, {
+                            timeout: 5 * 1000,
+                        });
+                    } catch (e) {}
+                });
+                thread.join(5 * 1000);
+                thread.interrupt();
+                if (res.statusCode === 200) {
+                    file = res.body.string();
+                }
+            } catch (e) {} finally {
+                //成功，跳出
+                if (file && file.length > 1000) {
+                    break;
+                }
+                console.error('下载失败，更换加速器重试');
             }
-        } catch (e) {} finally {
-            //成功，跳出
-            if (filebytes && filebytes.length > 1000) {
-                break;
-            }
-            console.error('下载失败，更换加速器重试');
         }
-    }
 
-    if (filebytes && filebytes.length > 1000) {
-        files.writeBytes("./" + update_script, filebytes);
-        console.info("下载成功")
-        console.info('文件大小：' + formatFileSize(filebytes.length))
+        if (file && file.length > 1000) {
+            files.write("./" + update_script, file, "utf-8");
+            console.info("下载成功")
+            console.info('文件大小：' + formatFileSize(file.length))
+
+            //   update_script = serverVersion.updateScript;
+        }
+
     }
     if (!files.exists("./" + update_script)) {
-        console.error('更新程序更新失败');
         console.error(update_script + ' 不存在，无法更新');
         return;
     }
 
+    // ========== 启动更新脚本 ==========
     console.error("提示：启动→" + update_script)
     device.keepScreenDim(5 * 60 * 1000);
+    let update_locked = './tmp/update_locked';
     for (let i = 0; i < 15; i++) {
-        floaty.closeAll();
-        log('→起飞'.padStart(i * 2 + 2, '-'));
-        if (i > 10) console.hide();
+        log('→起飞'.padStart(i * 2 + 3, '-'));
+        if (i > 10) {
+            // 执行一键更新程序.js
+            engines.execScriptFile("./" + update_script);
+            sleep(10 * i)
+            // 检查脚本运行
+            if (files.exists(update_locked)) {
+                floaty.closeAll();
+                console.hide();
+                break;
+            }
+        }
+
     }
-    // 执行一键更新程序.js
-    engines.execScriptFile("./" + update_script);
+    if (!files.exists(update_locked)) {
+        console.error(update_script + "启动失败！")
+        return;
+        //exit();
+    }
     // 等待脚本执行完成
+    while (files.exists(update_locked));
     sleep(1000)
-    while (files.exists('./tmp/update_locked'));
-    sleep(1000)
-    let newscript = serverVersion.main;
-    console.info("即将执行新的脚本：" + newscript)
-    console.error("提示：启动→" + newscript)
-    for (let i = 0; i < 15; i++) {
-        log('→起飞'.padStart(i * 2 + 2, '-'));
+
+    // ========== 启动新的主程序 ==========
+    //重新加载本地版本文件
+    loadLocalVersion();
+    console.info("即将执行新的脚本：" + mainFile)
+    console.error("提示：启动→" + mainFile)
+
+    for (let i = 0; i < 12; i++) {
+        log('→起飞'.padStart(i * 2 + 3, '-'));
+        // if (i > 10) {
+        //     engines.execScriptFile("./" + mainFile, {
+        //         delay: 99 * i
+        //     });
+        //     sleep(20 * i)
+        // }
     }
-    engines.execScriptFile("./" + newscript);
+
+    // 执行主程序
+    engines.execScriptFile("./" + mainFile, {
+        delay: 2000
+    });
 
     //退出本线程
     exit();
@@ -660,10 +746,9 @@ function unLock() {
 // 权限验证
 function permissionv() {
 
-    log(">>>>>>>→权限验证←<<<<<<<")
+    log(">>>>>>→权限验证←<<<<<<")
     log("--------- 必要权限 ---------");
     // 无障碍权限
-    auto.waitFor();
 
     if (auto.service) {
         log("无障碍服务，[已启用]");
@@ -814,6 +899,7 @@ function permissionv() {
     } else {
         console.error("网络权限，[无法联网]!");
         console.error("可能无法完成APP识图签到！");
+        console.error("可能无法更新脚本！");
         wait(() => false, 3000);
     }
     log("-------- 不必要权限 --------");
@@ -856,15 +942,18 @@ function main() {
     //权限验证
     permissionv();
 
+    // 初始化，文件检查
+    init();
+
     //脚本检查更新
-    if (config.检查更新) checkVersion()
+    if (config && config.检查更新) checkVersion()
 
     log("-----→");
     // 媒体声音
     let musicVolume = device.getMusicVolume();
     // 通知声音
     let nVolume = device.getNotificationVolume();
-    if (config.静音级别) {
+    if (config && config.静音级别) {
         //关掉媒体声音
         if (config.静音级别 === 1) {
             device.setMusicVolume(0);
@@ -881,35 +970,29 @@ function main() {
     let brightMode = device.getBrightnessMode();
     // 返回当前的(手动)亮度. 范围为0~255.
     let bright = device.getBrightness();
-    if (config.运行亮度) {
+    if (config && config.运行亮度) {
         device.setBrightnessMode(0);
         let value = 130 * config.运行亮度;
         device.setBrightness(value);
         console.error("提示：已修改亮度为：" + config.运行亮度 * 100 + "%");
-
     }
 
     events.on("exit", function() {
-        console.setTouchable(true);
-        device.cancelKeepingAwake();
-        // floaty.closeAll();
-        //verbose(nowDate());
-        if (config.运行亮度) {
+        if (config && config.运行亮度) {
             device.setBrightness(bright);
             device.setBrightnessMode(brightMode);
         }
-        if (config.静音级别) {
+        if (config && config.静音级别) {
             if (config.静音级别 === 1)
                 device.setMusicVolume(musicVolume);
             if (config.静音级别 === 2)
                 device.setNotificationVolume(nVolume);
         }
-        if (config.结束震动)
+        if (config && config.结束震动)
             device.vibrate(config.结束震动);
     });
 
-    // 初始化，文件检查
-    init();
+
 
     try {
         //逻辑程序
@@ -923,17 +1006,15 @@ function main() {
         }
     } finally {
         if (true) {
-            //  floaty.closeAll()
-
-            if (config.运行亮度)
+            if (config && config.运行亮度)
                 console.error("提示：亮度已恢复！");
-            if (config.静音级别) {
-                if (config.静音级别 === 1)
+            if (config && config.静音级别) {
+                if (config && config.静音级别 === 1)
                     console.error("提示：媒体静音已解除！");
-                if (config.静音级别 === 2)
+                if (config && config.静音级别 === 2)
                     console.error("提示：通知静音已解除！");
             }
-            if (config.结束震动)
+            if (config && config.结束震动)
                 console.error("提示：结束震动提醒~~~");
 
             log(0);
