@@ -76,7 +76,8 @@ var unfinished_mark = 0;
 var delayed = 6; //服务器请求超时时间s
 var delayed_max = 15; //最大超时时间 
 
-
+// 程序最大运行时间，超过该时间会强制停止(ms)。  3分钟
+threads.start(() => startTimeoutMonitor(3 * 60 * 1000));
 
 //启动悬浮窗关闭按钮
 //stopButton();
@@ -227,6 +228,25 @@ function formatFileSize(size) {
     } else {
         return (size / Math.pow(1024, 2)).toFixed(1) + 'MB';
     }
+}
+
+/**
+ * 启动脚本总运行时间监控
+ * @param {number} maxRuntimeMs - 最大允许运行时间 (毫秒)
+ */
+function startTimeoutMonitor(maxRuntimeMs) {
+    threads.start(function() {
+        setInterval(function() {
+            const startTime = new Date(date.replace(/-/g, '/')).getTime();
+            let currentTime = new Date().getTime();
+            if (currentTime - startTime > (maxRuntimeMs - 1000 * 5)) {
+                console.error(`脚本运行超过设定的 ${maxRuntimeMs / 1000} 秒，强制退出`);
+                notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("发生未知错误，脚本强制停止\n详细问题，请查看日志"));
+
+                exit();
+            }
+        }, 10000); // 每 10 秒检查一次
+    });
 }
 
 //------------ 左下角“停止脚本”按钮 ----------//
