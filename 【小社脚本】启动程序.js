@@ -239,13 +239,13 @@ function startTimeoutMonitor(maxRuntimeMs) {
         setInterval(function() {
             const startTime = new Date(date.replace(/-/g, '/')).getTime();
             let currentTime = new Date().getTime();
-            if (currentTime - startTime > (maxRuntimeMs - 1000 * 5)) {
+            if (currentTime - startTime > (maxRuntimeMs - 10 * 1000)) {
                 console.error(`脚本运行超过设定的 ${maxRuntimeMs / 1000} 秒，强制退出`);
                 notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("发生未知错误，脚本强制停止\n详细问题，请查看日志"));
 
                 exit();
             }
-        }, 10000); // 每 10 秒检查一次
+        }, 5 * 1000); // 每 5 秒检查一次
     });
 }
 
