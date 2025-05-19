@@ -6,7 +6,7 @@
 修改    by：风中拾叶
 三改    by：wengzhenquan
 
-@version 20250518
+@version 20250519
 yolov11_w.js @version 20250513
 
 [github更新地址]：
@@ -123,8 +123,29 @@ events.on("exit", function() {
 });
 
 
+//images.requestScreenCapture()
+//sleep(2000);
+
 //sleep(500);
 //exit()
+/**
+ * 启动脚本总运行时间监控
+ * @param {number} maxRuntimeMs - 最大允许运行时间 (毫秒)
+ */
+function startTimeoutMonitor(maxRuntimeMs) {
+    threads.start(function() {
+        setInterval(function() {
+            while (click('知道了'));
+            const startTime = new Date(date.replace(/-/g, '/')).getTime();
+            let currentTime = new Date().getTime();
+            if (currentTime - startTime > (maxRuntimeMs - 10 * 1000)) {
+                console.error(`脚本运行超过设定的 ${maxRuntimeMs / 1000} 秒，强制退出`);
+                notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("发生未知错误，脚本强制停止\n详细问题，请查看日志"));
+                exit();
+            }
+        }, 5 * 1000); // 每 5 秒检查一次
+    });
+}
 
 
 //------------ 工具函数 ----------//
@@ -246,25 +267,6 @@ function toSeconds(milliseconds) {
     }
 }
 
-
-/**
- * 启动脚本总运行时间监控
- * @param {number} maxRuntimeMs - 最大允许运行时间 (毫秒)
- */
-function startTimeoutMonitor(maxRuntimeMs) {
-    threads.start(function() {
-        setInterval(function() {
-            const startTime = new Date(date.replace(/-/g, '/')).getTime();
-            let currentTime = new Date().getTime();
-            if (currentTime - startTime > (maxRuntimeMs - 10 * 1000)) {
-                console.error(`脚本运行超过设定的 ${maxRuntimeMs / 1000} 秒，强制退出`);
-                notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("发生未知错误，脚本强制停止\n详细问题，请查看日志"));
-
-                exit();
-            }
-        }, 5 * 1000); // 每 5 秒检查一次
-    });
-}
 
 //------------ 左下角“停止脚本”按钮 ----------//
 //悬浮窗停止按钮
@@ -461,18 +463,26 @@ function init() {
 
 // -------- 脚本更新  --------//
 
-var proxys = [
+//加速代理
+let proxys = [
+    "https://gitproxy.click/",
+    "https://github.moeyy.xyz/", //1 
+    "https://g.blfrp.cn/",
+    "https://gh-proxy.com/", //2.  e
+    "https://goppx.com/",
+    "https://github-proxy.lixxing.top/",
     "https://gh.llkk.cc/",
+    "https://ghproxy.net/",
+    "https://ghfast.top/",
     "https://git.886.be/",
-    "https://ghfast.top/", //p h
-    "https://github.fxxk.dedyn.io/",
-    "https://gh-proxy.ygxz.in/",
+    "https://github.ednovas.xyz/",
 
-    "https://github.moeyy.xyz/", //有缓存
-    "https://gh-proxy.com/", //缓存时间长 p
+    // "https://gh-proxy.ygxz.in/",     // 移动不稳定，联通延迟高
+    // "https://cf.ghproxy.cc/",       // 延迟高
+    // "https://fastgit.cc/",         // 移动不通
+    // "https://github.fxxk.dedyn.io/",  // 移动不通     
 ]
 
-//var setProxys = function(){return proxys;}
 
 // 检查脚本更新，version文件存在才检查更新。
 function checkVersion() {

@@ -38,21 +38,37 @@ var deleteList = []; // 待删除列表
 var successList = []; // 更新成功列表
 var errorList = []; //  更新失败列表
 
+// 文本格式
+var textArry = ["", "md", "css", "js", "txt", "json", "html"];
+
 var github = "https://github.com/wengzhenquan/autojs6";
 
 //加速代理
 let proxys = [
+    "https://gitproxy.click/",
+    "https://github.moeyy.xyz/", //1 
+    "https://g.blfrp.cn/",
+    "https://gh-proxy.com/", //2.  e
+    "https://goppx.com/",
+    "https://github-proxy.lixxing.top/",
     "https://gh.llkk.cc/",
-    "https://git.886.be/",
+    "https://ghproxy.net/",
     "https://ghfast.top/",
-    "https://gh-proxy.ygxz.in/",
-    "https://github.fxxk.dedyn.io/",
+    "https://git.886.be/",
+    "https://github.ednovas.xyz/",
 
-    "https://github.moeyy.xyz/", //1
-    "https://gh-proxy.com/", //2
-
+    // "https://gh-proxy.ygxz.in/",     // 移动不稳定，联通延迟高
+    // "https://cf.ghproxy.cc/",       // 延迟高
+    // "https://fastgit.cc/",         // 移动不通
+    // "https://github.fxxk.dedyn.io/",  // 移动不通     
 ]
 
+var api_github = "https://api.github.com/repos/wengzhenquan/autojs6/contents/";
+let api_proxys = [
+    "https://99z.top/",
+    "https://gh.llkk.cc/",
+    //  "https://ghproxy.monkeyray.net",  
+]
 
 //对比版本大小，前面的大，返回1，相等0，后面大-1
 function compareVersions(version1, version2) {
@@ -67,7 +83,6 @@ function compareVersions(version1, version2) {
     }
     return 0;
 }
-
 
 // [0-n]，不重复随机排列，返回数组，包含n
 function getRandomNumbers(n) {
@@ -126,7 +141,6 @@ function toSeconds(milliseconds) {
     }
 }
 
-
 // ----------- 脚本更新 ---------------------//
 
 // -----------程序完整性检查---------------------//
@@ -156,7 +170,6 @@ function integrityCheck() {
     log("文件检查结束");
     if (!missing) console.info("没有缺失的文件");
 }
-
 
 // 检查脚本更新。
 function checkVersion() {
@@ -284,8 +297,6 @@ function checkVersion() {
     }
 }
 
-
-
 //开始更新
 function startUpdate() {
     if (!hasNewVersion && !updateAll && updateList < 1)
@@ -306,8 +317,20 @@ function startUpdate() {
             console.warn('忽略列表：' + fileName);
             continue;
         }
+
         log("------------------→");
         console.info("正在下载文件：" + fileName)
+        //无后缀文件名
+        let name = files.getNameWithoutExtension(fileName);
+        //后缀
+        let ext = files.getExtension(fileName);
+        //文本类型
+        let isText = textArry.includes(ext);
+        var fileInfo = null;
+        if (!isText) {
+            console.warn('该文件需要文件校验！')
+            fileInfo = getGitHubFileInfo(fileName, 'main')
+        }
 
         var filebytes = null;
         while (i < proxys.length) {
@@ -336,26 +359,28 @@ function startUpdate() {
 
                 //成功，跳出
                 if (filebytes && filebytes.length > filemin) {
+                    if (!isText && fileInfo &&
+                        !fileVerify(fileInfo, filebytes)) {
+                        console.error('校验失败，重新下载')
+                        continue;
+                    }
                     break;
                 }
 
                 console.error('下载失败，更换加速器重试');
                 i++;
-            }
-        }
 
-        //重置
-        if (i >= proxys.length - 1) i = 0;
+            }
+            //重置
+            if (i >= proxys.length - 1) i = 0;
+        }
 
         if (!filebytes || filebytes.length < filemin) {
             console.error("下载失败")
             errorList.push(fileName)
             //continue;
         } else {
-            //无后缀文件名
-            let name = files.getNameWithoutExtension(fileName);
-            //后缀
-            let ext = files.getExtension(fileName);
+
             if (fileName.includes('config') && files.exists("./" + fileName)) {
                 log("需更新配置文件");
 
@@ -374,7 +399,6 @@ function startUpdate() {
                 let newName = "tmp/" + name + ".new." + ext;
                 fixConfigFile("./" + fileName, "./" + newName)
                 wait(() => false, 500);
-
 
                 console.info("开始尝试自动搬运配置");
                 console.info(oldName + "→" + fileName);
@@ -397,8 +421,6 @@ function startUpdate() {
 
             } else {
                 files.ensureDir("./" + fileName)
-                //文本类型
-                let isText = ["", "md", "css", "js", "txt", "json", "html"].includes(ext);
 
                 if (isText) {
                     try {
@@ -448,9 +470,92 @@ function startUpdate() {
     }
 }
 
+// ==================== 文件校验系列 ====================
+
+// 校验文件
+function fileVerify(fileInfo, fileBytes) {
+    console.info('已下载文件大小：' + fileBytes.length);
+    console.info('已下载文件SHA-1：');
+    let sha1 = getGitFileSha(fileBytes);
+    console.error(sha1);
+
+    return fileInfo.size === fileBytes.length &&
+        sha1 === fileInfo.sha
+}
+
+// 获取GitHub文件信息
+function getGitHubFileInfo(filePath, branch) {
+    console.info('获取版本信息')
+    var result = null;
+    for (let i = 0; i < api_proxys.length; i++) {
+        //let startTime = new Date().getTime();
+        let url = api_proxys[i] +
+            api_github + filePath + "?ref=" + branch;
+        //  log(url)
+
+        try {
+
+            let res = null;
+            let thread = threads.start(() => {
+                try {
+                    result = http.get(url, {
+                        timeout: 5 * 1000,
+                        
+                    }).body.json();
+                } catch (e) {}
+            });
+            thread.join(5 * 1000);
+            thread.interrupt();
+            if (res.statusCode === 200) {
+                result = res.body.json();
+            }
+        } catch (e) {} finally {
+            log(api_proxys[i])
+            //  let time = (new Date().getTime() - startTime);
+            // log("请求时间：" + toSeconds(time));
+            if (result) break;
+
+        }
+    }
+    if (result) {
+        // log(result)
+        console.info('----------------')
+        log('期望文件大小：' + result.size)
+        log('期望SHA-1：')
+        console.warn(result.sha)
+    } else {
+        console.error('获取版本信息失败')
+    }
+
+    return result;
+}
+
+// 获取sha
+function getGitFileSha(fileBytes) {
+    // 构造 Blob 头部
+    const headerStr = "blob " + fileBytes.length + "\u0000"; // 注意 Unicode 空字符
+    const headerBytes = new java.lang.String(headerStr).getBytes("UTF-8"); // 转换为 UTF-8 字节
+
+    // 合并头部和内容
+    const blobBytes = util.java.array('byte', headerBytes.length + fileBytes.length);
+    java.lang.System.arraycopy(headerBytes, 0, blobBytes, 0, headerBytes.length);
+    java.lang.System.arraycopy(fileBytes, 0, blobBytes, headerBytes.length, fileBytes.length);
+
+    // 计算 SHA-1
+    const md = java.security.MessageDigest.getInstance("SHA-1");
+    const digestBytes = md.digest(blobBytes);
+    // const digestBytes= crypto.digest(blobBytes, 'SHA-1' ,{ input: 'file' }); 
+    //  return digestBytes;
+
+    // 转换为十六进制字符串
+    const hexChars = [];
+    for (let b of digestBytes) {
+        hexChars.push(((b & 0xFF) < 0x10 ? '0' : '') + (b & 0xFF).toString(16));
+    }
+    return hexChars.join('');
+}
 
 // ==================== 同步和备份配置文件系列 ====================
-
 
 /**
  * 合并配置文件，保留格式、注释和结构
@@ -650,8 +755,6 @@ function mergeConfigs(oldConfigPath, newConfigPath, outputPath) {
 // 使用示例：
 //mergeConfigs('./config.old.js', './config.new.js', './config.merged.js');
 
-
-
 /**
  * 智能配置文件修复（严格区分对象/数组），修复且备份
  */
@@ -718,7 +821,6 @@ function hasProperComma(line) {
 
 //检查更新
 checkVersion();
-
 
 //开始更新
 startUpdate()
