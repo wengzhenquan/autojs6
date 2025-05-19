@@ -98,7 +98,7 @@ function initImageReco() {
             let error = false;
             if (!name) {
                 console.error("Yolo-plugin.apk 插件未安装");
-                
+
                 error = true;
             }
             let yzmbin = files.cwd() + YOLO_MODEL_SUBDIR2 + "/yzm.bin";
@@ -452,7 +452,7 @@ function backAppIndex() {
 
 function start() {
     while (!packageName(xmPckageName).exists());
-    while (!text('签到提醒').exists());
+    while (!existsOne(text('今天'), text('签到'), text('全新升级')));
     log(">>>>>>>→开始签到←<<<<<<<")
     // percentage = logpercentage();
     var done = text("已签到").findOne(1666);
@@ -2021,7 +2021,7 @@ function levelResult() {
 
     成长值记录.详细记录.forEach((record) => {
         const item = record.项目.length > 10 ?
-            record.项目.padEnd(17,'  ') : record.项目.padEnd(27);
+            record.项目.padEnd(17, '  ') : record.项目.padEnd(27);
         log(`${item}` + `${record.结果}`);
     });
     log("----------------------------");
