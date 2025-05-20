@@ -6,7 +6,7 @@
 修改    by：风中拾叶
 三改    by：wengzhenquan
 
-@version 20250519
+@version 20250520
 yolov11_w.js @version 20250513
 
 [github更新地址]：
@@ -37,6 +37,8 @@ if (config && config.fast模式)
     auto.setMode("fast");
 
 var github = "https://github.com/wengzhenquan/autojs6";
+var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs6/refs/heads/main/"
+
 var update_script = "【小社脚本】一键更新程序.js";
 var serverVersion = null;
 var localVersion = null;
@@ -77,7 +79,8 @@ var delayed = 6; //服务器请求超时时间s
 var delayed_max = 15; //最大超时时间 
 
 // 程序最大运行时间，超过该时间会强制停止(ms)。  3分钟
-startTimeoutMonitor(3 * 60 * 1000);
+var maxRuntime = 3 * 60 * 1000;
+startTimeoutMonitor();
 
 //启动悬浮窗关闭按钮
 //stopButton();
@@ -123,8 +126,8 @@ events.on("exit", function() {
 });
 
 
-//images.requestScreenCapture()
-//sleep(2000);
+// images.requestScreenCapture()
+// sleep(2000);
 
 //sleep(500);
 //exit()
@@ -132,14 +135,14 @@ events.on("exit", function() {
  * 启动脚本总运行时间监控
  * @param {number} maxRuntimeMs - 最大允许运行时间 (毫秒)
  */
-function startTimeoutMonitor(maxRuntimeMs) {
+function startTimeoutMonitor() {
     threads.start(function() {
         setInterval(function() {
-            while (click('知道了'));
+            //click('知道了');
             const startTime = new Date(date.replace(/-/g, '/')).getTime();
             let currentTime = new Date().getTime();
-            if (currentTime - startTime > (maxRuntimeMs - 10 * 1000)) {
-                console.error(`脚本运行超过设定的 ${maxRuntimeMs / 1000} 秒，强制退出`);
+            if (currentTime - startTime > (maxRuntime - 10 * 1000)) {
+                console.error(`脚本运行超过设定的 ${maxRuntime / 1000} 秒，强制退出`);
                 notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("发生未知错误，脚本强制停止\n详细问题，请查看日志"));
                 exit();
             }
@@ -199,7 +202,8 @@ function getDurTime(startTimeStr) {
 function getAppVersionName(packageName) {
     try {
         // 获取应用程序的包信息
-        var packageInfo = context.getPackageManager()
+        var packageInfo = context
+            .getPackageManager()
             .getPackageInfo(packageName, 0);
         // 获取版本名称
         return packageInfo.versionName;
@@ -465,22 +469,25 @@ function init() {
 
 //加速代理
 let proxys = [
-    "https://gitproxy.click/",
-    "https://github.moeyy.xyz/", //1 
-    "https://g.blfrp.cn/",
-    "https://gh-proxy.com/", //2.  e
-    "https://goppx.com/",
-    "https://github-proxy.lixxing.top/",
-    "https://gh.llkk.cc/",
-    "https://ghproxy.net/",
-    "https://ghfast.top/",
-    "https://git.886.be/",
-    "https://github.ednovas.xyz/",
+    "https://goppx.com/", // 
+    "https://gh.llkk.cc/", //
+    "https://git.886.be/", // 
+    "https://github.moeyy.xyz/", //
+    "https://github-proxy.lixxing.top/", //
+    "https://github.ednovas.xyz/", // 
+    "https://g.blfrp.cn/", //
+    "https://cf.ghproxy.cc/", //
+    "https://ghfast.top/", // 
+    //-----下面几个延迟稍高
+    // "https://gh-proxy.com/", //联通8/5/10，移动5/3，电信2
+    // "https://ghproxy.net/", //联通11/6/4/5，移动7，电信3
+    // "https://gh-proxy.ygxz.in/", // 联通5/3/4，移动12/5/7/10/6，电信8/6/超时/9//11/15
+    //-------下面几个网络通用性不好
+    // "https://gitproxy.click/", //联通4/5，移动超时，电信1
+    // "https://99z.top/", //联通5，移动不通，电信2
+    // "https://fastgit.cc/", //联通5/4，移动不通，电信2
+    // "https://github.fxxk.dedyn.io/", // 联通5，移动不通，电信2
 
-    // "https://gh-proxy.ygxz.in/",     // 移动不稳定，联通延迟高
-    // "https://cf.ghproxy.cc/",       // 延迟高
-    // "https://fastgit.cc/",         // 移动不通
-    // "https://github.fxxk.dedyn.io/",  // 移动不通     
 ]
 
 
@@ -494,36 +501,33 @@ function checkVersion() {
     console.info("正在查询版本更新……")
     for (let i = 0; i < proxys.length; i++) {
         let url = proxys[arr[i]] +
-            "https://raw.githubusercontent.com/wengzhenquan/autojs6/refs/heads/main/version";
+            github_download_url + 'version';
 
-        let res = null;
-        try {
-            let thread = threads.start(() => {
-                try {
-                    res = http.get(url, {
-                        timeout: 3 * 1000,
-                    });
-                } catch (e) {}
-            });
-            thread.join(3 * 1000);
-            thread.interrupt();
-            if (res && res.statusCode === 200) {
-                let versionstring = res.body.string();
-                serverVersion = JSON.parse(versionstring);
-                if (!files.exists("./version")) {
-                    // 缺失version文件，下载
-                    files.write("./version", versionstring, "utf-8");
-                    //重新加载本地版本文件
-                    loadLocalVersion();
+        let result = null;
+        let thread = threads.start(() => {
+            try {
+                let res = http.get(url, {
+                    timeout: 3 * 1000,
+                });
+                if (res && res.statusCode === 200) {
+                    result = res.body.string();
+                    serverVersion = JSON.parse(result);
                 }
-            }
-        } catch (e) {} finally {
-            if (!res || !serverVersion) {
-                continue;
-            }
-
-            break;
+            } catch (e) {}
+        });
+        thread.join(3 * 1000);
+        thread.interrupt();
+        if (!result || !serverVersion) {
+            continue;
         }
+        if (!files.exists("./version")) {
+            // 缺失version文件，下载
+            files.write("./version", result, "utf-8");
+            //重新加载本地版本文件
+            loadLocalVersion();
+        }
+        break;
+
     }
 
     if (files.exists("./version")) {
@@ -622,32 +626,29 @@ function updateScript() {
         // 下载更新脚本
         var file = null;
         for (let i = 0; i < proxys.length; i++) {
-            let url = proxys[arr[i]] + github +
-                "/blob/main/" + update_script;
+            let url = proxys[arr[i]] +
+                github_download_url + update_script;
 
             log('使用加速器：' + proxys[arr[i]]);
             //log(url);
-            try {
-                var res = null;
-                let thread = threads.start(() => {
-                    try {
-                        res = http.get(url, {
-                            timeout: 5 * 1000,
-                        });
-                    } catch (e) {}
-                });
-                thread.join(5 * 1000);
-                thread.interrupt();
-                if (res && res.statusCode === 200) {
-                    file = res.body.string();
-                }
-            } catch (e) {} finally {
-                //成功，跳出
-                if (file && file.length > 1000) {
-                    break;
-                }
-                console.error('下载失败，更换加速器重试');
+
+            let thread = threads.start(() => {
+                try {
+                    let res = http.get(url, {
+                        timeout: 5 * 1000,
+                    });
+                    if (res && res.statusCode === 200) {
+                        file = res.body.string();
+                    }
+                } catch (e) {}
+            });
+            thread.join(5 * 1000);
+            thread.interrupt();
+            if (file && file.length > 1000) {
+                break;
             }
+            console.error('下载失败，更换加速器重试');
+
         }
 
         if (file && file.length > 1000) {
@@ -665,8 +666,12 @@ function updateScript() {
     }
 
     // ========== 启动更新脚本 ==========
-    console.error("提示：启动→" + update_script)
+
+    // 续上5分钟时间
     device.keepScreenDim(5 * 60 * 1000);
+    maxRuntime = maxRuntime + 5 * 60 * 1000;
+
+    console.error("提示：启动→" + update_script)
     let update_locked = './tmp/update_locked';
     for (let i = 0; i < 15; i++) {
         log('→起飞'.padStart(i * 2 + 3, '-'));
@@ -922,24 +927,21 @@ function permissionv() {
             "http://connect.rom.miui.com/generate_204", // 小米
         ];
         for (i = 0; i < urls.length; i++) {
-            try {
-                let url = urls[i];
-                let res = null;
-                let thread = threads.start(() => {
-                    try {
-                        res = http.get(url, {
-                            timeout: 500
-                        });
-                    } catch (e) {}
-                });
-                thread.join(500);
-                thread.interrupt();
-                if (res && res.statusCode === 204) return true;
-                continue;
-            } catch (e) {
-                if (i === (urls.length - 1))
-                    return false;
-            }
+            let url = urls[i];
+            let res = null;
+            let thread = threads.start(() => {
+                try {
+                    res = http.get(url, {
+                        timeout: 500
+                    });
+
+                } catch (e) {}
+            });
+            thread.join(500);
+            thread.interrupt();
+            if (res && res.statusCode === 204)
+                return true;
+
         }
         return false;
     }

@@ -42,25 +42,29 @@ var errorList = []; //  更新失败列表
 var textArry = ["", "md", "css", "js", "txt", "json", "html"];
 
 var github = "https://github.com/wengzhenquan/autojs6";
+var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs6/refs/heads/main/"
 
 //加速代理
 let proxys = [
-    "https://gitproxy.click/",
-    "https://github.moeyy.xyz/", //1 
-    "https://g.blfrp.cn/",
-    "https://gh-proxy.com/", //2.  e
-    "https://goppx.com/",
-    "https://github-proxy.lixxing.top/",
-    "https://gh.llkk.cc/",
-    "https://ghproxy.net/",
-    "https://ghfast.top/",
-    "https://git.886.be/",
-    "https://github.ednovas.xyz/",
+    "https://goppx.com/", // 
+    "https://gh.llkk.cc/", //
+    "https://git.886.be/", // 
+    "https://github.moeyy.xyz/", //
+    "https://github-proxy.lixxing.top/", //
+    "https://github.ednovas.xyz/", // 
+    "https://g.blfrp.cn/", //
+    "https://cf.ghproxy.cc/", //
+    "https://ghfast.top/", // 
+    //-----下面几个延迟稍高
+    // "https://gh-proxy.com/", //联通8/5/10，移动5/3，电信2
+    // "https://ghproxy.net/", //联通11/6/4/5，移动7，电信3
+    // "https://gh-proxy.ygxz.in/", // 联通5/3/4，移动12/5/7/10/6，电信8/6/超时/9//11/15
+    //-------下面几个网络通用性不好
+    // "https://gitproxy.click/", //联通4/5，移动超时，电信1
+    // "https://99z.top/", //联通5，移动不通，电信2
+    // "https://fastgit.cc/", //联通5/4，移动不通，电信2
+    // "https://github.fxxk.dedyn.io/", // 联通5，移动不通，电信2
 
-    // "https://gh-proxy.ygxz.in/",     // 移动不稳定，联通延迟高
-    // "https://cf.ghproxy.cc/",       // 延迟高
-    // "https://fastgit.cc/",         // 移动不通
-    // "https://github.fxxk.dedyn.io/",  // 移动不通     
 ]
 
 var api_github = "https://api.github.com/repos/wengzhenquan/autojs6/contents/";
@@ -179,27 +183,30 @@ function checkVersion() {
 
     for (let i = 0; i < proxys.length; i++) {
         let startTime = new Date().getTime();
+        log('使用加速器：' + proxys[arr[i]]);
         let url = proxys[arr[i]] +
-            "https://raw.githubusercontent.com/wengzhenquan/autojs6/refs/heads/main/version";
+            github_download_url + "version";
 
-        try {
-            let thread = threads.start(() => {
-                try {
-                    serverVersion = http.get(url, {
-                        timeout: 5 * 1000,
-                    }).body.json();
-                } catch (e) {}
-            });
-            thread.join(5 * 1000);
-            thread.interrupt();
-        } catch (e) {} finally {
-            log(proxys[arr[i]])
-            let time = (new Date().getTime() - startTime);
-            log("请求时间：" + toSeconds(time));
-            if (serverVersion) {
-                //log(serverVersion.version)
-                break;
-            }
+        let result = null;
+        let thread = threads.start(() => {
+            try {
+                let res = http.get(url, {
+                    timeout: 5 * 1000,
+                });
+                if (res && res.statusCode === 200) {
+                    result = res.body.json();
+                }
+            } catch (e) {}
+        });
+        thread.join(5 * 1000);
+        thread.interrupt();
+
+        let time = (new Date().getTime() - startTime);
+        log("请求时间：" + toSeconds(time));
+        if (result) {
+            serverVersion = result;
+            //log(serverVersion.version)
+            break;
         }
     }
     if (!serverVersion) {
@@ -309,7 +316,7 @@ function startUpdate() {
 
     // 乱序数组
     let arr = getRandomNumbers(proxys.length - 1);
-    let i = 0;
+    let index = 0; //加速器序列
     for (let j = 0; j < updateList.length; j++) {
         let fileName = updateList[j];
         //忽略更新
@@ -333,46 +340,51 @@ function startUpdate() {
         }
 
         var filebytes = null;
-        while (i < proxys.length) {
+
+        let n = 0; //次数
+        while (n < proxys.length) {
             let startTime = new Date().getTime();
-            let url = proxys[arr[i]] +
-                github + "/blob/main/" + fileName;
-            log('使用加速器：' + proxys[arr[i]]);
+            log('使用加速器：' + proxys[arr[index]]);
+            let url = proxys[arr[index]] +
+                github_download_url + fileName;
+            // github + "/blob/main/" + fileName;
             // log(url);
-            try {
-                var res = null;
-                let thread = threads.start(() => {
-                    try {
-                        res = http.get(url, {
-                            timeout: download_timeout * 1000,
-                        });
-                    } catch (e) {}
-                });
-                thread.join(download_timeout * 1000);
-                thread.interrupt();
-                if (res && res.statusCode === 200) {
-                    filebytes = res.body.bytes();
-                }
-            } catch (e) {} finally {
-                let time = (new Date().getTime() - startTime);
-                log("请求时间：" + toSeconds(time));
 
-                //成功，跳出
-                if (filebytes && filebytes.length > filemin) {
-                    if (!isText && fileInfo &&
-                        !fileVerify(fileInfo, filebytes)) {
-                        console.error('校验失败，重新下载')
-                        continue;
+            let thread = threads.start(() => {
+                try {
+                    let res = http.get(url, {
+                        timeout: download_timeout * 1000,
+                    });
+                    if (res && res.statusCode === 200) {
+                        filebytes = res.body.bytes();
                     }
-                    break;
+                } catch (e) {}
+            });
+            thread.join(download_timeout * 1000);
+            thread.interrupt();
+
+            let time = (new Date().getTime() - startTime);
+            log("请求时间：" + toSeconds(time));
+
+            //成功，跳出
+            if (filebytes && filebytes.length > filemin) {
+                if (!isText && fileInfo &&
+                    !fileVerify(fileInfo, filebytes)) {
+                    console.error('校验失败，重新下载')
+                    index++;
+                    //重置
+                    if (index > proxys.length - 1) i = 0;
+                    n++;
+                    continue;
                 }
-
-                console.error('下载失败，更换加速器重试');
-                i++;
-
+                break;
             }
+
+            console.error('下载失败，更换加速器重试');
+            index++;
             //重置
-            if (i >= proxys.length - 1) i = 0;
+            if (index > proxys.length - 1) i = 0;
+            n++;
         }
 
         if (!filebytes || filebytes.length < filemin) {
@@ -500,7 +512,7 @@ function getGitHubFileInfo(filePath, branch) {
                 try {
                     result = http.get(url, {
                         timeout: 5 * 1000,
-                        
+
                     }).body.json();
                 } catch (e) {}
             });
@@ -824,6 +836,5 @@ checkVersion();
 
 //开始更新
 startUpdate()
-
 log(">>>>>★更新完成★<<<<<")
 exit();
