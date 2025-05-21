@@ -457,6 +457,7 @@ github：https://github.com/wengzhenquan/autojs6
 
 v3.7.4:(未发布)
 1. 修复双旗舰活动，第二次开盒报错null clickable();
+2. 优化当本地YOLO签到失败后，使用服务器签到方案。
 
 
 v3.7.3:
