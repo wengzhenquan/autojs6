@@ -2,8 +2,13 @@
 files.ensureDir("./tmp/")
 let locked = "./tmp/update_locked";
 if (!files.exists(locked)) {
-    events.on("exit", () => files.remove(locked));
+    events.on("exit", () => {
+        device.cancelKeepingAwake();
+        files.remove(locked)
+    });
     files.create(locked);
+    //10分钟亮屏
+    device.keepScreenDim(10 * 60 * 1000);
 } else {
     //确保只运行一个程序
     exit();
@@ -501,33 +506,28 @@ function getGitHubFileInfo(filePath, branch) {
     var result = null;
     for (let i = 0; i < api_proxys.length; i++) {
         //let startTime = new Date().getTime();
+        log(api_proxys[i])
         let url = api_proxys[i] +
             api_github + filePath + "?ref=" + branch;
         //  log(url)
+        
+        let res = null;
+        let thread = threads.start(() => {
+            try {
+                res = http.get(url, {
+                    timeout: 5 * 1000,
 
-        try {
-
-            let res = null;
-            let thread = threads.start(() => {
-                try {
-                    result = http.get(url, {
-                        timeout: 5 * 1000,
-
-                    }).body.json();
-                } catch (e) {}
-            });
-            thread.join(5 * 1000);
-            thread.interrupt();
-            if (res.statusCode === 200) {
-                result = res.body.json();
-            }
-        } catch (e) {} finally {
-            log(api_proxys[i])
-            //  let time = (new Date().getTime() - startTime);
-            // log("请求时间：" + toSeconds(time));
-            if (result) break;
-
-        }
+                });
+                if (res.statusCode === 200) {
+                    result = res.body.json();
+                }
+            } catch (e) {}
+        });
+        thread.join(5 * 1000);
+        thread.interrupt();
+        //  let time = (new Date().getTime() - startTime);
+        // log("请求时间：" + toSeconds(time));
+        if (result) break;
     }
     if (result) {
         // log(result)
