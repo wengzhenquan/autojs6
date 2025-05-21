@@ -455,6 +455,10 @@ github：https://github.com/wengzhenquan/autojs6
 
 --- 
 
+v3.7.4:(未发布)
+1. 修复双旗舰活动，第二次开盒报错null clickable();
+
+
 v3.7.3:
 1. 优化社区APP→签到→确认，确认按钮无法识别
 2. 添加“坐标点击：2”，强制使用桌面搜索图标
