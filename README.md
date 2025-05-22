@@ -407,7 +407,7 @@ Yolo-Plugins.apk  # Yolo插件(需安装）
    
    就是 $\color{red}{ Yolo-plugin.apk未安装。}$ 
      
-   什么？已经安装了还是报这个错误？   
+   `什么？已经安装了还是报这个错误？`   
    那你一定是root用户，且使用了`隐藏应用列表`。   
    将 Yolo-Plugins 加入白名单，让AutoJS6对其可见即可。
    
