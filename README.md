@@ -43,15 +43,15 @@ $\color{red}{(很多报错有中文提示，麻烦自己先看一眼。)}$
 ### 文件结构
 ```
 /
-├─ tmp/         # 临时工作目录
-｜   └─ error/   # 错误截图记录
+├─ tmp/            # 临时工作目录
+｜   └─ error/      # 错误截图记录
 ｜ 
 ├─ 【小社脚本】启动程序.js     (可独立运行)
 ├─ 【小社脚本】一键更新程序.js  (可独立运行)
 ├─ 【小社脚本】Run_x.x.x.js 
-├─ config.js    # 配置文件
-├─ version      # 版本信息
-└─ README.md    # 说明文档
+├─  config.js       # 配置文件
+├─  version         # 版本信息
+└─  README.md       # 说明文档
 
   ---- (yolov11本地签到模块) ----  
   
@@ -60,7 +60,7 @@ $\color{red}{(很多报错有中文提示，麻烦自己先看一眼。)}$
     └─ model/       # 模型文件目录
         ├─ yzm.bin
         └─ yzm.param
-Yolo-Plugins.apk  # Yolo插件(需安装）
+Yolo-Plugins.apk     # Yolo插件(需安装）
 ```       
 
 旧版脚本使用一键更新程序.js方法：
