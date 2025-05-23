@@ -462,6 +462,11 @@ github：https://github.com/wengzhenquan/autojs6
 
 
 --- 
+v3.7.5:
+1. 修复活动不存在时，流程卡住
+2. YOLO运行结束时释放资源
+3. 优化加速代理
+
 
 v3.7.4:
 1. 修复双旗舰活动，第二次开盒报错null clickable();

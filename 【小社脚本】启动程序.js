@@ -6,8 +6,8 @@
 修改    by：风中拾叶
 三改    by：wengzhenquan
 
-@version 20250520
-yolov11_w.js @version 20250513
+@version 20250523
+yolov11_w.js @version 20250523
 
 [github更新地址]：
 
@@ -159,6 +159,8 @@ function clickCenter(obj) {
         if (obj instanceof UiSelector) {
             obj = obj.findOne(2000);
         }
+        
+        if(!obj) return false;
 
         if (obj && (obj instanceof UiObject)) {
             let x = obj.bounds().centerX()
@@ -167,7 +169,7 @@ function clickCenter(obj) {
             return click(x, y);
         }
     }
-    return null;
+    return false;
 }
 
 // 有效控件点击，若本控件无法点击，一路寻找到能点击的父控件
@@ -176,6 +178,8 @@ function ableClick(obj) {
         if (obj instanceof UiSelector) {
             obj = obj.findOne(2000);
         }
+        
+        if(!obj) return false;
 
         if (obj && (obj instanceof UiObject)) {
             while (!obj.clickable() &&
@@ -188,7 +192,7 @@ function ableClick(obj) {
             return obj.click();
         }
     }
-    return null;
+    return false;
 }
 
 
@@ -508,13 +512,14 @@ let proxys = [
     "https://github-proxy.lixxing.top/", //
     "https://github.ednovas.xyz/", // 
     "https://g.blfrp.cn/", //
-    "https://cf.ghproxy.cc/", //
+    //"https://cf.ghproxy.cc/", //
+    "https://ghproxy.cfd/",
     "https://ghfast.top/", // 
     "https://gh-proxy.com/",
     //-----下面几个延迟稍高
     //"https://ghproxy.net/", //联通11/6/4/5，移动7，电信3
     //"https://gh-proxy.ygxz.in/", // 联通5/3/4，移动12/5/7/10/6，电信8/6/超时/9//11/15
-    //-------下面几个网络通用性不好
+    //-------下面几个网络连通性不好
     // "https://gitproxy.click/", //联通4/5，移动超时，电信1
     // "https://99z.top/", //联通5，移动不通，电信2
     // "https://fastgit.cc/", //联通5/4，移动不通，电信2

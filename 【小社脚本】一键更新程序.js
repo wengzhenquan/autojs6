@@ -63,7 +63,8 @@ let proxys = [
     "https://github-proxy.lixxing.top/", //
     "https://github.ednovas.xyz/", // 
     "https://g.blfrp.cn/", //
-    "https://cf.ghproxy.cc/", //
+    //"https://cf.ghproxy.cc/", //
+    "https://ghproxy.cfd/",
     "https://ghfast.top/", // 
     "https://gh-proxy.com/",
     //-----下面几个延迟稍高
