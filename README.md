@@ -363,7 +363,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
          
    ```
    
-   **8. 要开始使用AutoJs6录制或投放内容吗？每次需要手动点“立即开始”。**  
+   **8. $\color{red}{要开始使用AutoJs6录制或投放内容吗？}$ 每次需要手动点“立即开始”。**  
      
    $\color{red}{需要开启“投影媒体权限”，才能自动跳过这一步。}$  
    
@@ -383,7 +383,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
     (上面使用步骤10的链接里面，已上传这两款APP。)   
    ```
    
-   **9. $\color{red}{方法images.requestScreenCapture()调用失败。}$ **  
+   **9.  $\color{red}{方法images.requestScreenCapture()调用失败。}$ **  
    （截图权限无法通过）
    
    这是 $\color{red}{“投影媒体权限”}$ 获取异常导致的。
