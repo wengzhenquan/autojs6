@@ -724,8 +724,8 @@ function updateScript() {
         return;
     }
     // 等待脚本执行完成
-    while (files.exists(update_locked));
-    sleep(1000)
+    while (files.exists(update_locked))
+        sleep(1000);
 
     // ========== 启动新的主程序 ==========
     //重新加载本地版本文件
