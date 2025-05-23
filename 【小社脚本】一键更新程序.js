@@ -181,7 +181,8 @@ function integrityCheck() {
         log("----------------------------");
     }
     log("文件检查结束");
-    if (!missing) console.info("没有缺失的文件");
+    if (!missing)
+        console.info("没有缺失的文件");
 }
 
 // 检查脚本更新。
@@ -212,7 +213,7 @@ function checkVersion() {
 
         let time = (new Date().getTime() - startTime);
         log("请求时间：" + toSeconds(time));
-        
+
         if (result) {
             serverVersion = result;
             //log(serverVersion.version)
