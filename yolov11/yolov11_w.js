@@ -1,4 +1,4 @@
-//版本号：@version 20250513
+//版本号：@version 20250523
 
 // yolov11.js - YOLO 检测与结果处理模块
 //var config = require("../config.js");
@@ -26,6 +26,13 @@ const tag = "[YOLO]";
 // --- 模块级变量 (用于存储初始化状态和实例) ---
 let yoloInstance = null;
 let isYoloInitialized = false;
+
+
+events.on("exit", function() {
+    if (yoloInstance && isYoloInitialized) {
+        yoloInstance.release();
+    }
+});
 /**
  * @description 初始化 YOLO 插件和模型。
  * 该函数在模块首次加载时自动执行一次。
