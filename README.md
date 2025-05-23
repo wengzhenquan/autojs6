@@ -284,7 +284,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
    
    ```  
    
-   **2. 为什么明明已经打开小程序，依旧报“进不了微信小程序，我尽力了！”？**  
+   **2. 为什么明明已经打开小程序，依旧报“ $\color{red}{进不了微信小程序，我尽力了！}$ ”？**  
    
    因为布局分析失效了，无法检测到小程序是否已经打开。   
     
@@ -294,7 +294,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
    需要强制使用桌面搜索小程序图标，可将`坐标点击：`改成2   
    
     
-   **3. 什么是“排水沟过弯大法”？我的手机有时候无法启动小米社区？**
+   **3. 什么是“ $\color{red}{排水沟过弯大法}$ ”？我的手机有时候无法启动小米社区？**
    $\color{red}{（缺少“后台弹出界面”权限）}$   
    
    
@@ -351,7 +351,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
    
    ```
    
-   **7.为什么我点击`【停止脚本】`按钮无法停止脚本？显示“关不掉！x1”。**  
+   **7.为什么我点击`【停止脚本】`按钮无法停止脚本？显示“ $\color{red}{关不掉！x1}$ ”。**  
    点击已经成功了， $\color{red}{继续点击}$ ，你一定可以停止成功的。
    
    ```  
@@ -383,7 +383,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
     (上面使用步骤10的链接里面，已上传这两款APP。)   
    ```
    
-   **9. 方法images.requestScreenCapture()调用失败。**  
+   **9. $\color{red}{方法images.requestScreenCapture()调用失败。}$ **  
    （截图权限无法通过）
    
    这是 $\color{red}{“投影媒体权限”}$ 获取异常导致的。
@@ -399,7 +399,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
    第二次执行不会再出现。    
    
    
-   **10. 缺失yzm.bin、yzm.param文件/Yolo-plugin.apk 插件未安装** 
+   **10. $\color{red}{缺失yzm.bin、yzm.param文件/Yolo-plugin.apk 插件未安装}$ ** 
    
      
    这些是本地YOLO支持的文件。    
@@ -413,7 +413,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
    
    ***如果Yolo-plugin.apk已安装，依旧提示未安装，看下面问题11。***  
    
-   **11.方法plugins.load调用失败.Plugin com.circlefork.yolo not found in installed apps**  
+   **11. $\color{red}{方法plugins.load调用失败.Plugin com.circlefork.yolo not found in installed apps}$ **  
    
    就是 $\color{red}{ Yolo-plugin.apk未安装。}$ 
      
