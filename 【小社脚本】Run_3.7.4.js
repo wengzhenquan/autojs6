@@ -1479,7 +1479,7 @@ function 活动1() {
             .desc("签到").findOne().click();
         sleep(1000);
     }
-    cj = button.findOne(2000);
+    cj = cj.findOne(2000);
     if (!cj) {
         console.error('未找到活动入口')
         return;
