@@ -1317,8 +1317,12 @@ function see() {
     }
     swipe(dwidth * 0.5, dheight * 0.8, dwidth * 0.5, dheight * 0.4, 300); // 向下滚动查找
     sleep(1000);
-
-    ableClick(button.findOne());
+    button = button.findOne(2000);
+    if (!button) {
+        console.error('未找到活动入口')
+        return;
+    }
+    ableClick(button);
 
     let blb = className("android.widget.Button")
         .text("查看金币详情")
@@ -1475,8 +1479,12 @@ function 活动1() {
             .desc("签到").findOne().click();
         sleep(1000);
     }
-
-    ableClick(cj.findOne());
+    cj = button.findOne(2000);
+    if (!cj) {
+        console.error('未找到活动入口')
+        return;
+    }
+    ableClick(cj);
 
     let register = className("android.widget.Button")
         .text("立即报名");
