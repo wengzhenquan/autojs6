@@ -234,7 +234,8 @@ function checkVersion() {
         hasNewVersion = compareVersions(serverVersion.version, localVersion.version) > 0;
 
         if (!hasNewVersion) {
-            log("已经是最新版，开始文件完整性检查");
+            console.info("已经是最新版");
+            log("开始文件完整性检查……");
             integrityCheck();
             return;
         }
