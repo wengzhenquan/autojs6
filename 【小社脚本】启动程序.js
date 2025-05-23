@@ -512,7 +512,7 @@ let proxys = [
     "https://ghfast.top/", // 
     "https://gh-proxy.com/",
     //-----下面几个延迟稍高
-    "https://ghproxy.net/", //联通11/6/4/5，移动7，电信3
+    //"https://ghproxy.net/", //联通11/6/4/5，移动7，电信3
     //"https://gh-proxy.ygxz.in/", // 联通5/3/4，移动12/5/7/10/6，电信8/6/超时/9//11/15
     //-------下面几个网络通用性不好
     // "https://gitproxy.click/", //联通4/5，移动超时，电信1
