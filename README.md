@@ -399,7 +399,8 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
    第二次执行不会再出现。    
    
    
-   **10. $\color{red}{缺失yzm.bin、yzm.param文件/Yolo-plugin.apk插件未安装}$** 
+   **10. $\color{red}{缺失yzm.bin、yzm.param文件}$**  
+     $\color{red}{/Yolo-plugin.apk插件未安装}$** 
    
      
    这些是本地YOLO支持的文件。    
