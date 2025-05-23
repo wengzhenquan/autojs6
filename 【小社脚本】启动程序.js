@@ -142,7 +142,7 @@ function startTimeoutMonitor() {
             const startTime = new Date(date.replace(/-/g, '/')).getTime();
             let currentTime = new Date().getTime();
             if (currentTime - startTime > (maxRuntime - 10 * 1000)) {
-                console.error(`脚本运行超过设定的 ${maxRuntime / 1000} 秒，强制退出`);
+                console.error(`脚本运行到达 ${(maxRuntime +10*1000)/60/1000} 分钟，强制退出`);
                 notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("发生未知错误，脚本强制停止\n详细问题，请查看日志"));
                 exit();
             }
@@ -155,11 +155,42 @@ function startTimeoutMonitor() {
 
 // 点击中心坐标
 function clickCenter(obj) {
-    let x = obj.bounds().centerX()
-    let y = obj.bounds().centerY()
-    //log(x,y)
-    return click(x, y);
+    if (obj) {
+        if (obj instanceof UiSelector) {
+            obj = obj.findOne(2000);
+        }
+
+        if (obj && (obj instanceof UiObject)) {
+            let x = obj.bounds().centerX()
+            let y = obj.bounds().centerY()
+            //log(x,y)
+            return click(x, y);
+        }
+    }
+    return null;
 }
+
+// 有效控件点击，若本控件无法点击，一路寻找到能点击的父控件
+function ableClick(obj) {
+    if (obj) {
+        if (obj instanceof UiSelector) {
+            obj = obj.findOne(2000);
+        }
+
+        if (obj && (obj instanceof UiObject)) {
+            while (!obj.clickable() &&
+                obj.parent() &&
+                obj.parent().depth() > 0 &&
+                obj.parent().indexInParent() > -1) {
+                obj = obj.parent();
+                wait(() => false, 300);
+            }
+            return obj.click();
+        }
+    }
+    return null;
+}
+
 
 // 格式化后的实时时间
 function nowDate() {
@@ -470,7 +501,8 @@ function init() {
 //加速代理
 let proxys = [
     "https://goppx.com/", // 
-    "https://gh.llkk.cc/", //
+    // "https://gh.llkk.cc/", // 挂了
+    'https://github.wuzhij.com/',
     "https://git.886.be/", // 
     "https://github.moeyy.xyz/", //
     "https://github-proxy.lixxing.top/", //
@@ -478,10 +510,10 @@ let proxys = [
     "https://g.blfrp.cn/", //
     "https://cf.ghproxy.cc/", //
     "https://ghfast.top/", // 
+    "https://gh-proxy.com/",
     //-----下面几个延迟稍高
-    // "https://gh-proxy.com/", //联通8/5/10，移动5/3，电信2
-    // "https://ghproxy.net/", //联通11/6/4/5，移动7，电信3
-    // "https://gh-proxy.ygxz.in/", // 联通5/3/4，移动12/5/7/10/6，电信8/6/超时/9//11/15
+    "https://ghproxy.net/", //联通11/6/4/5，移动7，电信3
+    //"https://gh-proxy.ygxz.in/", // 联通5/3/4，移动12/5/7/10/6，电信8/6/超时/9//11/15
     //-------下面几个网络通用性不好
     // "https://gitproxy.click/", //联通4/5，移动超时，电信1
     // "https://99z.top/", //联通5，移动不通，电信2
@@ -517,7 +549,7 @@ function checkVersion() {
         });
         thread.join(3 * 1000);
         thread.interrupt();
-        if (!result || !serverVersion) {
+        if (!result || result.length < 300 || !serverVersion) {
             continue;
         }
         if (!files.exists("./version")) {
@@ -573,7 +605,7 @@ function checkVersion() {
         }
     }
 
-    if (hasNewVersion) {
+    if (hasNewVersion && (config && config.检查更新 === 1)) {
         notice({
             title: '小社脚本有新的版本！！！🎊v' + serverVersion.version,
             content: '脚本运行日志里有更新清单\n点击此处去更新🌐',
@@ -644,19 +676,18 @@ function updateScript() {
             });
             thread.join(5 * 1000);
             thread.interrupt();
-            if (file && file.length > 1000) {
+            if (file && file.length > 10 * 1024) {
                 break;
             }
             console.error('下载失败，更换加速器重试');
 
         }
 
-        if (file && file.length > 1000) {
+        if (file && file.length > 10 * 1024) {
             files.write("./" + update_script, file, "utf-8");
             console.info("下载成功")
             console.info('文件大小：' + formatFileSize(file.length))
 
-            //   update_script = serverVersion.updateScript;
         }
 
     }
@@ -668,7 +699,7 @@ function updateScript() {
     // ========== 启动更新脚本 ==========
 
     // 续上5分钟时间
-    device.keepScreenDim(5 * 60 * 1000);
+    //device.keepScreenDim(5 * 60 * 1000);
     maxRuntime = maxRuntime + 5 * 60 * 1000;
 
     console.error("提示：启动→" + update_script)
@@ -691,7 +722,6 @@ function updateScript() {
     if (!files.exists(update_locked)) {
         console.error(update_script + "启动失败！")
         return;
-        //exit();
     }
     // 等待脚本执行完成
     while (files.exists(update_locked));
@@ -763,13 +793,21 @@ function unLock() {
             log("→图案解锁");
             gesture(600, config.锁屏图案坐标);
         } else if (config.解锁方式 === 2) {
-            log("→数字密码解锁");
+            if (textContains('混合').exists()) {
+                log("→数字密码(混合密码)解锁");
+            } else {
+                log("→数字密码解锁");
+            }
+
             for (let i = 0; i < config.锁屏数字密码.length; i++) {
                 let num = content(config.锁屏数字密码[i]).findOne();
                 // while (!num.clickable()) num = num.parent();
                 // num.click();
                 clickCenter(num);
                 wait(() => false, 300);
+            }
+            if (textContains('混合').exists()) {
+                clickCenter(desc('回车').findOne());
             }
         }
         for (i = 0; i < 3; i++) {
@@ -985,8 +1023,8 @@ function main() {
         device.wakeUp();
         wait(() => false, 1000);
     }
-    //两分钟亮屏
-    device.keepScreenDim(2 * 60 * 1000);
+    //亮屏
+    device.keepScreenDim(maxRuntime);
 
     //屏幕解锁
     unLock();

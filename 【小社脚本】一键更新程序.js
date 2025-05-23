@@ -4,7 +4,7 @@ let locked = "./tmp/update_locked";
 if (!files.exists(locked)) {
     events.on("exit", () => {
         device.cancelKeepingAwake();
-        files.remove(locked)
+        files.remove(locked);
     });
     files.create(locked);
     //10分钟亮屏
@@ -17,11 +17,14 @@ if (!files.exists(locked)) {
 // 打开日志页面
 console.launch();
 
-//下载超时，单位：秒。 
+//下载文件超时，单位：秒。 
 //网速快，可以改成10~15，网速慢改成30~60
 // 参考：300Mbps宽带10s，100Mbps宽带15s，50Mbps宽带30s
 // 500Mbps及以上 5s，不建议改成小于5
 var download_timeout = 15;
+
+//最小文件大小(B)，小于这个值都认为错误，将重试
+var filemin = 300;
 
 // 忽略的更新列表
 var ignoreList = [
@@ -52,7 +55,8 @@ var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs
 //加速代理
 let proxys = [
     "https://goppx.com/", // 
-    "https://gh.llkk.cc/", //
+    // "https://gh.llkk.cc/", // 挂了
+    'https://github.wuzhij.com/',
     "https://git.886.be/", // 
     "https://github.moeyy.xyz/", //
     "https://github-proxy.lixxing.top/", //
@@ -60,11 +64,11 @@ let proxys = [
     "https://g.blfrp.cn/", //
     "https://cf.ghproxy.cc/", //
     "https://ghfast.top/", // 
+    "https://gh-proxy.com/",
     //-----下面几个延迟稍高
-    // "https://gh-proxy.com/", //联通8/5/10，移动5/3，电信2
-    // "https://ghproxy.net/", //联通11/6/4/5，移动7，电信3
-    // "https://gh-proxy.ygxz.in/", // 联通5/3/4，移动12/5/7/10/6，电信8/6/超时/9//11/15
-    //-------下面几个网络通用性不好
+    //"https://ghproxy.net/", //联通11/6/4/5，移动7，电信3
+    //"https://gh-proxy.ygxz.in/", // 联通5/3/4，移动12/5/7/10/6，电信8/6/超时/9//11/15
+    //-------下面几个网络连通性不好
     // "https://gitproxy.click/", //联通4/5，移动超时，电信1
     // "https://99z.top/", //联通5，移动不通，电信2
     // "https://fastgit.cc/", //联通5/4，移动不通，电信2
@@ -76,7 +80,7 @@ var api_github = "https://api.github.com/repos/wengzhenquan/autojs6/contents/";
 let api_proxys = [
     "https://99z.top/",
     "https://gh.llkk.cc/",
-    //  "https://ghproxy.monkeyray.net",  
+    "https://ghproxy.monkeyray.net/",
 ]
 
 //对比版本大小，前面的大，返回1，相等0，后面大-1
@@ -208,6 +212,7 @@ function checkVersion() {
 
         let time = (new Date().getTime() - startTime);
         log("请求时间：" + toSeconds(time));
+        
         if (result) {
             serverVersion = result;
             //log(serverVersion.version)
@@ -317,7 +322,6 @@ function startUpdate() {
     log(">>>>>★开始更新★<<<<<")
     log("开始下载文件……")
     log("请不要终止脚本")
-    let filemin = 200; //最小文件大小(B)，小于这个大小都认为错误，将重试
 
     // 乱序数组
     let arr = getRandomNumbers(proxys.length - 1);
@@ -343,9 +347,10 @@ function startUpdate() {
             console.warn('该文件需要文件校验！')
             fileInfo = getGitHubFileInfo(fileName, 'main')
         }
+        //超时，文本文件5秒，非文本文件使用配置
+        let timeoutTimes = isText ? 5 : download_timeout;
 
         var filebytes = null;
-
         let n = 0; //次数
         while (n < proxys.length) {
             let startTime = new Date().getTime();
@@ -358,14 +363,14 @@ function startUpdate() {
             let thread = threads.start(() => {
                 try {
                     let res = http.get(url, {
-                        timeout: download_timeout * 1000,
+                        timeout: timeoutTimes * 1000,
                     });
                     if (res && res.statusCode === 200) {
                         filebytes = res.body.bytes();
                     }
                 } catch (e) {}
             });
-            thread.join(download_timeout * 1000);
+            thread.join(timeoutTimes * 1000);
             thread.interrupt();
 
             let time = (new Date().getTime() - startTime);
@@ -510,7 +515,7 @@ function getGitHubFileInfo(filePath, branch) {
         let url = api_proxys[i] +
             api_github + filePath + "?ref=" + branch;
         //  log(url)
-        
+
         let res = null;
         let thread = threads.start(() => {
             try {
