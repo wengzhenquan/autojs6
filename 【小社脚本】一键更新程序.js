@@ -279,7 +279,7 @@ function checkVersion() {
             log("----------------------------");
             console.log("需要更新的文件清单:");
             updateList.forEach((file) => {
-                let name = !file.includes('/') ? ''.padStart(5) + file : file;
+                let name = !file.includes('【') ? ''.padStart(1) + file : file;
                 console.error(name);
                 if (file.includes('config') && files.exists("./" + file)) {
                     log('(更新前，建议重命名config.js，')
@@ -291,7 +291,7 @@ function checkVersion() {
         if (deleteList.length > 0) {
             console.log("需要删除的文件清单:");
             deleteList.forEach((file) => {
-                let name = !file.includes('/') ? ''.padStart(5) + file : file;
+                let name = !file.includes('【') ? ''.padStart(1) + file : file;
                 console.error(name);
             });
             log("----------------------------");
