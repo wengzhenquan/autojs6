@@ -413,7 +413,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
    
    ***如果Yolo-plugin.apk已安装，依旧提示未安装，看下面问题11。***  
    
-   **11. $\color{red}{方法plugins.load调用失败.}$Plugin com.circlefork.yolo not found in installed apps **  
+   **11. $\color{red}{方法plugins.load调用失败}$。 **  
    
    就是 $\color{red}{ Yolo-plugin.apk未安装。}$ 
      
