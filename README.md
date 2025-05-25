@@ -481,6 +481,12 @@ github：https://github.com/wengzhenquan/autojs6
 
 
 --- 
+
+v3.7.6:
+1. 修改日志颜色
+2. 优化部分代码
+
+
 v3.7.5:
 1. 修复活动不存在时，流程卡住
 2. YOLO运行结束时释放资源
