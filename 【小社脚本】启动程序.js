@@ -6,7 +6,7 @@
 修改    by：风中拾叶
 三改    by：wengzhenquan
 
-@version 20250523
+@version 20250524
 yolov11_w.js @version 20250523
 
 [github更新地址]：
@@ -92,7 +92,7 @@ consoleShow();
 consoleShow();
 //consoleShow();
 
-log("—----->--- Start ---<-----—");
+console.warn("—----->--- Start ---<-----—");
 log(("AutoJS6 版本：").padStart(21) + autojs.versionName)
 log(("Android 版本：").padStart(21) + device.release)
 log(("微信 Ver：") + String(wchatVersionName).padStart(20))
@@ -138,7 +138,6 @@ events.on("exit", function() {
 function startTimeoutMonitor() {
     threads.start(function() {
         setInterval(function() {
-            //click('知道了');
             const startTime = new Date(date.replace(/-/g, '/')).getTime();
             let currentTime = new Date().getTime();
             if (currentTime - startTime > (maxRuntime - 10 * 1000)) {
@@ -156,11 +155,13 @@ function startTimeoutMonitor() {
 // 点击中心坐标
 function clickCenter(obj) {
     if (obj) {
-        if (obj instanceof UiSelector) {
-            obj = obj.findOne(2000);
+        if (typeof obj === 'string') {
+            obj = content(obj);
         }
-        
-        if(!obj) return false;
+
+        if (obj instanceof UiSelector) {
+            obj = obj.findOne(1000);
+        }
 
         if (obj && (obj instanceof UiObject)) {
             let x = obj.bounds().centerX()
@@ -168,6 +169,7 @@ function clickCenter(obj) {
             //log(x,y)
             return click(x, y);
         }
+
     }
     return false;
 }
@@ -175,11 +177,14 @@ function clickCenter(obj) {
 // 有效控件点击，若本控件无法点击，一路寻找到能点击的父控件
 function ableClick(obj) {
     if (obj) {
-        if (obj instanceof UiSelector) {
-            obj = obj.findOne(2000);
+        if (typeof obj === 'string') {
+            obj = content(obj);
         }
-        
-        if(!obj) return false;
+
+        if (obj instanceof UiSelector) {
+            obj = obj.findOne(1000);
+        }
+
 
         if (obj && (obj instanceof UiObject)) {
             while (!obj.clickable() &&
@@ -191,6 +196,7 @@ function ableClick(obj) {
             }
             return obj.click();
         }
+
     }
     return false;
 }
@@ -354,11 +360,11 @@ function consoleShow() {
             titleTextSize: 20,
             titleTextColor: 'green',
             titleIconsTint: 'yellow',
-            titleBackgroundAlpha: 0.8,
+            titleBackgroundAlpha: 0.9,
             titleBackgroundColor: 'dark-blue',
             // titleBackgroundTint: 'dark-blue', //6.5.0版本没有
             contentTextSize: 15,
-            contentBackgroundAlpha: 0.8,
+            contentBackgroundAlpha: 0.9,
             touchable: false,
             exitOnClose: 6e3,
         });
@@ -366,8 +372,8 @@ function consoleShow() {
         console.setContentTextColor({
             verbose: 'white',
             log: 'green',
-            info: 'blue',
-            warn: 'yellow',
+            info: 'yellow',
+            warn: 'blue',
             error: 'red'
         });
         console3();
@@ -427,7 +433,7 @@ function loadLocalVersion() {
 }
 
 function init() {
-    log(">>>>→程序完整性校验←<<<<")
+    console.info(">>>>→程序完整性校验←<<<<")
 
     if (!files.exists("./version")) {
         console.error("缺失version文件");
@@ -504,26 +510,35 @@ function init() {
 
 //加速代理
 let proxys = [
-    "https://goppx.com/", // 
-    // "https://gh.llkk.cc/", // 挂了
-    'https://github.wuzhij.com/',
-    "https://git.886.be/", // 
+
     "https://github.moeyy.xyz/", //
-    "https://github-proxy.lixxing.top/", //
-    "https://github.ednovas.xyz/", // 
     "https://g.blfrp.cn/", //
-    //"https://cf.ghproxy.cc/", //
-    "https://ghproxy.cfd/",
-    "https://ghfast.top/", // 
+    "https://goppx.com/", // 
     "https://gh-proxy.com/",
-    //-----下面几个延迟稍高
-    //"https://ghproxy.net/", //联通11/6/4/5，移动7，电信3
-    //"https://gh-proxy.ygxz.in/", // 联通5/3/4，移动12/5/7/10/6，电信8/6/超时/9//11/15
-    //-------下面几个网络连通性不好
+    "https://git.886.be/", // 
+    "https://ghproxy.cfd/",
+    "https://ghproxy.monkeyray.net/",
+    "https://github.ednovas.xyz/", // 
+    "https://cf.ghproxy.cc/", //
+    "https://github-proxy.lixxing.top/", //
+    "https://ghfast.top/", // 
+
+
+    // // 速度慢
     // "https://gitproxy.click/", //联通4/5，移动超时，电信1
-    // "https://99z.top/", //联通5，移动不通，电信2
-    // "https://fastgit.cc/", //联通5/4，移动不通，电信2
-    // "https://github.fxxk.dedyn.io/", // 联通5，移动不通，电信2
+    // "https://ghproxy.net/", //联通11/6/4/5，移动7，电信3
+    // "https://gh-proxy.ygxz.in/", // 联通5/3/4，移动12/5/7/10/6，电信8/6/超时/9//11/15    
+
+    // 移动下面不通
+    "https://fastgit.cc/", //移动不通
+    "https://99z.top/", //移动不通
+    "https://github.fxxk.dedyn.io/", //移动不通
+    "https://ghfile.geekertao.top/", //移动不通
+    "https://gitproxy.mrhjx.cn/", //移动不通
+
+    // 联通、移动下面不通
+    // "https://github.wuzhij.com/",
+    // "https://gh.llkk.cc/", // 挂了
 
 ]
 
@@ -535,7 +550,7 @@ function checkVersion() {
     let arr = getRandomNumbers(proxys.length - 1);
 
     //远程version文件数据
-    console.info("正在查询版本更新……")
+    log("正在查询版本更新……")
     for (let i = 0; i < proxys.length; i++) {
         let url = proxys[arr[i]] +
             github_download_url + 'version';
@@ -569,7 +584,7 @@ function checkVersion() {
 
     if (files.exists("./version")) {
         //本地版本信息
-        console.info("本地脚本版本：" + localVersion.version)
+        console.error("本地脚本版本：" + localVersion.version)
     }
     if (!serverVersion) {
         console.error("连接github更新失败")
@@ -620,14 +635,14 @@ function checkVersion() {
             },
             autoCancel: true
         });
-        console.warn("有新的版本！！！")
+        console.error("有新的版本！！！")
         console.info("当前版本：" + localVersion.version)
         console.info("最新版本：" + serverVersion.version)
         console.log("-----→");
         console.error("增量更新列表：")
         if (updateList.length > 0) {
             log("----------------------------");
-            console.log("需要更新的文件清单:");
+            log("需要更新的文件清单:");
             updateList.forEach((file) => {
                 let name = !file.includes('【') ? ''.padStart(1) + file : file;
                 console.error(name);
@@ -640,7 +655,7 @@ function checkVersion() {
         }
         if (deleteList.length > 0) {
             log("----------------------------");
-            console.log("需要删除的文件清单:");
+            log("需要删除的文件清单:");
             deleteList.forEach((file) => {
                 let name = !file.includes('【') ? ''.padStart(1) + file : file;
                 console.error(name);
@@ -648,15 +663,18 @@ function checkVersion() {
             log("----------------------------");
         }
     } else {
-        console.info("脚本已经是最新版！")
+        console.error("脚本已经是最新版！")
     }
 }
 
 function updateScript() {
+    // 优先使用服务端更新脚本名称
+    if (serverVersion && serverVersion.updateScript)
+        update_script = serverVersion.updateScript;
 
     if (!files.exists("./" + update_script)) {
         console.error(update_script + ' 不存在');
-        console.info("开始下载更新程序：" + update_script)
+        log("开始下载更新程序：" + update_script)
 
         // 乱序数组
         let arr = getRandomNumbers(proxys.length - 1);
@@ -697,8 +715,15 @@ function updateScript() {
 
     }
     if (!files.exists("./" + update_script)) {
-        console.error(update_script + ' 不存在，无法更新');
-        return;
+        console.error(update_script + ' 下载失败');
+        console.error('尝试加载本地更新程序……');
+
+        update_script = localVersion.updateScript;
+        if (!files.exists("./" + update_script)) {
+            console.error(update_script + ' 不存在');
+            console.error('找不到更新程序，无法更新');
+            return;
+        }
     }
 
     // ========== 启动更新脚本 ==========
@@ -771,10 +796,10 @@ function unLock() {
     if (!isLocked) return;
 
     console.info("-----→");
-    console.info("设备已锁定！！！");
-    console.info("启动解锁程序……");
+    log("设备已锁定！！！");
+    log("启动解锁程序……");
 
-    log(">>>>>>>→设备解锁←<<<<<<<")
+    console.info(">>>>>>>→设备解锁←<<<<<<<")
 
     log("开始解锁设备……");
     //多次上滑
@@ -843,7 +868,7 @@ function unLock() {
 // 权限验证
 function permissionv() {
 
-    log(">>>>>>→权限验证←<<<<<<")
+    console.info(">>>>>>→权限验证←<<<<<<")
     log("--------- 必要权限 ---------");
     // 无障碍权限
 
@@ -937,7 +962,9 @@ function permissionv() {
                 }
                 return false;
             } else if (manufacturer === "Oppo") {
-                return context.getPackageManager().checkPermission("android.permission.SYSTEM_ALERT_WINDOW", context.getPackageName()) == PackageManager.PERMISSION_GRANTED;
+                return context
+                    .getPackageManager()
+                    .checkPermission("android.permission.SYSTEM_ALERT_WINDOW", context.getPackageName()) == PackageManager.PERMISSION_GRANTED;
             } else {
                 let appOps = context.getSystemService(context.APP_OPS_SERVICE);
                 return appOps.checkOpNoThrow(AppOpsManager.OPSTR_START_FOREGROUND, Process.myUid(), context.getPackageName()) == AppOpsManager.MODE_ALLOWED;
@@ -1067,8 +1094,7 @@ function main() {
     let bright = device.getBrightness();
     if (config && config.运行亮度) {
         device.setBrightnessMode(0);
-        let value = 130 * config.运行亮度;
-        device.setBrightness(value);
+        device.setBrightness(130 * config.运行亮度);
         console.error("提示：已修改亮度为：" + config.运行亮度 * 100 + "%");
     }
 
@@ -1092,6 +1118,8 @@ function main() {
     try {
         //逻辑程序
         run();
+        log("      —— 耗时[ " + getDurTime(date) + " ] ——");
+        console.warn("—----->--- End ---<-----—");
     } catch (e) {
         if (!(e.javaException instanceof ScriptInterruptedException)) {
             //通常只有 1 行消息. 

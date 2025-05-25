@@ -55,34 +55,44 @@ var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs
 
 //加速代理
 let proxys = [
-    "https://goppx.com/", // 
-    // "https://gh.llkk.cc/", // 挂了
-    'https://github.wuzhij.com/',
-    "https://git.886.be/", // 
+
     "https://github.moeyy.xyz/", //
-    "https://github-proxy.lixxing.top/", //
-    "https://github.ednovas.xyz/", // 
     "https://g.blfrp.cn/", //
-    //"https://cf.ghproxy.cc/", //
-    "https://ghproxy.cfd/",
-    "https://ghfast.top/", // 
+    "https://goppx.com/", // 
     "https://gh-proxy.com/",
-    //-----下面几个延迟稍高
-    //"https://ghproxy.net/", //联通11/6/4/5，移动7，电信3
-    //"https://gh-proxy.ygxz.in/", // 联通5/3/4，移动12/5/7/10/6，电信8/6/超时/9//11/15
-    //-------下面几个网络连通性不好
+    "https://git.886.be/", // 
+    "https://ghproxy.cfd/",
+    "https://ghproxy.monkeyray.net/",
+    "https://github.ednovas.xyz/", // 
+    "https://cf.ghproxy.cc/", //
+    "https://github-proxy.lixxing.top/", //
+    "https://ghfast.top/", // 
+
+
+    // // 速度慢
     // "https://gitproxy.click/", //联通4/5，移动超时，电信1
-    // "https://99z.top/", //联通5，移动不通，电信2
-    // "https://fastgit.cc/", //联通5/4，移动不通，电信2
-    // "https://github.fxxk.dedyn.io/", // 联通5，移动不通，电信2
+    // "https://ghproxy.net/", //联通11/6/4/5，移动7，电信3
+    // "https://gh-proxy.ygxz.in/", // 联通5/3/4，移动12/5/7/10/6，电信8/6/超时/9//11/15    
+
+    // 移动下面不通
+    "https://fastgit.cc/", //移动不通
+    "https://99z.top/", //移动不通
+    "https://github.fxxk.dedyn.io/", //移动不通
+    "https://ghfile.geekertao.top/", //移动不通
+    "https://gitproxy.mrhjx.cn/", //移动不通
+
+    // 联通、移动下面不通
+    // "https://github.wuzhij.com/",
+    // "https://gh.llkk.cc/", // 挂了
 
 ]
 
 var api_github = "https://api.github.com/repos/wengzhenquan/autojs6/contents/";
 let api_proxys = [
     "https://99z.top/",
-    "https://gh.llkk.cc/",
     "https://ghproxy.monkeyray.net/",
+    "https://gh.llkk.cc/",
+
 ]
 
 //对比版本大小，前面的大，返回1，相等0，后面大-1
@@ -845,5 +855,5 @@ checkVersion();
 
 //开始更新
 startUpdate()
-log(">>>>>★更新完成★<<<<<")
+console.info("------→>★更新完成★<←------")
 exit();
