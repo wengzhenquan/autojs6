@@ -480,7 +480,7 @@ function startUpdate() {
     if (successList.length > 0) {
         console.log("更新成功清单:");
         successList.forEach((file) => {
-            let name = !file.includes('/') ? ''.padStart(5) + file : file;
+            let name = !file.includes('【') ? ''.padStart(1) + file : file;
             console.info(name);
         });
         log("----------------------------");
@@ -489,7 +489,7 @@ function startUpdate() {
     if (errorList.length > 0) {
         console.log("更新失败清单:");
         errorList.forEach((file) => {
-            let name = !file.includes('/') ? ''.padStart(5) + file : file;
+            let name = !file.includes('【') ? ''.padStart(1) + file : file;
             console.error(name);
         });
         log("----------------------------");
@@ -498,7 +498,7 @@ function startUpdate() {
     if (deleteList.length > 0) {
         console.log("删除文件清单:");
         deleteList.forEach((file) => {
-            let name = !file.includes('/') ? ''.padStart(5) + file : file;
+            let name = !file.includes('【') ? ''.padStart(1) + file : file;
             console.error(name);
             files.remove('./' + file)
         });
