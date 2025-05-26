@@ -499,7 +499,7 @@ function init() {
                 if (!config.本地YOLO识图 &&
                     value.toLowerCase().includes('yolo'))
                     continue;
-                console.error(value + " 未安装");
+                console.error(key + " 未安装");
             }
         }
     }
