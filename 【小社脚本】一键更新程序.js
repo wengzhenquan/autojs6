@@ -56,36 +56,41 @@ var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs
 //加速代理
 let proxys = [
 
+    "https://gh.b52m.cn/",
     "https://github.proxy.class3.fun/",
-    "https://gp-us.fyan.top/",
-    "https://gh.nxnow.top/",
+    "https://gh.qninq.cn/",
+    "https://gitproxy.click/", //联通4/5，移动超时，电信1
+    "https://gh-proxy.ygxz.in/", // 联通5/3/4，移动12/5/7/10/6，电信8/6/超时/9//11/15    
     "https://hub.gitmirror.com/",
-    "https://gh.7761.cf/",
+    "https://gp-us.fyan.top/",
     "https://api-gh.muran.eu.org/",
     "https://g.blfrp.cn/", //
     "https://gh.catmak.name/",
-    "https://gh.qninq.cn/",
-    "https://gitproxy.click/", //联通4/5，移动超时，电信1
-    "https://gh.b52m.cn/",
-    "https://gh-proxy.ygxz.in/", // 联通5/3/4，移动12/5/7/10/6，电信8/6/超时/9//11/15    
+    "https://gh.nxnow.top/",
     "https://ghfast.top/", // 
+    "https://gh.7761.cf/",
 
 ]
 
 var api_github = "https://api.github.com/repos/wengzhenquan/autojs6/contents/";
 let api_proxys = [
+
     "https://gh.catmak.name/",
     "https://g.cachecdn.ggff.net/",
     "https://ghproxy.monkeyray.net/",
-    
+
     "https://gh.zwnes.xyz/",
     "https://99z.top/",
     "https://jiashu.1win.eu.org/",
+    "https://j.1win.ddns-ip.net/",
+    "https://j.1win.ip-ddns.com/",
+    "https://j.n1win.dpdns.org/",
     "https://j.1lin.dpdns.org/",
     "https://j.1win.ggff.net/",
     "https://gh.944446.xyz/",
     
-  //  "https://gh.llkk.cc/",
+
+    //  "https://gh.llkk.cc/",
 
 ]
 
