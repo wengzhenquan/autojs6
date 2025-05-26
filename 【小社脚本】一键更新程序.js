@@ -31,7 +31,7 @@ var filemin = 300;
 var ignoreList = [
     "说明/", //一整个文件夹
     "LICENSE", //单个文件，只需要文件名
-    "tmp/",
+    //"tmp/",
     //"yolov11/",     // yolov11 本地签到模块
 ]
 
@@ -56,42 +56,36 @@ var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs
 //加速代理
 let proxys = [
 
-    "https://github.moeyy.xyz/", //
+    "https://github.proxy.class3.fun/",
+    "https://gp-us.fyan.top/",
+    "https://gh.nxnow.top/",
+    "https://hub.gitmirror.com/",
+    "https://gh.7761.cf/",
+    "https://api-gh.muran.eu.org/",
     "https://g.blfrp.cn/", //
-    "https://goppx.com/", // 
-    "https://gh-proxy.com/",
-    "https://git.886.be/", // 
-    "https://ghproxy.cfd/",
-    "https://ghproxy.monkeyray.net/",
-    "https://github.ednovas.xyz/", // 
-    "https://cf.ghproxy.cc/", //
-    "https://github-proxy.lixxing.top/", //
+    "https://gh.catmak.name/",
+    "https://gh.qninq.cn/",
+    "https://gitproxy.click/", //联通4/5，移动超时，电信1
+    "https://gh.b52m.cn/",
+    "https://gh-proxy.ygxz.in/", // 联通5/3/4，移动12/5/7/10/6，电信8/6/超时/9//11/15    
     "https://ghfast.top/", // 
-
-
-    // // 速度慢
-    // "https://gitproxy.click/", //联通4/5，移动超时，电信1
-    // "https://ghproxy.net/", //联通11/6/4/5，移动7，电信3
-    // "https://gh-proxy.ygxz.in/", // 联通5/3/4，移动12/5/7/10/6，电信8/6/超时/9//11/15    
-
-    // 移动下面不通
-    "https://fastgit.cc/", //移动不通
-    "https://99z.top/", //移动不通
-    "https://github.fxxk.dedyn.io/", //移动不通
-    "https://ghfile.geekertao.top/", //移动不通
-    "https://gitproxy.mrhjx.cn/", //移动不通
-
-    // 联通、移动下面不通
-    // "https://github.wuzhij.com/",
-    // "https://gh.llkk.cc/", // 挂了
 
 ]
 
 var api_github = "https://api.github.com/repos/wengzhenquan/autojs6/contents/";
 let api_proxys = [
-    "https://99z.top/",
+    "https://gh.catmak.name/",
+    "https://g.cachecdn.ggff.net/",
     "https://ghproxy.monkeyray.net/",
-    "https://gh.llkk.cc/",
+    
+    "https://gh.zwnes.xyz/",
+    "https://99z.top/",
+    "https://jiashu.1win.eu.org/",
+    "https://j.1lin.dpdns.org/",
+    "https://j.1win.ggff.net/",
+    "https://gh.944446.xyz/",
+    
+  //  "https://gh.llkk.cc/",
 
 ]
 
@@ -521,12 +515,13 @@ function fileVerify(fileInfo, fileBytes) {
 
 // 获取GitHub文件信息
 function getGitHubFileInfo(filePath, branch) {
+    let arr = getRandomNumbers(api_proxys.length - 1);
     console.info('获取版本信息')
     var result = null;
     for (let i = 0; i < api_proxys.length; i++) {
         //let startTime = new Date().getTime();
-        log(api_proxys[i])
-        let url = api_proxys[i] +
+        log(api_proxys[arr[i]])
+        let url = api_proxys[arr[i]] +
             api_github + filePath + "?ref=" + branch;
         //  log(url)
 

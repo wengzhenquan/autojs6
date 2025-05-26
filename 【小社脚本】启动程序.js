@@ -6,7 +6,7 @@
 修改    by：风中拾叶
 三改    by：wengzhenquan
 
-@version 20250524
+@version 20250525
 yolov11_w.js @version 20250523
 
 [github更新地址]：
@@ -511,34 +511,19 @@ function init() {
 //加速代理
 let proxys = [
 
-    "https://github.moeyy.xyz/", //
+    "https://github.proxy.class3.fun/",
+    "https://gp-us.fyan.top/",
+    "https://gh.nxnow.top/",
+    "https://hub.gitmirror.com/",
+    "https://gh.7761.cf/",
+    "https://api-gh.muran.eu.org/",
     "https://g.blfrp.cn/", //
-    "https://goppx.com/", // 
-    "https://gh-proxy.com/",
-    "https://git.886.be/", // 
-    "https://ghproxy.cfd/",
-    "https://ghproxy.monkeyray.net/",
-    "https://github.ednovas.xyz/", // 
-    "https://cf.ghproxy.cc/", //
-    "https://github-proxy.lixxing.top/", //
+    "https://gh.catmak.name/",
+    "https://gh.qninq.cn/",
+    "https://gitproxy.click/", //联通4/5，移动超时，电信1
+    "https://gh.b52m.cn/",
+    "https://gh-proxy.ygxz.in/", // 联通5/3/4，移动12/5/7/10/6，电信8/6/超时/9//11/15    
     "https://ghfast.top/", // 
-
-
-    // // 速度慢
-    // "https://gitproxy.click/", //联通4/5，移动超时，电信1
-    // "https://ghproxy.net/", //联通11/6/4/5，移动7，电信3
-    // "https://gh-proxy.ygxz.in/", // 联通5/3/4，移动12/5/7/10/6，电信8/6/超时/9//11/15    
-
-    // 移动下面不通
-    "https://fastgit.cc/", //移动不通
-    "https://99z.top/", //移动不通
-    "https://github.fxxk.dedyn.io/", //移动不通
-    "https://ghfile.geekertao.top/", //移动不通
-    "https://gitproxy.mrhjx.cn/", //移动不通
-
-    // 联通、移动下面不通
-    // "https://github.wuzhij.com/",
-    // "https://gh.llkk.cc/", // 挂了
 
 ]
 
