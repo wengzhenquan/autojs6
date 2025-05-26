@@ -497,7 +497,7 @@ function init() {
             if (!name) {
                 //根据配置不检查YOLO
                 if (!config.本地YOLO识图 &&
-                    value.toLowerCase().includes('yolo'))
+                    key.toLowerCase().includes('yolo'))
                     continue;
                 console.error(key + " 未安装");
             }
