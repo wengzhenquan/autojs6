@@ -823,7 +823,7 @@ function unLock() {
                 wait(() => false, 300);
             }
             if (textContains('混合').exists()) {
-                clickCenter(desc('回车').findOne());
+                clickCenter(desc('回车').findOne(1000));
             }
         }
         for (i = 0; i < 3; i++) {
