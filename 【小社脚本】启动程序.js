@@ -19,7 +19,7 @@ auto.waitFor();
 
 //程序运行文件标志
 files.ensureDir("./tmp/")
-let launch_locked = "./tmp/launch_main_locked";
+var launch_locked = "./tmp/launch_main_locked";
 if (!files.exists(launch_locked)) {
     events.on("exit", () => files.remove(launch_locked));
     files.create(launch_locked);
