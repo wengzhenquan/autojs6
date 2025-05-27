@@ -163,6 +163,7 @@ function clickCenter(obj) {
         }
 
         if (obj && (obj instanceof UiObject)) {
+            obj.show();
             let x = obj.bounds().centerX()
             let y = obj.bounds().centerY()
             //log(x,y)
@@ -186,6 +187,7 @@ function ableClick(obj) {
 
 
         if (obj && (obj instanceof UiObject)) {
+            obj.show();
             while (!obj.clickable() &&
                 obj.parent() &&
                 obj.parent().depth() > 0 &&
