@@ -511,19 +511,17 @@ function init() {
 let proxys = [
 
     "https://gh.b52m.cn/",
-    "https://github.proxy.class3.fun/",
-    "https://gh.qninq.cn/",
     "https://gitproxy.click/", //联通4/5，移动超时，电信1
-    "https://gh-proxy.ygxz.in/", // 联通5/3/4，移动12/5/7/10/6，电信8/6/超时/9//11/15    
-    "https://hub.gitmirror.com/",
+    "https://gh.qninq.cn/",
     "https://gp-us.fyan.top/",
-    "https://api-gh.muran.eu.org/",
+    "https://hub.gitmirror.com/",
+    "https://gh-proxy.ygxz.in/", //  
     "https://g.blfrp.cn/", //
+    "https://api-gh.muran.eu.org/",
     "https://gh.catmak.name/",
     "https://gh.nxnow.top/",
     "https://ghfast.top/", // 
     "https://gh.7761.cf/",
-
 ]
 
 
