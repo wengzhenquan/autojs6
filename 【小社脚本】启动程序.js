@@ -363,7 +363,8 @@ function consoleShow() {
             titleBackgroundColor: 'dark-blue',
             // titleBackgroundTint: 'dark-blue', //6.5.0版本没有
             contentTextSize: 15,
-            contentBackgroundAlpha: 0.9,
+            contentBackgroundAlpha: 0.8,
+            contentBackgroundColor: colors.BLACK,
             touchable: false,
             exitOnClose: 6e3,
         });
@@ -372,8 +373,8 @@ function consoleShow() {
             verbose: 'white',
             log: 'green',
             info: 'yellow',
-            warn: 'blue',
-            error: 'red'
+            warn: 'cyan',
+            error: 'magenta'
         });
         console3();
         console.show();
