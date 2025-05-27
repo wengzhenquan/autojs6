@@ -44,7 +44,6 @@ var serverVersion = null;
 var localVersion = null;
 var run = null;
 var mainFile = null;
-var updateAll = false;
 
 
 //设置参考坐标，不能动，开发环境标准比例。
@@ -437,7 +436,6 @@ function init() {
 
     if (!files.exists("./version")) {
         console.error("缺失version文件");
-        updateAll = true;
         console.error("启动版本检查/下载version/全量更新");
         checkVersion();
     }
@@ -531,6 +529,8 @@ let proxys = [
 // 检查脚本更新，version文件存在才检查更新。
 function checkVersion() {
     console.info("---→>→脚本检查更新←<←---")
+
+    let down_version = false;
     // 乱序数组
     let arr = getRandomNumbers(proxys.length - 1);
 
@@ -558,6 +558,7 @@ function checkVersion() {
             continue;
         }
         if (!files.exists("./version")) {
+            down_version = true;
             // 缺失version文件，下载
             files.write("./version", result, "utf-8");
             //重新加载本地版本文件
@@ -581,7 +582,7 @@ function checkVersion() {
     let deleteList = []; // 待删除文件清单
 
     //更新脚本
-    if (updateAll || hasNewVersion &&
+    if (down_version || hasNewVersion &&
         (config && config.检查更新 > 1)) {
         if (config && config.检查更新 > 1)
             toastLog("配置[检查更新]：" + config.检查更新)
