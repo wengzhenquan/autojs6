@@ -1109,6 +1109,7 @@ function main() {
         if (!(e.javaException instanceof ScriptInterruptedException)) {
             //通常只有 1 行消息. 
             console.error(e.message);
+            console.error(e.stack);
             // 通常有不到 10 
             //exit(e);
         }
