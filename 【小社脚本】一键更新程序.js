@@ -88,7 +88,7 @@ let api_proxys = [
     "https://j.1lin.dpdns.org/",
     "https://j.1win.ggff.net/",
     "https://gh.944446.xyz/",
-    
+
 
     //  "https://gh.llkk.cc/",
 
@@ -396,7 +396,7 @@ function startUpdate() {
                     console.error('校验失败，重新下载')
                     index++;
                     //重置
-                    if (index > proxys.length - 1) i = 0;
+                    if (index > proxys.length - 1) index = 0;
                     n++;
                     continue;
                 }
@@ -406,7 +406,7 @@ function startUpdate() {
             console.error('下载失败，更换加速器重试');
             index++;
             //重置
-            if (index > proxys.length - 1) i = 0;
+            if (index > proxys.length - 1) index = 0;
             n++;
         }
 
