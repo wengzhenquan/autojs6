@@ -724,7 +724,7 @@ function updateScript() {
         if (i > 10) {
             // 执行一键更新程序.js
             engines.execScriptFile("./" + update_script);
-            sleep(10 * i)
+            wait(() => false, 10 * i)
             // 检查脚本运行
             if (files.exists(update_locked)) {
                 floaty.closeAll();
@@ -740,7 +740,7 @@ function updateScript() {
     }
     // 等待脚本执行完成
     while (files.exists(update_locked))
-        sleep(1000);
+        wait(() => false, 1000);
 
     // ========== 启动新的主程序 ==========
     //重新加载本地版本文件
