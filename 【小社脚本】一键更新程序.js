@@ -178,7 +178,7 @@ function integrityCheck() {
     }
     //待更新文件列表
     for (var key in fileList) {
-        if (!files.exists(files.cwd() + '/' + key)) {
+        if (!files.exists( './' + key)) {
             updateList.push(key);
         }
     }
@@ -258,9 +258,9 @@ function checkVersion() {
     // 待更新文件清单
     for (var key in serverVersion.updateFile) {
         if (localVersion && localVersion.updateFile &&
-            files.exists(files.cwd() + '/' + key) && localVersion.updateFile[key]) {
+            files.exists( './' + key) && localVersion.updateFile[key]) {
             if (serverVersion.updateFile[key] > localVersion.updateFile[key] ||
-                !files.exists(files.cwd() + '/' + key)) {
+                !files.exists( './' + key)) {
                 updateList.push(key);
             }
         } else {
@@ -289,7 +289,7 @@ function checkVersion() {
             updateList.forEach((file) => {
                 let name = !file.includes('【') ? ''.padStart(1) + file : file;
                 console.error(name);
-                if (file.includes('config') && files.exists(files.cwd() + '/' + file)) {
+                if (file.includes('config') && files.exists( './' + file)) {
                     log('(更新前，建议重命名config.js，')
                     log('              备份解锁坐标)')
                 }
@@ -415,23 +415,23 @@ function startUpdate() {
             //continue;
         } else {
 
-            if (fileName.includes('config') && files.exists(files.cwd() + '/' + fileName)) {
+            if (fileName.includes('config') && files.exists( './' + fileName)) {
                 log("需更新配置文件");
 
                 // 备份旧文件
                 let oldName = name + ".old." + ext;
-                fixConfigFile(files.cwd() + '/' + fileName, files.cwd() + '/' + oldName)
+                fixConfigFile( './' + fileName,  './' + oldName)
                 wait(() => false, 500);
                 console.error("旧" + fileName + " 已重命名为 " + oldName);
 
                 // 下载的新文件
-                files.write(files.cwd() + '/' + fileName, new java.lang.String(filebytes, "utf-8"), "utf-8");
+                files.write( './' + fileName, new java.lang.String(filebytes, "utf-8"), "utf-8");
                 wait(() => false, 500);
                 console.info("下载成功")
 
                 //备份一份新文件
                 let newName = "tmp/" + name + ".new." + ext;
-                fixConfigFile(files.cwd() + '/' + fileName, files.cwd() + '/' + newName)
+                fixConfigFile( './' + fileName,  './' + newName)
                 wait(() => false, 500);
 
                 console.info("开始尝试自动搬运配置");
@@ -442,8 +442,8 @@ function startUpdate() {
                     // 将旧配置里的值，同步到新配置
                     // 以新配置作为模板，按照新配置文件的排版
                     // 两个文件合并生成新文件
-                    merge = mergeConfigs(files.cwd() + '/' + oldName,
-                        files.cwd() + '/' + newName, files.cwd() + '/' + fileName);
+                    merge = mergeConfigs( './' + oldName,
+                         './' + newName,  './' + fileName);
                 } catch (e) {
                     console.error("自动搬运旧配置失败！");
                     console.error("请自行搬运 锁屏密码 等配置");
@@ -454,16 +454,16 @@ function startUpdate() {
                 }
 
             } else {
-                files.ensureDir(files.cwd() + '/' + fileName)
+                files.ensureDir( './' + fileName)
 
                 if (isText) {
                     try {
-                        files.write(files.cwd() + '/' + fileName, new java.lang.String(filebytes, "utf-8"), "utf-8");
+                        files.write( './' + fileName, new java.lang.String(filebytes, "utf-8"), "utf-8");
                     } catch (e) {
-                        files.writeBytes(files.cwd() + '/' + fileName, filebytes); // 回退到二进制
+                        files.writeBytes( './' + fileName, filebytes); // 回退到二进制
                     }
                 } else {
-                    files.writeBytes(files.cwd() + '/' + fileName, filebytes);
+                    files.writeBytes( './' + fileName, filebytes);
                 }
                 //files.writeBytes(files.cwd()+'/' + fileName, filebytes);
                 successList.push(fileName);
@@ -498,7 +498,7 @@ function startUpdate() {
         deleteList.forEach((file) => {
             let name = !file.includes('【') ? ''.padStart(1) + file : file;
             console.error(name);
-            files.remove(files.cwd() + '/' + file)
+            files.remove( './' + file)
         });
         log("----------------------------");
     }
