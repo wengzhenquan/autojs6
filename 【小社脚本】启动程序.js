@@ -101,8 +101,7 @@ log("产品：" + device.product + "，型号：" + device.model);
 log(`设备分辨率：${dwidth}x${dheight}`);
 log(`现在是：${date}`);
 console.error("提示：[音量+/-]键可停止脚本");
-//AutoJS6版本检查
-checkAutoJS6();
+
 
 //files.ensureDir("./tmp/")
 
@@ -126,6 +125,8 @@ events.on("exit", function() {
     // verbose(nowDate());
 });
 
+//AutoJS6版本检查
+checkAutoJS6();
 
 // images.requestScreenCapture()
 // sleep(2000);
