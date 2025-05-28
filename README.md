@@ -78,7 +78,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
 每次更新将保留2个历史版本，多的会自动删除。
 若想要保留，请自己重命名备份。
 
-**AutoJs6** $\color{red}{(建议使用最新版)}$   
+### **AutoJs6** $\color{red}{(建议使用最新版)}$   
 （最低支持6.6.2，额外兼容6.5.0）   
 （6.6.0是重构版，功能不完善、bug多，一直到6.6.2才恢复大部分）   
 [点击下载](https://github.com/SuperMonster003/AutoJs6/releases)  
