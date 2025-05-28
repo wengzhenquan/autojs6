@@ -80,7 +80,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
 
 **AutoJs6**   
 建议使用最新版   
-（最低支持6.5.0，再低无法保证支持）   
+（最低支持6.6.2，额外兼容6.5.0）   
 [点击下载](https://github.com/SuperMonster003/AutoJs6/releases)  
 
 
