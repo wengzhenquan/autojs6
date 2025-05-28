@@ -597,8 +597,10 @@ function checkVersion() {
     //更新脚本
     if (down_version || hasNewVersion &&
         (config && config.检查更新 > 1)) {
-        if (config && config.检查更新 > 1)
+        if (config && config.检查更新 > 1) {
+            console.info("最新版本：" + serverVersion.version)
             toastLog("配置[检查更新]：" + config.检查更新)
+        }
         toastLog("开始更新脚本");
         updateScript();
         return;
