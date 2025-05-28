@@ -6,8 +6,8 @@
 修改    by：风中拾叶
 三改    by：wengzhenquan
 
-@version 20250525
-yolov11_w.js @version 20250523
+@version 20250526
+yolov11_w.js @version 20250526
 
 [github更新地址]：
 
@@ -101,6 +101,8 @@ log("产品：" + device.product + "，型号：" + device.model);
 log(`设备分辨率：${dwidth}x${dheight}`);
 log(`现在是：${date}`);
 console.error("提示：[音量+/-]键可停止脚本");
+//AutoJS6版本检查
+//checkAutoJS6();
 
 //files.ensureDir("./tmp/")
 
@@ -148,6 +150,17 @@ function startTimeoutMonitor() {
     });
 }
 
+function checkAutoJS6() {
+    // 额外兼容6.5.0
+    let v650 = autojs.version.isEqual('6.5.0');
+    // 最低支持6.6.2
+    let vAtLest = autojs.version.isAtLeast('6.6.2');
+    if (!(v650 || vAtLest)) {
+        console.error('不支持的AutoJS6版本');
+        console.error('请升级AutoJS6');
+        exit();
+    }
+}
 
 //------------ 工具函数 ----------//
 
@@ -192,6 +205,7 @@ function ableClick(obj) {
                 obj.parent() &&
                 obj.parent().depth() > 0 &&
                 obj.parent().indexInParent() > -1) {
+
                 obj = obj.parent();
                 wait(() => false, 300);
             }
@@ -870,8 +884,6 @@ function permissionv() {
     }
 
     // 通知权限
-    importClass(android.app.NotificationManager);
-    importClass(android.content.Context);
     // 获取通知管理器实例
     var notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE);
     // 判断通知是否被启用
@@ -907,58 +919,68 @@ function permissionv() {
     }
 
     // 投影媒体权限
-    importClass(android.app.AppOpsManager);
-    try {
-        function checkProjectionPermission() {
+    function checkProjectionPermission() {
+        try {
             let appOps = context.getSystemService(context.APP_OPS_SERVICE);
+            // 尝试使用 "android:project_media"（部分设备可能不支持）
             let mode = appOps.checkOpNoThrow("android:project_media", android.os.Process.myUid(), context.getPackageName());
-            return mode == AppOpsManager.MODE_ALLOWED;
+            // 如果 "android:project_media" 不可用，尝试回退到其他方式（如 OPSTR_MEDIA_PROJECTION）
+            if (mode === undefined || mode === null) {
+                mode = appOps.checkOpNoThrow(android.app.AppOpsManager.OPSTR_MEDIA_PROJECTION, android.os.Process.myUid(), context.getPackageName());
+            }
+            return mode === appOps.MODE_ALLOWED;
+        } catch (e) {
+            console.warn("投影媒体权限检查失败，可能设备不支持");
+            return false;
         }
-        if (checkProjectionPermission()) {
-            log("投影媒体权限，[已启用]");
-        } else {
-            console.error("投影媒体权限，[未启用]！");
-            console.error("无法全自动完成所有流程！");
-            wait(() => false, 3000);
-        }
-    } catch (e) {
-        console.error("投影媒体权限，检查失败！");
-        console.error("需要用户自行判断是否开启！");
-
     }
 
-    // 后台弹出界面权限
-    //importClass(android.app.AppOpsManager);
-    importClass(android.os.Build);
-    importClass(android.net.Uri);
-    importClass(android.content.pm.PackageManager);
-    importClass(android.os.Process);
+    if (checkProjectionPermission()) {
+        log("投影媒体权限，[已启用]");
+    } else {
+        console.error("投影媒体权限，[未启用]！");
+        console.error("无法全自动完成所有流程！");
+        wait(() => false, 3000);
+    }
 
+
+    // 后台弹出界面权限检查
     function checkBackgroundStartPermission() {
+        let manufacturer = android.os.Build.MANUFACTURER;
         try {
-            if (manufacturer === "Xiaomi") {
+            if (manufacturer.includes("Xiaomi")) {
                 let appOps = context.getSystemService(context.APP_OPS_SERVICE);
-                return appOps.checkOpNoThrow(10021, Process.myUid(), context.getPackageName()) == AppOpsManager.MODE_ALLOWED;
-            } else if (manufacturer === "Vivo") {
-                let uri = Uri.parse("content://com.vivo.permissionmanager.provider.permission/start_bg_activity");
+                return appOps.checkOpNoThrow(10021, android.os.Process.myUid(), context.getPackageName()) == appOps.MODE_ALLOWED;
+            } else if (manufacturer.includes("Vivo")) {
+                let uri = android.net.Uri.parse("content://com.vivo.permissionmanager.provider.permission/start_bg_activity");
                 let cursor = context.getContentResolver().query(uri, null, "pkgname = ?", [context.getPackageName()], null);
-                if (cursor != null && cursor.moveToFirst()) {
-                    let state = cursor.getInt(cursor.getColumnIndex("currentstate"));
-                    cursor.close();
-                    return state == 0;
+                if (cursor != null) {
+                    try {
+                        if (cursor.moveToFirst()) {
+                            let state = cursor.getInt(cursor.getColumnIndex("currentstate"));
+                            return state == 0;
+                        }
+                    } finally {
+                        cursor.close();
+                    }
                 }
                 return false;
-            } else if (manufacturer === "Oppo") {
-                return context
-                    .getPackageManager()
-                    .checkPermission("android.permission.SYSTEM_ALERT_WINDOW", context.getPackageName()) == PackageManager.PERMISSION_GRANTED;
+            } else if (manufacturer.includes("Oppo")) {
+                return context.getPackageManager().checkPermission("android.permission.SYSTEM_ALERT_WINDOW", context.getPackageName()) == android.content.pm.PackageManager.PERMISSION_GRANTED;
             } else {
                 let appOps = context.getSystemService(context.APP_OPS_SERVICE);
-                return appOps.checkOpNoThrow(AppOpsManager.OPSTR_START_FOREGROUND, Process.myUid(), context.getPackageName()) == AppOpsManager.MODE_ALLOWED;
+                // 对于其他厂商，尝试使用 OPSTR_START_FOREGROUND（如果支持）
+                try {
+                    return appOps.checkOpNoThrow(android.app.AppOpsManager.OPSTR_START_FOREGROUND, android.os.Process.myUid(), context.getPackageName()) == appOps.MODE_ALLOWED;
+                } catch (e) {
+                    // 如果 OPSTR_START_FOREGROUND 不可用，则回退到 OPSTR_START_ACTIVITY
+                    return appOps.checkOpNoThrow(android.app.AppOpsManager.OPSTR_START_ACTIVITY, android.os.Process.myUid(), context.getPackageName()) == appOps.MODE_ALLOWED;
+                }
             }
         } catch (e) {
             return false;
         }
+
     }
 
     if (checkBackgroundStartPermission()) {
@@ -1011,6 +1033,8 @@ function permissionv() {
         console.error("可能无法更新脚本！");
         wait(() => false, 3000);
     }
+
+
     log("-------- 不必要权限 --------");
     // Shizuku权限检测
     if (shizuku.running) {
