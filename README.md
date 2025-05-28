@@ -115,7 +115,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
    ```  
 --- 
 ### **2. 更改autojs6工作路径。**  
-    ![image](说明/更改工作路径.jpg)  
+   ![image](说明/更改工作路径.jpg)  
     
    目录允许使用中文，在`sdcard/`路径下。  
 
