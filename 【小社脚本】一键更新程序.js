@@ -57,17 +57,17 @@ var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs
 let proxys = [
 
     "https://gh.b52m.cn/",
-    "https://gitproxy.click/", //联通4/5，移动超时，电信1
     "https://gh.qninq.cn/",
     "https://gp-us.fyan.top/",
     "https://hub.gitmirror.com/",
-    "https://gh-proxy.ygxz.in/", //  
-    "https://g.blfrp.cn/", //
     "https://api-gh.muran.eu.org/",
-    "https://gh.catmak.name/",
     "https://gh.nxnow.top/",
+    "https://g.blfrp.cn/", //
     "https://ghfast.top/", // 
-    "https://gh.7761.cf/",
+    "https://gh.catmak.name/",
+    "https://g.cachecdn.ggff.net/",
+    "https://gh-proxy.ygxz.in/", //  
+    "https://github.moeyy.xyz/", //
 
 ]
 
@@ -77,16 +77,16 @@ let api_proxys = [
     "https://gh.catmak.name/",
     "https://g.cachecdn.ggff.net/",
     "https://ghproxy.monkeyray.net/",
-
-    "https://gh.zwnes.xyz/",
-    "https://99z.top/",
-    "https://jiashu.1win.eu.org/",
-    "https://j.1win.ddns-ip.net/",
     "https://j.1win.ip-ddns.com/",
-    "https://j.n1win.dpdns.org/",
-    "https://j.1lin.dpdns.org/",
     "https://j.1win.ggff.net/",
+
     "https://gh.944446.xyz/",
+    "https://j.n1win.dpdns.org/",
+    "https://99z.top/",
+    "https://j.1lin.dpdns.org/",
+    "https://gh.zwnes.xyz/",
+    "https://j.1win.ddns-ip.net/",
+    "https://jiashu.1win.eu.org/",
 
 
     //  "https://gh.llkk.cc/",

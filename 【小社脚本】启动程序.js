@@ -103,7 +103,6 @@ log(`现在是：${date}`);
 console.error("提示：[音量+/-]键可停止脚本");
 
 
-//files.ensureDir("./tmp/")
 
 //音量键，停止脚本
 events.setKeyInterceptionEnabled("volume_up", true);
@@ -128,11 +127,19 @@ events.on("exit", function() {
 //AutoJS6版本检查
 checkAutoJS6();
 
-// images.requestScreenCapture()
-// sleep(2000);
+function checkAutoJS6() {
+    // 额外兼容6.5.0
+    let v650 = autojs.version.isEqual('6.5.0');
+    // 最低支持6.6.2
+    let vAtLest = autojs.version.isAtLeast('6.6.2');
+    if (!(v650 || vAtLest)) {
+        console.error('不支持的AutoJS6版本');
+        console.error('请升级AutoJS6');
+        exit();
+    }
+}
 
-//sleep(500);
-//exit()
+
 /**
  * 启动脚本总运行时间监控
  * @param {number} maxRuntimeMs - 最大允许运行时间 (毫秒)
@@ -151,17 +158,7 @@ function startTimeoutMonitor() {
     });
 }
 
-function checkAutoJS6() {
-    // 额外兼容6.5.0
-    let v650 = autojs.version.isEqual('6.5.0');
-    // 最低支持6.6.2
-    let vAtLest = autojs.version.isAtLeast('6.6.2');
-    if (!(v650 || vAtLest)) {
-        console.error('不支持的AutoJS6版本');
-        console.error('请升级AutoJS6');
-        exit();
-    }
-}
+
 
 //------------ 工具函数 ----------//
 
@@ -528,17 +525,17 @@ function init() {
 let proxys = [
 
     "https://gh.b52m.cn/",
-    "https://gitproxy.click/", //联通4/5，移动超时，电信1
     "https://gh.qninq.cn/",
     "https://gp-us.fyan.top/",
     "https://hub.gitmirror.com/",
-    "https://gh-proxy.ygxz.in/", //  
-    "https://g.blfrp.cn/", //
     "https://api-gh.muran.eu.org/",
-    "https://gh.catmak.name/",
     "https://gh.nxnow.top/",
+    "https://g.blfrp.cn/", //
     "https://ghfast.top/", // 
-    "https://gh.7761.cf/",
+    "https://gh.catmak.name/",
+    "https://g.cachecdn.ggff.net/",
+    "https://gh-proxy.ygxz.in/", //  
+    "https://github.moeyy.xyz/", //
 ]
 
 
