@@ -994,9 +994,9 @@ function permissionv() {
     }
 
     if (autojs.canModifySystemSettings()) {
-        log("修改系统设置授权，[已启用]");
+        log("修改系统设置权限，[已启用]");
     } else {
-        console.error("修改系统设置授权，[未启用]!");
+        console.error("修改系统设置权限，[未启用]!");
         console.error("涉及功能：媒体静音、修改亮度！");
     }
 
