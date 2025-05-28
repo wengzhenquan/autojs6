@@ -885,29 +885,29 @@ function permissionv() {
 
     // 通知权限
     // 获取通知管理器实例
-    var notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE);
-    // 判断通知是否被启用
-    var isNotificationEnabled = notificationManager.areNotificationsEnabled();
-    if (isNotificationEnabled) {
-        log("发送通知权限，[已启用]");
-    } else {
-        console.error("发送通知权限，[未启用]!");
-        //去设置
-        notice.launchSettings();
-        exit();
-    }
-
-    // 通知权限6.6.2版本修复
-    // 判断通知是否被启用
-    // if (notice.isEnabled()) {
+    // var notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE);
+    // // 判断通知是否被启用
+    // var isNotificationEnabled = notificationManager.areNotificationsEnabled();
+    // if (isNotificationEnabled) {
     //     log("发送通知权限，[已启用]");
     // } else {
-    //     toast("发送通知权限，[未启用]!");
     //     console.error("发送通知权限，[未启用]!");
     //     //去设置
     //     notice.launchSettings();
     //     exit();
     // }
+
+    // 通知权限6.6.2版本修复
+    // 判断通知是否被启用
+    if (notice.isEnabled()) {
+        log("发送通知权限，[已启用]");
+    } else {
+        toast("发送通知权限，[未启用]!");
+        console.error("发送通知权限，[未启用]!");
+        //去设置
+        notice.launchSettings();
+        exit();
+    }
 
     //悬浮窗权限
     if (autojs.canDisplayOverOtherApps()) {
