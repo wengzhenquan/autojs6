@@ -883,6 +883,15 @@ function permissionv() {
         exit();
     }
 
+    //悬浮窗权限
+    if (autojs.canDisplayOverOtherApps()) {
+        log("悬浮窗权限，[已启用]");
+    } else {
+        console.error("悬浮窗权限，[未启用]!");
+        console.error("或：显示在其它应用上层");
+        exit();
+    }
+
     // 通知权限
     // 获取通知管理器实例
     // var notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -909,14 +918,7 @@ function permissionv() {
         exit();
     }
 
-    //悬浮窗权限
-    if (autojs.canDisplayOverOtherApps()) {
-        log("悬浮窗权限，[已启用]");
-    } else {
-        console.error("悬浮窗权限，[未启用]!");
-        console.error("或：显示在其它应用上层");
-        exit();
-    }
+
 
     // 投影媒体权限
     function checkProjectionPermission() {
