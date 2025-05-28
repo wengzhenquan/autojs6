@@ -480,6 +480,8 @@ github：https://github.com/wengzhenquan/autojs6
 
 
 --- 
+v3.7.7：（未发布）
+1. 不再支持6.6.0、6.6.1版本
 
 v3.7.6:
 1. 修改日志颜色
