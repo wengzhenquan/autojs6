@@ -92,8 +92,8 @@ consoleShow();
 //consoleShow();
 
 console.warn("—----->--- Start ---<-----—");
-log(("AutoJS6 版本：").padStart(21) + autojs.versionName)
-log(("Android 版本：").padStart(21) + device.release)
+log(("AutoJS6 版本：").padStart(20) + autojs.versionName)
+log(("Android 版本：").padStart(20) + device.release)
 log(("微信 Ver：") + String(wchatVersionName).padStart(20))
 log(("小米社区 Ver：") + String(xmVersionName).padStart(14))
 log("制造商：" + manufacturer + "，品牌：" + brand);
