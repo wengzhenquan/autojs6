@@ -86,7 +86,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
 
 
 --- 
-### **社区APP下载 $\color{red}{(支持跳转小程序)}$ ：**  
+### **社区APP下载 $\color{red}{(支持跳转小程序版)}$ ：**  
 
 [网盘下载](https://www.123912.com/s/RYmDVv-bwUch)  
 
