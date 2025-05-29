@@ -32,13 +32,20 @@
 $\color{red}{（请看完下面使用方法，和常见问题。)}$    
 （别问无效的问题，真是服了，有人没按照说明使用，下载了（不完整的）脚本，自己一顿瞎搞还来问）  
 $\color{red}{(很多报错有中文提示，麻烦自己先看一眼。)}$
+
+--- 
+
 ### 脚本下载：
 
 [在线加速下载版（推荐）](https://github.com/wengzhenquan/autojs6/releases/main)  
 
 [完整包下载](https://github.com/wengzhenquan/autojs6/archive/refs/heads/main.zip)   
 
-   
+### **AutoJs6 $\color{red}{(建议使用最新版)}$：**    
+（最低支持6.6.2，额外兼容6.5.0）   
+（6.6.0是重构版，功能不完善、bug多，一直到6.6.2才恢复大部分）   
+[点击下载](https://github.com/SuperMonster003/AutoJs6/releases)  
+
 
 ### 文件结构：
 ```
@@ -77,11 +84,6 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
 ```
 每次更新将保留2个历史版本，多的会自动删除。
 若想要保留，请自己重命名备份。
-
-### **AutoJs6 $\color{red}{(建议使用最新版)}$：**    
-（最低支持6.6.2，额外兼容6.5.0）   
-（6.6.0是重构版，功能不完善、bug多，一直到6.6.2才恢复大部分）   
-[点击下载](https://github.com/SuperMonster003/AutoJs6/releases)  
 
 
 
