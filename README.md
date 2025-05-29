@@ -35,7 +35,7 @@ $\color{red}{(很多报错有中文提示，麻烦自己先看一眼。)}$
 
 --- 
 
-### 脚本下载：
+### 【小社脚本】下载：
 
 [在线加速下载版（推荐）](https://github.com/wengzhenquan/autojs6/releases/main)  
 
