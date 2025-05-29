@@ -12,7 +12,8 @@
         "yolov11/yolov11_w.js": 20250526,
         "yolov11/Yolo-plugin.apk": 20250513,
         "yolov11/model/yzm.bin": 20250513,
-        "yolov11/model/yzm.param": 20250513
+        "yolov11/model/yzm.param": 20250513,
+        "tmp/公益梯子（魔法）.txt": 20250530
     },
     "main": "【小社脚本】启动程序.js",
     "run": "【小社脚本】Run_3.7.7.js",
