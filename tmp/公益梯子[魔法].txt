@@ -53,6 +53,15 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
             Hiddify(跨平台)、
             Clash Meta for Android、
             NekoBox等等。
+            
+    4、部分软件官网地址：
+        1)、Hiddify(无墙)：https://hiddify.com/
+        2)、Karing(无墙）：https://karing.app/
+        3)、v2ray系列（页面最下方，跳转github）：https://9.234456.xyz/abc.html
+        4)、Neko系列(跳转github下载）：https://matsuridayo.github.io/download/
+        5)、Clash Verge Reborn（跳转github下载）：https://www.clashverge.dev/
+        6)、Clash Meta for Android(github)：https://github.com/MetaCubeX/ClashMetaForAndroid
+        
         
         
 三、使用方法：
