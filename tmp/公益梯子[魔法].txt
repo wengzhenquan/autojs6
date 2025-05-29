@@ -62,7 +62,7 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
         5)、Clash Verge Reborn（跳转github下载）：https://www.clashverge.dev/
         6)、Clash Meta for Android(github)：https://github.com/MetaCubeX/ClashMetaForAndroid
         
-        
+        小白推荐使用：Hiddify
         
 三、使用方法：
     不同的代理软件，ui界面不同，但是基本功能都差不多。
