@@ -56,6 +56,7 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
             
     4、部分软件官网地址：
         1)、Hiddify(无墙)：https://hiddify.com/
+         github：https://github.com/hiddify/hiddify-app/releases
         
         2)、Karing(无墙）：https://karing.app/
         
