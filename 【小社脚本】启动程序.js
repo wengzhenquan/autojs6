@@ -527,7 +527,6 @@ let proxys = [
     "https://gh.b52m.cn/",
     "https://gh.qninq.cn/",
     "https://gp-us.fyan.top/",
-    "https://hub.gitmirror.com/",
     "https://api-gh.muran.eu.org/",
     "https://gh.nxnow.top/",
     "https://g.blfrp.cn/", //
@@ -536,6 +535,8 @@ let proxys = [
     "https://g.cachecdn.ggff.net/",
     "https://gh-proxy.ygxz.in/", //  
     "https://github.moeyy.xyz/", //
+    
+    
 ]
 
 
