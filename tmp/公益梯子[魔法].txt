@@ -24,11 +24,11 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
         线路十：https://mot.luyuju.dpdns.org/dyRkcYMfQavqC0wMghhv
         
     2、CMLiussss（每日更新节点）
-        订阅：https://cmliussss.net
+        订阅地址：https://cmliussss.net
         防失联SOS：https://SOS.CMLiussss.net/auto
         
     3、辣子鸡：(每日更新节点)
-        地址：https://lzjgy.zone.id/
+        订阅地址：https://lzjgy.zone.id/
         备用一：https://gy.xiaozi.us.kg/sub?token=lzj
         备用二：https://gy.lzj.pp.ua/sub?token=lzj
         备用三：https://gy.lzjjjjjjj.pp.ua/sub?token=lzj
@@ -56,11 +56,20 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
             
     4、部分软件官网地址：
         1)、Hiddify(无墙)：https://hiddify.com/
+        
         2)、Karing(无墙）：https://karing.app/
-        3)、v2ray系列（页面最下方，跳转github）：https://9.234456.xyz/abc.html
-        4)、Neko系列(跳转github下载）：https://matsuridayo.github.io/download/
-        5)、Clash Verge Reborn（跳转github下载）：https://www.clashverge.dev/
-        6)、Clash Meta for Android(github)：https://github.com/MetaCubeX/ClashMetaForAndroid
+        
+        3)、v2ray系列（广告页面底部，跳转github）：
+            https://9.234456.xyz/abc.html
+            
+        4)、Neko系列(跳转github下载）：
+            https://matsuridayo.github.io/download/
+            
+        5)、Clash Verge Reborn（跳转github下载）：
+            https://www.clashverge.dev/
+            
+        6)、Clash Meta for Android(github)：
+            https://github.com/MetaCubeX/ClashMetaForAndroid
         
         小白推荐使用：Hiddify
         
