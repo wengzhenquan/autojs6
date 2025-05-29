@@ -45,7 +45,7 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
             Shadowrocket、
             Clash Verge/Clash Verge Reborn/Clash.Meta/ClashX等等
     3、Android/Harmony：
-            v2raNG、
+            v2rayNG、
             karing(跨平台)、
             Hiddify(跨平台)、
             Clash Meta for Android、
