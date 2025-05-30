@@ -37,19 +37,19 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
 二、支持的代理软件列表：
     1、Windows：
             v2rayN、
-            karing(跨平台)、
+            Karing(跨平台)、
             Hiddify(跨平台)、
             Clash Verge/Clash Verge Reborn/Clash for Windows、
             NekoRay等等
     2、Mac/IOS：
-            V2rayU、
-            karing(跨平台)、
+            v2rayU、
+            Karing(跨平台)、
             Hiddify(跨平台)、
             Shadowrocket、
             Clash Verge/Clash Verge Reborn/Clash.Meta/ClashX等等
     3、Android/Harmony：
             v2rayNG、
-            karing(跨平台)、
+            Karing(跨平台)、
             Hiddify(跨平台)、
             Clash Meta for Android、
             NekoBox等等。
