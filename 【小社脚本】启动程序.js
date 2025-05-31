@@ -555,13 +555,21 @@ function checkVersion() {
     log("正在查询版本更新……")
     for (let i = 0; i < proxys.length; i++) {
         let url = proxys[arr[i]] +
-            github_download_url + 'version';
+            github_download_url +
+            'version' +
+            '?t=' + new Date().getTime();
 
         let result = null;
         let thread = threads.start(() => {
             try {
                 let res = http.get(url, {
                     timeout: 3 * 1000,
+                    headers: {
+                        'Cache-Control': 'no-cache',
+                        'Pragma': 'no-cache',
+                        'Expires': '0',
+                        "Connection": "Keep-Alive"
+                    }
                 });
                 if (res && res.statusCode === 200) {
                     result = res.body.string();
@@ -687,7 +695,9 @@ function updateScript() {
         var file = null;
         for (let i = 0; i < proxys.length; i++) {
             let url = proxys[arr[i]] +
-                github_download_url + update_script;
+                github_download_url +
+                update_script +
+                '?t=' + new Date().getTime();
 
             log('使用加速器：' + proxys[arr[i]]);
             //log(url);
@@ -696,6 +706,12 @@ function updateScript() {
                 try {
                     let res = http.get(url, {
                         timeout: 5 * 1000,
+                        headers: {
+                            'Cache-Control': 'no-cache',
+                            'Pragma': 'no-cache',
+                            'Expires': '0',
+                            "Connection": "Keep-Alive"
+                        }
                     });
                     if (res && res.statusCode === 200) {
                         file = res.body.string();

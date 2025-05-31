@@ -203,13 +203,21 @@ function checkVersion() {
         let startTime = new Date().getTime();
         log('使用加速器：' + proxys[arr[i]]);
         let url = proxys[arr[i]] +
-            github_download_url + "version";
+            github_download_url +
+            "version" +
+            '?t=' + new Date().getTime();
 
         let result = null;
         let thread = threads.start(() => {
             try {
                 let res = http.get(url, {
                     timeout: 5 * 1000,
+                    headers: {
+                        'Cache-Control': 'no-cache',
+                        'Pragma': 'no-cache',
+                        'Expires': '0',
+                        "Connection": "Keep-Alive"
+                    }
                 });
                 if (res && res.statusCode === 200) {
                     result = res.body.json();
@@ -366,7 +374,10 @@ function startUpdate() {
             let startTime = new Date().getTime();
             log('使用加速器：' + proxys[arr[index]]);
             let url = proxys[arr[index]] +
-                github_download_url + fileName;
+                github_download_url +
+                fileName +
+                '?t=' + startTime;
+
             // github + "/blob/main/" + fileName;
             // log(url);
 
@@ -374,6 +385,12 @@ function startUpdate() {
                 try {
                     let res = http.get(url, {
                         timeout: timeoutTimes * 1000,
+                        headers: {
+                            'Cache-Control': 'no-cache',
+                            'Pragma': 'no-cache',
+                            'Expires': '0',
+                            "Connection": "Keep-Alive"
+                        }
                     });
                     if (res && res.statusCode === 200) {
                         filebytes = res.body.bytes();
@@ -524,7 +541,10 @@ function getGitHubFileInfo(filePath, branch) {
         //let startTime = new Date().getTime();
         log(api_proxys[arr[i]])
         let url = api_proxys[arr[i]] +
-            api_github + filePath + "?ref=" + branch;
+            api_github + 
+            filePath + 
+            "?ref=" + branch
+            '&t=' + new Date().getTime();
         //  log(url)
 
         let res = null;
@@ -532,7 +552,12 @@ function getGitHubFileInfo(filePath, branch) {
             try {
                 res = http.get(url, {
                     timeout: 5 * 1000,
-
+                    headers: {
+                        'Cache-Control': 'no-cache',
+                        'Pragma': 'no-cache',
+                        'Expires': '0',
+                        "Connection": "Keep-Alive"
+                    }
                 });
                 if (res.statusCode === 200) {
                     result = res.body.json();
