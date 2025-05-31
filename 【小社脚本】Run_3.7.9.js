@@ -803,7 +803,6 @@ function serverYOLOSign() {
                 log("坐标分析成功啦！")
                 return res.body.json();
             } else {
-                n++;
                 console.error("错误：statusCode：" + res.statusCode);
                 let result = res.body.json();
                 console.error("信息：" + result);
@@ -820,6 +819,7 @@ function serverYOLOSign() {
                 //重新截图
                 captureScr();
                 getClipPic();
+                n++;
             }
 
         } catch (e) {
