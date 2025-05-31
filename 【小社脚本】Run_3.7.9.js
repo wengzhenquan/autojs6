@@ -378,8 +378,8 @@ function posts(n) {
     }
     log("正在浏览帖子……");
     for (i = 0; i < 4; i++) {
-        sleep(700);
-
+        wait(() => false, 1000);
+        
         let ran = random(200, 300) * Math.pow(-1, i);
         //gesture(1000, [dwidth * 1 / 2, dheight * 0.8 + ran], [dwidth * 1 / 2, dheight * 0.8 - ran]);
         swipe(dwidth * 0.5, dheight * 0.7 + cY(ran), dwidth * 0.5, dheight * 0.7 - cY(ran), 1000);
@@ -387,7 +387,7 @@ function posts(n) {
         if (i < 3) toast("正在浏览帖子……", "forcible")
         else toastLog("浏览10s完成！Ｏ(≧▽≦)Ｏ ", "forcible");
 
-        wait(() => false, 2000);
+        sleep(700);
     }
 
     // 返回
