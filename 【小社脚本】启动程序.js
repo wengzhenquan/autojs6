@@ -207,7 +207,6 @@ function ableClick(obj) {
                 copy.parent().indexInParent() > -1) {
 
                 copy = copy.parent();
-                wait(() => false, 300);
             }
             // 原始控件和父控件
             return (obj.click() || copy.click());
