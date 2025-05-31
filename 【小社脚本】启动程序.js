@@ -533,7 +533,6 @@ let proxys = [
     "https://ghfast.top/", // 
     "https://gh.catmak.name/",
     "https://g.cachecdn.ggff.net/",
-    "https://gh-proxy.ygxz.in/", //  
     "https://github.moeyy.xyz/", //
     
     
