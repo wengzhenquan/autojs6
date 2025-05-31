@@ -379,7 +379,7 @@ function posts(n) {
     log("正在浏览帖子……");
     for (i = 0; i < 4; i++) {
         wait(() => false, 1000);
-        
+
         let ran = random(200, 300) * Math.pow(-1, i);
         //gesture(1000, [dwidth * 1 / 2, dheight * 0.8 + ran], [dwidth * 1 / 2, dheight * 0.8 - ran]);
         swipe(dwidth * 0.5, dheight * 0.7 + cY(ran), dwidth * 0.5, dheight * 0.7 - cY(ran), 1000);
@@ -720,10 +720,10 @@ function localYOLOSign() {
 
         } else {
             console.error("刷新图片重试！");
-            
+
             // 备份错误图片
             saveErroFile(CAPTURE_PIC_PATH, 'local')
-            
+
             let refresh = className("android.widget.Button")
                 .text("刷新验证").findOne(2500);
             ableClick(refresh);
@@ -805,16 +805,18 @@ function serverYOLOSign() {
             } else {
                 n++;
                 console.error("错误：statusCode：" + res.statusCode);
-                console.error("信息：" + res.body.json());
+                let result = res.body.json();
+                console.error("信息：" + result);
+                if (!result) throw e;
                 console.error("识别失败，刷新图片重试！");
-                
+
                 // 备份错误图片
                 saveErroFile(CAPTURE_PIC_PATH, 'server');
-                
+
                 let refresh = className("android.widget.Button")
                     .text("刷新验证").findOne(2500);
                 ableClick(refresh);
-                
+
                 //重新截图
                 captureScr();
                 getClipPic();
