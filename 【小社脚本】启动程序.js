@@ -81,9 +81,6 @@ var delayed_max = 15; //最大超时时间
 var maxRuntime = 3 * 60 * 1000;
 startTimeoutMonitor();
 
-//启动悬浮窗关闭按钮
-//stopButton();
-threads.start(() => stopButton());
 
 //打开悬浮窗控制台
 console.reset();
@@ -101,7 +98,6 @@ log("产品：" + device.product + "，型号：" + device.model);
 log(`设备分辨率：${dwidth}x${dheight}`);
 log(`现在是：${date}`);
 console.error("提示：[音量+/-]键可停止脚本");
-
 
 
 //音量键，停止脚本
@@ -125,8 +121,14 @@ events.on("exit", function() {
     // verbose(nowDate());
 });
 
+
 //AutoJS6版本检查
 checkAutoJS6();
+//启动悬浮窗关闭按钮
+//stopButton();
+threads.start(() => stopButton());
+
+
 
 function checkAutoJS6() {
     // 额外兼容6.5.0
