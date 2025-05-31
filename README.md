@@ -482,6 +482,11 @@ github：https://github.com/wengzhenquan/autojs6
 
 
 --- 
+
+v3.7.9：
+1. 修复点击失效
+
+
 v3.7.8：
 1. 修复部分bug
 2. 优化部分代码

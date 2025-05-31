@@ -6,7 +6,7 @@
 修改    by：风中拾叶
 三改    by：wengzhenquan
 
-@version 20250530
+@version 20250531
 yolov11_w.js @version 20250526
 
 [github更新地址]：
@@ -200,15 +200,17 @@ function ableClick(obj) {
 
         if (obj && (obj instanceof UiObject)) {
             obj.show();
-            while (!obj.clickable() &&
-                obj.parent() &&
-                obj.parent().depth() > 0 &&
-                obj.parent().indexInParent() > -1) {
+            let copy = obj;
+            while (!copy.clickable() &&
+                copy.parent() &&
+                copy.parent().depth() > 0 &&
+                copy.parent().indexInParent() > -1) {
 
-                obj = obj.parent();
+                copy = copy.parent();
                 wait(() => false, 300);
             }
-            return obj.click();
+            // 原始控件和父控件
+            return (obj.click() || copy.click());
         }
 
     }
@@ -534,8 +536,8 @@ let proxys = [
     "https://gh.catmak.name/",
     "https://g.cachecdn.ggff.net/",
     "https://github.moeyy.xyz/", //
-    
-    
+
+
 ]
 
 
