@@ -482,6 +482,11 @@ github：https://github.com/wengzhenquan/autojs6
 
 
 --- 
+v3.7.8：
+1. 修复部分bug
+2. 优化部分代码
+
+
 v3.7.7：
 1. 不再支持6.6.0、6.6.1版本
 2. 一些优化

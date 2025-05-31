@@ -121,6 +121,7 @@ events.on("exit", function() {
     console.setTouchable(true);
     device.cancelKeepingAwake();
     floaty.closeAll();
+    threads.shutDownAll();
     // verbose(nowDate());
 });
 
@@ -390,8 +391,8 @@ function consoleShow() {
             warn: 'cyan',
             error: 'magenta'
         });
-        console3();
         console.show();
+        console3();
     }
 }
 //悬浮窗控制台变成30%
@@ -502,11 +503,10 @@ function init() {
     }
 
     let apks = localVersion.apk;
-
     if (apks) {
         for (var key in apks) {
             let value = apks[key];
-            let name = getAppName(value);
+            let name = app.getAppName(value);
             if (!name) {
                 //根据配置不检查YOLO
                 if (!config.本地YOLO识图 &&
