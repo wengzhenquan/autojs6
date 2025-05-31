@@ -86,6 +86,7 @@ startTimeoutMonitor();
 console.reset();
 consoleShow();
 consoleShow();
+console3();
 //consoleShow();
 
 console.warn("—----->--- Start ---<-----—");
