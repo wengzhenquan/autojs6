@@ -102,7 +102,7 @@ function initImageReco() {
             let name = app.getAppName(YOLO_PLUGIN_NAME2);
             let error = false;
             if (!name) {
-                console.error("tmp/Yolo-plugin.apk 插件未安装");
+                console.error("yolov11/Yolo-plugin.apk 插件未安装");
                 error = true;
             }
             let yzmbin = files.cwd() + YOLO_MODEL_SUBDIR2 + "/yzm.bin";
