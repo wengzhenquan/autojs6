@@ -73,7 +73,7 @@ var brand = device.brand;
 
 // 签到未完成标志
 var unfinished_mark = 0;
-//悬浮窗控制台
+//退出按钮
 var window = null;
 
 var delayed = 6; //服务器请求超时时间s
