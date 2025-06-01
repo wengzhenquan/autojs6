@@ -532,27 +532,22 @@ function init() {
 let proxys = [
 
     "https://gh.b52m.cn/",
-    "https://gh.qninq.cn/",
-    "https://gp-us.fyan.top/",
-    "https://api-gh.muran.eu.org/",
-    "https://gh.nxnow.top/",
-    "https://g.blfrp.cn/", //
-    "https://ghfast.top/", // 
-    "https://gh.catmak.name/",
     "https://g.cachecdn.ggff.net/",
     "https://github.moeyy.xyz/", //
-    "https://ghproxy.monkeyray.net/",
     "https://hub.gitmirror.com/",
+    "https://gh.catmak.name/",
+    "https://api-gh.muran.eu.org/",
+    "https://gp-us.fyan.top/",
+    "https://gh.nxnow.top/",
+    "https://gh.qninq.cn/",
+    "https://g.blfrp.cn/", //
+    "https://ghproxy.monkeyray.net/",
+    "https://ghfast.top/", // 
     "https://gh.sparkmemory.top/",
     "https://github-proxy.kongkuang.icu/",
-    "https://tvv.tw/",
     "https://gh.7761.cf/",
-    "https://ghp.keleyaa.com/",
-    "https://mirrors.chenby.cn/",
-    "https://ghproxy.imciel.com/",
-    "https://github.kkproxy.dpdns.org/",
-    "https://j.1win.ddns-ip.net/",
     "https://ghproxy.net/", //
+    
 ]
 
 
