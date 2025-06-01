@@ -73,6 +73,8 @@ var brand = device.brand;
 
 // 签到未完成标志
 var unfinished_mark = 0;
+//悬浮窗控制台
+var window = null;
 
 var delayed = 6; //服务器请求超时时间s
 var delayed_max = 15; //最大超时时间 
@@ -117,6 +119,7 @@ events.onKeyDown("volume_down", () => {
 events.on("exit", function() {
     console.setTouchable(true);
     device.cancelKeepingAwake();
+    if(window) window.close();
     floaty.closeAll();
     threads.shutDownAll();
     // verbose(nowDate());
@@ -334,7 +337,7 @@ function toSeconds(milliseconds) {
 //------------ 左下角“停止脚本”按钮 ----------//
 //悬浮窗停止按钮
 function stopButton() {
-    var window = floaty.window(
+    window = floaty.window(
         <frame>
             <button
             id="action"
