@@ -119,7 +119,7 @@ events.onKeyDown("volume_down", () => {
 events.on("exit", function() {
     console.setTouchable(true);
     device.cancelKeepingAwake();
-    if(window) window.close();
+    if (window) window.close();
     floaty.closeAll();
     threads.shutDownAll();
     // verbose(nowDate());
