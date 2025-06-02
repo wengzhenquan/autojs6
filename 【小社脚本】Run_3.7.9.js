@@ -799,6 +799,9 @@ function serverYOLOSign() {
         try {
             log(url);
             let res = upload(url);
+
+            if (!res) throw e;
+
             if (res.statusCode === 200) {
                 log("坐标分析成功啦！")
                 return res.body.json();
@@ -806,7 +809,9 @@ function serverYOLOSign() {
                 console.error("错误：statusCode：" + res.statusCode);
                 let result = res.body.json();
                 console.error("信息：" + result);
+
                 if (!result) throw e;
+
                 console.error("识别失败，刷新图片重试！");
 
                 // 备份错误图片
@@ -823,7 +828,8 @@ function serverYOLOSign() {
             }
 
         } catch (e) {
-            console.error(e.message);
+            if (u > urls.length - 3)
+                console.error(e.message);
             console.error("服务器错误，更换服务器重试！")
             u++;
             //n = 0;
@@ -1979,7 +1985,7 @@ function levelResult() {
     let outP2 = (`今日获得：${成长值记录.今日获得()}`).padEnd(11) + (`距离升级还需：${成长值记录.距离升级还需()}`);
     log(outP1);
     log(outP2);
-    log("----------------------------");
+    log("------------------------------");
     log("详细记录：");
 
     成长值记录.详细记录.forEach((record) => {
@@ -1988,7 +1994,7 @@ function levelResult() {
             record.项目.padEnd(12, '\u3000');
         log(`${item}` + `${record.结果}`);
     });
-    log("----------------------------");
+    log("------------------------------");
 
     return outP1 + "\n" + outP2;
 
