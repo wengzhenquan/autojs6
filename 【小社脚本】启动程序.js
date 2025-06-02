@@ -203,21 +203,23 @@ function ableClick(obj) {
             obj = obj.findOne(1000);
         }
 
-
         if (obj && (obj instanceof UiObject)) {
             obj.show();
-            let copy = obj;
-            while (!copy.clickable() &&
-                copy.parent() &&
-                copy.parent().depth() > 0 &&
-                copy.parent().indexInParent() > -1) {
+            // click
+            let result = obj.click();
+            while (!result &&
+                !obj.clickable() &&
+                obj.parent() &&
+                obj.parent().depth() > 0 &&
+                obj.parent().indexInParent() > -1) {
 
-                copy = copy.parent();
+                obj = obj.parent();
+
+                // 父控件click
+                result = obj.click();
             }
-            // 原始控件和父控件
-            return (obj.click() || copy.click());
+            return result;
         }
-
     }
     return false;
 }
@@ -532,22 +534,21 @@ function init() {
 let proxys = [
 
     "https://gh.b52m.cn/",
-    "https://g.cachecdn.ggff.net/",
+    "https://gh.qninq.cn/",
+    "https://gp-us.fyan.top/",
     "https://github.moeyy.xyz/", //
+    "https://g.cachecdn.ggff.net/",
     "https://hub.gitmirror.com/",
     "https://gh.catmak.name/",
-    "https://api-gh.muran.eu.org/",
-    "https://gp-us.fyan.top/",
-    "https://gh.nxnow.top/",
-    "https://gh.qninq.cn/",
     "https://g.blfrp.cn/", //
-    "https://ghproxy.monkeyray.net/",
-    "https://ghfast.top/", // 
     "https://gh.sparkmemory.top/",
+    "https://api-gh.muran.eu.org/",
+    "https://gh.nxnow.top/",
+    "https://ghfast.top/", // 
+    "https://ghproxy.monkeyray.net/",
     "https://github-proxy.kongkuang.icu/",
     "https://gh.7761.cf/",
-    "https://ghproxy.net/", //
-    
+
 ]
 
 
@@ -860,8 +861,6 @@ function unLock() {
 
             for (let i = 0; i < config.锁屏数字密码.length; i++) {
                 let num = content(config.锁屏数字密码[i]).findOne();
-                // while (!num.clickable()) num = num.parent();
-                // num.click();
                 clickCenter(num);
                 wait(() => false, 300);
             }
