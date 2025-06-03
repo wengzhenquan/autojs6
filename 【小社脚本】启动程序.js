@@ -6,8 +6,6 @@
 修改    by：风中拾叶
 三改    by：wengzhenquan
 
-@version 20250531
-yolov11_w.js @version 20250526
 
 [github更新地址]：
 
