@@ -772,7 +772,7 @@ function updateScript() {
         if (i > 10) {
             // 执行一键更新程序.js
             engines.execScriptFile("./" + update_script);
-            wait(() => false, 30, i);
+            wait(() => false, 50, i);
             // 检查脚本运行
             if (files.exists(update_locked)) {
                 floaty.closeAll();
