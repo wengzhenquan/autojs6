@@ -18,7 +18,7 @@ https://github.com/wengzhenquan/autojs6
 auto.waitFor();
 
 //程序运行文件标志
-files.ensureDir("./tmp/")
+files.ensureDir("./tmp/");
 var launch_locked = "./tmp/launch_main_locked";
 if (!files.exists(launch_locked)) {
     events.on("exit", () => files.remove(launch_locked));
@@ -57,7 +57,7 @@ var wchatpn = "com.tencent.mm"; //微信包名，用来校验小程序是否打�
 var xmVersionName = getAppVersionName(xmPckageName);
 var wchatVersionName = getAppVersionName(wchatpn);
 //社区APP最低支持跳转入口的版本
-var xmAtLeastVersionName = "5.3.2"
+var xmAtLeastVersionName = "5.3.2";
 
 
 // 设备信息
@@ -89,7 +89,7 @@ console.reset();
 consoleShow();
 consoleShow();
 console3();
-//consoleShow();
+console3();
 
 console.warn("—----->--- Start ---<-----—");
 log(("AutoJS6 版本：").padStart(20) + autojs.versionName)
@@ -142,6 +142,7 @@ function checkAutoJS6() {
     if (!(v650 || vAtLest)) {
         console.error('不支持的AutoJS6版本');
         console.error('请升级AutoJS6');
+        //wait(()=>false,2000)
         exit();
     }
 }
@@ -276,6 +277,8 @@ function getAppVersionName(packageName) {
         return null;
     }
 }
+
+
 //对比版本大小，前面的大，返回1，相等0，后面大-1
 function compareVersions(version1, version2) {
     let arr1 = version1.split('.').map(Number);
@@ -289,6 +292,8 @@ function compareVersions(version1, version2) {
     }
     return 0;
 }
+
+
 //对比版本version1是否＞＝version2
 function isAtLeast(version1, version2) {
     return (compareVersions(version1, version2) > -1);
@@ -533,21 +538,21 @@ function init() {
 //加速代理
 let proxys = [
 
-    "https://gh.b52m.cn/",
-    "https://gh.qninq.cn/",
-    "https://gp-us.fyan.top/",
-    "https://github.moeyy.xyz/", //
-    "https://g.cachecdn.ggff.net/",
-    "https://hub.gitmirror.com/",
-    "https://gh.catmak.name/",
-    "https://g.blfrp.cn/", //
     "https://gh.sparkmemory.top/",
+    "https://gh.qninq.cn/",
+    "https://github.moeyy.xyz/", //
+    "https://hub.gitmirror.com/",
     "https://api-gh.muran.eu.org/",
-    "https://gh.nxnow.top/",
+    "https://gp-us.fyan.top/",
+    "https://g.cachecdn.ggff.net/",
+    "https://g.blfrp.cn/", //
+    "https://gh.catmak.name/",
+    "https://gh.nxnow.top/",    
     "https://ghfast.top/", // 
     "https://ghproxy.monkeyray.net/",
-    "https://github-proxy.kongkuang.icu/",
     "https://gh.7761.cf/",
+    "https://gh.b52m.cn/",
+    "https://github-proxy.kongkuang.icu/",
 
 ]
 
@@ -795,12 +800,6 @@ function updateScript() {
 
     for (let i = 0; i < 12; i++) {
         log('→起飞'.padStart(i * 2 + 3, '-'));
-        // if (i > 10) {
-        //     engines.execScriptFile("./" + mainFile, {
-        //         delay: 99 * i
-        //     });
-        //     sleep(20 * i)
-        // }
     }
 
     // 执行主程序

@@ -56,22 +56,22 @@ var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs
 //加速代理
 let proxys = [
 
-    "https://gh.b52m.cn/",
-    "https://g.cachecdn.ggff.net/",
+    "https://gh.sparkmemory.top/",
+    "https://gh.qninq.cn/",
     "https://github.moeyy.xyz/", //
     "https://hub.gitmirror.com/",
-    "https://gh.catmak.name/",
     "https://api-gh.muran.eu.org/",
     "https://gp-us.fyan.top/",
-    "https://gh.nxnow.top/",
-    "https://gh.qninq.cn/",
+    "https://g.cachecdn.ggff.net/",
     "https://g.blfrp.cn/", //
-    "https://ghproxy.monkeyray.net/",
+    "https://gh.catmak.name/",
+    "https://gh.nxnow.top/",    
     "https://ghfast.top/", // 
-    "https://gh.sparkmemory.top/",
-    "https://github-proxy.kongkuang.icu/",
+    "https://ghproxy.monkeyray.net/",
     "https://gh.7761.cf/",
-    "https://ghproxy.net/", //
+    "https://gh.b52m.cn/",
+    "https://github-proxy.kongkuang.icu/",
+    
 ]
 
 var api_github = "https://api.github.com/repos/wengzhenquan/autojs6/contents/";
