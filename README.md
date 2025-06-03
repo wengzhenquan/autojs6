@@ -483,6 +483,11 @@ github：https://github.com/wengzhenquan/autojs6
 
 --- 
 
+v3.7.10：
+1. 添加`YOLO启用GPU`配置
+2. 更换一批代理
+3. 部分优化
+
 v3.7.9：
 1. 修复点击失效
 
