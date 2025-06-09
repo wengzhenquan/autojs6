@@ -629,10 +629,10 @@ function getClipPic() {
     }
 
     let tida = className("android.widget.Button")
-        .text("确认").findOne(1500);
+        .content("确认").findOne(1500);
     if (!tida) {
         tida = className("android.widget.Button")
-            .text("提交答案").findOne(1500);
+            .content("提交答案").findOne(1500);
     }
     if (tida) {
         param.h = tida.top() - param.y;
@@ -664,12 +664,12 @@ function clickPic(list, clipParam) {
     }
     log("图标点击完成！");
     let tida = className("android.widget.Button")
-        .text("确认").findOne(1500);
+        .content("确认").findOne(1500);
     if (!tida) {
         tida = className("android.widget.Button")
-            .text("提交答案").findOne(1500);
+            .content("提交答案").findOne(1500);
     }
-    if (tida) ableClick(tida);
+    ableClick(tida);
     click("确认");
     click("提交答案");
     sleep(1000);
@@ -835,7 +835,7 @@ function serverYOLOSign() {
                 saveErroFile(CAPTURE_PIC_PATH, 'server');
 
                 let refresh = className("android.widget.Button")
-                    .text("刷新验证").findOne(2500);
+                    .content("刷新验证").findOne(2500);
                 ableClick(refresh);
 
                 //重新截图
@@ -950,13 +950,13 @@ function readHk() {
 
         //寻找滑块组件
         let gbyz = className("android.widget.Button")
-            .text("关闭验证").findOne(1500);
+            .content("关闭验证").findOne(1500);
         if (!gbyz) {
             gbyz = className("android.widget.Button")
-                .text("刷新验证").findOne(1500);
+                .content("刷新验证").findOne(1500);
             if (!gbyz) {
                 gbyz = className("android.widget.Button")
-                    .text("视觉障碍").findOne(1500);
+                    .content("视觉障碍").findOne(1500);
             }
         }
         if (gbyz) {
