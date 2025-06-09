@@ -416,7 +416,7 @@ function console3() {
 //悬浮窗控制台变成20%
 function consoleMin() {
     if (console.isShowing()) {
-        console.setSize(0.96, 0.2);
+        console.setSize(0.96, 0.17);
     }
 }
 

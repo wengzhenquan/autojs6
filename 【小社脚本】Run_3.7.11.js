@@ -487,20 +487,20 @@ function findCenter() {
 
     // 等待验证图片的加载
     sleep(2000);
-    let result = wait(() => existsOne(text("关闭验证"), text("刷新验证"), text("视觉障碍")), 20, 800);
+    let result = wait(() => existsOne("关闭验证", "刷新验证", "视觉障碍"), 20, 800);
     // 加强识别
     if (!result) {
         result = className("android.widget.Button")
-            .text("关闭验证").findOne(2000);
+            .content("关闭验证").findOne(2000);
         if (!result) {
             result = className("android.widget.Button")
-                .text("刷新验证").findOne(2000);
+                .content("刷新验证").findOne(2000);
             if (!result) {
                 result = className("android.widget.Button")
-                    .text("视觉障碍").findOne(2000);
+                    .content("视觉障碍").findOne(2000);
                 if (!result) {
                     result = className("android.widget.Button")
-                        .text("帮助反馈").findOne(2000);
+                        .content("帮助反馈").findOne(2000);
                 }
             }
         }
@@ -535,7 +535,7 @@ function captureScr() {
             console.error("可能涉及'投影媒体'权限、手机屏幕共享，或者手机重启试试！");
             return;
         }
-        
+
         log("开始截图")
         sleep(2000);
         if (!captureScreen(p2Path)) {
