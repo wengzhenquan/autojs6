@@ -1446,7 +1446,7 @@ function ganenji() {
     log('→我的')
     ableClick(text("我的"));
     while (scrollDown());
-    let qucanyu = desc('小米15周年感恩回馈');
+    let qucanyu = descContains('周年感恩');
     log('进入活动页面')
     if (!ableClick(qucanyu.findOne(5000))) {
         console.error('找不到活动入口')
