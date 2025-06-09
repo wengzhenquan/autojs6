@@ -484,6 +484,9 @@ github：https://github.com/wengzhenquan/autojs6
 
 --- 
 
+v3.7.11：
+1. 签到页识别加强，增加等待时长
+
 v3.7.10：
 1. 添加`YOLO启用GPU`配置
 2. 更换一批代理

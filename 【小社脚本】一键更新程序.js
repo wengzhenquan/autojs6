@@ -58,18 +58,17 @@ let proxys = [
 
     "https://gh.sparkmemory.top/",
     "https://gh.qninq.cn/",
-    "https://github.moeyy.xyz/", //
     "https://hub.gitmirror.com/",
+    "https://github.moeyy.xyz/", //
     "https://api-gh.muran.eu.org/",
-    "https://gp-us.fyan.top/",
     "https://g.cachecdn.ggff.net/",
-    "https://g.blfrp.cn/", //
     "https://gh.catmak.name/",
-    "https://gh.nxnow.top/",    
+    "https://g.blfrp.cn/", //
     "https://ghfast.top/", // 
+    "https://gh.nxnow.top/",    
     "https://ghproxy.monkeyray.net/",
-    "https://gh.7761.cf/",
     "https://gh.b52m.cn/",
+    "https://gh.7761.cf/",
     "https://github-proxy.kongkuang.icu/",
     
 ]
