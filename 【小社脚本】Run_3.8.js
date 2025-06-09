@@ -1440,7 +1440,7 @@ function join() {
 //感恩季活动
 function ganenji() {
     while (!packageName(xmPckageName).exists()) sleep(500);
-    console.info(">>>>>>>→感恩季活动←<<<<<<<")
+    console.info(">>>>>>→感恩季活动←<<<<<<")
     //返回首页外层
     backAppIndex();
     log('→我的')
