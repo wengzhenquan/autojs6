@@ -1548,8 +1548,8 @@ function 解锁(button) {
             sleep(300);
         }
         // 关闭提示
-        for (i = 0; i < 5; i++) {
-            click(dwidth * 0.5, dheight * (0.815 + 0.01 * i));
+        for (i = 0; i < 3; i++) {
+            click(dwidth * 0.5, dheight * (0.83 + 0.01 * i));
         }
         log("等待3秒……")
         sleep(3000);
@@ -1565,7 +1565,7 @@ function 解锁(button) {
             //开盒有3秒间隔限制
             if (j > 0) {
                 log('等待3秒开下一个');
-                wait(() => false, 3000);
+                sleep(3000);
             }
             //开盒
             ableClick(text('可解锁').findOne(2000));
@@ -1578,12 +1578,12 @@ function 解锁(button) {
                 xyyx = xyyx.parent().nextSibling();
                 ableClick(xyyx);
                 // 关闭图形❌组件
-                clickCenter(xyyx);
+                //clickCenter(xyyx);
             } else {
                 // 无法识别到“炫耀一下”弹窗，也无法识别关闭图形❌组件
                 // 只能靠坐标关闭
-                for (let i = 0; i < 5; i++) {
-                    click(dwidth * 0.5, dheight * (0.815 + 0.01 * i));
+                for (let i = 0; i < 3; i++) {
+                    click(dwidth * 0.5, dheight * (0.83 + 0.01 * i));
                 }
             }
             j++;
