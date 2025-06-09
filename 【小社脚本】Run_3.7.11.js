@@ -486,21 +486,21 @@ function findCenter() {
     }
 
     // 等待验证图片的加载
-    sleep(3000);
-    let result = wait(() => existsOne(text("关闭验证"), text("刷新验证"), text("视觉障碍")), 6, 800);
+    sleep(2000);
+    let result = wait(() => existsOne(text("关闭验证"), text("刷新验证"), text("视觉障碍")), 20, 800);
     // 加强识别
     if (!result) {
         result = className("android.widget.Button")
-            .text("关闭验证").findOne(2500);
+            .text("关闭验证").findOne(2000);
         if (!result) {
             result = className("android.widget.Button")
-                .text("刷新验证").findOne(2500);
+                .text("刷新验证").findOne(2000);
             if (!result) {
                 result = className("android.widget.Button")
-                    .text("视觉障碍").findOne(2500);
+                    .text("视觉障碍").findOne(2000);
                 if (!result) {
                     result = className("android.widget.Button")
-                        .text("帮助反馈").findOne(2500);
+                        .text("帮助反馈").findOne(2000);
                 }
             }
         }
