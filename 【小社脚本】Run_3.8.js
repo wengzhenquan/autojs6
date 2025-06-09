@@ -1647,7 +1647,7 @@ function 小程序签到() {
         ableClick(text("微信").findOne(2000))
 
         // 微信下滑
-        while (scrollUp() || !text("最近使用小程序").exists()) {
+        while (scrollUp() || !textEndsWith('小程序').exists()) {
             gesture(500, [dwidth * 0.4, dheight * 0.4], [dwidth * 0.6, dheight * 0.8]);
         }
         sleep(500)
