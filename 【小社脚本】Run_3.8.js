@@ -306,11 +306,11 @@ function launchAPP(packageN) {
 function skipAd() {
     while (!packageName(xmPckageName).exists()) sleep(500);
     //开屏广告
-    let skilCloseBtn = textStartsWith("跳过").findOne(600);
+    let skilCloseBtn = textStartsWith("跳过").findOne(800);
     if (ableClick(skilCloseBtn)) {
         log("跳过了开屏广告!");
     }
-    sleep(500)
+    sleep(1000)
     let adClose = className("android.widget.ImageView")
         .desc("关闭");
     if (ableClick(adClose.findOne(1000))) {
