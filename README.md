@@ -484,6 +484,11 @@ github：https://github.com/wengzhenquan/autojs6
 
 --- 
 
+v3.8:
+1. 提升A15版本兼容性
+2. 新增感恩季活动
+3. 修改记录成长值入口
+
 v3.7.11：
 1. 签到页识别加强，增加等待时长
 
