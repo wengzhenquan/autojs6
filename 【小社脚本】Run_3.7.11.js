@@ -535,9 +535,9 @@ function captureScr() {
             console.error("可能涉及'投影媒体'权限、手机屏幕共享，或者手机重启试试！");
             return;
         }
-        sleep(1000);
+        
         log("开始截图")
-
+        sleep(2000);
         if (!captureScreen(p2Path)) {
             sleep(500)
             var pictures2 = images.captureScreen();
