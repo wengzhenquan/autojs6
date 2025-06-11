@@ -69,7 +69,7 @@ let proxys = [
     "https://ghproxy.monkeyray.net/",
     "https://gh.b52m.cn/",
     "https://gh.7761.cf/",
-    "https://github-proxy.kongkuang.icu/",
+   // "https://github-proxy.kongkuang.icu/",
     
 ]
 
