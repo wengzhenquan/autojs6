@@ -156,7 +156,9 @@ function startTimeoutMonitor() {
             const startTime = new Date(date.replace(/-/g, '/')).getTime();
             let currentTime = new Date().getTime();
             if (currentTime - startTime > (maxRuntime - 10 * 1000)) {
-                console.error(`脚本运行到达 ${(maxRuntime +10*1000)/60/1000} 分钟，强制退出`);
+                console.error(`脚本运行 ${(maxRuntime)/60/1000} 分钟，强制退出`);
+                console.error('可能是兼容性问题，或布局分析问题，导致页面卡住');
+                console.error('请截图保存最后卡住的页面，反馈问题。')
                 notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("发生未知错误，脚本强制停止\n详细问题，请查看日志"));
                 exit();
             }
@@ -186,7 +188,6 @@ function clickCenter(obj) {
             //log(x,y)
             return click(x, y);
         }
-
     }
     return false;
 }
@@ -403,6 +404,9 @@ function consoleShow() {
             warn: 'cyan',
             error: 'magenta'
         });
+        if (config && config.悬浮窗控制台字体大小)
+            console.setContentTextSize(config.悬浮窗控制台字体大小);
+            
         console.show();
         console3();
     }
@@ -545,11 +549,11 @@ let proxys = [
     "https://gh.catmak.name/",
     "https://g.blfrp.cn/", //
     "https://ghfast.top/", // 
-    "https://gh.nxnow.top/",    
+    "https://gh.nxnow.top/",
     "https://ghproxy.monkeyray.net/",
     "https://gh.b52m.cn/",
     "https://gh.7761.cf/",
-   // "https://github-proxy.kongkuang.icu/",
+    // "https://github-proxy.kongkuang.icu/",
 
 ]
 
