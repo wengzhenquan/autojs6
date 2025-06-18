@@ -367,6 +367,7 @@ function stopButton() {
     //  window.action.click(() => window.close());
     let n = 0;
     window.action.click(() => {
+        console.error("提示：点击[停止脚本]按钮");
         exit();
         n++;
         window.action.setText("关不掉！x" + n);
