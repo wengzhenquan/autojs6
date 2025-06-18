@@ -98,21 +98,22 @@ log("制造商：" + manufacturer + "，品牌：" + brand);
 log("产品：" + device.product + "，型号：" + device.model);
 log(`设备分辨率：${dwidth}x${dheight}`);
 log(`现在是：${date}`);
-console.error("提示：[音量+/-]键可停止脚本");
 
-
-//音量键，停止脚本
-events.setKeyInterceptionEnabled("volume_up", true);
-events.setKeyInterceptionEnabled("volume_down", true);
-events.observeKey();
-events.onKeyDown("volume_up", () => {
-    console.error("[音量+]停止脚本！！！");
-    exit();
-});
-events.onKeyDown("volume_down", () => {
-    console.error("[音量-]停止脚本！！！");
-    exit();
-});
+if (config && config.音量键停止) {
+    console.error("提示：[音量+/-]键可停止脚本");
+    //音量键，停止脚本
+    events.setKeyInterceptionEnabled("volume_up", true);
+    events.setKeyInterceptionEnabled("volume_down", true);
+    events.observeKey();
+    events.onKeyDown("volume_up", () => {
+        console.error("[音量+]停止脚本！！！");
+        exit();
+    });
+    events.onKeyDown("volume_down", () => {
+        console.error("[音量-]停止脚本！！！");
+        exit();
+    });
+}
 
 events.on("exit", function() {
     console.setTouchable(true);
@@ -183,6 +184,7 @@ function clickCenter(obj) {
 
         if (obj && (obj instanceof UiObject)) {
             obj.show();
+            sleep(500);
             let x = obj.bounds().centerX()
             let y = obj.bounds().centerY()
             //log(x,y)
@@ -205,6 +207,7 @@ function ableClick(obj) {
 
         if (obj && (obj instanceof UiObject)) {
             obj.show();
+            sleep(500);
             // click
             let result = obj.click();
             while (!result &&
@@ -406,7 +409,7 @@ function consoleShow() {
         });
         if (config && config.悬浮窗控制台字体大小)
             console.setContentTextSize(config.悬浮窗控制台字体大小);
-            
+
         console.show();
         console3();
     }
@@ -540,7 +543,6 @@ function init() {
 //加速代理
 let proxys = [
 
-    "https://gh.sparkmemory.top/",
     "https://gh.qninq.cn/",
     "https://hub.gitmirror.com/",
     "https://github.moeyy.xyz/", //
@@ -549,11 +551,7 @@ let proxys = [
     "https://gh.catmak.name/",
     "https://g.blfrp.cn/", //
     "https://ghfast.top/", // 
-    "https://gh.nxnow.top/",
     "https://ghproxy.monkeyray.net/",
-    "https://gh.b52m.cn/",
-    "https://gh.7761.cf/",
-    // "https://github-proxy.kongkuang.icu/",
 
 ]
 
@@ -919,20 +917,7 @@ function permissionv() {
         exit();
     }
 
-    // 通知权限
-    // 获取通知管理器实例
-    // var notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE);
-    // // 判断通知是否被启用
-    // var isNotificationEnabled = notificationManager.areNotificationsEnabled();
-    // if (isNotificationEnabled) {
-    //     log("发送通知权限，[已启用]");
-    // } else {
-    //     console.error("发送通知权限，[未启用]!");
-    //     //去设置
-    //     notice.launchSettings();
-    //     exit();
-    // }
-
+    
     // 通知权限6.6.2版本修复
     // 判断通知是否被启用
     if (notice.isEnabled()) {

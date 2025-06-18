@@ -56,7 +56,6 @@ var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs
 //加速代理
 let proxys = [
 
-    "https://gh.sparkmemory.top/",
     "https://gh.qninq.cn/",
     "https://hub.gitmirror.com/",
     "https://github.moeyy.xyz/", //
@@ -65,11 +64,7 @@ let proxys = [
     "https://gh.catmak.name/",
     "https://g.blfrp.cn/", //
     "https://ghfast.top/", // 
-    "https://gh.nxnow.top/",    
     "https://ghproxy.monkeyray.net/",
-    "https://gh.b52m.cn/",
-    "https://gh.7761.cf/",
-   // "https://github-proxy.kongkuang.icu/",
     
 ]
 
