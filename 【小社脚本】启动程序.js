@@ -22,8 +22,13 @@ if (!files.exists(launch_locked)) {
     events.on("exit", () => files.remove(launch_locked));
     files.create(launch_locked);
 } else {
-    //确保只运行一个程序
-    exit();
+    if (engines.all().length < 2) {
+        // 防止锁残留
+        files.remove(launch_locked);
+    } else {
+        //确保只运行一个程序
+        exit();
+    }
 }
 
 try {
@@ -918,7 +923,7 @@ function permissionv() {
         exit();
     }
 
-    
+
     // 通知权限6.6.2版本修复
     // 判断通知是否被启用
     if (notice.isEnabled()) {

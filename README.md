@@ -490,6 +490,10 @@ github：https://github.com/wengzhenquan/autojs6
 
 --- 
 
+v3.8.4:   
+1. 防止文件锁残留
+
+
 v3.8.3:   
 1. 添加“音量键停止”配置
 2. 删除滚动代码

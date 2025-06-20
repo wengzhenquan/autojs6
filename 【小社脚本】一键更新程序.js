@@ -10,8 +10,13 @@ if (!files.exists(locked)) {
     //10分钟亮屏
     device.keepScreenDim(10 * 60 * 1000);
 } else {
-    //确保只运行一个程序
-    exit();
+    if (engines.all().length < 2) {
+        // 防止锁残留
+        files.remove(locked);
+    } else {
+        //确保只运行一个程序
+        exit();
+    }
 }
 
 // 打开日志页面
