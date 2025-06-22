@@ -1172,7 +1172,7 @@ function main() {
             if (config && config.结束震动)
                 console.error("提示：结束震动提醒~~~");
 
-            log(0);
+            log(engines.all().length);
 
             try {
                 exit();
