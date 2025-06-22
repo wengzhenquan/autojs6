@@ -61,10 +61,10 @@
   ---- (YOLO本地签到模块) ----  
   
 └─  yolov11/     
-    ├─  yolov11_w.js # 本地YOLO脚本
-    └─  model/       # 模型文件目录
-        ├─ yzm.bin
-        └─ yzm.param
+   ├─  yolov11_w.js # 本地YOLO脚本
+   └─  model/       # 模型文件目录
+      ├─  yzm.bin
+      └─  yzm.param
 Yolo-Plugins.apk     # Yolo插件(需安装）
 ```       
 
