@@ -528,22 +528,24 @@ function startUpdate() {
 
     wait(() => false, 3000);
     //sleep(3000)
-    //  ---------------- 下面是刷新列表 --------//
-    // 设备信息
-    var dwidth = device.width;
-    var dheight = device.height;
-
-    let a6 = className("android.widget.TextView")
-        .packageName('org.autojs.autojs6')
-        .text("AutoJs6");
-    do {
-        back();
-        wait(() => false, 1000);
-    } while (!a6.exists() && !textContains('小社脚本').exists());
-    let n = 3;
-    while (n--) {
-        swipe(dwidth * 0.4, dheight * 0.4, dwidth * 0.6, dheight * 0.8, 300);
-        sleep(300);
+    if (packageName('org.autojs.autojs6').exists()) {
+        //  ---------------- 下面是刷新列表 --------//
+        // 设备信息
+        var dwidth = device.width;
+        var dheight = device.height;
+        let a6 = className("android.widget.TextView")
+            .packageName('org.autojs.autojs6')
+            .text("AutoJs6");
+        
+        while(!a6.exists() && !textContains('version').exists()); {
+            back();
+            wait(() => false, 1000);
+        } 
+        let n = 3;
+        while (n--) {
+            swipe(dwidth * 0.4, dheight * 0.4, dwidth * 0.6, dheight * 0.8, 300);
+            sleep(300);
+        }
     }
 
 }
