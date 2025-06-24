@@ -1660,7 +1660,7 @@ function 小程序签到() {
     let xxcx = className("android.widget.ImageButton")
         .desc("更多").packageName(wchatpn);
     // 已打开微信，但未打开小程序。模拟从微信进入小程序
-    if (!wait(() => xxcx.exists(), 6, 300) &&
+    if (!wait(() => xxcx.exists(), 10, 500) &&
         existsOne(text("通讯录"), desc("返回"), descStartsWith("更多功能"))
     ) {
         toastLog("已打开微信，但未打开小程序！", "forcible");
@@ -1743,6 +1743,7 @@ function 小程序签到() {
     }
     log("成功打开小程序！")
     while (!packageName(wchatpn).exists()) sleep(500);
+    wait(() => xxcx.exists(), 10, 500);
     sleep(1000);
     log("--------- 签到操作 ---------");
     let me = text("我的");
@@ -1762,7 +1763,7 @@ function 小程序签到() {
         //clickCenter(mep);
         toastLog("正在进入[我的]页面……", "forcible")
         //sleep(1500);
-        if (wait(() => existsOne(text('去签到'), text('已签到')), 5, 600)) {
+        if (wait(() => existsOne(text('去签到'), text('已签到')), 8, 600)) {
             if (ableClick(text("去签到"))) {
                 toastLog("小程序签到成功！✧٩(ˊωˋ*)و✧", "forcible")
             }
