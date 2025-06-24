@@ -416,7 +416,6 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
    `什么？已经安装了还是报这个错误？`   
    那你一定是root用户，且使用了`隐藏应用列表`。   
    将 Yolo-Plugins 加入白名单，让AutoJS6对其可见即可。  
-   AutoJS6不要使用6.6.0、6.6.1版本，有bug。     
    
    
 #### 13.更新的时候，一大堆报错， $\color{red}{OOM}$。   
