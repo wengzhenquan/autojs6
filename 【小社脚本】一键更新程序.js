@@ -527,6 +527,7 @@ function startUpdate() {
 
 
     wait(() => false, 3000);
+    back();
     //sleep(3000)
     if (packageName('org.autojs.autojs6').exists()) {
         //  ---------------- 下面是刷新列表 --------//
@@ -536,16 +537,16 @@ function startUpdate() {
         let a6 = className("android.widget.TextView")
             .packageName('org.autojs.autojs6')
             .text("AutoJs6");
-        
-        while(!a6.exists() && !textContains('version').exists()); {
-            back();
+        click(text('文件'));
+        if (a6.exists() || textContains('version').exists()); {
             wait(() => false, 1000);
-        } 
-        let n = 3;
-        while (n--) {
-            swipe(dwidth * 0.4, dheight * 0.4, dwidth * 0.6, dheight * 0.8, 300);
-            sleep(300);
+            let n = 3;
+            while (n--) {
+                swipe(dwidth * 0.4, dheight * 0.4, dwidth * 0.6, dheight * 0.8, 300);
+                sleep(300);
+            }
         }
+
     }
 
 }
