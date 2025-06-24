@@ -305,9 +305,9 @@ function launchAPP(packageN) {
 //跳过广告
 function skipAd() {
     while (!packageName(xmPckageName).exists()) sleep(500);
-    while (!existsOne('论坛', '官方', '消息', '我的')) {
+    while (!existsOne('论坛', '我的')) {
         //开屏广告
-        let skilCloseBtn = textStartsWith("跳过").findOne(800);
+        let skilCloseBtn = textStartsWith("跳过").findOne(500);
         if (ableClick(skilCloseBtn)) {
             log("跳过了开屏广告!");
         }
