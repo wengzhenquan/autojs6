@@ -72,7 +72,7 @@ let proxys = [
     "https://gh.b52m.cn/",
     "https://gp-us.fyan.top/",
     "https://gh.sparkmemory.top/",
-    
+
 ]
 
 var api_github = "https://api.github.com/repos/wengzhenquan/autojs6/contents/";
@@ -526,6 +526,27 @@ function startUpdate() {
     console.error("在文件列表下滑刷新，查看更新结果！")
     console.error("在文件列表下滑刷新，查看更新结果！")
     console.error("在文件列表下滑刷新，查看更新结果！")
+    
+    wait(() => false, 3000);
+    
+    //  ---------------- 下面是刷新列表 --------//
+    // 设备信息
+    var dwidth = device.width;
+    var dheight = device.height;
+
+    let a6 = className("android.widget.TextView")
+        .packageName('org.autojs.autojs6')
+        .text("AutoJs6");
+    while (!a6.exists()) {
+        back();
+        wait(() => false, 500);
+    }
+    let n = 5;
+    while (n--) {
+        swipe(dwidth * 0.4, dheight * 0.4, dwidth * 0.6, dheight * 0.8, 300);
+        sleep(300);
+    }
+
 }
 
 // ==================== 文件校验系列 ====================
@@ -550,10 +571,9 @@ function getGitHubFileInfo(filePath, branch) {
         //let startTime = new Date().getTime();
         log(api_proxys[arr[i]])
         let url = api_proxys[arr[i]] +
-            api_github + 
-            filePath + 
-            "?ref=" + branch
-            '&t=' + new Date().getTime();
+            api_github +
+            filePath +
+            "?ref=" + branch '&t=' + new Date().getTime();
         //  log(url)
 
         let res = null;
