@@ -102,7 +102,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
    免root建议`Shizuku`体验更好。  
    有root推荐授权root权限。  
    
-   ** $\color{red}{最后一个(投影媒体)权限需要Shizuku或root才能开启！}$ **   
+   **$\color{red}{最后一个(投影媒体)权限需要Shizuku或root才能开启！}$**   
    
    页面需要的权限如下：
     ![image](说明/需要的权限.jpg)  
