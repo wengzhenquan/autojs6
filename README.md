@@ -99,7 +99,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
 ### **1. 先授权AutoJs6需要的权限。**  
    以下二选一：  
    * 免root需要 $\color{red}{Shizuku}$ 。  
-   * 有root推荐授权root权限。  
+   * 有root推荐授权 $\color{red}{root权限}$ 。  
    
    **$\color{red}{最后一个(投影媒体)权限需要Shizuku或root才能开启！}$**   
    
