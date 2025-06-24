@@ -29,7 +29,7 @@
 
 --- 
 ## **正式开始：**  
-**（请看完下面使用方法，和 > $\color{red}{常见问题。}$ )**    
+**（请看完下面使用方法，和 $\color{red}{常见问题。}$ )**    
 （别问无效的问题，真是服了，有人没按照说明使用，下载了（不完整的）脚本，自己一顿瞎搞还来问）  
 **(很多报错有中文提示，麻烦自己先看一眼。)**
 
@@ -41,7 +41,7 @@
 
 [完整包下载](https://github.com/wengzhenquan/autojs6/archive/refs/heads/main.zip)   
 
-### **AutoJs6 **(建议使用最新版)**：**    
+### **AutoJs6 $\color{red}{(建议使用最新版)}$：**    
 （最低支持6.6.2，额外兼容6.5.0）   
 [点击下载](https://github.com/SuperMonster003/AutoJs6/releases)  
 
