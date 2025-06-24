@@ -305,16 +305,16 @@ function launchAPP(packageN) {
 //跳过广告
 function skipAd() {
     while (!packageName(xmPckageName).exists()) sleep(500);
-    while (!existsOne('论坛', '我的')) {
+    while (!existsOne('签到', '论坛', '我的')) {
         //开屏广告
-        let skilCloseBtn = textStartsWith("跳过").findOne(500);
+        let skilCloseBtn = textStartsWith("跳过").findOne(800);
         if (ableClick(skilCloseBtn)) {
             log("跳过了开屏广告!");
         }
         sleep(1000)
         let adClose = className("android.widget.ImageView")
             .desc("关闭");
-        if (ableClick(adClose.findOne(1000))) {
+        if (ableClick(adClose.findOne(800))) {
             log("关闭了1个广告!");
         }
     }
