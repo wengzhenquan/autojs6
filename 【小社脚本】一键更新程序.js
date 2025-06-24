@@ -62,11 +62,10 @@ var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs
 let proxys = [
 
     "https://gh.qninq.cn/",
-    "https://hub.gitmirror.com/",
     "https://github.moeyy.xyz/", //
-    "https://api-gh.muran.eu.org/",
     "https://g.cachecdn.ggff.net/",
     "https://gh.catmak.name/",
+    "https://api-gh.muran.eu.org/",
     "https://g.blfrp.cn/", //
     "https://ghfast.top/", // 
     "https://ghproxy.monkeyray.net/",
