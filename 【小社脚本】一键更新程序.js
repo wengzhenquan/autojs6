@@ -528,7 +528,7 @@ function startUpdate() {
     console.error("在文件列表下滑刷新，查看更新结果！")
     
     wait(() => false, 3000);
-    
+    //sleep(3000)
     //  ---------------- 下面是刷新列表 --------//
     // 设备信息
     var dwidth = device.width;
@@ -541,7 +541,7 @@ function startUpdate() {
         back();
         wait(() => false, 500);
     }
-    let n = 5;
+    let n = 3;
     while (n--) {
         swipe(dwidth * 0.4, dheight * 0.4, dwidth * 0.6, dheight * 0.8, 300);
         sleep(300);
