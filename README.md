@@ -137,7 +137,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
    ![image](说明/主界面.jpg)  
 
 --- 
-### **5. 编辑配置文件`config.js`：**  
+### **5. 编辑配置文件 $\color{red}{`config.js`}$：**  
    ![image](说明/配置文件说明.jpg)  
     
    设置屏幕解锁密码，能够设置定时任务，
