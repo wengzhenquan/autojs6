@@ -42,7 +42,7 @@
 
 ### **AutoJs6 $\color{red}{(建议使用最新版)}$：**    
 （最低支持6.6.2，额外兼容6.5.0）   
-（不支持6.6.0、6.0.1）   
+（不支持6.6.0、6.6.1）   
 [点击下载](https://github.com/SuperMonster003/AutoJs6/releases)  
 
 
