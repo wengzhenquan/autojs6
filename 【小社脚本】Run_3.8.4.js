@@ -311,7 +311,7 @@ function skipAd() {
         if (ableClick(skilCloseBtn)) {
             log("跳过了开屏广告!");
         }
-        sleep(1000)
+        //sleep(1000)
         let adClose = className("android.widget.ImageView")
             .desc("关闭");
         if (ableClick(adClose.findOne(800))) {
