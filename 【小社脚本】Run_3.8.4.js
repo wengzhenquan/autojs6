@@ -281,9 +281,9 @@ function launchAPP(packageN) {
             if (yyxq.exists()) {
                 let run = textContains("启动");
                 //while (!scrollDown() || !run.exists()) {
-                    // 上滑寻找“启动”
-                    swipe(dwidth * 0.5, dheight * 0.8, dwidth * 0.5, dheight * 0.5, 300);
-                    sleep(300);
+                // 上滑寻找“启动”
+                swipe(dwidth * 0.5, dheight * 0.8, dwidth * 0.5, dheight * 0.5, 300);
+                sleep(300);
                 //}
                 ableClick(run.findOne(600));
                 // clickCenter(run);
@@ -305,22 +305,24 @@ function launchAPP(packageN) {
 //跳过广告
 function skipAd() {
     while (!packageName(xmPckageName).exists()) sleep(500);
-    //开屏广告
-    let skilCloseBtn = textStartsWith("跳过").findOne(800);
-    if (ableClick(skilCloseBtn)) {
-        log("跳过了开屏广告!");
-    }
-    sleep(1000)
-    let adClose = className("android.widget.ImageView")
-        .desc("关闭");
-    if (ableClick(adClose.findOne(1000))) {
-        log("关闭了1个广告!");
+    while (!existsOne('论坛', '官方', '消息', '我的')) {
+        //开屏广告
+        let skilCloseBtn = textStartsWith("跳过").findOne(800);
+        if (ableClick(skilCloseBtn)) {
+            log("跳过了开屏广告!");
+        }
+        sleep(1000)
+        let adClose = className("android.widget.ImageView")
+            .desc("关闭");
+        if (ableClick(adClose.findOne(1000))) {
+            log("关闭了1个广告!");
+        }
     }
 }
 
 //浏览帖子
 function posts(n) {
-    while (!packageName(xmPckageName).exists());
+    while (!packageName(xmPckageName).exists()) sleep(500);
     console.info(">>>>>>>→浏览帖子←<<<<<<<")
     toastLog("准备浏览帖子10s……", "long", "forcible")
     sleep(500)
@@ -431,7 +433,7 @@ function backAppIndex() {
         sleep(300);
     }
 
-    while (!existsAll('论坛', '官方', '消息', '我的')) {
+    while (!existsOne('论坛', '官方', '消息', '我的')) {
         back();
         sleep(500);
     }
