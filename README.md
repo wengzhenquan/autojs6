@@ -492,7 +492,7 @@ github：https://github.com/wengzhenquan/autojs6
 
 v3.8.4:   
 1. 防止文件锁残留
-
+2. 延迟摸黑签到等待时间，确保页面加载成功
 
 v3.8.3:   
 1. 添加“音量键停止”配置
