@@ -1743,7 +1743,7 @@ function 小程序签到() {
     }
     log("成功打开小程序！")
     while (!packageName(wchatpn).exists()) sleep(500);
-    wait(() => xxcx.exists(), 10, 500);
+    wait(() => xxcx.exists(), 6, 500);
     sleep(1000);
     log("--------- 签到操作 ---------");
     let me = text("我的");
