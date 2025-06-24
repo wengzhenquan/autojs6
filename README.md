@@ -375,14 +375,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
    
    root用户：AutoJs6获得root权限，点击开启按钮，直接开启。  
    ```
-   **等等，我的AutoJs6没有这个选项？**  
-   啊！你用的是什么古老版本？   
-   ```
-   如果不想升级AutoJs6？怎么开启“投射媒体权限”？   
-   （免root用户可以借助 `Shizuku + APP ops`这款APP。）   
-   （root用户可以借助 `Thanox`这款APP。）    
-    (上面使用步骤10的链接里面，已上传这两款APP。)   
-   ```
+   
    
 #### 10. **方法images.requestScreenCapture()**  调用失败。  
    （截图权限无法通过）
