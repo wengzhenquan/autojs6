@@ -69,6 +69,9 @@ let proxys = [
     "https://g.blfrp.cn/", //
     "https://ghfast.top/", // 
     "https://ghproxy.monkeyray.net/",
+    "https://gh.b52m.cn/",
+    "https://gp-us.fyan.top/",
+    "https://gh.sparkmemory.top/",
     
 ]
 
@@ -520,6 +523,9 @@ function startUpdate() {
         });
         log("----------------------------");
     }
+    console.error("在文件列表下滑刷新，查看更新结果！")
+    console.error("在文件列表下滑刷新，查看更新结果！")
+    console.error("在文件列表下滑刷新，查看更新结果！")
 }
 
 // ==================== 文件校验系列 ====================
@@ -880,5 +886,9 @@ checkVersion();
 
 //开始更新
 startUpdate()
+
+//自动下滑更新列表
+
 console.info("------→>★更新完成★<←------")
+
 exit();
