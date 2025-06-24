@@ -425,7 +425,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
    
 ### 12. **方法plugins.load调用失败**。  
    
-   就是 ** Yolo-plugin.apk未安装。** 
+   就是 $\color{red}{Yolo-plugin.apk未安装。}$ 
      
    `什么？已经安装了还是报这个错误？`   
    那你一定是root用户，且使用了`隐藏应用列表`。   
@@ -433,7 +433,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
    AutoJS6不要使用6.6.0、6.6.1版本，有bug。     
    
    
-### 13.更新的时候，一大堆报错， **OOM**。   
+### 13.更新的时候，一大堆报错， $\color{red}{OOM}$。   
    * OOM：内存溢出（AutoJS6内存不足)    
        * 并不是手机内存不足，只是AutoJS6自己限制了可用内存。    
        * 下载大文件的时候，没能及时释放内存，就有可能出现OOM。
