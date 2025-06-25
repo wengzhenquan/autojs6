@@ -59,7 +59,7 @@ var github = "https://github.com/wengzhenquan/autojs6";
 var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs6/refs/heads/main/"
 
 //加速代理
-let proxys = [
+var proxys = [
 
     "https://gh.qninq.cn/",
     "https://github.moeyy.xyz/", //
@@ -87,7 +87,7 @@ let proxys = [
 ]
 
 var api_github = "https://api.github.com/repos/wengzhenquan/autojs6/contents/";
-let api_proxys = [
+var api_proxys = [
 
     "https://gh.catmak.name/",
     "https://g.cachecdn.ggff.net/",
