@@ -73,6 +73,16 @@ let proxys = [
     "https://gp-us.fyan.top/",
     "https://gh.sparkmemory.top/",
 
+    "https://j.1win.ddns-ip.net/",
+    "https://j.n1win.dpdns.org/",
+    "https://j.1win.ip-ddns.com/",
+    "https://j.1win.ggff.net/",
+    "https://j.1lin.dpdns.org/",
+    "https://jiashu.1win.eu.org/",
+    "https://tvv.tw/",
+    "https://github.kkproxy.dpdns.org/",
+    "https://ghproxy.imciel.com/",
+
 ]
 
 var api_github = "https://api.github.com/repos/wengzhenquan/autojs6/contents/";
