@@ -1,4 +1,3 @@
-
 // yolov11.js - YOLO 检测与结果处理模块
 //var config = require("../config.js");
 // --- 常量定义 ---
@@ -180,8 +179,8 @@ function detectAndProcess(imagePath) {
         console.error(tag + "未初始化或初始化失败，尝试重新初始化...");
         // 尝试再次初始化
         initializeYolo();
-        if (!isYoloInitialized || !yoloInstance) return null;
-        return null;
+        if (!isYoloInitialized || !yoloInstance)
+            return null;
     }
 
     // 检查图片路径
