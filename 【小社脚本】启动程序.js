@@ -550,7 +550,6 @@ function init() {
 let proxys = [
 
     "https://gh.qninq.cn/",
-    "https://github.moeyy.xyz/", //
     "https://g.cachecdn.ggff.net/",
     "https://gh.catmak.name/",
     "https://api-gh.muran.eu.org/",
@@ -558,8 +557,6 @@ let proxys = [
     "https://ghfast.top/", // 
     "https://ghproxy.monkeyray.net/",
     "https://gh.b52m.cn/",
-    "https://gp-us.fyan.top/",
-    "https://gh.sparkmemory.top/",
 
     "https://tvv.tw/",
     "https://github.kkproxy.dpdns.org/",
