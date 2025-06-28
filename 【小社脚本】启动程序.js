@@ -856,50 +856,49 @@ function unLock() {
     console.info(">>>>>>>→设备解锁←<<<<<<<")
 
     log("开始解锁设备……");
-    //多次上滑
-    for (i = 0; i < 2; i++) {
-        swipe(dwidth * 5 / 8, dheight * 0.99, dwidth * 5 / 8, dheight * (0.6 - 0.2 * i), 200 * (i + 1));
-        gesture(300 * (2 - i), [dwidth * 3 / 8, dheight * (0.99 - 0.3 * i)], [dwidth * 3 / 8, dheight * (0.3 - 0.1 * i)]);
-        wait(() => false, 100)
-    }
-    log("上滑成功！");
-    
-    // 无密码
-    //更新锁屏状态
-    isLocked = KeyguardManager.isKeyguardLocked();
-
 
     //解锁
     // while (!existsOne('电话', '拨号', '短信', '信息', '微信', '小米社区')) {
-    let n = 0;
-    while (isSecure && isLocked) {
-        if (config.解锁方式 === 1) {
-            log("→图案解锁");
-            gesture(600, config.锁屏图案坐标);
-        } else if (config.解锁方式 === 2) {
-            if (textContains('混合').exists()) {
-                log("→数字密码(混合密码)解锁");
-            } else {
-                log("→数字密码解锁");
-            }
+    let n = 3;
+    while (isLocked && n--) {
 
-            for (let i = 0; i < config.锁屏数字密码.length; i++) {
-                let num = content(config.锁屏数字密码[i]).findOne();
-                clickCenter(num);
-                wait(() => false, 300);
+        //多次上滑
+        for (i = 0; i < 2; i++) {
+            swipe(dwidth * 5 / 8, dheight * 0.99, dwidth * 5 / 8, dheight * (0.6 - 0.2 * i), 200 * (i + 1));
+            gesture(300 * (2 - i), [dwidth * 3 / 8, dheight * (0.99 - 0.3 * i)], [dwidth * 3 / 8, dheight * (0.3 - 0.1 * i)]);
+            wait(() => false, 100)
+        }
+        log("上滑成功！");
+
+        // 有安全加密
+        if (isSecure) {
+            if (config.解锁方式 === 1) {
+                log("→图案解锁");
+                gesture(600, config.锁屏图案坐标);
             }
-            if (textContains('混合').exists()) {
-                clickCenter(desc('回车').findOne(1000));
+            if (config.解锁方式 === 2) {
+                if (textContains('混合').exists()) {
+                    log("→数字密码(混合密码)解锁");
+                } else {
+                    log("→数字密码解锁");
+                }
+
+                for (let i = 0; i < config.锁屏数字密码.length; i++) {
+                    let num = content(config.锁屏数字密码[i]).findOne();
+                    clickCenter(num);
+                    wait(() => false, 300);
+                }
+                if (textContains('混合').exists()) {
+                    clickCenter(desc('回车').findOne(1000));
+                }
             }
         }
-        
+
         //更新锁屏状态
         isLocked = KeyguardManager.isKeyguardLocked();
 
-        n++;
-        if (n > 3) break;
     }
-    
+
     //去桌面
     for (i = 0; i < 3; i++) {
         wait(() => false, 300);
