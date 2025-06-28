@@ -845,8 +845,7 @@ function unLock() {
     let KeyguardManager = context.getSystemService(context.KEYGUARD_SERVICE);
     let isLocked = KeyguardManager.isKeyguardLocked(); // 是否锁屏
     let isSecure = KeyguardManager.isKeyguardSecure(); // 是否安全锁屏（如密码、指纹）
-
-
+    
     if (!isLocked) return;
 
     console.info("-----→");
@@ -861,13 +860,12 @@ function unLock() {
     // while (!existsOne('电话', '拨号', '短信', '信息', '微信', '小米社区')) {
     let n = 3;
     while (isLocked && n--) {
-
         //多次上滑
         for (i = 0; i < 2; i++) {
             gesture(300 * (2 - i), [dwidth * 3 / 8, dheight * (0.99 - 0.3 * i)], [dwidth * 3 / 8, dheight * (0.3 - 0.1 * i)]);
-            wait(() => false, 500)
+            wait(() => false, 300)
             swipe(dwidth * 5 / 8, dheight * 0.99, dwidth * 5 / 8, dheight * (0.6 - 0.2 * i), 200 * (i + 1));
-            wait(() => false, 500)
+            wait(() => false, 300)
         }
         wait(() => false, 1000);
         log("上滑！");
@@ -894,8 +892,7 @@ function unLock() {
                     clickCenter(desc('回车').findOne(1000));
                 }
             }
-
-            wait(() => false, 1000);
+            wait(() => false, 666);
         }
 
         //去桌面
@@ -909,9 +906,6 @@ function unLock() {
         isLocked = KeyguardManager.isKeyguardLocked();
 
     }
-
-
-
     //let result = wait(() => existsOne('电话', '拨号', '短信', '信息', '微信', '小米社区'), 5, 1000);
     // if (!result) {
     if (isLocked) {
