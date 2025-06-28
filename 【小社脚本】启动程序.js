@@ -864,6 +864,7 @@ function unLock() {
     }
     log("上滑成功！");
     
+    // 无密码
     //更新锁屏状态
     isLocked = KeyguardManager.isKeyguardLocked();
 
@@ -899,10 +900,10 @@ function unLock() {
         if (n > 3) break;
     }
     
+    //去桌面
     for (i = 0; i < 3; i++) {
         wait(() => false, 300);
         home();
-
     }
     wait(() => false, 666);
 
