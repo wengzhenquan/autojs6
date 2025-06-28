@@ -549,7 +549,7 @@ function init() {
 //加速代理
 let proxys = [
 
-     //  1
+    //  1
     "https://gh.qninq.cn/",
     "https://g.cachecdn.ggff.net/",
     "https://gh.catmak.name/",
@@ -564,7 +564,7 @@ let proxys = [
     "https://ghproxy.net/", //
     "https://hub.gitmirror.com/",
     "https://gh.xxooo.cf/",
-    
+
     // 2
     "https://tvv.tw/",
     "https://github.tianrld.top/",
@@ -863,11 +863,10 @@ function unLock() {
         wait(() => false, 100)
     }
     log("上滑成功！");
-    for (i = 0; i < 3; i++) {
-        wait(() => false, 300);
-        home();
-    }
-    wait(() => false, 666);
+    
+    //更新锁屏状态
+    isLocked = KeyguardManager.isKeyguardLocked();
+
 
     //解锁
     // while (!existsOne('电话', '拨号', '短信', '信息', '微信', '小米社区')) {
@@ -892,17 +891,20 @@ function unLock() {
                 clickCenter(desc('回车').findOne(1000));
             }
         }
-        for (i = 0; i < 3; i++) {
-            wait(() => false, 300);
-            home();
-        }
-        wait(() => false, 666);
+        
         //更新锁屏状态
         isLocked = KeyguardManager.isKeyguardLocked();
 
         n++;
         if (n > 3) break;
     }
+    
+    for (i = 0; i < 3; i++) {
+        wait(() => false, 300);
+        home();
+
+    }
+    wait(() => false, 666);
 
     //let result = wait(() => existsOne('电话', '拨号', '短信', '信息', '微信', '小米社区'), 5, 1000);
     // if (!result) {
