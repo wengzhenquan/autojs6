@@ -477,6 +477,7 @@ github：https://github.com/wengzhenquan/autojs6
 v3.8.5:   
 1. 更新程序，更新完毕自动刷新文件列表
 2. 修复yolo重复初始化失败返回null bug
+3. 修复无密码解锁时，未更新锁屏状态
 
 
 
