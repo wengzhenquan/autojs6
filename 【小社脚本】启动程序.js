@@ -868,7 +868,9 @@ function unLock() {
             gesture(300 * (2 - i), [dwidth * 3 / 8, dheight * (0.99 - 0.3 * i)], [dwidth * 3 / 8, dheight * (0.3 - 0.1 * i)]);
             wait(() => false, 100)
         }
+        wait(() => false, 1000);
         log("上滑成功！");
+        
 
         // 有安全加密
         if (isSecure) {
@@ -884,7 +886,7 @@ function unLock() {
                 }
 
                 for (let i = 0; i < config.锁屏数字密码.length; i++) {
-                    let num = content(config.锁屏数字密码[i]).findOne();
+                    let num = content(config.锁屏数字密码[i]).findOne(800);
                     clickCenter(num);
                     wait(() => false, 300);
                 }
@@ -893,7 +895,7 @@ function unLock() {
                 }
             }
         }
-
+        wait(() => false, 1000);
         //更新锁屏状态
         isLocked = KeyguardManager.isKeyguardLocked();
 
