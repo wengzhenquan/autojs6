@@ -111,7 +111,7 @@ var api_proxys = [
     "https://gh.zwnes.xyz/",
 
 ]
-
+// 全局乱序代理
 var proxy_arr = getRandomNumbers(proxys.length - 1);
 var proxy_index = 0;
 var api_proxy_arr = getRandomNumbers(api_proxys.length - 1);
