@@ -474,6 +474,9 @@ github：https://github.com/wengzhenquan/autojs6
 
 --- 
 
+v3.8.6:   
+1. 更新程序，全局代理
+
 v3.8.5:   
 1. 更新程序，更新完毕自动刷新文件列表
 2. 修复yolo重复初始化失败返回null bug
