@@ -483,13 +483,6 @@ function init() {
     //加载本地版本文件
     loadLocalVersion();
 
-    if (!files.exists("./config.js")) {
-        console.error("缺失config.js文件");
-        console.error("启动更新程序下载文件");
-        updateScript();
-        return;
-    }
-
     if (!files.exists("./" + localVersion.run)) {
         console.error("缺失Run文件");
         console.error("启动更新程序下载文件");
@@ -498,6 +491,13 @@ function init() {
     }
     // 加载run函数
     run = require("./" + localVersion.run);
+
+    if (!files.exists("./config.js")) {
+        console.error("缺失config.js文件");
+        console.error("启动更新程序下载文件");
+        updateScript();
+        return;
+    }
 
     let fileList = localVersion.updateFile;
 
@@ -562,7 +562,7 @@ let proxys = [
     "https://hub.gitmirror.com/",
     "https://gh.xxooo.cf/",
     "https://gh.qninq.cn/",
-    
+
     //2
     "https://ghproxy.imciel.com/",
     "https://ghproxy.net/", //
@@ -843,7 +843,7 @@ function unLock() {
     let KeyguardManager = context.getSystemService(context.KEYGUARD_SERVICE);
     let isLocked = KeyguardManager.isKeyguardLocked(); // 是否锁屏
     let isSecure = KeyguardManager.isKeyguardSecure(); // 是否安全锁屏（如密码、指纹）
-    
+
     if (!isLocked) return;
 
     console.info("-----→");
