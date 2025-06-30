@@ -584,7 +584,7 @@ function fileVerify(fileInfo, fileBytes) {
 // 获取GitHub文件信息
 function getGitHubFileInfo(filePath, branch) {
     console.info('获取版本信息')
-    var result = null;
+    let result = null;
     for (api_proxy_index; api_proxy_index < api_proxys.length; api_proxy_index++) {
         //let startTime = new Date().getTime();
         let proxy = api_proxys[api_proxy_arr[api_proxy_index]];
