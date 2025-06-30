@@ -374,8 +374,8 @@ function startUpdate() {
             continue;
         }
 
-        log("------------------→");
-        console.info("正在下载文件：" + fileName)
+        log("---------------------------→");
+        console.info("开始下载文件：" + fileName)
         //无后缀文件名
         let name = files.getNameWithoutExtension(fileName);
         //后缀
@@ -395,7 +395,7 @@ function startUpdate() {
         while (n < proxys.length) {
             let startTime = new Date().getTime();
             let proxy = proxys[proxy_arr[proxy_index]];
-            log('使用加速器：' + proxy);
+            log('下载加速器：' + proxy);
             let url = proxy +
                 github_download_url +
                 fileName +
@@ -510,7 +510,7 @@ function startUpdate() {
             }
 
         }
-        log("←------------------");
+       // log("←----------------------------");
     }
     log("----------------------------");
     if (successList.length > 0) {
@@ -583,12 +583,12 @@ function fileVerify(fileInfo, fileBytes) {
 
 // 获取GitHub文件信息
 function getGitHubFileInfo(filePath, branch) {
-    console.info('获取版本信息')
+    console.info('正在获取Github API版本信息')
     let result = null;
     for (api_proxy_index; api_proxy_index < api_proxys.length; api_proxy_index++) {
         //let startTime = new Date().getTime();
         let proxy = api_proxys[api_proxy_arr[api_proxy_index]];
-        log(proxy)
+        console.warn('api加速器：'+proxy)
         let url = proxy +
             api_github +
             filePath +
@@ -622,14 +622,13 @@ function getGitHubFileInfo(filePath, branch) {
         if (result) break;
     }
     if (result) {
-        // log(result)
-        console.info('----------------')
         log('期望文件大小：' + result.size)
         log('期望SHA-1：')
         console.warn(result.sha)
     } else {
         console.error('获取版本信息失败')
     }
+    console.info('----------------')
 
     return result;
 }
