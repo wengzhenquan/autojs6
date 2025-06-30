@@ -61,7 +61,7 @@ var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs
 //加速代理
 var proxys = [
 
-     //  1 
+    //  1 
     "https://g.cachecdn.ggff.net/",
     "https://gh.catmak.name/",
     "https://g.blfrp.cn/", //
@@ -74,7 +74,7 @@ var proxys = [
     "https://hub.gitmirror.com/",
     "https://gh.xxooo.cf/",
     "https://gh.qninq.cn/",
-    
+
     //2
     "https://ghproxy.imciel.com/",
     "https://ghproxy.net/", //
@@ -105,12 +105,17 @@ var api_proxys = [
     "https://jiashu.1win.eu.org/",
 
     "https://gh.llkk.cc/",
-    
+
     "https://gh.944446.xyz/",
     "https://99z.top/",
     "https://gh.zwnes.xyz/",
 
 ]
+
+var proxy_arr = getRandomNumbers(proxys.length - 1);
+var proxy_index = 0;
+var api_proxy_arr = getRandomNumbers(api_proxys.length - 1);
+var api_proxy_index = 0;
 
 //对比版本大小，前面的大，返回1，相等0，后面大-1
 function compareVersions(version1, version2) {
@@ -218,12 +223,10 @@ function integrityCheck() {
 function checkVersion() {
     console.info("---→>★脚本检查更新★<←---")
 
-    let arr = getRandomNumbers(proxys.length - 1);
-
-    for (let i = 0; i < proxys.length; i++) {
+    for (proxy_index; proxy_index < proxys.length; proxy_index++) {
         let startTime = new Date().getTime();
-        log('使用加速器：' + proxys[arr[i]]);
-        let url = proxys[arr[i]] +
+        log('使用加速器：' + proxys[proxy_arr[proxy_index]]);
+        let url = proxys[proxy_arr[proxy_index]] +
             github_download_url +
             "version" +
             '?t=' + new Date().getTime();
@@ -362,9 +365,6 @@ function startUpdate() {
     log("开始下载文件……")
     log("请不要终止脚本")
 
-    // 乱序数组
-    let arr = getRandomNumbers(proxys.length - 1);
-    let index = 0; //加速器序列
     for (let j = 0; j < updateList.length; j++) {
         let fileName = updateList[j];
         //忽略更新
@@ -393,8 +393,8 @@ function startUpdate() {
         let n = 0; //次数
         while (n < proxys.length) {
             let startTime = new Date().getTime();
-            log('使用加速器：' + proxys[arr[index]]);
-            let url = proxys[arr[index]] +
+            log('使用加速器：' + proxys[proxy_arr[proxy_index]]);
+            let url = proxys[proxy_arr[proxy_index]] +
                 github_download_url +
                 fileName +
                 '?t=' + startTime;
@@ -429,9 +429,9 @@ function startUpdate() {
                 if (!isText && fileInfo &&
                     !fileVerify(fileInfo, filebytes)) {
                     console.error('校验失败，重新下载')
-                    index++;
+                    proxy_index++;
                     //重置
-                    if (index > proxys.length - 1) index = 0;
+                    if (proxy_index > proxys.length - 1) proxy_index = 0;
                     n++;
                     continue;
                 }
@@ -439,9 +439,9 @@ function startUpdate() {
             }
 
             console.error('下载失败，更换加速器重试');
-            index++;
+            proxy_index++;
             //重置
-            if (index > proxys.length - 1) index = 0;
+            if (proxy_index > proxys.length - 1) proxy_index = 0;
             n++;
         }
 
@@ -581,13 +581,12 @@ function fileVerify(fileInfo, fileBytes) {
 
 // 获取GitHub文件信息
 function getGitHubFileInfo(filePath, branch) {
-    let arr = getRandomNumbers(api_proxys.length - 1);
     console.info('获取版本信息')
     var result = null;
-    for (let i = 0; i < api_proxys.length; i++) {
+    for (api_proxy_index; api_proxy_index < api_proxys.length; api_proxy_index++) {
         //let startTime = new Date().getTime();
-        log(api_proxys[arr[i]])
-        let url = api_proxys[arr[i]] +
+        log(api_proxys[api_proxy_arr[api_proxy_index]])
+        let url = api_proxys[api_proxy_arr[api_proxy_index]] +
             api_github +
             filePath +
             "?ref=" + branch '&t=' + new Date().getTime();
