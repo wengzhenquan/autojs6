@@ -225,8 +225,9 @@ function checkVersion() {
 
     for (proxy_index; proxy_index < proxys.length; proxy_index++) {
         let startTime = new Date().getTime();
-        log('使用加速器：' + proxys[proxy_arr[proxy_index]]);
-        let url = proxys[proxy_arr[proxy_index]] +
+        let proxy = proxys[proxy_arr[proxy_index]];
+        log('使用加速器：' + proxy);
+        let url = proxy +
             github_download_url +
             "version" +
             '?t=' + new Date().getTime();
@@ -393,8 +394,9 @@ function startUpdate() {
         let n = 0; //次数
         while (n < proxys.length) {
             let startTime = new Date().getTime();
-            log('使用加速器：' + proxys[proxy_arr[proxy_index]]);
-            let url = proxys[proxy_arr[proxy_index]] +
+            let proxy = proxys[proxy_arr[proxy_index]];
+            log('使用加速器：' + proxy);
+            let url = proxy +
                 github_download_url +
                 fileName +
                 '?t=' + startTime;
@@ -585,11 +587,15 @@ function getGitHubFileInfo(filePath, branch) {
     var result = null;
     for (api_proxy_index; api_proxy_index < api_proxys.length; api_proxy_index++) {
         //let startTime = new Date().getTime();
-        log(api_proxys[api_proxy_arr[api_proxy_index]])
-        let url = api_proxys[api_proxy_arr[api_proxy_index]] +
+        let proxy = api_proxys[api_proxy_arr[api_proxy_index]];
+        log(proxy)
+        let url = proxy +
             api_github +
             filePath +
-            "?ref=" + branch '&t=' + new Date().getTime();
+            "?ref=" +
+            branch +
+            '&t=' +
+            new Date().getTime();
         //  log(url)
 
         let res = null;
