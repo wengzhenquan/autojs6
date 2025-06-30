@@ -559,7 +559,7 @@ function startUpdate() {
             wait(() => false, 1000);
             let n = 3;
             while (n--) {
-                swipe(dwidth * 0.4, dheight * 0.4, dwidth * 0.6, dheight * 0.8, 300);
+                swipe(dwidth * 0.4, dheight * 0.4, dwidth * 0.6, dheight * 0.8, 100);
                 sleep(300);
             }
         }
