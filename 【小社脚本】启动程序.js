@@ -549,11 +549,9 @@ function init() {
 //加速代理
 let proxys = [
 
-    //  1
-    "https://gh.qninq.cn/",
+    //  1 
     "https://g.cachecdn.ggff.net/",
     "https://gh.catmak.name/",
-    "https://api-gh.muran.eu.org/",
     "https://g.blfrp.cn/", //
     "https://ghfast.top/", // 
     "https://ghproxy.monkeyray.net/",
@@ -561,23 +559,23 @@ let proxys = [
     "https://gh.llkk.cc/",
     "https://gp-us.fyan.top/",
     "https://gh.sparkmemory.top/",
-    "https://ghproxy.net/", //
     "https://hub.gitmirror.com/",
     "https://gh.xxooo.cf/",
-
-    // 2
-    "https://tvv.tw/",
+    "https://gh.qninq.cn/",
+    
+    //2
+    "https://ghproxy.imciel.com/",
+    "https://ghproxy.net/", //
+    "https://j.n1win.dpdns.org/",
     "https://github.tianrld.top/",
-    "https://ghm.078465.xyz/",
-    "https://j.1lin.dpdns.org/",
-    "https://jiashu.1win.eu.org/",
-    "https://j.1win.ip-ddns.com/",
     "https://j.1win.ddns-ip.net/",
+    "https://jiashu.1win.eu.org/",
+    "https://tvv.tw/",
+    "https://ghm.078465.xyz/",
+    "https://j.1win.ip-ddns.com/",
     "https://j.1win.ggff.net/",
     "https://github.kkproxy.dpdns.org/",
     "https://ghpxy.hwinzniej.top/",
-    "https://ghproxy.imciel.com/",
-    "https://j.n1win.dpdns.org/",
 
 ]
 
