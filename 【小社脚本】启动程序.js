@@ -853,9 +853,9 @@ function unLock() {
     while (isLocked && n--) {
         //多次上滑
         for (i = 0; i < 2; i++) {
-            gesture(300 * (2 - i), [dwidth * 3 / 8, dheight * (0.99 - 0.3 * i)], [dwidth * 3 / 8, dheight * (0.3 - 0.1 * i)]);
+            gesture(300 * (2 - i), [dwidth * 3 / 8, dheight * (0.95 - 0.3 * i)], [dwidth * 3 / 8, dheight * (0.3 - 0.1 * i)]);
             wait(() => false, 500)
-            swipe(dwidth * 5 / 8, dheight * 0.99, dwidth * 5 / 8, dheight * (0.6 - 0.2 * i), 200 * (i + 1));
+            swipe(dwidth * 5 / 8, dheight * 0.95, dwidth * 5 / 8, dheight * (0.6 - 0.2 * i), 200 * (i + 1));
             wait(() => false, 500)
         }
         wait(() => false, 1000);
