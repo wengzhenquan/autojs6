@@ -407,7 +407,7 @@ function posts(n) {
 
 // 重置到小米社区论坛页
 function backAppIndex() {
-    log("确保重置到[论坛]首页")
+    console.warn("--→确保重置到[论坛]首页")
     //发现退回图片
     let backImg = content("返回");
     while (backImg.exists()) {
