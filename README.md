@@ -496,6 +496,7 @@ github：https://github.com/wengzhenquan/autojs6
 
 v3.8.6:   
 1. 更新程序，全局代理
+2. 应用详情页，添加识别内容
 
 v3.8.5:   
 1. 更新程序，更新完毕自动刷新文件列表
