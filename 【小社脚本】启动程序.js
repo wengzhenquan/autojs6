@@ -1153,8 +1153,10 @@ function main() {
             if (config.静音级别 === 2)
                 device.setNotificationVolume(nVolume);
         }
-        if (config && config.结束震动)
+        if (config && config.结束震动) {
             device.vibrate(config.结束震动);
+            wait(() => false, config.结束震动 + 200);
+        }
 
         if (config && config.结束息屏) {
             // 调用系统锁屏
