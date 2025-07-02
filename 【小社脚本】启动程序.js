@@ -549,7 +549,7 @@ function init() {
 //加速代理
 let proxys = [
 
-   //  1 
+    //  1 
     "https://g.cachecdn.ggff.net/",
     "https://gh.catmak.name/",
     "https://g.blfrp.cn/", //
@@ -560,7 +560,7 @@ let proxys = [
     "https://hub.gitmirror.com/",
     "https://gh.xxooo.cf/",
     "https://gh.qninq.cn/",
-    
+
     //2
     // "https://j.1win.ddns-ip.net/",
     // "https://tvv.tw/",
@@ -1155,6 +1155,12 @@ function main() {
         }
         if (config && config.结束震动)
             device.vibrate(config.结束震动);
+
+        if (config && config.结束息屏) {
+            // 调用系统锁屏
+            let service = runtime.accessibilityBridge.getService();
+            service.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN);
+        }
     });
 
 

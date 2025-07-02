@@ -495,6 +495,9 @@ github：https://github.com/wengzhenquan/autojs6
 
 --- 
 
+v3.8.7:   
+1. config配置添加“结束息屏”配置
+
 v3.8.6:   
 1. 更新程序，全局代理
 2. 应用详情页，添加识别内容

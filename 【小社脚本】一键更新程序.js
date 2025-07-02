@@ -2,13 +2,8 @@
 files.ensureDir("./tmp/")
 let locked = "./tmp/update_locked";
 if (!files.exists(locked)) {
-    events.on("exit", () => {
-        device.cancelKeepingAwake();
-        files.remove(locked);
-    });
+    events.on("exit", () => files.remove(locked));
     files.create(locked);
-    //10分钟亮屏
-    device.keepScreenDim(10 * 60 * 1000);
 } else {
     if (engines.all().length < 2) {
         // 防止锁残留
@@ -18,7 +13,11 @@ if (!files.exists(locked)) {
         exit();
     }
 }
-
+//10分钟亮屏
+device.keepScreenDim(10 * 60 * 1000);
+events.on("exit", () => {
+    device.cancelKeepingAwake();
+});
 // 打开日志页面
 console.launch();
 
@@ -72,10 +71,10 @@ var proxys = [
     "https://hub.gitmirror.com/",
     "https://gh.xxooo.cf/",
     "https://gh.qninq.cn/",
-    
+
     //2
     "https://j.1win.ddns-ip.net/",
-    "https://tvv.tw/",
+    //"https://tvv.tw/",
     "https://j.1win.ip-ddns.com/",
     "https://j.1win.ggff.net/",
     "https://github.kkproxy.dpdns.org/",
@@ -503,7 +502,7 @@ function startUpdate() {
             }
 
         }
-       // log("←----------------------------");
+        // log("←----------------------------");
     }
     log("----------------------------");
     if (successList.length > 0) {
@@ -581,7 +580,7 @@ function getGitHubFileInfo(filePath, branch) {
     for (api_proxy_index; api_proxy_index < api_proxys.length; api_proxy_index++) {
         //let startTime = new Date().getTime();
         let proxy = api_proxys[api_proxy_arr[api_proxy_index]];
-        console.warn('api加速器：'+proxy)
+        console.warn('api加速器：' + proxy)
         let url = proxy +
             api_github +
             filePath +
