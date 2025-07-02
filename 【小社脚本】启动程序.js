@@ -463,7 +463,60 @@ function consoleExpand() {
     }
 }
 
+//  ----------- 系统修改 ---------------------//
+function systemSetting() {
+    log("-----→");
+    // 媒体声音
+    let musicVolume = device.getMusicVolume();
+    // 通知声音
+    let nVolume = device.getNotificationVolume();
+    if (config && config.静音级别) {
+        //关掉媒体声音
+        if (config.静音级别 === 1) {
+            device.setMusicVolume(0);
+            console.error("提示：已媒体静音！");
+        }
+        // 关掉通知声音
+        if (config.静音级别 === 2) {
+            device.setNotificationVolume(0);
+            console.error("提示：已通知静音！");
+        }
+    }
 
+    // 返回当前亮度模式, 0为手动亮度, 1为自动亮度.
+    let brightMode = device.getBrightnessMode();
+    // 返回当前的(手动)亮度. 范围为0~255.
+    let bright = device.getBrightness();
+    if (config && config.运行亮度) {
+        device.setBrightnessMode(0);
+        device.setBrightness(130 * config.运行亮度);
+        console.error("提示：已修改亮度为：" + config.运行亮度 * 100 + "%");
+    }
+
+    events.on("exit", function() {
+        if (config && config.运行亮度) {
+            device.setBrightness(bright);
+            device.setBrightnessMode(brightMode);
+        }
+        if (config && config.静音级别) {
+            if (config.静音级别 === 1)
+                device.setMusicVolume(musicVolume);
+            if (config.静音级别 === 2)
+                device.setNotificationVolume(nVolume);
+        }
+        if (config && config.结束震动) {
+            device.vibrate(config.结束震动);
+            wait(() => false, config.结束震动 + 300);
+        }
+
+        if (config && config.结束息屏 && ableScreenOff) {
+            // 调用系统锁屏
+            auto.service.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN);
+
+        }
+    });
+
+}
 
 // -----------程序完整性检查---------------------//
 // 加载本地version文件
@@ -1111,65 +1164,15 @@ function main() {
 
     //权限验证
     permissionv();
+    
+    // 系统修改
+    systemSetting();
 
     // 初始化，文件检查
     init();
 
     //脚本检查更新
     if (config && config.检查更新) checkVersion()
-
-    log("-----→");
-    // 媒体声音
-    let musicVolume = device.getMusicVolume();
-    // 通知声音
-    let nVolume = device.getNotificationVolume();
-    if (config && config.静音级别) {
-        //关掉媒体声音
-        if (config.静音级别 === 1) {
-            device.setMusicVolume(0);
-            console.error("提示：已媒体静音！");
-        }
-        // 关掉通知声音
-        if (config.静音级别 === 2) {
-            device.setNotificationVolume(0);
-            console.error("提示：已通知静音！");
-        }
-    }
-
-    // 返回当前亮度模式, 0为手动亮度, 1为自动亮度.
-    let brightMode = device.getBrightnessMode();
-    // 返回当前的(手动)亮度. 范围为0~255.
-    let bright = device.getBrightness();
-    if (config && config.运行亮度) {
-        device.setBrightnessMode(0);
-        device.setBrightness(130 * config.运行亮度);
-        console.error("提示：已修改亮度为：" + config.运行亮度 * 100 + "%");
-    }
-
-    events.on("exit", function() {
-        if (config && config.运行亮度) {
-            device.setBrightness(bright);
-            device.setBrightnessMode(brightMode);
-        }
-        if (config && config.静音级别) {
-            if (config.静音级别 === 1)
-                device.setMusicVolume(musicVolume);
-            if (config.静音级别 === 2)
-                device.setNotificationVolume(nVolume);
-        }
-        if (config && config.结束震动) {
-            device.vibrate(config.结束震动);
-            wait(() => false, config.结束震动 + 300);
-        }
-
-        if (config && config.结束息屏 && ableScreenOff) {
-            // 调用系统锁屏
-            auto.service.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN);
-
-        }
-    });
-
-
 
     try {
         //逻辑程序
