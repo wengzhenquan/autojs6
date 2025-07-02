@@ -69,8 +69,9 @@ function initializeYolo() {
 
         if (!isYoloInitialized) {
             console.error(tag + " yolo.init() 初始化失败！请检查模型路径、名称、标签及插件权限。");
-            console.error('尝试将配置{YOLO启用GPU}改为0再试。');
+            console.error('请尝试将配置{YOLO启用GPU:1}改为0再试。');
             yoloInstance = null; // 初始化失败，清空实例
+            throw '';
             return false;
         }
 
