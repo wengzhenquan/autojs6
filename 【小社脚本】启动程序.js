@@ -1159,7 +1159,7 @@ function main() {
         }
         if (config && config.结束震动) {
             device.vibrate(config.结束震动);
-            wait(() => false, config.结束震动 + 200);
+            wait(() => false, config.结束震动 + 300);
         }
 
         if (config && config.结束息屏 && ableScreenOff) {
