@@ -85,6 +85,8 @@ var delayed_max = 15; //最大超时时间
 // 程序最大运行时间，超过该时间会强制停止(ms)。  3分钟
 var maxRuntime = 3 * 60 * 1000;
 startTimeoutMonitor();
+// 允许息屏信号
+var ableScreenOff = 0;
 
 
 //打开悬浮窗控制台
@@ -162,6 +164,7 @@ function startTimeoutMonitor() {
             const startTime = new Date(date.replace(/-/g, '/')).getTime();
             let currentTime = new Date().getTime();
             if (currentTime - startTime > (maxRuntime - 10 * 1000)) {
+                ableScreenOff = 1;
                 console.error(`脚本运行 ${(maxRuntime)/60/1000} 分钟，强制退出`);
                 console.error('可能是兼容性问题，或布局分析问题，导致页面卡住');
                 console.error('请截图保存最后卡住的页面，反馈问题。')
@@ -1158,7 +1161,7 @@ function main() {
             wait(() => false, config.结束震动 + 200);
         }
 
-        if (config && config.结束息屏) {
+        if (config && config.结束息屏 && ableScreenOff) {
             // 调用系统锁屏
             let service = runtime.accessibilityBridge.getService();
             service.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN);
@@ -1172,6 +1175,9 @@ function main() {
         run();
         log("      —— 耗时[ " + getDurTime(date) + " ] ——");
         console.warn("—----->--- End ---<-----—");
+        //允许息屏信号
+        ableScreenOff = 1;
+
     } catch (e) {
         if (!(e.javaException instanceof ScriptInterruptedException)) {
             //通常只有 1 行消息. 
