@@ -1164,8 +1164,8 @@ function main() {
 
         if (config && config.结束息屏 && ableScreenOff) {
             // 调用系统锁屏
-            let service = runtime.accessibilityBridge.getService();
-            service.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN);
+            auto.service.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN);
+
         }
     });
 
