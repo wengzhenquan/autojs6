@@ -440,7 +440,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
    
 #### 13. **[YOLO] yolo.init() 初始化失败！请检查模型路径、名称、标签及插件权限。**。
    没有意外的话，是GPU不兼容导致的，也有可能是在虚拟机中运行。   
-   $\color{red}{请尝试将配置{YOLO启用GPU:1}改为0}$    
+   $\color{red}{请尝试将配置[YOLO启用GPU:1]改为0}$    
 
 #### 14.更新的时候，一大堆报错， $\color{red}{OOM}$。   
    * OOM：内存溢出（AutoJS6内存不足)    
