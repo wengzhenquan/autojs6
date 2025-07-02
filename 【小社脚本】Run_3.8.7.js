@@ -126,7 +126,7 @@ function initImageReco() {
             // 加载 YOLO 模块
             console.error("----→>→加载YOLO←<←----")
             yoloProcessor = require(files.cwd() + YOLO_MODULE_PATH2);
-            if (typeof yoloProcessor !== 'function') {
+            if (!yoloProcessor || typeof yoloProcessor !== 'function') {
                 throw new Error(`模块 ${YOLO_MODULE_PATH2} 未导出函数`);
             }
             enlocalYOLO = true;
