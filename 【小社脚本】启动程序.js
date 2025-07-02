@@ -82,11 +82,12 @@ var window = null;
 var delayed = 6; //服务器请求超时时间s
 var delayed_max = 15; //最大超时时间 
 
+// 允许息屏信号
+var ableScreenOff = 0;
 // 程序最大运行时间，超过该时间会强制停止(ms)。  3分钟
 var maxRuntime = 3 * 60 * 1000;
 startTimeoutMonitor();
-// 允许息屏信号
-var ableScreenOff = 0;
+
 
 
 //打开悬浮窗控制台
