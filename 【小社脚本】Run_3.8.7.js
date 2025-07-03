@@ -141,12 +141,13 @@ function initImageReco() {
         console.error("启用服务器识图签到");
         //提前开始异步校验服务器，删除无效的服务器，确保签到认证时，服务器可用。
         threads.start(() => webTest());
-        serverInit = true;
+
     }
 }
 
 // 服务器校验
 function webTest() {
+    serverInit = true;
     let sum_old = urls.length;
     let delayed_test;
     let startTime = new Date().getTime();
@@ -609,7 +610,6 @@ function imageRecoSign() {
             enlocalYOLO = false;
             if (!serverInit) {
                 threads.start(() => webTest());
-                serverInit = true;
             }
             list = null;
 
@@ -804,6 +804,9 @@ function transResult(arr) {
 function serverYOLOSign() {
     log("将请求服务器，来识别坐标！")
     log("等待服务器准备完毕……")
+    if (!serverInit)
+        webTest();
+
     //threads.shutDownAll(); //在此之前，所有子线程必须结束
     console.error('可用服务器数量：' + sum.blockedGet())
     if (urls.length < 1) {
