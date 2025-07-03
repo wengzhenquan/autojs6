@@ -744,8 +744,11 @@ function localYOLOSign() {
         } catch (e) {
             console.error(`YOLO 识别调用出错: ${e}`);
         }
+        // 初始化失败
+        if (!detectionResult)
+            return null;
         // 3. 处理识别结果并点击
-        if (detectionResult && detectionResult.length > 0) {
+        if (detectionResult.length > 0) {
             log(`识别成功 ${detectionResult.length} 个目标`);
             // log(detectionResult)
             return transResult(detectionResult);
