@@ -499,6 +499,9 @@ github：https://github.com/wengzhenquan/autojs6
 
 --- 
 
+v3.8.8:   
+1. 本地YOLO签到优化
+
 v3.8.7:   
 1. config配置添加“结束息屏”配置(生效条件：1完成任务，2运行超过3分钟)
 2. 系统修改操作提前生效
