@@ -1975,7 +1975,7 @@ function level2() {
 // 社区APP版 成长值
 function level1() {
     while (!packageName(xmPckageName).exists()) sleep(500);
-    console.info(">>>>>→开始记录成长值←<<<<<")
+    console.info(">>>>→开始记录成长值←<<<<")
     toastLog("[社区APP]：记录成长值……");
     let button = text("社区成长等级");
     // 没找到入口
