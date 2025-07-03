@@ -2013,6 +2013,8 @@ function level1() {
         }
     }
 
+    swipe(dwidth * 0.5, dheight * 0.8, dwidth * 0.5, dheight * 0.4, 300); // 向上滚动查找
+
     var newdate = date.replace(/-/g, "/").substr(0, 10);
     let jilu = text(newdate).find();
     for (i = 0; i < jilu.length; i++) {
