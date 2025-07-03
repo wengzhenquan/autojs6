@@ -1006,6 +1006,17 @@ function permissionv() {
         exit();
     }
 
+    // 获取应用包名和电源管理服务
+    let powerManager = context.getSystemService(context.POWER_SERVICE);
+    // 检测是否已忽略电池优化
+    if (powerManager.isIgnoringBatteryOptimizations(autojs.packageName)) {
+        log("忽略电池优化，[已启用]");
+    } else {
+        console.error("忽略电池优化，[未启用]!");
+        console.error("可能导致定时任务无法执行");
+        console.error("若有墓碑、杀后台程序，请加入白名单");
+        wait(() => false, 3000);
+    }
 
 
     // 投影媒体权限
@@ -1085,7 +1096,7 @@ function permissionv() {
         log("修改系统设置权限，[已启用]");
     } else {
         console.error("修改系统设置权限，[未启用]!");
-        console.error("涉及功能：媒体静音、修改亮度！");
+        console.error("涉及功能：媒体静音、修改亮度等！");
     }
 
 
@@ -1164,7 +1175,7 @@ function main() {
 
     //权限验证
     permissionv();
-    
+
     // 系统修改
     systemSetting();
 
