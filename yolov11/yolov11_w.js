@@ -82,7 +82,7 @@ function initializeYolo() {
         //console.error(`${tag}初始化过程中发生错误: ${error}`);
         yoloInstance = null; // 出错时清空实例
         isYoloInitialized = false;
-        throw error;
+        //throw error;
         return false;
     }
 }
