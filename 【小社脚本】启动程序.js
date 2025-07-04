@@ -510,6 +510,7 @@ function systemSetting() {
         }
 
         if (config && config.结束息屏 && ableScreenOff) {
+            wait(() => false, 3000);
             // 调用系统锁屏
             auto.service.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN);
 
