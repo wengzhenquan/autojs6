@@ -547,7 +547,7 @@ function startUpdate() {
             .packageName('org.autojs.autojs6')
             .text("AutoJs6");
         click(text('文件'));
-        if (a6.exists() || textContains('version').exists()); {
+        if (a6.exists() || textContains('version').exists()) {
             wait(() => false, 1000);
             let n = 3;
             while (n--) {
