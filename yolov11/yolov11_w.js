@@ -19,7 +19,12 @@ const MODEL_LABELS = ["面条", "牙齿", "喷漆", "戒指", "汉堡", "双串"
     "战斗", "香烟"
 ];
 // --- 模型参数 ---
-const DEFAULT_CONF_THRESHOLD = 0.7; // 默认置信度阈值
+//类别置信度阈值
+const confThreshold = config && config.YOLO置信度阈值 ?
+    config.YOLO置信度阈值 : 0.4;
+//重叠率阈值
+const nmsThreshold = config && config.YOLO重叠率阈值 ?
+    config.YOLO重叠率阈值 : 0.65;
 const tag = "[YOLO]";
 // --- 模块级变量 (用于存储初始化状态和实例) ---
 let yoloInstance = null;
@@ -62,7 +67,8 @@ function initializeYolo() {
         // --- 使用 __dirname 获取模型路径 ---
         const modelPath = files.cwd() + MODEL_SUBDIR;
         console.log(`${tag}路径: ${MODEL_SUBDIR}`);
-        console.log(`${tag}初始化模型 ${MODEL_NAME}`);
+        console.log(`${tag}初始化模型: ${MODEL_NAME}`);
+        console.log(`${tag}初始化GPU: ${MODEL_USE_GPU}`);
 
         // 初始化模型
         isYoloInitialized = yoloInstance.init(modelPath, MODEL_NAME, MODEL_USE_GPU, MODEL_LABELS);
@@ -121,6 +127,7 @@ function sortAndProcessResults(data) {
     for (var key in countMap) {
         if (countMap[key] !== 2) {
             console.log("识别结果错误！");
+            log(countMap)
             return null;
         }
     }
@@ -206,10 +213,11 @@ function detectAndProcess(imagePath) {
         }
 
         // 执行检测
-        console.log(`${tag}检测 (Threshold: ${DEFAULT_CONF_THRESHOLD})`);
+        console.log(`${tag}检测 (置信度阈值: ${confThreshold})`);
+        console.log(`${tag}检测 (重叠率阈值: ${nmsThreshold})`);
         // 注意：yolo.detect 可能需要 Bitmap 对象，images.read 返回的是 Image 对象
         // 需要确认 yolo.detect 接受的参数类型，如果是 Bitmap，需要 img.bitmap
-        let rawResults = yoloInstance.detect(img.bitmap, DEFAULT_CONF_THRESHOLD, 0.45, 640);
+        let rawResults = yoloInstance.detect(img.bitmap, confThreshold, nmsThreshold, 640);
         console.log(`${tag}检测完成，原始结果数量: ${rawResults ? rawResults.length : 'N/A'}`);
         //log(rawResults)
         // 处理并返回结果
