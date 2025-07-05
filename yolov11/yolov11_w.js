@@ -24,7 +24,7 @@ const confThreshold = config && config.YOLO置信度阈值 ?
     config.YOLO置信度阈值 : 0.2;
 //重叠率阈值
 const nmsThreshold = config && config.YOLO重叠率阈值 ?
-    config.YOLO重叠率阈值 : 0.65;
+    config.YOLO重叠率阈值 : 0.1;
 const tag = "[YOLO]";
 // --- 模块级变量 (用于存储初始化状态和实例) ---
 let yoloInstance = null;
@@ -101,6 +101,7 @@ function initializeYolo() {
  * @returns {Array<object>|null} - 处理后的 B 组结果数组 [{centerX, centerY, prob, label}, ...]，或在失败/无效输入时返回 null。
  */
 function sortAndProcessResults(data) {
+   // log(data)
     // 输入验证
     if (!Array.isArray(data)) {
         console.error("结果处理: 输入数据不是数组。");
@@ -113,50 +114,87 @@ function sortAndProcessResults(data) {
         return null;
     }
 
-    var newData = [];
-    for (var i = 0; i < data.length; i++) {
-        let item = data[i].label;
-        newData.push(item);
-    }
+    // var newData = [];
+    // for (var i = 0; i < data.length; i++) {
+    //     let item = data[i].label;
+    //     newData.push(item);
+    // }
 
-    var countMap = newData.reduce(function(acc, item) {
-        acc[item] = (acc[item] || 0) + 1;
-        return acc;
-    }, {});
+    // var countMap = newData.reduce(function(acc, item) {
+    //     acc[item] = (acc[item] || 0) + 1;
+    //     return acc;
+    // }, {});
 
-    for (var key in countMap) {
-        if (countMap[key] !== 2) {
-            console.log("识别结果错误！");
-            return null;
-        }
-    }
+    // for (var key in countMap) {
+    //     if (countMap[key] !== 2) {
+    //         console.log("识别结果错误！");
+    //         return null;
+    //     }
+    // }
     try {
-        // 1. 按 Y 坐标升序排序
-        data.sort((a, b) => a.y - b.y);
+        // ==================== 1. 数据准备阶段 ====================
+        // 1.1 按y坐标升序排序（浅拷贝避免修改原数组）
+        const sortedByY = data.slice().sort((a, b) => a.y - b.y);
 
-        // 2. 分组
-        let groupA = data.slice(0, len / 2);
-        let groupB = data.slice(len / 2);
+        // 1.2 计算分组边界位置（原数组的一半长度）
+        const halfLen = Math.floor(sortedByY.length / 2);
 
-        // 3. groupA 按 X 坐标升序排序
-        groupA.sort((a, b) => a.x - b.x);
+        // 1.3 创建分组A（y值较小的前半部分，按x升序排序）
+        const groupA = sortedByY.slice(0, halfLen).sort((a, b) => a.x - b.x);
 
-        // 4. 获取 groupA 的标签顺序
-        let labelOrder = groupA.map(item => item.label);
+        // 1.4 创建分组B（y值较大的后半部分，保持原始顺序）
+        const groupB = sortedByY.slice(halfLen);
 
-        // 5. groupB 根据 groupA 的标签顺序排序
-        groupB.sort((a, b) => {
-            let indexA = labelOrder.indexOf(a.label);
-            let indexB = labelOrder.indexOf(b.label);
-            // 如果标签不在 labelOrder 中（理论上不应发生，除非模型标签配置错误或检测异常），保持原相对顺序
-            if (indexA === -1 || indexB === -1) {
-                return 0;
+        // ==================== 2. 建立快速查找索引 ====================
+        // 2.1 使用Map结构存储分组B的元素（label作为key）
+        const labelMap = new Map();
+
+        // 2.2 遍历分组B，建立label到元素的映射关系
+        groupB.forEach(item => {
+            if (!labelMap.has(item.label)) {
+                labelMap.set(item.label, []); // 初始化空数组
             }
-            return indexA - indexB;
+            labelMap.get(item.label).push(item); // 添加到对应label的数组
+        });
+
+        // ==================== 3. 核心匹配阶段 ====================
+        // 3.1 定义占位符对象（用于标记未匹配的位置）
+        const placeholder = {
+            label: "PLACEHOLDER"
+        };
+        const groupC = [];
+        const usedItems = new Set(); // 新增：记录已使用的元素
+
+        // 3.2 第一轮匹配：按分组A的顺序处理
+        groupA.forEach(item => {
+            const candidates = labelMap.get(item.label);
+
+            // 检查候选元素是否存在且未被使用过
+            if (candidates && candidates.length > 0 && !usedItems.has(candidates[0])) {
+                const matchedItem = candidates.shift();
+                groupC.push(matchedItem);
+                usedItems.add(matchedItem); // 标记为已使用
+            } else {
+                groupC.push(placeholder); // 无匹配则占位
+            }
+        });
+
+        // ==================== 4. 处理未匹配元素 ====================
+        // 4.1 收集所有未被使用的groupB元素（按原始顺序）
+        const unusedItems = groupB.filter(item => !usedItems.has(item));
+
+        // ==================== 5. 最终结果处理 ====================
+        // 5.1 替换占位符（按groupB原始顺序填充）
+        let replaceIndex = 0;
+        const finalGroupC = groupC.map(item => {
+            if (item === placeholder && replaceIndex < unusedItems.length) {
+                return unusedItems[replaceIndex++];
+            }
+            return item;
         });
 
         // 6. 格式化 groupB 的结果
-        let finalResult = groupB.map(item => {
+        let finalResult = finalGroupC.map(item => {
             let centerX = item.x + (item.width / 2);
             let centerY = item.y + (item.height / 2);
             return {
