@@ -34,16 +34,6 @@
 
 --- 
 
-### 【小社脚本】下载：
-
-[在线加速下载版（推荐）](https://github.com/wengzhenquan/autojs6/releases/main)  
-
-[完整包下载](https://github.com/wengzhenquan/autojs6/archive/refs/heads/main.zip)   
-
-### **AutoJs6 $\color{red}{(建议使用最新版)}$：**    
-（最低支持6.6.2，额外兼容6.5.0）   
-（不支持6.6.0、6.6.1）   
-[点击下载](https://github.com/SuperMonster003/AutoJs6/releases)  
 
 
 ### 文件结构：
@@ -89,6 +79,13 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
 
 --- 
 ## 使用方法：  
+
+### **AutoJs6 $\color{red}{(建议使用最新版)}$：**    
+（最低支持6.6.2，额外兼容6.5.0）   
+（不支持6.6.0、6.6.1）   
+[点击下载](https://github.com/SuperMonster003/AutoJs6/releases)  
+
+
 ### **1. 先授权AutoJs6需要的权限。**  
    以下二选一：  
    * 无root：需要 $\color{red}{Shizuku}$ 。  
@@ -115,6 +112,13 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
 
 --- 
 ### **3. 将脚本解压到工作路径下。**  
+
+### 【小社脚本】下载：
+
+[在线加速下载版（推荐）](https://github.com/wengzhenquan/autojs6/releases/main)  
+
+[完整包下载](https://github.com/wengzhenquan/autojs6/archive/refs/heads/main.zip)   
+
 
    你可以修改`文件夹`名称，里面的`文件`别改名就行。  
    
