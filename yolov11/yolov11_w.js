@@ -68,7 +68,7 @@ function initializeYolo() {
         const modelPath = files.cwd() + MODEL_SUBDIR;
         console.log(`${tag}路径: ${MODEL_SUBDIR}`);
         console.log(`${tag}初始化模型: ${MODEL_NAME}`);
-        console.log(`${tag}初始化GPU: ${MODEL_USE_GPU}`);
+        console.log(`${tag}是否加载GPU: ${MODEL_USE_GPU?'是':'否'}`);
 
         // 初始化模型
         isYoloInitialized = yoloInstance.init(modelPath, MODEL_NAME, MODEL_USE_GPU, MODEL_LABELS);
@@ -114,23 +114,7 @@ function sortAndProcessResults(data) {
         return null;
     }
 
-    // var newData = [];
-    // for (var i = 0; i < data.length; i++) {
-    //     let item = data[i].label;
-    //     newData.push(item);
-    // }
-
-    // var countMap = newData.reduce(function(acc, item) {
-    //     acc[item] = (acc[item] || 0) + 1;
-    //     return acc;
-    // }, {});
-
-    // for (var key in countMap) {
-    //     if (countMap[key] !== 2) {
-    //         console.log("识别结果错误！");
-    //         return null;
-    //     }
-    // }
+    
     try {
         // ==================== 1. 数据准备阶段 ====================
         // 1.1 按y坐标升序排序（浅拷贝避免修改原数组）
