@@ -21,7 +21,7 @@ const MODEL_LABELS = ["面条", "牙齿", "喷漆", "戒指", "汉堡", "双串"
 // --- 模型参数 ---
 //类别置信度阈值
 const confThreshold = config && config.YOLO置信度阈值 ?
-    config.YOLO置信度阈值 : 0.4;
+    config.YOLO置信度阈值 : 0.2;
 //重叠率阈值
 const nmsThreshold = config && config.YOLO重叠率阈值 ?
     config.YOLO重叠率阈值 : 0.65;
