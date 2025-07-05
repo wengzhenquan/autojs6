@@ -21,7 +21,7 @@ const MODEL_LABELS = ["面条", "牙齿", "喷漆", "戒指", "汉堡", "双串"
 // --- 模型参数 ---
 //类别置信度阈值
 const confThreshold = config && config.YOLO置信度阈值 ?
-    config.YOLO置信度阈值 : 0.2;
+    config.YOLO置信度阈值 : 0.01;
 //重叠率阈值
 const nmsThreshold = config && config.YOLO重叠率阈值 ?
     config.YOLO重叠率阈值 : 0.1;
@@ -101,7 +101,7 @@ function initializeYolo() {
  * @returns {Array<object>|null} - 处理后的 B 组结果数组 [{centerX, centerY, prob, label}, ...]，或在失败/无效输入时返回 null。
  */
 function sortAndProcessResults(data) {
-   // log(data)
+    // log(data)
     // 输入验证
     if (!Array.isArray(data)) {
         console.error("结果处理: 输入数据不是数组。");
