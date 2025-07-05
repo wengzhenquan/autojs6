@@ -127,7 +127,6 @@ function sortAndProcessResults(data) {
     for (var key in countMap) {
         if (countMap[key] !== 2) {
             console.log("识别结果错误！");
-            log(countMap)
             return null;
         }
     }
