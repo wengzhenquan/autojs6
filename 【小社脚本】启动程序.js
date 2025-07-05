@@ -420,6 +420,12 @@ function consoleShow() {
         if (config && config.悬浮窗控制台字体大小)
             console.setContentTextSize(config.悬浮窗控制台字体大小);
 
+        if (config && typeof config.悬浮窗控制台关闭延迟 !== 'undefined') {
+            let times = config.悬浮窗控制台关闭延迟 > 0 ?
+                config.悬浮窗控制台关闭延迟 * 1000 : false;
+            console.setExitOnClose(times);
+        }
+
         console.show();
         console3();
     }
@@ -618,7 +624,7 @@ let proxys = [
     "https://hub.gitmirror.com/",
     "https://gh.xxooo.cf/",
     "https://gh.qninq.cn/",
-    
+
     //2
     // "https://j.1win.ddns-ip.net/",
     // "https://tvv.tw/",
