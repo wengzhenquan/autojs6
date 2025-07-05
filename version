@@ -1,5 +1,5 @@
 {
-    "version": "3.8.8",
+    "version": "3.8.9",
     "updateFile": {
         "version": 20250702,
         "config.js": 20250702,
@@ -15,7 +15,7 @@
         "tmp/公益梯子[魔法].txt": 20250617
     },
     "main": "【小社脚本】启动程序.js",
-    "run": "【小社脚本】Run_3.8.8.js",
+    "run": "【小社脚本】Run_3.8.9.js",
     "updateScript": "【小社脚本】一键更新程序.js",
     "apk": {
         "yolov11/Yolo-plugin.apk": "com.circlefork.yolo"
