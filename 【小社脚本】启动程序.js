@@ -618,11 +618,10 @@ let proxys = [
     "https://hub.gitmirror.com/",
     "https://gh.xxooo.cf/",
     "https://gh.qninq.cn/",
-
+    
     //2
     // "https://j.1win.ddns-ip.net/",
     // "https://tvv.tw/",
-    // "https://j.1win.ip-ddns.com/",
     // "https://j.1win.ggff.net/",
     // "https://github.kkproxy.dpdns.org/",
     // "https://ghpxy.hwinzniej.top/",
