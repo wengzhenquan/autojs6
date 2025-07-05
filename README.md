@@ -37,7 +37,7 @@
 --- 
 ## 使用方法：  
 
-### **AutoJs6 $\color{red}{(建议使用最新版)}$：**    
+### **下载 AutoJs6 $\color{red}{(建议使用最新版)}$：**    
 （最低支持6.6.2，额外兼容6.5.0）   
 （不支持6.6.0、6.6.1）   
 [点击下载](https://github.com/SuperMonster003/AutoJs6/releases)  
@@ -88,6 +88,7 @@
 --- 
 ### **4. 在AutoJs6找到脚本，脚本如下：**  
    ![image](说明/主界面.jpg)  
+   $\color{red}{在AutoJS6页面下滑，可刷新文件列表}$
    
 --- 
 ### 文件结构：
