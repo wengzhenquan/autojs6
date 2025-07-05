@@ -170,7 +170,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
        原理都是先截图，让ai去识别图片(截图会保存在tmp目录下）。  
    ``` 
    * 本地YOLO识图: 1 $\color{red}{(推荐)}$：
-     * 需安装Yolo-plugin.apk插件，文件在yolov11目录下
+     * 需安装Yolo-plugin.apk插件，文件在yolov11目录下。($\color{red}{若没看到文件，可下滑刷新}$) 
     
    * 本地YOLO识图: 0(不推荐)：
      * 将启用服务器识图，图片会上传服务器。
