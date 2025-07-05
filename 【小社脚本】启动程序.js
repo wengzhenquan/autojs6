@@ -193,11 +193,13 @@ function clickCenter(obj) {
 
         if (obj && (obj instanceof UiObject)) {
             obj.show();
-            sleep(500);
             let x = obj.bounds().centerX()
             let y = obj.bounds().centerY()
             //log(x,y)
-            return click(x, y);
+            if (x > 0 && y > 0) {
+                sleep(500);
+                return click(x, y);
+            }
         }
     }
     return false;
@@ -224,7 +226,6 @@ function ableClick(obj) {
                 obj.parent() &&
                 obj.parent().depth() > 0 &&
                 obj.parent().indexInParent() > -1) {
-
                 obj = obj.parent();
 
                 // 父控件click
