@@ -193,7 +193,7 @@ function sortAndProcessResults(data) {
             return item;
         });
 
-        // 6. 格式化 groupB 的结果
+        // 6. 格式化 groupC 的结果
         let finalResult = finalGroupC.map(item => {
             let centerX = item.x + (item.width / 2);
             let centerY = item.y + (item.height / 2);
