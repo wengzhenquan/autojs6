@@ -111,7 +111,7 @@
 Yolo-Plugins.apk     # Yolo插件(需安装）
 ```       
 
-***若需要切换旧版本，只需修改version文件的run值即可：***  
+***若需要切换旧版本运行，只需修改version文件的run值即可：***  
 ``` 
    
 "run": "【小社脚本】Run_3.x.x.js",
