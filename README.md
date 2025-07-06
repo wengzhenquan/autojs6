@@ -50,7 +50,7 @@
 （不支持6.6.0、6.6.1）   
 [点击下载](https://github.com/SuperMonster003/AutoJs6/releases)  
 
-[蓝奏渠道下载](https://www.123912.com/s/RYmDVv-X3Sch)  
+[123云盘渠道下载](https://www.123912.com/s/RYmDVv-X3Sch)  
 
 ### **1. 先授权AutoJs6需要的权限。**  
    以下二选一：  
@@ -83,7 +83,7 @@
 
 [在线加速下载版（推荐）](https://github.com/wengzhenquan/autojs6/releases/main)  
 
-蓝奏渠道下载：前面AutoJS6蓝奏链接里有[小社脚本.zip]   
+123云盘渠道下载：前面AutoJS6 123云盘链接里有[小社脚本.zip]   
 
 [完整包下载](https://github.com/wengzhenquan/autojs6/archive/refs/heads/main.zip)   
 
