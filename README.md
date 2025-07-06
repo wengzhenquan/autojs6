@@ -83,7 +83,7 @@
 
 [在线加速下载版（推荐）](https://github.com/wengzhenquan/autojs6/releases/main)  
 
-蓝奏渠道下载：前面AutoJS6蓝奏链接里有   
+蓝奏渠道下载：前面AutoJS6蓝奏链接里有[小社脚本.zip]   
 
 [完整包下载](https://github.com/wengzhenquan/autojs6/archive/refs/heads/main.zip)   
 
