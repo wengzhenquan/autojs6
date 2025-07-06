@@ -186,7 +186,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
      缺点如下：
      * 有网络延迟
      * 服务器过期
-       * 现在只剩claw cloud run免费容器。
+       * 现在只剩Claw Cloud Run免费容器。
        * 若有免费服务器、docker容器渠道，还请告知。
          
    * $\color{red}{遇到报错，看下面 问题11-问题13}$
