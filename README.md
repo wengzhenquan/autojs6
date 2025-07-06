@@ -501,6 +501,8 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
 
 三改   by：wengzhenquan（就是俺啦）   
 github：https://github.com/wengzhenquan/autojs6
+镜像一：https://bgithub.xyz/wengzhenquan/autojs6
+镜像二：https://kkgithub.com/wengzhenquan/autojs6
 
 
 --- 
