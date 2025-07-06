@@ -170,6 +170,7 @@ function startTimeoutMonitor() {
                 ableScreenOff = 1;
                 console.error(`脚本运行 ${(maxRuntime)/60/1000} 分钟，强制退出`);
                 console.error('可能是兼容性问题，或布局分析问题，导致页面卡住');
+                console.error('也有可能是无障碍服务故障，可重新授权无障碍');
                 console.error('请截图保存最后卡住的页面，反馈问题。')
                 notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("发生未知错误，脚本强制停止\n详细问题，请查看日志"));
                 exit();
