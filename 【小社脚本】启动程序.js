@@ -6,10 +6,12 @@
 修改    by：风中拾叶
 三改    by：wengzhenquan
 
-
 [github更新地址]：
 
 https://github.com/wengzhenquan/autojs6
+
+镜像一：https://bgithub.xyz/wengzhenquan/autojs6
+镜像二：https://kkgithub.com/wengzhenquan/autojs6
 
 */
 
