@@ -131,6 +131,7 @@ events.on("exit", function() {
     if (window) window.close();
     floaty.closeAll();
     threads.shutDownAll();
+    engines.stopAll();
     // verbose(nowDate());
 });
 
