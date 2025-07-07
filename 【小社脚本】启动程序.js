@@ -131,7 +131,7 @@ events.on("exit", function() {
     if (window) window.close();
     floaty.closeAll();
     threads.shutDownAll();
-    engines.stopAll();
+    
     // verbose(nowDate());
 });
 
@@ -527,6 +527,7 @@ function systemSetting() {
             auto.service.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN);
 
         }
+        engines.stopAll();
     });
 
 }
