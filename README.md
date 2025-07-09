@@ -519,6 +519,7 @@ github：https://github.com/wengzhenquan/autojs6
 
 v3.8.10：
 1. 调整config.js配置顺序
+2. 一些优化
 
 v3.8.9：
 1. 提高YOLO识别成功率
