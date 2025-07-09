@@ -168,7 +168,7 @@ function sortAndProcessResults(data) {
         const unusedItems = groupB.filter(item => !usedItems.has(item));
 
         // ==================== 5. 最终结果处理 ====================
-        // 5.1 替换占位符（按groupC原始顺序填充）
+        // 5.1 替换占位符（按groupB原始顺序填充）
         let replaceIndex = 0;
         const finalGroupC = groupC.map(item => {
             if (item === placeholder && replaceIndex < unusedItems.length) {
