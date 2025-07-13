@@ -131,7 +131,7 @@ events.on("exit", function() {
     if (window) window.close();
     floaty.closeAll();
     threads.shutDownAll();
-    
+
     // verbose(nowDate());
 });
 
@@ -621,24 +621,19 @@ function init() {
 let proxys = [
 
     //  1 
+    "https://gh.llkk.cc/",
+    "https://gp-us.fyan.top/",
     "https://g.cachecdn.ggff.net/",
     "https://gh.catmak.name/",
     "https://g.blfrp.cn/", //
     "https://ghproxy.monkeyray.net/",
     "https://gh.b52m.cn/",
-    "https://gh.llkk.cc/",
-    "https://gp-us.fyan.top/",
     "https://hub.gitmirror.com/",
     "https://gh.xxooo.cf/",
-    "https://gh.qninq.cn/",
-
-    //2
-    // "https://j.1win.ddns-ip.net/",
-    // "https://tvv.tw/",
-    // "https://j.1win.ggff.net/",
-    // "https://github.kkproxy.dpdns.org/",
-    // "https://ghpxy.hwinzniej.top/",
-    // "https://ghproxy.imciel.com/",
+    "https://ghfile.geekertao.top/", //
+    "https://gh-proxy.com/",
+    "https://ghfast.top/", // 
+    "https://git.yylx.win/", // 
 
 ]
 
@@ -987,7 +982,9 @@ function permissionv() {
     log("--------- 必要权限 ---------");
     // 无障碍权限
 
-    if (auto.service) {
+    if (auto.service && auto.root &&
+        auto.root.childCount() > 0 &&
+        auto.root.children().length > 0) {
         log("无障碍服务，[已启用]");
     } else {
         console.error("无障碍服务，[已启用，但未运行]!");
