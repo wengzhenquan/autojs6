@@ -517,6 +517,12 @@ github：https://github.com/wengzhenquan/autojs6
 
 --- 
 
+v3.8.11：
+1. 更新程序不同类型转换修正
+2. existsOne()改写为exists()
+3. 启动程序部分参数搬运到run
+4. YOLO区别初始化失败和识别失败两种错误类型
+
 v3.8.10：
 1. 调整config.js配置顺序
 2. 按钮文案修改配置
