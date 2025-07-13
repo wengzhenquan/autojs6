@@ -145,9 +145,9 @@ function initImageReco() {
 
 // 服务器校验
 function webTest() {
-    if(serverInit) return;
+    if (serverInit) return;
     serverInit = true;
-    
+
     let sum_old = urls.length;
     let delayed_test;
     let startTime = new Date().getTime();
@@ -223,16 +223,18 @@ function killAPP(packageN) {
     app.openAppSetting(packageN);
     sleep(1000)
     let i = 6;
-    while (i-- && !existsOne(textStartsWith("清除"),
-            text("结束运行"), text("强行停止"),
-            textStartsWith("权限"), text("通知管理"))) {
+    while (i-- && !(textStartsWith("清除").exists() ||
+            text("结束运行").exists() ||
+            text("强行停止").exists() ||
+            textStartsWith("权限").exists() ||
+            text("通知管理").exists())) {
 
         if (text("应用详情").exists()) {
             back();
             sleep(500);
             break;
         }
-        if (n % 2 === 0) app.launchSettings(packageN)
+        if (i % 2 === 0) app.launchSettings(packageN)
         else app.openAppSetting(packageN);
         sleep(1000);
         // i++
@@ -306,13 +308,16 @@ function launchAPP(packageN) {
         n++;
     }
     toastLog("成功打开小米社区！！！", "forcible");
+
     return true;
 }
 
 //跳过广告
 function skipAd() {
     while (!packageName(xmPckageName).exists()) sleep(500);
-    while (!existsOne('签到', '论坛', '我的')) {
+    while (!(content('签到').exists() ||
+            content('论坛').exists() ||
+            content('我的').exists())) {
         //开屏广告
         let skilCloseBtn = textStartsWith("跳过").findOne(800);
         if (ableClick(skilCloseBtn)) {
@@ -441,7 +446,10 @@ function backAppIndex() {
         sleep(300);
     }
 
-    while (!existsOne('论坛', '官方', '消息', '我的')) {
+    while (!(content('论坛').exists() ||
+            content('官方').exists() ||
+            content('消息').exists() ||
+            content('我的').exists())) {
         back();
         sleep(1000);
     }
@@ -453,7 +461,7 @@ function backAppIndex() {
 
 function start(pram) {
     while (!packageName(xmPckageName).exists()) sleep(500);
-    while (!existsOne(text('今天'), text('签到'), text('全新升级'))) sleep(500);
+    while (!(text('今天').exists() || text('签到').exists() || text('全新升级').exists())) sleep(500);
 
     console.info(">>>>>>>→开始签到←<<<<<<<")
     // percentage = logpercentage();
@@ -506,7 +514,11 @@ function findCenter(pram) {
 
     // 等待验证图片的加载
     sleep(2000);
-    let result = wait(() => existsOne("关闭验证", "刷新验证", "视觉障碍"), 5, 800);
+    let result = wait(() =>
+        (content("关闭验证").exists() ||
+            content("刷新验证").exists() ||
+            content("视觉障碍").exists()),
+        5, 800);
     // 加强识别
     if (!result) {
         clickCenter(qdbt.findOne(2000));
@@ -1340,7 +1352,9 @@ function pullingCarrots(pram) {
         ableClick(qd);
         sleep(1000);
     }
-    while (!existsOne(text('今天'), text('签到'), text('全新升级'))) sleep(500);
+    //while (!existsOne(text('今天'), text('签到'), text('全新升级'))) sleep(500);
+    while (!(text('今天').exists() || text('签到').exists() || text('全新升级').exists())) sleep(500);
+
     //while (scrollDown());
     swipe(dwidth * 0.5, dheight * 0.8, dwidth * 0.5, dheight * 0.6, 100); // 向下滚动查找
     sleep(1000);
@@ -1488,7 +1502,8 @@ function ganenji(pram) {
         ableClick(qd);
         sleep(1000);
     }
-    while (!existsOne(text('今天'), text('签到'), text('全新升级'))) sleep(500);
+    //  while (!existsOne(text('今天'), text('签到'), text('全新升级'))) sleep(500);
+    while (!(text('今天').exists() || text('签到').exists() || text('全新升级').exists())) sleep(500);
 
 
     if (!zngn.exists() || !ableClick(qucanyu.findOne(1500))) {
@@ -1536,7 +1551,8 @@ function dualFlagships(pram) {
         ableClick(qd);
         sleep(1000);
     }
-    while (!existsOne(text('今天'), text('签到'), text('全新升级'))) sleep(500);
+    //while (!existsOne(text('今天'), text('签到'), text('全新升级'))) sleep(500);
+    while (!(text('今天').exists() || text('签到').exists() || text('全新升级').exists())) sleep(500);
 
     if (!qj.exists() || !ableClick(cj.findOne(2000))) {
         console.error('未找到活动入口')
@@ -1697,7 +1713,7 @@ function 小程序签到(pram) {
         .desc("更多").packageName(wchatpn);
     // 已打开微信，但未打开小程序。模拟从微信进入小程序
     if (!wait(() => xxcx.exists(), 10, 500) &&
-        existsOne(text("通讯录"), desc("返回"), descStartsWith("更多功能"))
+        (text("通讯录").exists() || desc("返回").exists() || descStartsWith("更多功能").exists())
     ) {
         toastLog("已打开微信，但未打开小程序！", "forcible");
         toastLog("尝试从微信进入小程序……", "long", "forcible");
@@ -1799,7 +1815,7 @@ function 小程序签到(pram) {
         //clickCenter(mep);
         toastLog("正在进入[我的]页面……", "forcible")
         //sleep(1500);
-        if (wait(() => existsOne(text('去签到'), text('已签到')), 8, 600)) {
+        if (wait(() => (text('去签到').exists() || text('已签到').exists()), 8, 600)) {
             if (ableClick(text("去签到"))) {
                 // 重复签到
                 clickCenter(text("去签到"));
@@ -2028,7 +2044,7 @@ function level1() {
         return;
     }
     log('开始记录……')
-    while (!existsOne(text('我的成长值'), text('1段'), text('当前等级'), textStartsWith('成长值')))
+    while (!(text('我的成长值').exists() || text('1段').exists() || text('当前等级').exists() || textStartsWith('成长值').exists()))
         sleep(1000);
 
     let czz = textStartsWith("成长值");
@@ -2060,6 +2076,7 @@ function level1() {
         成长值记录.add(record);
     }
     back();
+    sleep(1000);
 }
 
 // 列出成长值明细结果
@@ -2157,7 +2174,7 @@ function run() {
         //启动小米社区
         launchAPP(xmPckageName);
         // 控制台缩小
-        consoleMin();
+        //consoleMin();
         notice(String('未完成(' + nowDate().substr(5, 14) + ')[' + getDurTime(date) + ']'), String(levelResult()));
         console.error("有某个流程未完成！˚‧º·(˚ ˃̣̣̥᷄⌓˂̣̣̥᷅ )‧º·˚");
 

@@ -81,8 +81,7 @@ var unfinished_mark = 0;
 //退出按钮
 var window = null;
 
-var delayed = 6; //服务器请求超时时间s
-var delayed_max = 15; //最大超时时间 
+
 
 // 允许息屏信号
 var ableScreenOff = 0;
@@ -602,7 +601,7 @@ function init() {
     if (apks) {
         for (var key in apks) {
             let value = apks[key];
-            let name = app.getAppName(value);
+            let name = app.isInstalled(value);
             if (!name) {
                 //根据配置不检查YOLO
                 if (!config.本地YOLO识图 &&
@@ -1118,18 +1117,19 @@ function permissionv() {
         ];
         for (i = 0; i < urls.length; i++) {
             let url = urls[i];
+            //log(url)
             let res = null;
             let thread = threads.start(() => {
                 try {
                     res = http.get(url, {
-                        timeout: 500
+                        timeout: 1000
                     });
 
                 } catch (e) {}
             });
-            thread.join(500);
+            thread.join(1000);
             thread.interrupt();
-            if (res && res.statusCode === 204)
+            if (res && (res.statusCode === 204 || res.statusCode === 200))
                 return true;
 
         }
