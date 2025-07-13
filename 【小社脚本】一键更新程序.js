@@ -61,26 +61,22 @@ var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs
 var proxys = [
 
     //  1 
+    "https://gh.llkk.cc/",
+    "https://gp-us.fyan.top/",
     "https://g.cachecdn.ggff.net/",
     "https://gh.catmak.name/",
     "https://g.blfrp.cn/", //
     "https://ghproxy.monkeyray.net/",
     "https://gh.b52m.cn/",
-    "https://gh.llkk.cc/",
-    "https://gp-us.fyan.top/",
     "https://hub.gitmirror.com/",
     "https://gh.xxooo.cf/",
-    "https://gh.qninq.cn/",
+    "https://ghfile.geekertao.top/", //
+    "https://gh-proxy.com/",
+    "https://ghfast.top/", // 
+    "https://git.yylx.win/", // 
+    "https://ghproxy.net/", //
     
-    //2
-    "https://j.1win.ddns-ip.net/",
-    "https://tvv.tw/",
-    "https://j.1win.ggff.net/",
-    "https://github.kkproxy.dpdns.org/",
-    "https://ghpxy.hwinzniej.top/",
-    "https://ghproxy.imciel.com/",
-    
-
+   
 ]
 
 var api_github = "https://api.github.com/repos/wengzhenquan/autojs6/contents/";
@@ -95,12 +91,8 @@ var api_proxys = [
     "https://j.1lin.dpdns.org/",
     "https://j.1win.ddns-ip.net/",
     "https://jiashu.1win.eu.org/",
-
     "https://gh.llkk.cc/",
-
-    "https://gh.944446.xyz/",
     "https://99z.top/",
-    "https://gh.zwnes.xyz/",
 
 ]
 // 全局乱序代理
@@ -343,10 +335,7 @@ function checkVersion() {
         }
         updateList.push('version');
 
-    } else {
-        console.info("脚本已经是最新版！")
-        log("小社脚本版本：" + localVersion.version);
-    }
+    } 
 }
 
 //开始更新
@@ -532,10 +521,13 @@ function startUpdate() {
         });
         log("----------------------------");
     }
-    console.error("在文件列表下滑刷新，查看更新结果！")
+    console.error("在文件列表下滑刷新，可查看更新结果！")
+    wait(() => false, 1000);
+    console.error("在文件列表下滑刷新，可查看更新结果！")
+    wait(() => false, 1000);
+    console.error("在文件列表下滑刷新，可查看更新结果！")
+    wait(() => false, 1000);
 
-
-    wait(() => false, 3000);
     back();
     //sleep(3000)
     if (packageName('org.autojs.autojs6').exists()) {

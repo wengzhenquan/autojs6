@@ -633,6 +633,7 @@ let proxys = [
     "https://gh-proxy.com/",
     "https://ghfast.top/", // 
     "https://git.yylx.win/", // 
+    "https://ghproxy.net/", //
 
 ]
 
