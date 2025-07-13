@@ -676,6 +676,7 @@ function mergeConfigs(oldConfigPath, newConfigPath, outputPath) {
      * 根据newConfig的类型强制转换oldConfig的值
      */
     function convertValueType(oldValue, newValue) {
+        // 类型相同，使用旧值
         if (typeof oldValue === typeof newValue) return oldValue;
 
         // 数字字符串转数字
