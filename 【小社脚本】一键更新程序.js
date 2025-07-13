@@ -690,18 +690,22 @@ function mergeConfigs(oldConfigPath, newConfigPath, outputPath) {
             }
             return Boolean(oldValue);
         }
+        
+        
+        // 其它类型使用newValue的值
+        return newValue;
 
         // 其他类型转换
-        switch (typeof newValue) {
-            case 'string':
-                return String(oldValue);
-            case 'number':
-                return Number(oldValue);
-            case 'boolean':
-                return Boolean(oldValue);
-            default:
-                return oldValue;
-        }
+        // switch (typeof newValue) {
+        //     case 'string':
+        //         return String(oldValue);
+        //     case 'number':
+        //         return Number(oldValue);
+        //     case 'boolean':
+        //         return Boolean(oldValue);
+        //     default:
+        //         return oldValue;
+        // }
     }
 
     // ==================== 核心处理函数 ====================
