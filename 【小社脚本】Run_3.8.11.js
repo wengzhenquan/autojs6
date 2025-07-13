@@ -315,7 +315,8 @@ function launchAPP(packageN) {
 //跳过广告
 function skipAd() {
     while (!packageName(xmPckageName).exists()) sleep(500);
-    while (!(content('签到').exists() ||
+    let n = 5;
+    while (n-- && !(content('签到').exists() ||
             content('论坛').exists() ||
             content('我的').exists())) {
         //开屏广告
