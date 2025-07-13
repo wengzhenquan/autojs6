@@ -491,7 +491,7 @@ function start(pram) {
 
 //社区APP，点击“立即签到”
 function findCenter(pram) {
-    if (pram === 1) pram = '立即签到';
+    if (pram === 1 || pram === '1') pram = '立即签到';
     toastLog("开始签到……", "forcible");
     //点击签到按钮
     let qdbt = text(pram);
@@ -1331,7 +1331,7 @@ function swipeBezierzier(sx, sy, ex, ey) {
 //------------ 活动 ----------//
 //拔萝卜活动
 function pullingCarrots(pram) {
-    if (pram === 1) pram = '去看看';
+    if (pram === 1 || pram === '1') pram = '去看看';
 
     while (!packageName(xmPckageName).exists()) sleep(500);
     console.info(">>>>>>>→萝卜活动←<<<<<<<")
@@ -1479,7 +1479,7 @@ function join() {
 
 //感恩季活动
 function ganenji(pram) {
-    if (pram === 1) pram = '去参加';
+    if (pram === 1 || pram === '1') pram = '去参加';
 
     while (!packageName(xmPckageName).exists()) sleep(500);
     console.info(">>>>>>→感恩季活动←<<<<<<")
@@ -1532,7 +1532,7 @@ function ganenji(pram) {
 
 // 双旗舰
 function dualFlagships(pram) {
-    if (pram === 1) pram = '去参加';
+    if (pram === 1 || pram === '1') pram = '去参加';
     while (!packageName(xmPckageName).exists()) sleep(500);
     console.info(">>>>>>>→旗舰活动←<<<<<<<")
     toastLog("开始双旗舰活动……", "forcible")
@@ -1676,7 +1676,7 @@ function 解锁(button) {
 //------------ 小程序签到 ----------//
 
 function 小程序签到(pram) {
-    if (pram === 1) pram = '去微信';
+    if (pram === 1 || pram === '1') pram = '去微信';
     console.info(">>>>>>→小程序签到←<<<<<<")
     toastLog("正在尝试打开小程序……", "forcible");
 
