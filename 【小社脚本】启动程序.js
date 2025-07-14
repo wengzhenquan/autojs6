@@ -206,58 +206,64 @@ function startTimeoutMonitor() {
 
 // 点击中心坐标
 function clickCenter(obj) {
-    if (obj) {
-        if (typeof obj === 'string') {
-            obj = content(obj);
-        }
+    try {
+        if (obj) {
+            if (typeof obj === 'string') {
+                obj = content(obj);
+            }
 
-        if (obj instanceof UiSelector) {
-            obj = obj.findOne(1000);
-        }
+            if (obj instanceof UiSelector) {
+                obj = obj.findOne(1000);
+            }
 
-        if (obj && (obj instanceof UiObject)) {
-            obj.show();
-            let x = obj.bounds().centerX()
-            let y = obj.bounds().centerY()
-            //log(x,y)
-            if (x > 0 && y > 0) {
-                sleep(500);
-                return click(x, y);
+            if (obj && (obj instanceof UiObject)) {
+                obj.show();
+                let x = obj.bounds().centerX()
+                let y = obj.bounds().centerY()
+                //log(x,y)
+                if (x > 0 && y > 0) {
+                    sleep(500);
+                    return click(x, y);
+                }
             }
         }
-    }
+    } catch (e) {}
+
     return false;
 }
 
 // 有效控件点击，若本控件无法点击，一路寻找到能点击的父控件
 function ableClick(obj) {
-    if (obj) {
-        if (typeof obj === 'string') {
-            obj = content(obj);
-        }
-
-        if (obj instanceof UiSelector) {
-            obj = obj.findOne(1000);
-        }
-
-        if (obj && (obj instanceof UiObject)) {
-            obj.show();
-            sleep(500);
-            // click
-            let result = obj.click();
-            while (!result &&
-                !obj.clickable() &&
-                obj.parent() &&
-                obj.parent().depth() > 0 &&
-                obj.parent().indexInParent() > -1) {
-                obj = obj.parent();
-
-                // 父控件click
-                result = obj.click();
+    try {
+        if (obj) {
+            if (typeof obj === 'string') {
+                obj = content(obj);
             }
-            return result;
+
+            if (obj instanceof UiSelector) {
+                obj = obj.findOne(1000);
+            }
+
+            if (obj && (obj instanceof UiObject)) {
+                obj.show();
+                sleep(500);
+                // click
+                let result = obj.click();
+                while (!result &&
+                    !obj.clickable() &&
+                    obj.parent() &&
+                    obj.parent().depth() > 0 &&
+                    obj.parent().indexInParent() > -1) {
+                    obj = obj.parent();
+
+                    // 父控件click
+                    result = obj.click();
+                }
+                return result;
+            }
         }
-    }
+    } catch (e) {}
+
     return false;
 }
 
