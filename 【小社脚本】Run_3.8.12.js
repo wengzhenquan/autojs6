@@ -198,25 +198,25 @@ function webTest() {
 
 var sum = threads.disposable();
 let urls = [
-    "http://strz.wengzq.v6.rocks/upload", //0
-    "http://strz.wzq.dpdns.org/upload", //1
-    "http://strz.wzqw.zone.id/upload", //2
+    // "http://strz.wengzq.v6.rocks/upload", //0
+    // "http://strz.wzq.dpdns.org/upload", //1
+    // "http://strz.wzqw.zone.id/upload", //2
 
-    "http://xmst.wengzq.v6.rocks/upload", //3
-    "http://xmst.wzq.dpdns.org/upload", //4
-    "http://xmst.wzqw.zone.id/upload", //5
+    // "http://xmst.wengzq.v6.rocks/upload", //3
+    // "http://xmst.wzq.dpdns.org/upload", //4
+    // "http://xmst.wzqw.zone.id/upload", //5
 
-    //001俄勒冈
-    "http://xcjd.wengzq.v6.rocks/upload", //6
-    "http://xcjd.wzq.dpdns.org/upload", //7
-    "http://xcjd.wzqw.zone.id/upload", //8
+    // //001俄勒冈
+    // "http://xcjd.wengzq.v6.rocks/upload", //6
+    // "http://xcjd.wzq.dpdns.org/upload", //7
+    // "http://xcjd.wzqw.zone.id/upload", //8
 
     //clawcloud run 
     "https://xcjdcf.clawc.dpdns.org/upload", //9
     "https://ijakryikwhug.ap-southeast-1.clawcloudrun.com/upload", // 10
 
 
-    "http://up.kuandana.v6.rocks/upload", //11
+  //  "http://up.kuandana.v6.rocks/upload", //11
     "http://up.风中拾叶.top/upload", //12
 
 ];
