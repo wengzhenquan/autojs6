@@ -80,8 +80,8 @@ var brand = device.brand;
 var unfinished_mark = 0;
 //退出按钮
 var window = null;
-
-
+// 允许更新
+var ableUpdate = 1;
 
 // 允许息屏信号
 var ableScreenOff = 0;
@@ -131,6 +131,9 @@ events.on("exit", function() {
     floaty.closeAll();
     threads.shutDownAll();
 
+    if (config && !config.fast模式)
+        auto.clearCache();
+
     // verbose(nowDate());
 });
 
@@ -141,8 +144,10 @@ checkAutoJS6();
 //stopButton();
 threads.start(() => stopButton());
 
+maintain();
 
 
+//AutoJS6版本检查
 function checkAutoJS6() {
     // 额外兼容6.5.0
     let v650 = autojs.version.isEqual('6.5.0');
@@ -156,13 +161,29 @@ function checkAutoJS6() {
     }
 }
 
+// 维护期禁止运行
+function maintain() {
+    let hours = new Date().getHours();
+    if (hours < 2 || hours >= 20) {
+        console.error('维护时间20点~凌晨2点');
+        if (config && config.维护期间禁止检查更新 === 1) {
+            console.error('停止更新！');
+            ableUpdate = 0;
+        }
+        if (config && config.维护期间禁止检查更新 === 2) {
+            console.error('禁止运行！');
+            wait(() => false, 3000);
+            exit();
+        }
+    }
+}
 
 /**
  * 启动脚本总运行时间监控
  * @param {number} maxRuntimeMs - 最大允许运行时间 (毫秒)
  */
 function startTimeoutMonitor() {
-    threads.start(function() {
+    threads.start(() => {
         setInterval(function() {
             const startTime = new Date(date.replace(/-/g, '/')).getTime();
             let currentTime = new Date().getTime();
@@ -332,12 +353,13 @@ function getRandomNumbers(n) {
 function formatFileSize(size) {
     if (size < 1024) {
         return size + 'B';
-    } else if (size < Math.pow(1024, 2)) {
-        return (size / 1024).toFixed(1) + 'KB';
-    } else {
-        return (size / Math.pow(1024, 2)).toFixed(1) + 'MB';
     }
+    if (size < Math.pow(1024, 2)) {
+        return (size / 1024).toFixed(1) + 'KB';
+    }
+    return (size / Math.pow(1024, 2)).toFixed(1) + 'MB';
 }
+
 
 /**
  * 将毫秒转换为带单位的字符串（ms 或 s）
@@ -380,7 +402,7 @@ function stopButton() {
     //  window.action.click(() => window.close());
     let n = 0;
     window.action.click(() => {
-        console.error("提示：点击[停止脚本]按钮");
+        console.error("动作：点击[停止脚本]");
         exit();
         n++;
         window.action.setText("关不掉！x" + n);
@@ -552,6 +574,7 @@ function init() {
     }
     //加载本地版本文件
     loadLocalVersion();
+    console.info("当前版本：" + localVersion.version);
 
     if (!files.exists("./" + localVersion.run)) {
         console.error("缺失Run文件");
@@ -592,7 +615,7 @@ function init() {
             if (!config.本地YOLO识图 &&
                 file.toLowerCase().includes('yolo'))
                 return;
-            console.error(file)
+            console.error(file);
         });
         log("----------------------------");
     }
@@ -658,12 +681,12 @@ function checkVersion() {
         let thread = threads.start(() => {
             try {
                 let res = http.get(url, {
-                    timeout: 3 * 1000,
+                    timeout: 4 * 1000,
                     headers: {
                         'Cache-Control': 'no-cache',
                         'Pragma': 'no-cache',
                         'Expires': '0',
-                        "Connection": "Keep-Alive"
+                        'Connection': 'Keep-Alive'
                     }
                 });
                 if (res && res.statusCode === 200) {
@@ -672,7 +695,7 @@ function checkVersion() {
                 }
             } catch (e) {}
         });
-        thread.join(3 * 1000);
+        thread.join(4 * 1000);
         thread.interrupt();
         if (!result || result.length < 300 || !serverVersion) {
             continue;
@@ -688,12 +711,8 @@ function checkVersion() {
 
     }
 
-    if (files.exists("./version")) {
-        //本地版本信息
-        console.error("本地脚本版本：" + localVersion.version)
-    }
     if (!serverVersion) {
-        console.error("连接github更新失败")
+        console.error("连接github失败")
         return;
     }
 
@@ -744,7 +763,6 @@ function checkVersion() {
             autoCancel: true
         });
         console.error("有新的版本！！！")
-        console.info("当前版本：" + localVersion.version)
         console.info("最新版本：" + serverVersion.version)
         console.log("-----→");
         console.error("增量更新列表：")
@@ -805,7 +823,7 @@ function updateScript() {
                             'Cache-Control': 'no-cache',
                             'Pragma': 'no-cache',
                             'Expires': '0',
-                            "Connection": "Keep-Alive"
+                            'Connection': 'Keep-Alive'
                         }
                     });
                     if (res && res.statusCode === 200) {
@@ -981,9 +999,9 @@ function permissionv() {
     console.info(">>>>>>→权限验证←<<<<<<")
     log("--------- 必要权限 ---------");
     // 无障碍权限
-
-    if (auto.service && auto.root &&
-        auto.root.childCount() > 0 &&
+    auto.start();
+    if (auto.isRunning() && auto.service &&
+        auto.root && auto.root.childCount() > 0 &&
         auto.root.children().length > 0) {
         log("无障碍服务，[已启用]");
     } else {
@@ -1194,9 +1212,13 @@ function main() {
     init();
 
     //脚本检查更新
-    if (config && config.检查更新) checkVersion()
+    if (config && config.检查更新 && ableUpdate) {
+
+        checkVersion();
+    }
 
     try {
+        // throw e;
         //逻辑程序
         run();
         log("      —— 耗时[ " + getDurTime(date) + " ] ——");
@@ -1205,7 +1227,7 @@ function main() {
         ableScreenOff = 1;
 
     } catch (e) {
-        if (!(e.javaException instanceof ScriptInterruptedException)) {
+        if (!(e instanceof ScriptInterruptedException)) {
             //通常只有 1 行消息. 
             console.error(e.message);
             console.error(e.stack);

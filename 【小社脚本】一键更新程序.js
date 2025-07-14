@@ -21,35 +21,35 @@ events.on("exit", () => {
 // 打开日志页面
 console.launch();
 
-//下载大文件超时，单位：秒。 
+// 下载大文件超时，单位：秒。 
 // 网速快，可以改成10~20，网速慢改成30~60
 // 参考：50~100Mbps宽带30s，100~300Mbps宽带15s，
 //      300~500Mbps宽带10s，千兆5s，
 //      不建议改成小于5
 var download_timeout = 15;
 
-//最小文件大小(B)，小于这个值都认为错误，将重试
+// 最小文件大小(B)，小于这个值都认为错误，将重试
 var filemin = 300;
 
 // 忽略的更新列表
 var ignoreList = [
-    "说明/", //一整个文件夹
-    "LICENSE", //单个文件，只需要文件名
+    "说明/", // 一整个文件夹
+    "LICENSE", // 单个文件，只需要文件名
     //"tmp/",
-    //"yolov11/",     // yolov11 本地签到模块
+    //"yolov11/",   // yolov11 本地签到模块
 ]
 
-//版本信息
+// 版本信息
 var localVersion = null;
 var serverVersion = null;
-var hasNewVersion = false; //有新版本
-var updateAll = false; //全量更新
+var hasNewVersion = false; // 有新版本
+var updateAll = false; // 全量更新
 
 var updateList = []; // 待更新列表
 var deleteList = []; // 待删除列表
 
 var successList = []; // 更新成功列表
-var errorList = []; //  更新失败列表
+var errorList = []; // 更新失败列表
 
 // 文本格式
 var textArry = ["", "md", "css", "js", "txt", "json", "html"];
@@ -75,8 +75,19 @@ var proxys = [
     "https://ghfast.top/", // 
     "https://git.yylx.win/", // 
     "https://ghproxy.net/", //
-    
-   
+
+    //2
+    "https://ghproxy.net/", //
+    "https://github.fxxk.dedyn.io/", //
+    "https://fastgit.cc/", //
+    "https://gitproxy1.127731.xyz/",
+    "https://j.1win.ddns-ip.net/",
+    "https://gh.monlor.com/",
+    "https://j.1lin.dpdns.org/",
+    "https://j.1win.ggff.net/",
+    "https://jiashu.1win.eu.org/", // 
+
+
 ]
 
 var api_github = "https://api.github.com/repos/wengzhenquan/autojs6/contents/";
@@ -132,29 +143,14 @@ function getRandomNumbers(n) {
 function formatFileSize(size) {
     if (size < 1024) {
         return size + 'B';
-    } else if (size < Math.pow(1024, 2)) {
-        return (size / 1024).toFixed(1) + 'KB';
-    } else {
-        return (size / Math.pow(1024, 2)).toFixed(1) + 'MB';
     }
+    if (size < Math.pow(1024, 2)) {
+        return (size / 1024).toFixed(1) + 'KB';
+    }
+    return (size / Math.pow(1024, 2)).toFixed(1) + 'MB';
 }
 
-// 日期格式化
-function formatDate(date) {
-    // 获取年、月、日、时、分、秒
-    let year = date.getFullYear();
-    let month = (date.getMonth() + 1).toString().padStart(2, '0');
-    let day = date.getDate().toString().padStart(2, '0');
-    let hours = date.getHours().toString().padStart(2, '0');
-    let minutes = date.getMinutes().toString().padStart(2, '0');
-    let seconds = date.getSeconds().toString().padStart(2, '0');
-    // 拼接格式化后的日期字符串
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-}
-// 格式化后的实时时间
-function nowDate() {
-    return formatDate(new Date());
-}
+
 
 /**
  * 将毫秒转换为带单位的字符串（ms 或 s）
@@ -225,7 +221,7 @@ function checkVersion() {
                         'Cache-Control': 'no-cache',
                         'Pragma': 'no-cache',
                         'Expires': '0',
-                        "Connection": "Keep-Alive"
+                        'Connection': 'Keep-Alive'
                     }
                 });
                 if (res && res.statusCode === 200) {
@@ -335,7 +331,7 @@ function checkVersion() {
         }
         updateList.push('version');
 
-    } 
+    }
 }
 
 //开始更新
@@ -393,7 +389,7 @@ function startUpdate() {
                             'Cache-Control': 'no-cache',
                             'Pragma': 'no-cache',
                             'Expires': '0',
-                            "Connection": "Keep-Alive"
+                            'Connection': 'Keep-Alive'
                         }
                     });
                     if (res && res.statusCode === 200) {
@@ -429,8 +425,8 @@ function startUpdate() {
         }
 
         if (!filebytes || filebytes.length < filemin) {
-            console.error("下载失败")
-            errorList.push(fileName)
+            console.error("下载失败");
+            errorList.push(fileName);
             //continue;
         } else {
 
@@ -521,11 +517,11 @@ function startUpdate() {
         });
         log("----------------------------");
     }
-    console.error("在文件列表下滑刷新，可查看更新结果！")
+    console.error("在文件列表下滑刷新，可查看更新结果！");
     wait(() => false, 1000);
-    console.error("在文件列表下滑刷新，可查看更新结果！")
+    console.error("在文件列表下滑刷新，可查看更新结果！");
     wait(() => false, 1000);
-    console.error("在文件列表下滑刷新，可查看更新结果！")
+    console.error("在文件列表下滑刷新，可查看更新结果！");
     wait(() => false, 1000);
 
     back();
@@ -591,7 +587,7 @@ function getGitHubFileInfo(filePath, branch) {
                         'Cache-Control': 'no-cache',
                         'Pragma': 'no-cache',
                         'Expires': '0',
-                        "Connection": "Keep-Alive"
+                        'Connection': 'Keep-Alive'
                     }
                 });
                 if (res.statusCode === 200) {
@@ -677,22 +673,26 @@ function mergeConfigs(oldConfigPath, newConfigPath, outputPath) {
      */
     function convertValueType(oldValue, newValue) {
         // 类型相同，使用旧值
-        if (typeof oldValue === typeof newValue) return oldValue;
+        if (typeof oldValue === typeof newValue)
+            return oldValue;
 
-        // 数字字符串转数字
-        if (typeof newValue === 'number' && !isNaN(parseFloat(oldValue))) {
-            return parseFloat(oldValue);
+        // 数字字符串→数字
+        if (typeof newValue === 'number') {
+            if (!isNaN(parseFloat(oldValue))) {
+                return parseFloat(oldValue);
+            }
+            // 无法转换的，使用newValue
+            return newValue;
         }
 
         // 布尔值转换
         if (typeof newValue === 'boolean') {
-            if (typeof oldValue === 'string') {
-                return oldValue.toLowerCase() === 'true';
-            }
+            // if (typeof oldValue === 'string') {
+            //     return oldValue.toLowerCase() === 'true';
+            // }
             return Boolean(oldValue);
         }
-        
-        
+
         // 其它类型使用newValue的值
         return newValue;
 
