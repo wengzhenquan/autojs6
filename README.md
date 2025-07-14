@@ -524,6 +524,7 @@ github：https://github.com/wengzhenquan/autojs6
 
 v3.8.13:
 1. 优化打开小程序逻辑
+2. 加强点击
 
 
 v3.8.12：
