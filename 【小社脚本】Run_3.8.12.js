@@ -216,7 +216,7 @@ let urls = [
     "https://ijakryikwhug.ap-southeast-1.clawcloudrun.com/upload", // 10
 
 
-  //  "http://up.kuandana.v6.rocks/upload", //11
+    //  "http://up.kuandana.v6.rocks/upload", //11
     "http://up.风中拾叶.top/upload", //12
 
 ];
@@ -1731,9 +1731,8 @@ function 小程序签到(pram) {
     let xxcx = className("android.widget.ImageButton")
         .desc("更多").packageName(wchatpn);
     // 已打开微信，但未打开小程序。模拟从微信进入小程序
-    if (!wait(() => xxcx.exists(), 10, 500) &&
-        (text("通讯录").exists() || desc("返回").exists() || descStartsWith("更多功能").exists())
-    ) {
+    if ((text("通讯录").exists() || desc("返回").exists() || descStartsWith("更多功能").exists()) &&
+        !wait(() => xxcx.exists(), 10, 500)) {
         toastLog("已打开微信，但未打开小程序！", "forcible");
         toastLog("尝试从微信进入小程序……", "long", "forcible");
         sleep(1000)
