@@ -1756,9 +1756,7 @@ function 小程序签到(pram) {
             return;
         }
     }
-    
-    let xxcx = className("android.widget.ImageButton")
-      .desc("更多").packageName(wchatpn);
+
 
     //打开验证
     if (!wait(() => packageName(wchatpn).exists(), 10, 600)) {
@@ -1770,11 +1768,11 @@ function 小程序签到(pram) {
         back();
         return;
     }
-    
+
     // 已打开微信，但未打开小程序。模拟从微信进入小程序
-    if ((text("通讯录").exists() || desc("返回").exists() || descStartsWith("更多功能").exists()) 
-      //&& !wait(() => xxcx.exists(), 10, 500)
-        ) {
+    if ((text("通讯录").exists() || desc("返回").exists() || descStartsWith("更多功能").exists())
+        //&& !wait(() => xxcx.exists(), 10, 500)
+    ) {
         toastLog("已打开微信，但未打开小程序！", "forcible");
         toastLog("尝试从微信进入小程序……", "long", "forcible");
         sleep(1000)
@@ -1818,12 +1816,17 @@ function 小程序签到(pram) {
         // sleep(600);
     }
 
-    
+    while (!packageName(wchatpn).exists()) sleep(500);
+
+    // 因为小程序布局分析可能失效，无法使用小程序的控件来判断，只能尽量等待
+    let xxcx = className("android.widget.ImageButton")
+        .desc("更多").packageName(wchatpn);
+    wait(() => xxcx.exists(), 6, 500);
 
     log("成功打开小程序！")
-    while (!packageName(wchatpn).exists()) sleep(500);
-    wait(() => xxcx.exists(), 6, 500);
-    sleep(1000);
+
+
+    //sleep(1000);
     log("--------- 签到操作 ---------");
     let me = text("我的");
     if (wait(() => me.exists(), 5, 600)) {
@@ -1920,7 +1923,7 @@ function openVChat(button) {
     let one = className("android.widget.ImageView")
         .descContains("微信");
 
-    if (wait(() => textContains("选择").exists(), 5, 400) &&
+    if (wait(() => textContains("选择").exists(), 5, 500) &&
         (one.find().length > 1)) {
         let wx = one.findOne();
         ableClick(wx);
@@ -1946,12 +1949,13 @@ function desktopRun() {
             exit();
         }
 
-        ableClick(tr.findOne());
-        sleep(1666);
-        for (i = 0; i < 3; i++) {
-            toastLog("点击坐标[" + config.x + "," + config.y + "]")
-            log(click(config.x, config.y));
-            sleep(400);
+        if (ableClick(tr.findOne()) || clickCenter(tr.findOne())) {
+            sleep(1666);
+            for (i = 0; i < 3; i++) {
+                toastLog("点击坐标[" + config.x + "," + config.y + "]")
+                log(click(config.x, config.y));
+                sleep(1000);
+            }
         }
 
     } else {

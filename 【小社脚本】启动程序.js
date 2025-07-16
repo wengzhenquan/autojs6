@@ -249,13 +249,15 @@ function ableClick(obj) {
                 sleep(500);
                 // click
                 let result = obj.click();
-                while (!result &&
+                // 最多向上爬3层
+                let n = 3;
+                while (n-- && !result &&
                     !obj.clickable() &&
                     obj.parent() &&
                     obj.parent().depth() > 0 &&
                     obj.parent().indexInParent() > -1) {
-                    obj = obj.parent();
 
+                    obj = obj.parent();
                     // 父控件click
                     result = obj.click();
                 }
@@ -462,6 +464,7 @@ function consoleShow() {
         console3();
     }
 }
+
 //悬浮窗控制台变成30%
 function console3() {
     if (console.isShowing()) {
@@ -474,8 +477,6 @@ function consoleMin() {
         console.setSize(0.96, 0.17);
     }
 }
-
-
 
 //悬浮窗控制台高度变成80%
 function consoleMax() {
@@ -1005,7 +1006,7 @@ function permissionv() {
     console.info(">>>>>>→权限验证←<<<<<<")
     log("--------- 必要权限 ---------");
     // 无障碍权限
-   // auto.start();
+    // auto.start();
     if (auto.isRunning() && auto.service &&
         auto.root && auto.root.childCount() > 0 &&
         auto.root.children().length > 0) {
