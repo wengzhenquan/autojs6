@@ -330,10 +330,12 @@ function skipAd() {
     if (ableClick(skilCloseBtn)) {
         log("跳过了开屏广告!");
     }
-    sleep(1000);
+    //sleep(1000);
     let adClose = className("android.widget.ImageView")
         .desc("关闭");
-    if (ableClick(adClose.findOne(800))) {
+
+    if (wait(() => adClose.exists(), 4, 500) &&
+        ableClick(adClose.findOne(800))) {
         log("关闭了1个广告!");
     }
     //}
@@ -1844,7 +1846,7 @@ function 小程序签到(pram) {
         ableClick(mep);
         //clickCenter(mep);
         toastLog("正在进入[我的]页面……", "forcible")
-        
+
         wait(() => text('编辑资料').exists(), 10, 500);
         //sleep(1500);
         if (wait(() => (text('去签到').exists() || text('已签到').exists()), 10, 600)) {
