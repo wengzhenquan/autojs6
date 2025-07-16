@@ -650,8 +650,6 @@ function init() {
 let proxys = [
 
     //  1 
-    "https://gh.llkk.cc/",
-    "https://gp-us.fyan.top/",
     "https://g.cachecdn.ggff.net/",
     "https://gh.catmak.name/",
     "https://g.blfrp.cn/", //
@@ -660,10 +658,11 @@ let proxys = [
     "https://hub.gitmirror.com/",
     "https://gh.xxooo.cf/",
     "https://ghfile.geekertao.top/", //
+    "https://git.yylx.win/", // 
+    "https://gh.llkk.cc/",
+    "https://ghproxy.net/", //
     "https://gh-proxy.com/",
     "https://ghfast.top/", // 
-    "https://git.yylx.win/", // 
-    "https://ghproxy.net/", //
 
 ]
 
@@ -704,17 +703,16 @@ function checkVersion() {
         });
         thread.join(4 * 1000);
         thread.interrupt();
-        if (!result || result.length < 300 || !serverVersion) {
-            continue;
+        if (result && result.length > 300 && serverVersion) {
+            if (!files.exists("./version")) {
+                down_version = true;
+                // 缺失version文件，下载
+                files.write("./version", result, "utf-8");
+                //重新加载本地版本文件
+                loadLocalVersion();
+            }
+            break;
         }
-        if (!files.exists("./version")) {
-            down_version = true;
-            // 缺失version文件，下载
-            files.write("./version", result, "utf-8");
-            //重新加载本地版本文件
-            loadLocalVersion();
-        }
-        break;
 
     }
 

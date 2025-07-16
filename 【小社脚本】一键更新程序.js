@@ -61,8 +61,6 @@ var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs
 var proxys = [
 
     //  1 
-    "https://gh.llkk.cc/",
-    "https://gp-us.fyan.top/",
     "https://g.cachecdn.ggff.net/",
     "https://gh.catmak.name/",
     "https://g.blfrp.cn/", //
@@ -71,21 +69,23 @@ var proxys = [
     "https://hub.gitmirror.com/",
     "https://gh.xxooo.cf/",
     "https://ghfile.geekertao.top/", //
+    "https://git.yylx.win/", // 
+    "https://gh.llkk.cc/",
+    "https://ghproxy.net/", //
     "https://gh-proxy.com/",
     "https://ghfast.top/", // 
-    "https://git.yylx.win/", // 
-    "https://ghproxy.net/", //
 
     //2
-    "https://ghproxy.net/", //
-    "https://github.fxxk.dedyn.io/", //
-    "https://fastgit.cc/", //
-    "https://gitproxy1.127731.xyz/",
-    "https://j.1win.ddns-ip.net/",
+    "https://ghproxy.cfd/",
     "https://gh.monlor.com/",
+    "https://99z.top/", //    
+    "https://github.kkproxy.dpdns.org/",
+    "https://ghf.无名氏.top/", // 
+    "https://gitproxy.127731.xyz/",
+    "https://ghm.078465.xyz/",
     "https://j.1lin.dpdns.org/",
-    "https://j.1win.ggff.net/",
-    "https://jiashu.1win.eu.org/", // 
+    "https://gitproxy1.127731.xyz/",
+    "https://j.n1win.dpdns.org/",
 
 
 ]
