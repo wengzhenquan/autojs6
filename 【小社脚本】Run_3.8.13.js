@@ -334,7 +334,7 @@ function skipAd() {
     let adClose = className("android.widget.ImageView")
         .desc("关闭");
 
-    if (wait(() => adClose.exists(), 4, 500) &&
+    if (wait(() => adClose.exists(), 4, 500) ||
         ableClick(adClose.findOne(800))) {
         log("关闭了1个广告!");
     }
