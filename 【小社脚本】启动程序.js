@@ -1005,7 +1005,7 @@ function permissionv() {
     console.info(">>>>>>→权限验证←<<<<<<")
     log("--------- 必要权限 ---------");
     // 无障碍权限
-    auto.start();
+   // auto.start();
     if (auto.isRunning() && auto.service &&
         auto.root && auto.root.childCount() > 0 &&
         auto.root.children().length > 0) {

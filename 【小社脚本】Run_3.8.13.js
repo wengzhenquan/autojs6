@@ -360,6 +360,7 @@ function posts(n) {
             if (n > 5) {
                 toastLog("打开帖子失败！")
                 unfinished_mark = 1;
+                //backAppIndex();
                 return;
             }
             toastLog("第" + n + "次重试")
@@ -376,7 +377,7 @@ function posts(n) {
             }
 
             // 小米社区重置首页
-            //backAppIndex();
+            backAppIndex();
             // 下滑刷新列表
             swipe(dwidth * 0.5, dheight * 0.6, dwidth * 0.5, dheight * 0.9, 300);
             sleep(1500);
@@ -398,6 +399,7 @@ function posts(n) {
         if (n > 5) {
             toastLog("打开帖子失败！")
             unfinished_mark = 1;
+            //backAppIndex();
             return;
         }
         return posts(n + 1);
@@ -1755,8 +1757,8 @@ function 小程序签到(pram) {
         }
     }
     
-    //let xxcx = className("android.widget.ImageButton")
-    //  .desc("更多").packageName(wchatpn);
+    let xxcx = className("android.widget.ImageButton")
+      .desc("更多").packageName(wchatpn);
 
     //打开验证
     if (!wait(() => packageName(wchatpn).exists(), 10, 600)) {
