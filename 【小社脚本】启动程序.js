@@ -416,7 +416,7 @@ function stopButton() {
         window.action.setText("关不掉！x" + n);
     });
 
-    // setInterval(() => {}, 1000);
+    //setInterval(() => {}, 1000);
 }
 
 
@@ -1005,9 +1005,7 @@ function permissionv() {
     log("--------- 必要权限 ---------");
     // 无障碍权限
     // auto.start();
-    if (auto.isRunning() && auto.service &&
-        auto.root && auto.root.childCount() > 0 &&
-        auto.root.children().length > 0) {
+    if (auto.isRunning() && auto.service && auto.root) {
         log("无障碍服务，[已启用]");
     } else {
         console.error("无障碍服务，[已启用，但未运行]!");
