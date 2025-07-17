@@ -24,7 +24,7 @@ if (!files.exists(launch_locked)) {
     events.on("exit", () => files.remove(launch_locked));
     files.create(launch_locked);
 } else {
-    if (engines.all().length < 3) {
+    if (engines.all().length < 2) {
         // 防止锁残留
         files.remove(launch_locked);
     } else {

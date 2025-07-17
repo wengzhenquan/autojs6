@@ -5,7 +5,7 @@ if (!files.exists(locked)) {
     events.on("exit", () => files.remove(locked));
     files.create(locked);
 } else {
-    if (engines.all().length < 3) {
+    if (engines.all().length < 2) {
         // 防止锁残留
         files.remove(locked);
     } else {
