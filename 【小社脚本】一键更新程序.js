@@ -5,10 +5,12 @@ if (!files.exists(locked)) {
     events.on("exit", () => files.remove(locked));
     files.create(locked);
 } else {
-    if (engines.all().length < 2) {
+    if (engines.all().length < 3) {
         // 防止锁残留
         files.remove(locked);
     } else {
+        console.info('若无法启动，可删除tmp目录下的下面文件')
+        console.error('update_locked')
         //确保只运行一个程序
         exit();
     }

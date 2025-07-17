@@ -24,10 +24,12 @@ if (!files.exists(launch_locked)) {
     events.on("exit", () => files.remove(launch_locked));
     files.create(launch_locked);
 } else {
-    if (engines.all().length < 2) {
+    if (engines.all().length < 3) {
         // 防止锁残留
         files.remove(launch_locked);
     } else {
+        console.info('若无法启动，可删除tmp目录下的下面文件')
+        console.error('launch_main_locked')
         //确保只运行一个程序
         exit();
     }
@@ -109,19 +111,21 @@ log(`设备分辨率：${dwidth}x${dheight}`);
 log(`现在是：${date}`);
 
 if (config && config.音量键停止) {
-    console.error("提示：[音量+/-]键可停止脚本");
-    //音量键，停止脚本
-    events.setKeyInterceptionEnabled("volume_up", true);
-    events.setKeyInterceptionEnabled("volume_down", true);
-    events.observeKey();
-    events.onKeyDown("volume_up", () => {
-        console.error("[音量+]停止脚本！！！");
-        exit();
-    });
-    events.onKeyDown("volume_down", () => {
-        console.error("[音量-]停止脚本！！！");
-        exit();
-    });
+    try {
+        console.error("提示：[音量+/-]键可停止脚本");
+        //音量键，停止脚本
+        events.setKeyInterceptionEnabled("volume_up", true);
+        events.setKeyInterceptionEnabled("volume_down", true);
+        events.observeKey();
+        events.onKeyDown("volume_up", () => {
+            console.error("[音量+]停止脚本！！！");
+            exit();
+        });
+        events.onKeyDown("volume_down", () => {
+            console.error("[音量-]停止脚本！！！");
+            exit();
+        });
+    } catch (e) {}
 }
 
 events.on("exit", function() {
@@ -1003,6 +1007,7 @@ function permissionv() {
 
     console.info(">>>>>>→权限验证←<<<<<<")
     log("--------- 必要权限 ---------");
+    //auto.waitFor();
     // 无障碍权限
     // auto.start();
     if (auto.isRunning() && auto.service && auto.root) {
