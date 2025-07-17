@@ -654,9 +654,6 @@ function init() {
 let proxys = [
 
     //  1 
-    "https://g.cachecdn.ggff.net/",
-    "https://gh.catmak.name/",
-    "https://g.blfrp.cn/", //
     "https://ghproxy.monkeyray.net/",
     "https://gh.b52m.cn/",
     "https://hub.gitmirror.com/",
@@ -664,9 +661,10 @@ let proxys = [
     "https://ghfile.geekertao.top/", //
     "https://git.yylx.win/", // 
     "https://gh.llkk.cc/",
-    "https://ghproxy.net/", //
-    "https://gh-proxy.com/",
     "https://ghfast.top/", // 
+    "https://g.cachecdn.ggff.net/",
+    "https://gh.catmak.name/",
+    "https://g.blfrp.cn/", //
 
 ]
 
