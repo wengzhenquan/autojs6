@@ -202,12 +202,12 @@ function startTimeoutMonitor() {
             if (currentTime - startTime < (9 * 1000)) {
                 // 悬浮窗配置纠正
                 if (console.isShowing()) {
-                   // consoleShow();
+                    //consoleShow();
                 }
                 // 停止按钮位置纠正
                 if (window)
                     window.setPosition(dwidth * 0.1, dheight * 0.75);
-                    
+
             }
 
             // 停止脚本
@@ -299,8 +299,10 @@ function consoleShow() {
                 config.悬浮窗控制台关闭延迟 * 1000 : false;
             console.setExitOnClose(times);
         }
+        if (!console.isShowing()) {
+            console.show();
+        }
 
-        console.show();
         console3();
     }
 }
