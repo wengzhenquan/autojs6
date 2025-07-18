@@ -675,6 +675,15 @@ function mergeConfigs(oldConfigPath, newConfigPath, outputPath) {
      * 根据newConfig的类型强制转换oldConfig的值
      */
     function convertValueType(oldValue, newValue) {
+       // 数字类型纠正：数字字符串→数字
+        if (typeof oldValue === 'string' && !isNaN(oldValue)) {
+            let oldp = parseFloat(oldValue);
+            // 小于1000(排除屏幕解锁数字密码，安卓最少4位数)，
+            // 且转换前后长度一样(排除0开头的字符串)
+            if (oldp < 1000 && String(oldp).length === oldValue.length)
+                oldValue = oldp;
+        }
+
         // 类型相同，使用旧值
         if (typeof oldValue === typeof newValue)
             return oldValue;
@@ -683,22 +692,24 @@ function mergeConfigs(oldConfigPath, newConfigPath, outputPath) {
         if (typeof newValue === 'boolean') {
             return Boolean(oldValue);
         }
-
-        // 数字字符串→数字
-        if (typeof oldValue === 'number') {
-            if (oldValue === 1 && isNaN(newValue)) {
-                return newValue;
-            }
-            return oldValue;
-        }
-
+        
         // 数字字符串→数字
         if (typeof newValue === 'number' &&
             !isNaN(oldValue)) {
             return parseFloat(oldValue);
         }
 
-        // 其它类型使用newValue的值 
+        // 数字字符串→数字
+        if (typeof oldValue === 'number') {
+            // 1时允许使用中文字符串
+            if (oldValue === 1 && isNaN(newValue)) {
+                return newValue;
+            }
+            return oldValue;
+        }
+
+        
+        // 其它类型使用newValue的值，确保不出错
         return newValue;
 
         // 其他类型转换
