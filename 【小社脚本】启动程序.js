@@ -202,7 +202,7 @@ function startTimeoutMonitor() {
             if (currentTime - startTime < (9 * 1000)) {
                 // 悬浮窗配置纠正
                 if (console.isShowing()) {
-                    consoleShow();
+                   // consoleShow();
                 }
                 // 停止按钮位置纠正
                 if (window)
