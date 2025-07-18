@@ -89,8 +89,6 @@ var ableUpdate = 1;
 var ableScreenOff = 0;
 // 程序最大运行时间，超过该时间会强制停止(ms)。  3分钟
 var maxRuntime = 3 * 60 * 1000;
-startTimeoutMonitor();
-
 
 
 //打开悬浮窗控制台
@@ -139,14 +137,23 @@ events.on("exit", function() {
     // verbose(nowDate());
 });
 
+//------------ 前置任务 ----------//
+
 
 //AutoJS6版本检查
 checkAutoJS6();
-//启动悬浮窗关闭按钮
+
+// 维护期禁止更新
+maintain();
+
+
+// 启动悬浮窗关闭按钮
 //stopButton();
 threads.start(() => stopButton());
 
-maintain();
+
+// 程序运行监控
+startTimeoutMonitor();
 
 
 //AutoJS6版本检查
@@ -158,12 +165,13 @@ function checkAutoJS6() {
     if (!(v650 || vAtLest)) {
         console.error('不支持的AutoJS6版本');
         console.error('请升级AutoJS6');
-        //wait(()=>false,2000)
+        wait(() => false, 2000);
         exit();
+        wait(() => false, 2000);
     }
 }
 
-// 维护期禁止运行
+// 维护期禁止更新
 function maintain() {
     let hours = new Date().getHours();
     if (hours < 2 || hours >= 20) {
@@ -174,8 +182,9 @@ function maintain() {
         }
         if (config && config.维护期间禁止检查更新 === 2) {
             console.error('禁止运行！');
-            wait(() => false, 3000);
+            wait(() => false, 2000);
             exit();
+            wait(() => false, 2000);
         }
     }
 }
@@ -187,9 +196,19 @@ function maintain() {
 function startTimeoutMonitor() {
     threads.start(() => {
         setInterval(function() {
-
             const startTime = new Date(date.replace(/-/g, '/')).getTime();
             let currentTime = new Date().getTime();
+
+            if (currentTime - startTime < (9 * 1000)) {
+                // 悬浮窗配置纠正
+                if (console.isShowing()) {
+                    consoleShow();
+                }
+                // 停止按钮位置纠正
+                if (window)
+                    window.setPosition(dwidth * 0.1, dheight * 0.75);
+                    
+            }
 
             // 停止脚本
             if (currentTime - startTime > (maxRuntime - 10 * 1000)) {
@@ -205,6 +224,123 @@ function startTimeoutMonitor() {
     });
 }
 
+//------------ 左下角“停止脚本”按钮 ----------//
+//悬浮窗停止按钮
+function stopButton() {
+    window = floaty.window(
+        <frame>
+            <button
+            id="action"
+            text="停止脚本"
+            w="100"
+            h="50"
+            bg="#80333333"
+            textColor="#ffff00"
+            textSize="20sp"
+            textStyle="bold"
+            />
+        </frame>
+    );
+    window.setPosition(dwidth * 0.1, dheight * 0.75);
+
+    //悬浮窗被关闭时停止脚本
+    // window.exitOnClose();
+    //  window.action.click(() => window.close());
+    let n = 0;
+    window.action.click(() => {
+        console.error("动作：点击[停止脚本]");
+        exit();
+        engines.stopAll();
+        n++;
+        window.action.setText("关不掉！x" + n);
+
+    });
+
+    //setInterval(() => {}, 1000);
+}
+
+
+
+//------------ 悬浮窗控制台区域 ----------//
+//打开悬浮窗控制台
+function consoleShow() {
+    if (!config || config && config.悬浮窗控制台) {
+        //悬浮窗控制台配置
+        // console.reset();
+        console.build({
+            size: [0.96, 0.3],
+            position: [0.02, 0.02],
+            title: '会装逼的控制台',
+            titleTextSize: 20,
+            titleTextColor: 'green',
+            titleIconsTint: 'yellow',
+            titleBackgroundAlpha: 0.9,
+            titleBackgroundColor: 'dark-blue',
+            // titleBackgroundTint: 'dark-blue', //6.5.0版本没有
+            contentTextSize: 15,
+            contentBackgroundAlpha: 0.8,
+            contentBackgroundColor: colors.BLACK,
+            touchable: false,
+            exitOnClose: 6e3,
+        });
+
+        console.setContentTextColor({
+            verbose: 'white',
+            log: 'green',
+            info: 'yellow',
+            warn: 'cyan',
+            error: 'magenta'
+        });
+        if (config && config.悬浮窗控制台字体大小)
+            console.setContentTextSize(config.悬浮窗控制台字体大小);
+
+        if (config && typeof config.悬浮窗控制台关闭延迟 !== 'undefined') {
+            let times = config.悬浮窗控制台关闭延迟 > 0 ?
+                config.悬浮窗控制台关闭延迟 * 1000 : false;
+            console.setExitOnClose(times);
+        }
+
+        console.show();
+        console3();
+    }
+}
+
+//悬浮窗控制台变成30%
+function console3() {
+    if (console.isShowing()) {
+        console.setSize(0.96, 0.3);
+    }
+}
+//悬浮窗控制台变成17%
+function consoleMin() {
+    if (console.isShowing()) {
+        console.setSize(0.96, 0.17);
+    }
+}
+
+//悬浮窗控制台高度变成80%
+function consoleMax() {
+    if (console.isShowing()) {
+        //透明度
+        console.setContentBackgroundAlpha(1)
+        console.setSize(0.96, 0.8);
+        //可触碰
+        console.setTouchable(true);
+    }
+}
+
+//悬浮窗控制台最小化
+function consoleCollapse() {
+    if (console.isShowing()) {
+        console.collapse();
+    }
+}
+//悬浮窗控制台从最小化恢复
+function consoleExpand() {
+    if (console.isShowing()) {
+        console.expand();
+    }
+}
 
 
 //------------ 工具函数 ----------//
@@ -391,123 +527,6 @@ function toSeconds(milliseconds) {
 }
 
 
-//------------ 左下角“停止脚本”按钮 ----------//
-//悬浮窗停止按钮
-function stopButton() {
-    window = floaty.window(
-        <frame>
-            <button
-            id="action"
-            text="停止脚本"
-            w="100"
-            h="50"
-            bg="#80333333"
-            textColor="#ffff00"
-            textSize="20sp"
-            textStyle="bold"
-            />
-        </frame>
-    );
-    window.setPosition(dwidth * 0.1, dheight * 0.75);
-
-    //悬浮窗被关闭时停止脚本
-    // window.exitOnClose();
-    //  window.action.click(() => window.close());
-    let n = 0;
-    window.action.click(() => {
-        console.error("动作：点击[停止脚本]");
-        exit();
-        engines.stopAll();
-        n++;
-        window.action.setText("关不掉！x" + n);
-
-    });
-
-    //setInterval(() => {}, 1000);
-}
-
-
-
-//------------ 悬浮窗控制台区域 ----------//
-//打开悬浮窗控制台
-function consoleShow() {
-    if (!config || config && config.悬浮窗控制台) {
-        //悬浮窗控制台配置
-        // console.reset();
-        console.build({
-            size: [0.96, 0.3],
-            position: [0.02, 0.02],
-            title: '会装逼的控制台',
-            titleTextSize: 20,
-            titleTextColor: 'green',
-            titleIconsTint: 'yellow',
-            titleBackgroundAlpha: 0.9,
-            titleBackgroundColor: 'dark-blue',
-            // titleBackgroundTint: 'dark-blue', //6.5.0版本没有
-            contentTextSize: 15,
-            contentBackgroundAlpha: 0.8,
-            contentBackgroundColor: colors.BLACK,
-            touchable: false,
-            exitOnClose: 6e3,
-        });
-
-        console.setContentTextColor({
-            verbose: 'white',
-            log: 'green',
-            info: 'yellow',
-            warn: 'cyan',
-            error: 'magenta'
-        });
-        if (config && config.悬浮窗控制台字体大小)
-            console.setContentTextSize(config.悬浮窗控制台字体大小);
-
-        if (config && typeof config.悬浮窗控制台关闭延迟 !== 'undefined') {
-            let times = config.悬浮窗控制台关闭延迟 > 0 ?
-                config.悬浮窗控制台关闭延迟 * 1000 : false;
-            console.setExitOnClose(times);
-        }
-
-        console.show();
-        console3();
-    }
-}
-
-//悬浮窗控制台变成30%
-function console3() {
-    if (console.isShowing()) {
-        console.setSize(0.96, 0.3);
-    }
-}
-//悬浮窗控制台变成20%
-function consoleMin() {
-    if (console.isShowing()) {
-        console.setSize(0.96, 0.17);
-    }
-}
-
-//悬浮窗控制台高度变成80%
-function consoleMax() {
-    if (console.isShowing()) {
-        //透明度
-        console.setContentBackgroundAlpha(1)
-        console.setSize(0.96, 0.8);
-        //可触碰
-        console.setTouchable(true);
-    }
-}
-
-//悬浮窗控制台最小化
-function consoleCollapse() {
-    if (console.isShowing()) {
-        console.collapse();
-    }
-}
-//悬浮窗控制台从最小化恢复
-function consoleExpand() {
-    if (console.isShowing()) {
-        console.expand();
-    }
-}
 
 //  ----------- 系统修改 ---------------------//
 function systemSetting() {
