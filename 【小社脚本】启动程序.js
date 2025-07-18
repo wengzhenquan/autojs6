@@ -418,6 +418,7 @@ function stopButton() {
         exit();
         n++;
         window.action.setText("关不掉！x" + n);
+        engines.stopAll();
     });
 
     //setInterval(() => {}, 1000);
@@ -559,7 +560,7 @@ function systemSetting() {
             auto.service.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN);
 
         }
-        engines.stopAll();
+        
     });
 
 }
