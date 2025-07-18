@@ -96,9 +96,7 @@ startTimeoutMonitor();
 //打开悬浮窗控制台
 console.reset();
 consoleShow();
-consoleShow();
-console3();
-console3();
+
 
 console.warn("—----->--- Start ---<-----—");
 log(("AutoJS6 版本：").padStart(20) + autojs.versionName)
@@ -189,8 +187,11 @@ function maintain() {
 function startTimeoutMonitor() {
     threads.start(() => {
         setInterval(function() {
+
             const startTime = new Date(date.replace(/-/g, '/')).getTime();
             let currentTime = new Date().getTime();
+
+            // 停止脚本
             if (currentTime - startTime > (maxRuntime - 10 * 1000)) {
                 ableScreenOff = 1;
                 console.error(`脚本运行 ${(maxRuntime)/60/1000} 分钟，强制退出`);
@@ -407,7 +408,7 @@ function stopButton() {
             />
         </frame>
     );
-    window.setPosition(dwidth * 0.1, dheight * 0.75)
+    window.setPosition(dwidth * 0.1, dheight * 0.75);
 
     //悬浮窗被关闭时停止脚本
     // window.exitOnClose();
@@ -416,9 +417,10 @@ function stopButton() {
     window.action.click(() => {
         console.error("动作：点击[停止脚本]");
         exit();
+        engines.stopAll();
         n++;
         window.action.setText("关不掉！x" + n);
-        engines.stopAll();
+
     });
 
     //setInterval(() => {}, 1000);
@@ -560,7 +562,7 @@ function systemSetting() {
             auto.service.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN);
 
         }
-        
+
     });
 
 }
@@ -948,7 +950,7 @@ function unLock() {
             wait(() => false, 500)
             gesture(228 * (2 - i), [dwidth * 3 / 8, dheight * (0.95 - 0.3 * i)], [dwidth * 3 / 8, dheight * (0.3 - 0.1 * i)]);
             wait(() => false, 500)
-            
+
         }
         wait(() => false, 1000);
         log("上滑！");
@@ -1213,6 +1215,9 @@ function main() {
     //权限验证
     permissionv();
 
+    // 悬浮窗配置纠正
+    consoleShow();
+
     // 系统修改
     systemSetting();
 
@@ -1226,6 +1231,7 @@ function main() {
     }
 
     try {
+
         // throw e;
         //逻辑程序
         run();
