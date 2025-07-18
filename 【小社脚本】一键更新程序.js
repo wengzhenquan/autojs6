@@ -9,8 +9,6 @@ if (!files.exists(locked)) {
         // 防止锁残留
         files.remove(locked);
     } else {
-        console.info('若无法启动，可删除tmp目录下的下面文件')
-        console.error('update_locked')
         //确保只运行一个程序
         exit();
     }
@@ -63,6 +61,9 @@ var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs
 var proxys = [
 
     //  1 
+    "https://g.cachecdn.ggff.net/",
+    "https://gh.catmak.name/",
+    "https://g.blfrp.cn/", //
     "https://ghproxy.monkeyray.net/",
     "https://gh.b52m.cn/",
     "https://hub.gitmirror.com/",
@@ -70,25 +71,21 @@ var proxys = [
     "https://ghfile.geekertao.top/", //
     "https://git.yylx.win/", // 
     "https://gh.llkk.cc/",
+    "https://ghproxy.net/", //
+    "https://gh-proxy.com/",
     "https://ghfast.top/", // 
-    "https://g.cachecdn.ggff.net/",
-    "https://gh.catmak.name/",
-    "https://g.blfrp.cn/", //
-
-    // "https://gp-us.fyan.top/",
-    // "https://gh-proxy.com/",
 
     //2
-    "https://ghproxy.net/", //
-    "https://99z.top/", //    
-    "https://ghm.078465.xyz/",
+    "https://ghproxy.cfd/",
     "https://gh.monlor.com/",
-    "https://gitproxy1.127731.xyz/",
+    "https://99z.top/", //    
+    "https://github.kkproxy.dpdns.org/",
+    "https://ghf.无名氏.top/", // 
     "https://gitproxy.127731.xyz/",
+    "https://ghm.078465.xyz/",
     "https://j.1lin.dpdns.org/",
-    "https://ghproxy.cxkpro.top/", // 
-    "https://gh.jasonzeng.dev/",
-    "https://jiashu.1win.eu.org/", // 
+    "https://gitproxy1.127731.xyz/",
+    "https://j.n1win.dpdns.org/",
 
 
 ]
@@ -679,22 +676,25 @@ function mergeConfigs(oldConfigPath, newConfigPath, outputPath) {
         if (typeof oldValue === typeof newValue)
             return oldValue;
 
-        // 数字字符串→数字
-        if (typeof newValue === 'number') {
-            if (!isNaN(parseFloat(oldValue))) {
-                return parseFloat(oldValue);
-            }
-            // 无法转换的，使用newValue
-            return newValue;
-        }
-
         // 布尔值转换
         if (typeof newValue === 'boolean') {
-            // if (typeof oldValue === 'string') {
-            //     return oldValue.toLowerCase() === 'true';
-            // }
             return Boolean(oldValue);
         }
+
+        // 数字字符串→数字
+        if (typeof oldValue === 'number') {
+            if (oldValue === 1 && isNaN(newValue)) {
+                return newValue;
+            }
+            return oldValue;
+        }
+
+        // 数字字符串→数字
+        if (typeof newValue === 'number' &&
+            !isNaN(oldValue)) {
+            return parseFloat(oldValue);
+        }
+
 
         // 其它类型使用newValue的值
         return newValue;
