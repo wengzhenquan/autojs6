@@ -1215,7 +1215,7 @@ function main() {
     //权限验证
     permissionv();
 
-    // 悬浮窗配置纠正
+    // 再次加载悬浮窗控制台配置，以便纠正悬浮窗控制台错误
     consoleShow();
 
     // 系统修改
