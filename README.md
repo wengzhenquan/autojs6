@@ -522,6 +522,9 @@ github：https://github.com/wengzhenquan/autojs6
 
 --- 
 
+v3.8.14:
+1. 完善更新程序类型转化逻辑
+
 v3.8.13:
 1. 优化打开小程序逻辑
 2. 加强点击
