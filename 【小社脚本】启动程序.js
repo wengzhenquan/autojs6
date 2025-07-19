@@ -1371,16 +1371,16 @@ function permissionv() {
 
     let secureSettingAuto = 0;
     if (autojs.canWriteSecureSettings()) {
-        log("修改安全设置授权，[已启用]");
+        log("修改安全设置权限，[已启用]");
         secureSettingAuto = 1;
         if (Pref.shouldStartA11yServiceWithSecureSettings()) {
-            log('→自动启用无障碍服务，[已开启]');
+            console.warn('→自动启用无障碍，[已开启]');
             canRestarAuto = 1;
         } else {
-            log('→自动启用无障碍服务，[未开启]');
+            console.error('→自动启用无障碍，[未开启]');
         }
     } else {
-        log("修改安全设置授权，[未启用]!");
+        log("修改安全设置权限，[未启用]!");
         console.warn('当无障碍服务故障时，')
         console.warn('程序可通过该权限自动重启无障碍')
         console.info('该权限开启方式与[投影媒体权限]一样')
@@ -1389,27 +1389,27 @@ function permissionv() {
 
     let rootAuto = 0;
     if (autojs.isRootAvailable()) {
-        log("Root授权，[已启用]");
+        log("Root授权，[已授权]");
         rootAuto = 1;
         if (Pref.shouldStartA11yServiceWithRoot()) {
-            log('→自动启用无障碍服务，[已开启]');
+            console.warn('→自动启用无障碍，[已开启]');
             canRestarAuto = 1;
         } else {
-            log('→自动启用无障碍服务，[未开启]');
+            console.error('→自动启用无障碍，[未开启]');
         }
 
     } else {
-        log("Root授权，[未启用]!");
+        log("Root授权，[未授权]!");
     }
 
     let shizukuAuto = 0;
     // Shizuku权限检测
     if (shizuku.hasPermission() &&
         shizuku.isOperational()) {
-        log("Shizuku授权，[已启用]");
+        log("Shizuku授权，[已授权]");
         shizukuAuto = 1;
     } else {
-        log("Shizuku授权，[未启用]!");
+        log("Shizuku授权，[未授权]!");
     }
 
     // ---------- 重启无障碍服务权限 ---------- //
