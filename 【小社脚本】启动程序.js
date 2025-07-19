@@ -546,7 +546,7 @@ function systemSetting() {
             exit();
         });
     }
-    
+
     // 媒体声音
     let musicVolume = device.getMusicVolume();
     // 通知声音
@@ -1037,6 +1037,39 @@ function unLock() {
     return;
 }
 
+var restart_time = storages.create('restart_time');
+
+// 重启
+function restart() {
+    let startTime = restart_time.get('startTime');
+
+    if (!startTime) {
+        restart_time.put('startTime', new Date().getTime());
+        let fileName = engines.myEngine().getSource().getName() + '.js';
+        console.info("即将重启本脚本：" + fileName)
+        console.error("提示：启动→" + fileName)
+
+        for (let i = 0; i < 12; i++) {
+            log('→起飞'.padStart(i * 2 + 3, '-'));
+        }
+
+        // 执行主程序
+        engines.execScriptFile("./" + fileName, {
+            delay: 2000
+        });
+        //退出本线程
+        exit();
+
+    } else {
+        console.error('重启失败');
+        wait(() => false, 2000);
+        exit();
+        wait(() => false, 2000);
+
+    }
+
+}
+
 
 
 // 权限验证
@@ -1047,20 +1080,13 @@ function permissionv() {
     //auto.waitFor();
     // 无障碍权限
     // auto.start();
+    let autoRun = 0;
     if (auto.isRunning() && auto.service && auto.root) {
         log("无障碍服务，[已启用]");
+        autoRun = 1;
+        storages.remove('restart_time');
     } else {
         console.error("无障碍服务，[未启用]");
-        console.error("1、确保开启'忽略电池优化'[系统节电设置]");
-        console.error("2、重新启用无障碍服务");
-        console.error("3、重启手机");
-        if (notice.isEnabled()) {
-            notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("无障碍服务故障或未启用"));
-
-        }
-        wait(() => false, 2000);
-        exit();
-        wait(() => false, 2000);
     }
 
     //悬浮窗权限
@@ -1221,6 +1247,17 @@ function permissionv() {
 
 
     log("-------- 不必要权限 --------");
+    let canRestarAuto = 0;
+    if (autojs.canWriteSecureSettings()) {
+        log("修改安全设置授权，[已启用]");
+        canRestarAuto = 1;
+    } else {
+        log("修改安全设置授权，[未启用]!");
+        console.warn('当无障碍服务故障时，')
+        console.warn('程序可通过该权限自动重启无障碍')
+        console.info('该权限开启方式与[投影媒体权限]一样')
+        console.info('可通过Shizuku或root开启')
+    }
     // Shizuku权限检测
     if (shizuku.running) {
         // if (shizuku.hasPermission()) {
@@ -1231,8 +1268,42 @@ function permissionv() {
 
     if (autojs.isRootAvailable()) {
         log("Root授权，[已启用]");
+        canRestarAuto = 1;
     } else {
         log("Root授权，[未启用]!");
+    }
+
+    if (config && config.自动重启无障碍服务 &&
+        !autoRun && canRestarAuto) {
+        console.warn('发现已启用高级权限')
+        console.warn('可尝试重启无障碍服务')
+        console.error('正在重启无障碍服务......')
+        console.error('该功能需开启以下设置项')
+        console.info('-----------------')
+        console.error('AutoJS6→设置→')
+        console.error('  1.使用修改安全设置权限自动启用无障碍服务')
+        console.error('  2.使用 root 权限自动启用无障碍服务')
+        try {
+            auto.stop();
+            auto.start();
+        } catch (e) {}
+        try {
+            auto(true)
+        } catch (e) {}
+
+        // 重启程序
+        restart();
+    }
+    if (!autoRun && !canRestarAuto) {
+        console.error("需重新启用无障碍服务");
+        console.error("或重启手机");
+        if (notice.isEnabled()) {
+            notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("无障碍服务故障或未启用"));
+
+        }
+        wait(() => false, 2000);
+        exit();
+        wait(() => false, 2000);
     }
 
 
@@ -1247,6 +1318,7 @@ function main() {
 
     //屏幕点亮
     while (!device.isScreenOn()) {
+        // 设备激活
         device.wakeUpIfNeeded();
         device.wakeUp();
         wait(() => false, 1000);
@@ -1254,11 +1326,12 @@ function main() {
     //亮屏
     device.keepScreenDim(maxRuntime);
 
+    //权限验证
+    permissionv();
+
     //屏幕解锁
     unLock();
 
-    //权限验证
-    permissionv();
 
     // 再次加载悬浮窗控制台配置，以便纠正悬浮窗控制台错误
     consoleShow();
