@@ -284,13 +284,11 @@ function consoleShow() {
         if (config && config.悬浮窗控制台字体大小)
             console.setContentTextSize(config.悬浮窗控制台字体大小);
 
-
         console3();
+        
         if (!console.isShowing()) {
             console.show();
         }
-
-        
 
     }
 }
@@ -593,7 +591,7 @@ function systemSetting() {
 
         if (config && config.结束息屏 && ableScreenOff) {
             wait(() => false, 3000);
-            console.hide();
+            //console.hide();
             // 无障碍服务调用系统锁屏
             auto.service.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN);
 
