@@ -526,6 +526,7 @@ function toSeconds(milliseconds) {
 
 //  ----------- 系统修改 ---------------------//
 function systemSetting() {
+    log("-----→");
     if (config && config.音量键停止) {
         console.error("提示：[音量+/-]键可停止脚本");
         //音量键，停止脚本
@@ -545,7 +546,7 @@ function systemSetting() {
             exit();
         });
     }
-    log("-----→");
+    
     // 媒体声音
     let musicVolume = device.getMusicVolume();
     // 通知声音
