@@ -66,6 +66,9 @@ var wchatVersionName = getAppVersionName(wchatpn);
 //社区APP最低支持跳转入口的版本
 var xmAtLeastVersionName = "5.3.2";
 
+var serviceId = "org.autojs.autojs6/org.autojs.autojs.core.accessibility.AccessibilityServiceUsher";
+var serviceId_file = "./tmp/service_id.txt"
+
 
 // 设备信息
 var dwidth = device.width;
@@ -186,7 +189,7 @@ function startTimeoutMonitor() {
             if (currentTime - startTime < (9 * 1000)) {
                 // 悬浮窗配置纠正
                 if (console.isShowing()) {
-                    //consoleShow();
+                    consoleShow();
                 }
                 // 停止按钮位置纠正
                 if (window)
@@ -1037,6 +1040,124 @@ function unLock() {
     return;
 }
 
+//--------- shizuku 重启无障碍 ------//
+
+//1.读取服务id
+function readdingServiceId() {
+    if (files.exists(serviceId_file)) {
+        serviceId = files.read(serviceId_file, "utf-8");
+    }
+    // log(serviceId)
+    return serviceId;
+}
+
+// 2. Root 权限重启无障碍服务
+function restartAccessibilityByRoot() {
+    readdingServiceId();
+    // 获取当前已启用的服务列表
+    let enabledServices = shell("su -c 'settings get secure enabled_accessibility_services'", true).result;
+
+    // 移除目标服务（确保彻底关闭）
+    let newServices = enabledServices.replace(serviceId, "").replace(/::+/g, ":").replace(/^:|:$/g, "");
+    shell(`su -c 'settings put secure enabled_accessibility_services "${newServices}"'`, true);
+    sleep(1000); // 等待系统卸载服务
+
+    // 重新追加服务 ID 并激活全局开关
+    shell(`su -c 'settings put secure enabled_accessibility_services "${newServices}:${serviceId}"'`, true);
+    shell("su -c 'settings put secure accessibility_enabled 1'", true); // 强制开启总开关
+}
+
+
+
+// 2. Shizuku 权限重启无障碍服务
+function restartAccessibilityByShizuku() {
+    readdingServiceId();
+    // 获取当前已启用的服务列表
+    let enabledServices = shizuku("settings get secure enabled_accessibility_services").result;
+
+    // 移除目标服务 ID
+    if (enabledServices.includes(serviceId)) {
+        enabledServices = enabledServices.replace(serviceId, "").replace(/::+/g, ":").replace(/^:|:$/g, "");
+        shizuku(`settings put secure enabled_accessibility_services "${enabledServices}"`);
+        sleep(1000);
+    }
+
+    // 避免重复添加
+    if (!enabledServices.includes(serviceId)) {
+        enabledServices += (enabledServices ? ":" : "") + serviceId;
+        shizuku(`settings put secure enabled_accessibility_services "${enabledServices}"`);
+    }
+    // 强制开启全局开关
+    shizuku("settings put secure accessibility_enabled 1");
+
+}
+
+// 3. 核心重启逻辑（通过安全设置操作）
+function restartAccessibilityService() {
+    readdingServiceId();
+    const contentResolver = context.getContentResolver();
+
+    // 获取当前启用的服务列表（避免覆盖其他服务[6](@ref)）
+    const keyServices = android.provider.Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES;
+    const keyEnabled = android.provider.Settings.Secure.ACCESSIBILITY_ENABLED;
+    let enabledServices = android.provider.Settings.Secure.getString(contentResolver, keyServices) || "";
+
+    // 移除目标服务（清理残留符号）
+    let newServices = enabledServices
+        .replace(serviceId, "")
+        .replace(/::+/g, ":")
+        .replace(/^:|:$/g, "");
+
+    // 先禁用服务（触发系统卸载）
+    android.provider.Settings.Secure.putString(contentResolver, keyServices, newServices);
+    sleep(1000); // 等待系统生效
+
+    // 重新添加服务并强制开启全局开关
+    android.provider.Settings.Secure.putString(contentResolver, keyServices, newServices + ":" + serviceId);
+    android.provider.Settings.Secure.putString(contentResolver, keyEnabled, "1");
+
+}
+
+
+// 在已启动无障碍的条件下，查询服务id
+function getServiceId() {
+    try {
+        // Android 8.0+ 标准方式
+        if (device.sdkInt >= 26) {
+            let am = context.getSystemService("accessibility");
+            let services = am.getEnabledAccessibilityServiceList(-1);
+            for (let i = 0; i < services.size(); i++) {
+                let id = services.get(i).getId();
+                if (id.startsWith("org.autojs.autojs6/")) return id;
+            }
+            return null;
+        }
+
+        // Android 7.x 反射调用
+        let Settings = android.provider.Settings.Secure;
+        let enabledServices = Settings.getString(
+            context.getContentResolver(),
+            "enabled_accessibility_services"
+        );
+        let match = enabledServices.match(/org\.autojs\.autojs6\/[\w\.]+/);
+        return match ? match[0] : null;
+    } catch (e) {
+        console.error("查询失败:", e);
+        return null;
+    }
+}
+
+// 写入服务id
+function writingServiceId() {
+    let id = getServiceId();
+    if (!id) serviceId = id;
+
+    //写入文件
+    files.write(serviceId_file, serviceId, "utf-8");
+}
+
+//--------- root/修改安全设置 重启无障碍 ------//
+
 // 重启标志
 var restart_main_locked = "./tmp/restart_main_locked";
 
@@ -1061,6 +1182,7 @@ function restart() {
     } else {
         console.error('重启失败');
         wait(() => false, 2000);
+        files.remove(restart_main_locked);
         exit();
         wait(() => false, 2000);
     }
@@ -1070,7 +1192,6 @@ function restart() {
 
 // 权限验证
 function permissionv() {
-
     console.info(">>>>>>→权限验证←<<<<<<")
     log("--------- 必要权限 ---------");
     //auto.waitFor();
@@ -1081,6 +1202,7 @@ function permissionv() {
         log("无障碍服务，[已启用]");
         autoRun = 1;
         files.remove(restart_main_locked);
+        writingServiceId();
     } else {
         console.error("无障碍服务，[未启用]");
     }
@@ -1244,68 +1366,97 @@ function permissionv() {
 
     log("------ 不必要高级权限 ------");
     let canRestarAuto = 0;
+
+    let secureSettingAuto = 0;
     if (autojs.canWriteSecureSettings()) {
         log("修改安全设置授权，[已启用]");
+        secureSettingAuto = 1;
         if (Pref.shouldStartA11yServiceWithSecureSettings()) {
             log('→使用修改安全设置权限自动启用无障碍服务，[已开启]');
             canRestarAuto = 1;
         } else {
-            console.error('→使用修改安全设置权限自动启用无障碍服务，[未开启]');
-            console.error("开启入口：AutoJS6→设置");
+            log('→使用修改安全设置权限自动启用无障碍服务，[未开启]');
         }
     } else {
         log("修改安全设置授权，[未启用]!");
         console.warn('当无障碍服务故障时，')
         console.warn('程序可通过该权限自动重启无障碍')
         console.info('该权限开启方式与[投影媒体权限]一样')
-        console.info('可通过Shizuku或root开启')
+        console.info('可通过Shizuku或Root开启')
     }
 
-
+    let rootAuto = 0;
     if (autojs.isRootAvailable()) {
         log("Root授权，[已启用]");
+        rootAuto = 1;
         if (Pref.shouldStartA11yServiceWithRoot()) {
             log('→使用 root 权限自动启用无障碍服务，[已开启]');
             canRestarAuto = 1;
         } else {
-            console.error('→使用 root 权限自动启用无障碍服务，[未开启]');
-            console.error("开启入口：AutoJS6→设置");
+            log('→使用 root 权限自动启用无障碍服务，[未开启]');
         }
 
     } else {
         log("Root授权，[未启用]!");
     }
 
+    let shizukuAuto = 0;
     // Shizuku权限检测
-    if (shizuku.running) {
-        // if (shizuku.hasPermission()) {
+    if (shizuku.hasPermission() &&
+        shizuku.isOperational()) {
         log("Shizuku授权，[已启用]");
+        shizukuAuto = 1;
     } else {
         log("Shizuku授权，[未启用]!");
     }
 
-    if (config && config.自动重启无障碍服务 &&
-        !autoRun && canRestarAuto) {
+    // 重启无障碍服务权限
+    if (config && config.自动重启无障碍服务 && !files.exists(restart_main_locked) &&
+        !autoRun && (canRestarAuto || shizukuAuto || secureSettingAuto || rootAuto)) {
         console.warn('发现已启用高级权限')
         console.warn('可尝试重启无障碍服务')
         console.error('正在重启无障碍服务......')
-        // console.error('该功能需开启以下设置项')
-        // console.info('-----------------')
-        // console.error('AutoJS6→设置→')
-        // console.error('  1.使用修改安全设置权限自动启用无障碍服务')
-        // console.error('  2.使用 root 权限自动启用无障碍服务')
-        try {
-            auto.stop();
-            auto.start();
-        } catch (e) {}
-        try {
-            auto(true);
-        } catch (e) {}
+        console.info('-----------------')
+        if (canRestarAuto) {
+            try {
+                auto.stop();
+                wait(() => false, 1000);
+                auto.start();
+            } catch (e) {}
+            try {
+                auto(true);
+            } catch (e) {}
+            wait(() => false, 1000);
+        }
+        if (!auto.isRunning() &&
+            !auto.service && rootAuto) {
+            log('使用Root权限重启无障碍服务...')
+            try {
+                restartAccessibilityByRoot();
+            } catch (e) {}
+            wait(() => false, 1000);
+        }
+        if (!auto.isRunning() &&
+            !auto.service && shizukuAuto) {
+            log('使用Shizuku权限重启无障碍服务...')
+            try {
+                restartAccessibilityByShizuku();
+            } catch (e) {}
+            wait(() => false, 1000);
+        }
+        if (!auto.isRunning() &&
+            !auto.service && secureSettingAuto) {
+            log('使用修改安全设置权限重启无障碍服务...')
+            try {
+                restartAccessibilityService();
+            } catch (e) {}
+            wait(() => false, 1000);
+        }
 
         // 重启程序
         restart();
     }
-    if (!autoRun && !canRestarAuto) {
+    if (!autoRun) {
         console.error("需重新启用无障碍服务");
         console.error("或重启手机");
         if (notice.isEnabled()) {
@@ -1357,7 +1508,8 @@ function main() {
     }
 
     try {
-
+        // 再次加载悬浮窗控制台配置，以便纠正悬浮窗控制台错误
+        consoleShow();
         // throw e;
         //逻辑程序
         run();
