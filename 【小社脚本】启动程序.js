@@ -1295,14 +1295,11 @@ function permissionv() {
         console.error("或重启手机");
         if (notice.isEnabled()) {
             notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("无障碍服务故障或未启用"));
-
         }
         wait(() => false, 2000);
         exit();
         wait(() => false, 2000);
     }
-
-
 
     // exit();
 }
