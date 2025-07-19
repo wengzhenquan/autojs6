@@ -1246,7 +1246,13 @@ function permissionv() {
     let canRestarAuto = 0;
     if (autojs.canWriteSecureSettings()) {
         log("修改安全设置授权，[已启用]");
-        canRestarAuto = 1;
+        if (Pref.shouldStartA11yServiceWithSecureSettings()) {
+            log('→使用修改安全设置权限自动启用无障碍服务，[已开启]');
+            canRestarAuto = 1;
+        } else {
+            console.error('→使用修改安全设置权限自动启用无障碍服务，[未开启]');
+            console.error("开启入口：AutoJS6→设置");
+        }
     } else {
         log("修改安全设置授权，[未启用]!");
         console.warn('当无障碍服务故障时，')
@@ -1254,6 +1260,22 @@ function permissionv() {
         console.info('该权限开启方式与[投影媒体权限]一样')
         console.info('可通过Shizuku或root开启')
     }
+
+
+    if (autojs.isRootAvailable()) {
+        log("Root授权，[已启用]");
+        if (Pref.shouldStartA11yServiceWithRoot()) {
+            log('→使用 root 权限自动启用无障碍服务，[已开启]');
+            canRestarAuto = 1;
+        } else {
+            console.error('→使用 root 权限自动启用无障碍服务，[未开启]');
+            console.error("开启入口：AutoJS6→设置");
+        }
+
+    } else {
+        log("Root授权，[未启用]!");
+    }
+
     // Shizuku权限检测
     if (shizuku.running) {
         // if (shizuku.hasPermission()) {
@@ -1262,23 +1284,16 @@ function permissionv() {
         log("Shizuku授权，[未启用]!");
     }
 
-    if (autojs.isRootAvailable()) {
-        log("Root授权，[已启用]");
-        canRestarAuto = 1;
-    } else {
-        log("Root授权，[未启用]!");
-    }
-
     if (config && config.自动重启无障碍服务 &&
         !autoRun && canRestarAuto) {
         console.warn('发现已启用高级权限')
         console.warn('可尝试重启无障碍服务')
         console.error('正在重启无障碍服务......')
-        console.error('该功能需开启以下设置项')
-        console.info('-----------------')
-        console.error('AutoJS6→设置→')
-        console.error('  1.使用修改安全设置权限自动启用无障碍服务')
-        console.error('  2.使用 root 权限自动启用无障碍服务')
+        // console.error('该功能需开启以下设置项')
+        // console.info('-----------------')
+        // console.error('AutoJS6→设置→')
+        // console.error('  1.使用修改安全设置权限自动启用无障碍服务')
+        // console.error('  2.使用 root 权限自动启用无障碍服务')
         try {
             auto.stop();
             auto.start();
