@@ -282,6 +282,8 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
    
    提取码：GjHi
    
+   ![image](说明/无障碍管理器.jpeg)  
+   
 
    
 
