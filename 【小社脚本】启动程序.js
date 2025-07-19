@@ -1246,7 +1246,7 @@ function permissionv() {
     }
 
 
-    log("-------- 不必要权限 --------");
+    log("------ 不必要高级权限 ------");
     let canRestarAuto = 0;
     if (autojs.canWriteSecureSettings()) {
         log("修改安全设置授权，[已启用]");
