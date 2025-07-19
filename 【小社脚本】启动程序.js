@@ -1037,14 +1037,13 @@ function unLock() {
     return;
 }
 
-var restart_time = storages.create('restart_time');
+// 重启标志
+var restart_main_locked = "./tmp/restart_main_locked";
 
 // 重启
 function restart() {
-    let startTime = restart_time.get('startTime');
-
-    if (!startTime) {
-        restart_time.put('startTime', new Date().getTime());
+    if (!files.exists(restart_main_locked)) {
+        files.create(restart_main_locked);
         let fileName = engines.myEngine().getSource().getName() + '.js';
         console.info("即将重启本脚本：" + fileName)
         console.error("提示：启动→" + fileName)
@@ -1059,15 +1058,12 @@ function restart() {
         });
         //退出本线程
         exit();
-
     } else {
         console.error('重启失败');
         wait(() => false, 2000);
         exit();
         wait(() => false, 2000);
-
     }
-
 }
 
 
@@ -1084,7 +1080,7 @@ function permissionv() {
     if (auto.isRunning() && auto.service && auto.root) {
         log("无障碍服务，[已启用]");
         autoRun = 1;
-        storages.remove('restart_time');
+        files.remove(restart_main_locked);
     } else {
         console.error("无障碍服务，[未启用]");
     }
@@ -1288,7 +1284,7 @@ function permissionv() {
             auto.start();
         } catch (e) {}
         try {
-            auto(true)
+            auto(true);
         } catch (e) {}
 
         // 重启程序
