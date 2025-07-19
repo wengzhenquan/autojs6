@@ -366,8 +366,8 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
    ```
    --- 
    若有高级权限：（shizuku或者root）  
-   * 开启：{自动重启无障碍服务:1}→    
-   * 开启 $\color{red}{修改安全设置}$权限(使用shizuku或者root)    
+   * 配置文件 开启：{自动重启无障碍服务:1}→    
+   * AutoJS6 开启 $\color{red}{修改安全设置}$权限(使用shizuku或者root)    
    * 然后开启以下设置(必须)   
    ```
    AutoJS6→设置：
