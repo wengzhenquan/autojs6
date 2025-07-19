@@ -1411,7 +1411,8 @@ function permissionv() {
     } else {
         log("Shizuku授权，[未授权]!");
     }
-
+    
+    console.info('-----------------')
     // ---------- 重启无障碍服务权限 ---------- //
     if (config && config.自动重启无障碍服务 && !autoRun &&
         (canRestarAuto || shizukuAuto || secureSettingAuto || rootAuto)) {
