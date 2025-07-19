@@ -97,7 +97,7 @@ var maxRuntime = 3 * 60 * 1000;
 //打开悬浮窗控制台
 console.reset();
 //consoleShow();
-threads.start(() => consoleShow());
+consoleShow();
 
 console.warn("—----->--- Start ---<-----—");
 log(("AutoJS6 版本：").padStart(20) + autojs.versionName)
@@ -253,54 +253,53 @@ function stopButton() {
 //------------ 悬浮窗控制台区域 ----------//
 //打开悬浮窗控制台
 function consoleShow() {
-    if (!config || config && config.悬浮窗控制台) {
-        //悬浮窗控制台配置
-        // console.reset();
-        console.build({
-            size: [0.96, 0.3],
-            position: [0.02, 0.02],
-            title: '会装逼的控制台',
-            titleTextSize: 20,
-            titleTextColor: 'green',
-            titleIconsTint: 'yellow',
-            titleBackgroundAlpha: 0.9,
-            titleBackgroundColor: 'dark-blue',
-            // titleBackgroundTint: 'dark-blue', //6.5.0版本没有
-            contentTextSize: 15,
-            contentBackgroundAlpha: 0.8,
-            contentBackgroundColor: colors.BLACK,
-            touchable: false,
-            exitOnClose: false,
-        });
+    threads.start(() => {
+        if (!config || config && config.悬浮窗控制台) {
+            //悬浮窗控制台配置
+            // console.reset();
+            console.build({
+                size: [0.96, 0.3],
+                position: [0.02, 0.02],
+                title: '会装逼的控制台',
+                titleTextSize: 20,
+                titleTextColor: 'green',
+                titleIconsTint: 'yellow',
+                titleBackgroundAlpha: 0.9,
+                titleBackgroundColor: 'dark-blue',
+                // titleBackgroundTint: 'dark-blue', //6.5.0版本没有
+                contentTextSize: 15,
+                contentBackgroundAlpha: 0.8,
+                contentBackgroundColor: colors.BLACK,
+                touchable: false,
+                exitOnClose: false,
+            });
 
-        if (config && !config.未完成任务不关闭悬浮窗控制台) {
-            consoleExitOnClose();
+            if (config && !config.未完成任务不关闭悬浮窗控制台) {
+                consoleExitOnClose();
+            }
+
+            console.setContentTextColor({
+                verbose: 'white',
+                log: 'green',
+                info: 'yellow',
+                warn: 'cyan',
+                error: 'magenta'
+            });
+            if (config && config.悬浮窗控制台字体大小)
+                console.setContentTextSize(config.悬浮窗控制台字体大小);
+
+            console3();
+
+            if (!console.isShowing()) {
+                console.show();
+            }
         }
-
-        console.setContentTextColor({
-            verbose: 'white',
-            log: 'green',
-            info: 'yellow',
-            warn: 'cyan',
-            error: 'magenta'
-        });
-        if (config && config.悬浮窗控制台字体大小)
-            console.setContentTextSize(config.悬浮窗控制台字体大小);
-
-        console3();
-
-        if (!console.isShowing()) {
-            console.show();
-        }
-
-    }
+    });
 }
 
 //悬浮窗控制台变成30%
 function console3() {
-    if (console.isShowing()) {
-        console.setSize(0.96, 0.3);
-    }
+    console.setSize(0.96, 0.3);
 }
 //悬浮窗控制台变成17%
 function consoleMin() {
