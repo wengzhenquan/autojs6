@@ -1182,9 +1182,9 @@ function restart() {
         //退出本线程
         exit();
     } else {
+        files.remove(restart_main_locked);
         console.error('重启失败');
         wait(() => false, 2000);
-        files.remove(restart_main_locked);
         exit();
         wait(() => false, 2000);
     }
