@@ -1413,8 +1413,8 @@ function permissionv() {
     }
 
     // ---------- 重启无障碍服务权限 ---------- //
-    if (config && config.自动重启无障碍服务 && !files.exists(restart_main_locked) &&
-        !autoRun && (canRestarAuto || shizukuAuto || secureSettingAuto || rootAuto)) {
+    if (config && config.自动重启无障碍服务 && !autoRun &&
+        (canRestarAuto || shizukuAuto || secureSettingAuto || rootAuto)) {
         console.warn('发现已启用高级权限')
         console.warn('可尝试重启无障碍服务')
         console.error('正在重启无障碍服务......')
