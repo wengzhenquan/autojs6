@@ -1287,6 +1287,7 @@ function main() {
         ableScreenOff = 1;
         // 关闭悬浮窗控制台
         consoleExitOnClose();
+        wait(() => false, 2000);
 
     } catch (e) {
         if (!(e instanceof ScriptInterruptedException)) {
