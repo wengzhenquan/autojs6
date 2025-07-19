@@ -1283,8 +1283,10 @@ function main() {
         console.warn("—----->--- End ---<-----—");
         //允许息屏信号
         ableScreenOff = 1;
-        // 关闭悬浮窗控制台
-        consoleExitOnClose();
+        if (!unfinished_mark) {
+            // 关闭悬浮窗控制台
+            consoleExitOnClose();
+        }
         wait(() => false, 1000);
 
     } catch (e) {
