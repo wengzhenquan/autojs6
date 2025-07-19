@@ -1412,7 +1412,7 @@ function permissionv() {
         log("Shizuku授权，[未启用]!");
     }
 
-    // 重启无障碍服务权限
+    // ---------- 重启无障碍服务权限 ---------- //
     if (config && config.自动重启无障碍服务 && !files.exists(restart_main_locked) &&
         !autoRun && (canRestarAuto || shizukuAuto || secureSettingAuto || rootAuto)) {
         console.warn('发现已启用高级权限')
@@ -1420,6 +1420,7 @@ function permissionv() {
         console.error('正在重启无障碍服务......')
         console.info('-----------------')
         if (canRestarAuto) {
+            log('使用AutoJS6方法重启无障碍服务...')
             try {
                 auto.stop();
                 wait(() => false, 1000);
