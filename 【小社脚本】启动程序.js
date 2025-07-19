@@ -15,7 +15,7 @@ https://github.com/wengzhenquan/autojs6
 
 */
 
-auto.waitFor();
+//auto.waitFor();
 
 //程序运行文件标志
 files.ensureDir("./tmp/");
@@ -93,8 +93,8 @@ var maxRuntime = 3 * 60 * 1000;
 
 //打开悬浮窗控制台
 console.reset();
-consoleShow();
-
+//consoleShow();
+threads.start(() => consoleShow());
 
 console.warn("—----->--- Start ---<-----—");
 log(("AutoJS6 版本：").padStart(20) + autojs.versionName)
@@ -106,23 +106,7 @@ log("产品：" + device.product + "，型号：" + device.model);
 log(`设备分辨率：${dwidth}x${dheight}`);
 log(`现在是：${date}`);
 
-if (config && config.音量键停止) {
-    try {
-        console.error("提示：[音量+/-]键可停止脚本");
-        //音量键，停止脚本
-        events.setKeyInterceptionEnabled("volume_up", true);
-        events.setKeyInterceptionEnabled("volume_down", true);
-        events.observeKey();
-        events.onKeyDown("volume_up", () => {
-            console.error("[音量+]停止脚本！！！");
-            exit();
-        });
-        events.onKeyDown("volume_down", () => {
-            console.error("[音量-]停止脚本！！！");
-            exit();
-        });
-    } catch (e) {}
-}
+
 
 events.on("exit", function() {
     console.setTouchable(true);
@@ -248,6 +232,8 @@ function stopButton() {
     //  window.action.click(() => window.close());
     let n = 0;
     window.action.click(() => {
+        // 关闭悬浮窗控制台
+        consoleExitOnClose();
         console.error("动作：点击[停止脚本]");
         exit();
         engines.stopAll();
@@ -281,8 +267,12 @@ function consoleShow() {
             contentBackgroundAlpha: 0.8,
             contentBackgroundColor: colors.BLACK,
             touchable: false,
-            exitOnClose: 6e3,
+            exitOnClose: false,
         });
+        
+        if (config && !config.未完成任务不关闭悬浮窗控制台) {
+            consoleExitOnClose();
+        }
 
         console.setContentTextColor({
             verbose: 'white',
@@ -294,16 +284,14 @@ function consoleShow() {
         if (config && config.悬浮窗控制台字体大小)
             console.setContentTextSize(config.悬浮窗控制台字体大小);
 
-        if (config && typeof config.悬浮窗控制台关闭延迟 !== 'undefined') {
-            let times = config.悬浮窗控制台关闭延迟 > 0 ?
-                config.悬浮窗控制台关闭延迟 * 1000 : false;
-            console.setExitOnClose(times);
-        }
+
+        console3();
         if (!console.isShowing()) {
             console.show();
         }
 
-        console3();
+        
+
     }
 }
 
@@ -344,6 +332,14 @@ function consoleExpand() {
     }
 }
 
+// 关闭悬浮窗控制台
+function consoleExitOnClose() {
+    if (config && typeof config.悬浮窗控制台关闭延迟 !== 'undefined') {
+        let times = config.悬浮窗控制台关闭延迟 > 0 ?
+            config.悬浮窗控制台关闭延迟 * 1000 : false;
+        console.setExitOnClose(times);
+    }
+}
 
 //------------ 工具函数 ----------//
 
@@ -532,6 +528,25 @@ function toSeconds(milliseconds) {
 
 //  ----------- 系统修改 ---------------------//
 function systemSetting() {
+    if (config && config.音量键停止) {
+        console.error("提示：[音量+/-]键可停止脚本");
+        //音量键，停止脚本
+        events.setKeyInterceptionEnabled("volume_up", true);
+        events.setKeyInterceptionEnabled("volume_down", true);
+        events.observeKey();
+        events.onKeyDown("volume_up", () => {
+            console.error("[音量+]停止脚本！！！");
+            // 关闭悬浮窗控制台
+            consoleExitOnClose();
+            exit();
+        });
+        events.onKeyDown("volume_down", () => {
+            console.error("[音量-]停止脚本！！！");
+            // 关闭悬浮窗控制台
+            consoleExitOnClose();
+            exit();
+        });
+    }
     log("-----→");
     // 媒体声音
     let musicVolume = device.getMusicVolume();
@@ -918,7 +933,7 @@ function updateScript() {
         console.error(update_script + "启动失败！")
         return;
     }
-    // 等待脚本执行完成
+    // 等待更新脚本执行完成
     while (files.exists(update_locked))
         wait(() => false, 1000);
 
@@ -936,9 +951,9 @@ function updateScript() {
     engines.execScriptFile("./" + mainFile, {
         delay: 2000
     });
-
     //退出本线程
     exit();
+
 }
 
 
@@ -1036,11 +1051,17 @@ function permissionv() {
     if (auto.isRunning() && auto.service && auto.root) {
         log("无障碍服务，[已启用]");
     } else {
-        console.error("无障碍服务，[已启用，但未运行]!");
+        console.error("无障碍服务，[未启用]");
         console.error("1、确保开启'忽略电池优化'[系统节电设置]");
         console.error("2、重新启用无障碍服务");
         console.error("3、重启手机");
+        if (notice.isEnabled()) {
+            notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("无障碍服务故障或未启用"));
+
+        }
+        wait(() => false, 2000);
         exit();
+        wait(() => false, 2000);
     }
 
     //悬浮窗权限
@@ -1049,7 +1070,9 @@ function permissionv() {
     } else {
         console.error("悬浮窗权限，[未启用]!");
         console.error("或：显示在其它应用上层");
+        wait(() => false, 2000);
         exit();
+        wait(() => false, 2000);
     }
 
 
@@ -1062,7 +1085,9 @@ function permissionv() {
         console.error("发送通知权限，[未启用]!");
         //去设置
         notice.launchSettings();
+        wait(() => false, 2000);
         exit();
+        wait(() => false, 2000);
     }
 
     // 获取应用包名和电源管理服务
@@ -1260,6 +1285,8 @@ function main() {
         console.warn("—----->--- End ---<-----—");
         //允许息屏信号
         ableScreenOff = 1;
+        // 关闭悬浮窗控制台
+        consoleExitOnClose();
 
     } catch (e) {
         if (!(e instanceof ScriptInterruptedException)) {
