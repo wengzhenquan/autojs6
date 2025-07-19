@@ -269,7 +269,7 @@ function consoleShow() {
             touchable: false,
             exitOnClose: false,
         });
-        
+
         if (config && !config.未完成任务不关闭悬浮窗控制台) {
             consoleExitOnClose();
         }
@@ -285,7 +285,7 @@ function consoleShow() {
             console.setContentTextSize(config.悬浮窗控制台字体大小);
 
         console3();
-        
+
         if (!console.isShowing()) {
             console.show();
         }
@@ -1285,7 +1285,7 @@ function main() {
         ableScreenOff = 1;
         // 关闭悬浮窗控制台
         consoleExitOnClose();
-        wait(() => false, 2000);
+        wait(() => false, 1000);
 
     } catch (e) {
         if (!(e instanceof ScriptInterruptedException)) {
