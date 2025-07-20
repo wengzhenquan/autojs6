@@ -1166,7 +1166,7 @@ var restart_main_locked = "./tmp/restart_main_locked";
 function restart() {
     if (!files.exists(restart_main_locked)) {
         files.create(restart_main_locked);
-        let fileName = engines.myEngine().getSource().getName() + '.js';
+        let fileName = engines.myEngine().getSource().getFullName();
         console.info("即将重启本脚本：" + fileName)
         console.error("提示：启动→" + fileName)
 
