@@ -1101,7 +1101,7 @@ function restartAccessibilityByRoot() {
     // 移除目标服务（确保彻底关闭）
     let newServices = enabledServices.replace(serviceId, "").replace(/::+/g, ":").replace(/^:|:$/g, "");
     shell(`su -c 'settings put secure enabled_accessibility_services "${newServices}"'`, true);
-    sleep(1000); // 等待系统卸载服务
+    wait(() => false, 1500); // 等待系统卸载服务
 
     // 重新追加服务 ID 并激活全局开关
     shell(`su -c 'settings put secure enabled_accessibility_services "${newServices}:${serviceId}"'`, true);
@@ -1124,7 +1124,7 @@ function restartAccessibilityByShizuku() {
     if (enabledServices.includes(serviceId)) {
         enabledServices = enabledServices.replace(serviceId, "").replace(/::+/g, ":").replace(/^:|:$/g, "");
         shizuku(`settings put secure enabled_accessibility_services "${enabledServices}"`);
-        sleep(1000);
+        wait(() => false, 1500);
     }
 
     // 避免重复添加
@@ -1137,7 +1137,7 @@ function restartAccessibilityByShizuku() {
 
 }
 
-// 3. 修改安全设置权限，重启无障碍服务
+// 2. 修改安全设置权限，重启无障碍服务
 function restartAccessibilityService() {
     if (!autojs.canWriteSecureSettings())
         return;
@@ -1158,7 +1158,7 @@ function restartAccessibilityService() {
 
     // 先禁用服务（触发系统卸载）
     android.provider.Settings.Secure.putString(contentResolver, keyServices, newServices);
-    sleep(1000); // 等待系统生效
+    wait(() => false, 1500); // 等待系统生效
 
     // 重新添加服务并强制开启全局开关
     android.provider.Settings.Secure.putString(contentResolver, keyServices, newServices + ":" + serviceId);
