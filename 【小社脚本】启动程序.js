@@ -774,6 +774,8 @@ let proxys = [
     "https://g.cachecdn.ggff.net/",
     "https://gh.catmak.name/",
     "https://g.blfrp.cn/", //
+    "https://gh.qninq.cn/",
+    "https://gh.monlor.com/",
 
 ]
 

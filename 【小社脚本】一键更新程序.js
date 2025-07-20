@@ -74,22 +74,22 @@ var proxys = [
     "https://g.cachecdn.ggff.net/",
     "https://gh.catmak.name/",
     "https://g.blfrp.cn/", //
-
-    // "https://gp-us.fyan.top/",
-    // "https://gh-proxy.com/",
+    "https://gh.qninq.cn/",
+    "https://gh.monlor.com/",
 
     //2
-    "https://ghproxy.net/", //
-    "https://99z.top/", //    
-    "https://ghm.078465.xyz/",
-    "https://gh.monlor.com/",
-    "https://gitproxy1.127731.xyz/",
+    "https://tvv.tw/",
     "https://gitproxy.127731.xyz/",
+    "https://gitproxy1.127731.xyz/",
+    "https://j.1win.ddns-ip.net/",
+    "https://jiashu.1win.eu.org/", //
+    "https://j.1win.ggff.net/",
     "https://j.1lin.dpdns.org/",
-    "https://ghproxy.cxkpro.top/", // 
+    "https://j.n1win.dpdns.org/",
     "https://gh.jasonzeng.dev/",
-    "https://jiashu.1win.eu.org/", // 
-
+    "https://gitproxy.mrhjx.cn/",
+    "https://fastgit.cc/", //
+    "https://99z.top/", // 
 
 ]
 
@@ -675,7 +675,7 @@ function mergeConfigs(oldConfigPath, newConfigPath, outputPath) {
      * 根据newConfig的类型强制转换oldConfig的值
      */
     function convertValueType(oldValue, newValue) {
-       // 数字类型纠正：数字字符串→数字
+        // 数字类型纠正：数字字符串→数字
         if (typeof oldValue === 'string' && !isNaN(oldValue)) {
             let oldp = parseFloat(oldValue);
             // 小于1000(排除屏幕解锁数字密码，安卓最少4位数)，
@@ -692,7 +692,7 @@ function mergeConfigs(oldConfigPath, newConfigPath, outputPath) {
         if (typeof newValue === 'boolean') {
             return Boolean(oldValue);
         }
-        
+
         // 数字字符串→数字
         if (typeof newValue === 'number' &&
             !isNaN(oldValue)) {
@@ -708,7 +708,7 @@ function mergeConfigs(oldConfigPath, newConfigPath, outputPath) {
             return oldValue;
         }
 
-        
+
         // 其它类型使用newValue的值，确保不出错
         return newValue;
 
