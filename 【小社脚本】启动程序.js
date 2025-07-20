@@ -1102,7 +1102,9 @@ function unLock() {
     if (isLocked) {
         console.error("屏幕解锁失败！！！");
         notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String('屏幕解锁失败了！'));
+        wait(() => false, 2000);
         exit();
+        wait(() => false, 2000);
     }
     log("屏幕解锁成功！！！(∗❛ั∀❛ั∗)✧*。");
     return;
