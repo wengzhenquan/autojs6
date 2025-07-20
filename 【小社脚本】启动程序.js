@@ -685,7 +685,76 @@ function init() {
             }
         }
     }
-    log("脚本完整性检查结束");
+    log("✅ 脚本完整性检查结束");
+    
+    // 检查config.js配置文件
+    checkConfig();
+}
+
+
+// 检查config.js配置文件
+// 目前只检查小于1000的字符串数字
+function checkConfig() {
+    console.info("---→>→config.js检查←<←---")
+    // 1. 检查有问题的字段并存入数组
+    let problemFields = [];
+    for (let key in config) {
+        let value = config[key];
+        if (typeof value === 'string' && !isNaN(value)) {
+            let numValue = parseFloat(value);
+            let strNum = String(numValue);
+            if (numValue < 1000 && strNum.length === value.length) {
+                problemFields.push(key);
+            }
+        }
+    }
+
+    if (problemFields.length < 1) {
+        console.log("✅ 配置文件格式正确");
+        return;
+    }
+
+    let content = files.read("./config.js", "utf-8");
+    let lines = content.split('\n');
+
+    // 2. 创建问题详情对象数组
+    let problemDetails = [];
+    problemFields.forEach(field => {
+        let found = false;
+        for (let i = 0; i < lines.length; i++) {
+            if (lines[i].includes(field + ':')) {
+                problemDetails.push({
+                    line: i + 1, // 行号从1开始
+                    field: field,
+                    value: config[field],
+                    content: lines[i].trim()
+                });
+                found = true;
+                break;
+            }
+        }
+    });
+
+    // 3. 打印检查结果
+    if (problemDetails.length > 0) {
+        console.error("⚠️ 发现需要修正的属性：");
+        problemDetails.forEach(detail => {
+            console.warn("┌ 行号: " + detail.line);
+            console.warn("├ 字段: " + detail.field);
+            console.warn("├ 当前值: \"" + detail.value + "\" (应为数值类型)");
+            console.error(" ├ 正确值: " + detail.value + " (没有引号)");
+            console.warn("└ 行内容: " + detail.content);
+            console.info("──");
+        });
+        console.error("💡 请将上述属性的值改为数值类型");
+
+        notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("config.js配置文件错误\n详情查看日志"));
+
+        wait(() => false, 2000);
+        exit();
+        wait(() => false, 2000);
+
+    }
 }
 
 // -------- 脚本更新  --------//
@@ -836,7 +905,7 @@ function checkVersion() {
             log("----------------------------");
         }
     } else {
-        console.error("脚本已经是最新版！")
+        console.error("✅ 脚本已经是最新版！")
     }
 }
 
