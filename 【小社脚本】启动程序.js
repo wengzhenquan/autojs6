@@ -1131,7 +1131,6 @@ function restartAccessibilityByShizuku() {
     shizuku(`settings put secure enabled_accessibility_services "${newServices}"`);
     wait(() => false, 1500);
 
-
     // 避免重复添加
     newServices += (newServices ? ":" : "") + serviceId;
     shizuku(`settings put secure enabled_accessibility_services "${newServices}"`);
