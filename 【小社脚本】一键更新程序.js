@@ -61,7 +61,6 @@ var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs
 
 //加速代理
 var proxys = [
-
     //  1 
     "https://ghproxy.monkeyray.net/",
     "https://gh.b52m.cn/",
@@ -77,6 +76,10 @@ var proxys = [
     "https://gh.qninq.cn/",
     "https://gh.monlor.com/",
 
+]
+
+// 备用代理
+var proxys2 = [
     //2
     "https://tvv.tw/",
     "https://gitproxy.127731.xyz/",
@@ -90,8 +93,9 @@ var proxys = [
     "https://gitproxy.mrhjx.cn/",
     "https://fastgit.cc/", //
     "https://99z.top/", // 
-
 ]
+// 打乱并整合两个数组
+processArrays(proxys, proxys2);
 
 var api_github = "https://api.github.com/repos/wengzhenquan/autojs6/contents/";
 var api_proxys = [
@@ -109,11 +113,48 @@ var api_proxys = [
     "https://99z.top/",
 
 ]
+// 打乱数组
+shuffleArray(api_proxys);
+
 // 全局乱序代理
-var proxy_arr = getRandomNumbers(proxys.length - 1);
+//var proxy_arr = getRandomNumbers(proxys.length - 1);
 var proxy_index = 0;
-var api_proxy_arr = getRandomNumbers(api_proxys.length - 1);
+//var api_proxy_arr = getRandomNumbers(api_proxys.length - 1);
 var api_proxy_index = 0;
+
+/**
+ * Fisher-Yates洗牌算法（原地打乱，ES5兼容）
+ * @param {Array} array 需要打乱的原数组（直接修改此数组）
+ */
+function shuffleArray(array) {
+    var length = array.length;
+    var temp, randomIndex;
+    while (length) {
+        randomIndex = Math.floor(Math.random() * length); // 生成[0, length-1]的随机索引
+        length--;
+        // 交换当前元素与随机位置的元素
+        temp = array[length];
+        array[length] = array[randomIndex];
+        array[randomIndex] = temp;
+    }
+}
+
+/**
+ * 处理函数：打乱数组1和数组2，并将数组2添加到数组1末尾
+ * @param {Array} arr1 数组1（最终保存结果）
+ * @param {Array} arr2 数组2（将被添加到数组1末尾）
+ */
+function processArrays(arr1, arr2) {
+    // 原地打乱数组1
+    shuffleArray(arr1);
+    // 原地打乱数组2
+    shuffleArray(arr2);
+    // 将打乱后的数组2的所有元素添加到数组1末尾
+    for (var i = 0; i < arr2.length; i++) {
+        arr1.push(arr2[i]);
+    }
+}
+
 
 //对比版本大小，前面的大，返回1，相等0，后面大-1
 function compareVersions(version1, version2) {
@@ -152,6 +193,7 @@ function formatFileSize(size) {
     }
     return (size / Math.pow(1024, 2)).toFixed(1) + 'MB';
 }
+
 
 
 
@@ -208,7 +250,7 @@ function checkVersion() {
 
     for (proxy_index; proxy_index < proxys.length; proxy_index++) {
         let startTime = new Date().getTime();
-        let proxy = proxys[proxy_arr[proxy_index]];
+        let proxy = proxys[proxy_index];
         log('使用加速器：' + proxy);
         let url = proxy +
             github_download_url +
@@ -374,7 +416,7 @@ function startUpdate() {
         let n = 0; //次数
         while (n < proxys.length) {
             let startTime = new Date().getTime();
-            let proxy = proxys[proxy_arr[proxy_index]];
+            let proxy = proxys[proxy_index];
             log('下载加速器：' + proxy);
             let url = proxy +
                 github_download_url +
@@ -570,7 +612,7 @@ function getGitHubFileInfo(filePath, branch) {
     let result = null;
     for (api_proxy_index; api_proxy_index < api_proxys.length; api_proxy_index++) {
         //let startTime = new Date().getTime();
-        let proxy = api_proxys[api_proxy_arr[api_proxy_index]];
+        let proxy = api_proxys[api_proxy_index];
         console.warn('api加速器：' + proxy)
         let url = proxy +
             api_github +

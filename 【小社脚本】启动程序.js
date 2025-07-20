@@ -508,6 +508,8 @@ function formatFileSize(size) {
 }
 
 
+
+
 /**
  * 将毫秒转换为带单位的字符串（ms 或 s）
  * @param {number} milliseconds - 毫秒数
@@ -521,6 +523,42 @@ function toSeconds(milliseconds) {
     } else {
         // 直接返回毫秒
         return `${milliseconds} ms`;
+    }
+}
+
+
+/**
+ * Fisher-Yates洗牌算法（原地打乱，ES5兼容）
+ * @param {Array} array 需要打乱的原数组（直接修改此数组）
+ */
+function shuffleArray(array) {
+    var length = array.length;
+    var temp, randomIndex;
+    while (length) {
+        randomIndex = Math.floor(Math.random() * length); // 生成[0, length-1]的随机索引
+        length--;
+        // 交换当前元素与随机位置的元素
+        temp = array[length];
+        array[length] = array[randomIndex];
+        array[randomIndex] = temp;
+    }
+}
+
+
+
+/**
+ * 处理函数：打乱数组1和数组2，并将数组2添加到数组1末尾
+ * @param {Array} arr1 数组1（最终保存结果）
+ * @param {Array} arr2 数组2（将被添加到数组1末尾）
+ */
+function processArrays(arr1, arr2) {
+    // 原地打乱数组1
+    shuffleArray(arr1);
+    // 原地打乱数组2
+    shuffleArray(arr2);
+    // 将打乱后的数组2的所有元素添加到数组1末尾
+    for (var i = 0; i < arr2.length; i++) {
+        arr1.push(arr2[i]);
     }
 }
 
@@ -761,7 +799,6 @@ function checkConfig() {
 
 //加速代理
 let proxys = [
-
     //  1 
     "https://ghproxy.monkeyray.net/",
     "https://gh.b52m.cn/",
@@ -778,6 +815,8 @@ let proxys = [
     "https://gh.monlor.com/",
 
 ]
+// 打乱数组
+shuffleArray(proxys);
 
 
 // 检查脚本更新，version文件存在才检查更新。
@@ -786,12 +825,12 @@ function checkVersion() {
 
     let down_version = false;
     // 乱序数组
-    let arr = getRandomNumbers(proxys.length - 1);
+    //let arr = getRandomNumbers(proxys.length - 1);
 
     //远程version文件数据
     log("正在查询版本更新……")
     for (let i = 0; i < proxys.length; i++) {
-        let url = proxys[arr[i]] +
+        let url = proxys[i] +
             github_download_url +
             'version' +
             '?t=' + new Date().getTime();
@@ -921,16 +960,16 @@ function updateScript() {
         log("开始下载更新程序：" + update_script)
 
         // 乱序数组
-        let arr = getRandomNumbers(proxys.length - 1);
+       // let arr = getRandomNumbers(proxys.length - 1);
         // 下载更新脚本
         var file = null;
         for (let i = 0; i < proxys.length; i++) {
-            let url = proxys[arr[i]] +
+            let url = proxys[i] +
                 github_download_url +
                 update_script +
                 '?t=' + new Date().getTime();
 
-            log('使用加速器：' + proxys[arr[i]]);
+            log('使用加速器：' + proxys[i]);
             //log(url);
 
             let thread = threads.start(() => {
