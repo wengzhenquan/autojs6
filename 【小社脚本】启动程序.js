@@ -1099,7 +1099,10 @@ function restartAccessibilityByRoot() {
     let enabledServices = shell("su -c 'settings get secure enabled_accessibility_services'", true).result;
 
     // 移除目标服务（确保彻底关闭）
-    let newServices = enabledServices.replace(serviceId, "").replace(/::+/g, ":").replace(/^:|:$/g, "");
+    let newServices = enabledServices
+        .replace(serviceId, "")
+        .replace(/::+/g, ":")
+        .replace(/^:|:$/g, "");
     shell(`su -c 'settings put secure enabled_accessibility_services "${newServices}"'`, true);
     wait(() => false, 1500); // 等待系统卸载服务
 
@@ -1121,17 +1124,18 @@ function restartAccessibilityByShizuku() {
     let enabledServices = shizuku("settings get secure enabled_accessibility_services").result;
 
     // 移除目标服务 ID
-    if (enabledServices.includes(serviceId)) {
-        enabledServices = enabledServices.replace(serviceId, "").replace(/::+/g, ":").replace(/^:|:$/g, "");
-        shizuku(`settings put secure enabled_accessibility_services "${enabledServices}"`);
-        wait(() => false, 1500);
-    }
+    let newServices = enabledServices
+        .replace(serviceId, "")
+        .replace(/::+/g, ":")
+        .replace(/^:|:$/g, "");
+    shizuku(`settings put secure enabled_accessibility_services "${newServices}"`);
+    wait(() => false, 1500);
+
 
     // 避免重复添加
-    if (!enabledServices.includes(serviceId)) {
-        enabledServices += (enabledServices ? ":" : "") + serviceId;
-        shizuku(`settings put secure enabled_accessibility_services "${enabledServices}"`);
-    }
+    newServices += (newServices ? ":" : "") + serviceId;
+    shizuku(`settings put secure enabled_accessibility_services "${newServices}"`);
+
     // 强制开启全局开关
     shizuku("settings put secure accessibility_enabled 1");
 
