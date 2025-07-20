@@ -1091,6 +1091,9 @@ function readdingServiceId() {
 
 // 2. Root 权限重启无障碍服务
 function restartAccessibilityByRoot() {
+    if (!autojs.isRootAvailable())
+        return;
+
     readdingServiceId();
     // 获取当前已启用的服务列表
     let enabledServices = shell("su -c 'settings get secure enabled_accessibility_services'", true).result;
@@ -1109,6 +1112,10 @@ function restartAccessibilityByRoot() {
 
 // 2. Shizuku 权限重启无障碍服务
 function restartAccessibilityByShizuku() {
+    if (!shizuku.hasPermission() ||
+        !shizuku.isOperational())
+        return;
+
     readdingServiceId();
     // 获取当前已启用的服务列表
     let enabledServices = shizuku("settings get secure enabled_accessibility_services").result;
@@ -1130,8 +1137,11 @@ function restartAccessibilityByShizuku() {
 
 }
 
-// 3. 核心重启逻辑（通过安全设置操作）
+// 3. 修改安全设置权限，重启无障碍服务
 function restartAccessibilityService() {
+    if (!autojs.canWriteSecureSettings())
+        return;
+
     readdingServiceId();
     const contentResolver = context.getContentResolver();
 
