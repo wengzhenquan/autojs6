@@ -818,19 +818,32 @@ function checkConfig() {
 //加速代理
 let proxys = [
     //  1 
+    "https://gh.halonice.com/", // 请求时间：0.22s
+    "https://ghproxy.sakuramoe.dev/", // 请求时间：0.25s
+    "https://ghp.ml1.one/", // 请求时间：0.26s
+    "https://github.xxlab.tech/", // 请求时间：0.26s
+    "https://x.whereisdoge.work/",
+    "https://github.cmsz.dpdns.org/", // 请求时间：0.36s
+    "https://proxy.yaoyaoling.net/", // 请求时间：0.40s
+    "https://cccccccccccccccccccccccccccccccccccccccccccccccccccc.cc/", // 请求时间：0.47s
+    "https://gh.799154.xyz/", // 请求时间：0.55s
+    "https://gh.b52m.cn/", // 请求时间：0.15s
+    "https://hub.gitmirror.com/", // 请求时间：0.75s
+    "https://github.chenc.dev/", // 请求时间：0.77s
+    "https://git.40609891.xyz/", // 请求时间：0.78s
+    "https://gh-proxy.net/", // 请求时间：0.89s
+    "https://g.blfrp.cn/", // 请求时间：0.91s
+    "https://git.669966.xyz/", // 请求时间：0.93s
+    "https://ghfast.top/", // 请求时间：1.39s
+    "https://git.yylx.win/", // 请求时间：1.41s
     "https://ghproxy.monkeyray.net/",
-    "https://gh.b52m.cn/",
-    "https://hub.gitmirror.com/",
-    "https://gh.xxooo.cf/",
-    "https://ghfile.geekertao.top/", //
-    "https://git.yylx.win/", // 
-    "https://gh.llkk.cc/",
-    "https://ghfast.top/", // 
-    "https://g.cachecdn.ggff.net/",
     "https://gh.catmak.name/",
-    "https://g.blfrp.cn/", //
-    "https://gh.qninq.cn/",
+    "https://github.sagolu.top/", // 请求时间：0.37s
+    "https://gh.llkk.cc/",
     "https://gh.monlor.com/",
+    "https://ghproxy.net/", // 请求时间：1.05s
+    "https://ghfile.geekertao.top/", // 请求时间：0.87s
+    "https://gh.xxooo.cf/",
 
 ]
 // 打乱数组

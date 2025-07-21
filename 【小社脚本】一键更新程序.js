@@ -62,55 +62,77 @@ var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs
 //加速代理
 var proxys = [
     //  1 
+    "https://gh.halonice.com/", // 请求时间：0.22s
+    "https://ghproxy.sakuramoe.dev/", // 请求时间：0.25s
+    "https://ghp.ml1.one/", // 请求时间：0.26s
+    "https://github.xxlab.tech/", // 请求时间：0.26s
+    "https://x.whereisdoge.work/",
+    "https://github.cmsz.dpdns.org/", // 请求时间：0.36s
+    "https://proxy.yaoyaoling.net/", // 请求时间：0.40s
+    "https://cccccccccccccccccccccccccccccccccccccccccccccccccccc.cc/", // 请求时间：0.47s
+    "https://gh.799154.xyz/", // 请求时间：0.55s
+    "https://gh.b52m.cn/", // 请求时间：0.15s
+    "https://hub.gitmirror.com/", // 请求时间：0.75s
+    "https://github.chenc.dev/", // 请求时间：0.77s
+    "https://git.40609891.xyz/", // 请求时间：0.78s
+    "https://gh-proxy.net/", // 请求时间：0.89s
+    "https://g.blfrp.cn/", // 请求时间：0.91s
+    "https://git.669966.xyz/", // 请求时间：0.93s
+    "https://ghfast.top/", // 请求时间：1.39s
+    "https://git.yylx.win/", // 请求时间：1.41s
     "https://ghproxy.monkeyray.net/",
-    "https://gh.b52m.cn/",
-    "https://hub.gitmirror.com/",
-    "https://gh.xxooo.cf/",
-    "https://ghfile.geekertao.top/", //
-    "https://git.yylx.win/", // 
-    "https://gh.llkk.cc/",
-    "https://ghfast.top/", // 
-    "https://g.cachecdn.ggff.net/",
     "https://gh.catmak.name/",
-    "https://g.blfrp.cn/", //
-    "https://gh.qninq.cn/",
+    "https://github.sagolu.top/", // 请求时间：0.37s
+    "https://gh.llkk.cc/",
     "https://gh.monlor.com/",
-
+    "https://ghproxy.net/", // 请求时间：1.05s
+    "https://ghfile.geekertao.top/", // 请求时间：0.87s
+    "https://gh.xxooo.cf/",
 ]
 
 // 备用代理
 var proxys2 = [
     //2
-    "https://tvv.tw/",
-    "https://gitproxy.127731.xyz/",
-    "https://gitproxy1.127731.xyz/",
-    "https://j.1win.ddns-ip.net/",
-    "https://jiashu.1win.eu.org/", //
-    "https://j.1win.ggff.net/",
-    "https://j.1lin.dpdns.org/",
-    "https://j.n1win.dpdns.org/",
-    "https://gh.jasonzeng.dev/",
-    "https://gitproxy.mrhjx.cn/",
-    "https://fastgit.cc/", //
-    "https://99z.top/", // 
+    "https://gitproxy.click/", //
+    "https://gh.qninq.cn/",
+    "https://github.kkproxy.dpdns.org/",
+    "https://g.cachecdn.ggff.net/", // 请求时间：0.95s
+    "https://git.mokoc.live/", // 请求时间：0.25s
+    "https://gh.xx9527.cn/",
+    "https://github.dpik.top/",
+
+
 ]
 // 打乱并整合两个数组
 processArrays(proxys, proxys2);
+//timesShuffleArray(proxys);
 
 var api_github = "https://api.github.com/repos/wengzhenquan/autojs6/contents/";
 var api_proxys = [
 
+    "https://github.sagolu.top/",
+    "https://github.cmsz.dpdns.org/",
     "https://gh.catmak.name/",
     "https://g.cachecdn.ggff.net/",
     "https://ghproxy.monkeyray.net/",
+    "https://ghfile.geekertao.top/",
+    "https://github.dpik.top/",
+    "https://xiazai.de/",
+    "https://gh.llkk.cc/",
+    "https://git.yylx.win/",
+
     "https://j.1win.ip-ddns.com/",
     "https://j.1win.ggff.net/",
     "https://j.n1win.dpdns.org/",
     "https://j.1lin.dpdns.org/",
     "https://j.1win.ddns-ip.net/",
     "https://jiashu.1win.eu.org/",
-    "https://gh.llkk.cc/",
+
+    "https://ghm.078465.xyz/",
+    "https://tvv.tw/",
+    "https://gh-proxy.com/",
     "https://99z.top/",
+    "https://gh.944446.xyz/",
 
 ]
 // 打乱数组
@@ -126,11 +148,19 @@ var api_proxy_index = 0;
 // 数组去重
 function deduplicateInPlace(arr) {
     const set = new Set(arr);
-    arr.length = 0;                   // 清空原数组
+    arr.length = 0; // 清空原数组
     // 方法1: 使用 Array.from 填充
     //Array.from(set).forEach(item => arr.push(item));
     // 方法2: 直接循环 Set（兼容性更好）
     set.forEach(item => arr.push(item));
+}
+
+// 非高峰期乱序
+function timesShuffleArray(array) {
+    let hours = new Date().getHours();
+    if (hours >= 2 && hours < 19) {
+        shuffleArray(array);
+    }
 }
 
 
@@ -139,9 +169,9 @@ function deduplicateInPlace(arr) {
  * @param {Array} array 需要打乱的原数组（直接修改此数组）
  */
 function shuffleArray(array) {
-    
+
     deduplicateInPlace(array);
-    
+
     var length = array.length;
     var temp, randomIndex;
     while (length) {
