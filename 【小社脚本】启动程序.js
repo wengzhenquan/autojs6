@@ -527,11 +527,25 @@ function toSeconds(milliseconds) {
 }
 
 
+// 数组去重
+function deduplicateInPlace(arr) {
+    const set = new Set(arr);
+    arr.length = 0;                   // 清空原数组
+    // 方法1: 使用 Array.from 填充
+    //Array.from(set).forEach(item => arr.push(item));
+    // 方法2: 直接循环 Set（兼容性更好）
+    set.forEach(item => arr.push(item));
+}
+
+
 /**
  * Fisher-Yates洗牌算法（原地打乱，ES5兼容）
  * @param {Array} array 需要打乱的原数组（直接修改此数组）
  */
 function shuffleArray(array) {
+    
+    deduplicateInPlace(array);
+    
     var length = array.length;
     var temp, randomIndex;
     while (length) {
@@ -544,22 +558,26 @@ function shuffleArray(array) {
     }
 }
 
-
-
 /**
  * 处理函数：打乱数组1和数组2，并将数组2添加到数组1末尾
  * @param {Array} arr1 数组1（最终保存结果）
  * @param {Array} arr2 数组2（将被添加到数组1末尾）
  */
 function processArrays(arr1, arr2) {
+    // 原地删除 arr2 中与 arr1 重复的元素
+    const set = new Set(arr1);
+    for (let i = arr2.length - 1; i >= 0; i--) {
+        if (set.has(arr2[i])) {
+            arr2.splice(i, 1); // 直接修改原数组
+        }
+    }
+
     // 原地打乱数组1
     shuffleArray(arr1);
     // 原地打乱数组2
     shuffleArray(arr2);
-    // 将打乱后的数组2的所有元素添加到数组1末尾
-    for (var i = 0; i < arr2.length; i++) {
-        arr1.push(arr2[i]);
-    }
+    // 追加到数组1
+    arr2.forEach(item => arr1.push(item));
 }
 
 
@@ -724,7 +742,7 @@ function init() {
         }
     }
     log("✅ 脚本完整性检查结束");
-    
+
     // 检查config.js配置文件
     checkConfig();
 }
@@ -960,7 +978,7 @@ function updateScript() {
         log("开始下载更新程序：" + update_script)
 
         // 乱序数组
-       // let arr = getRandomNumbers(proxys.length - 1);
+        // let arr = getRandomNumbers(proxys.length - 1);
         // 下载更新脚本
         var file = null;
         for (let i = 0; i < proxys.length; i++) {
@@ -1455,23 +1473,38 @@ function permissionv() {
 
     function checkNetworkPermission() {
         let urls = [
+
             "http://connectivitycheck.platform.hicloud.com/generate_204", // 华为
+            "http://www.qualcomm.cn/generate_204", //高通
             "http://wifi.vivo.com.cn/generate_204", // vivo
             "http://connect.rom.miui.com/generate_204", // 小米
+            "http://connectivitycheck.gstatic.com/generate_204", //Google
+            "http://edge.microsoft.com/captiveportal/generate_204", //微软
+            "http://cp.cloudflare.com/generate_204", //CF
+
+            // 延迟高
+            //"http://204.ustclug.org", //中科大学
+            //"http://noisyfox.cn/generate_204", //社区
         ];
-        for (i = 0; i < urls.length; i++) {
+        for (let i = 0; i < urls.length; i++) {
+            let timeoutTimes = i < 4 ? 1 : 2;
             let url = urls[i];
             //log(url)
             let res = null;
             let thread = threads.start(() => {
                 try {
                     res = http.get(url, {
-                        timeout: 1000
+                        timeout: timeoutTimes * 1000,
+                        headers: {
+                            'Cache-Control': 'no-cache',
+                            'Pragma': 'no-cache',
+                            'Expires': '0',
+                            'Connection': 'Keep-Alive'
+                        }
                     });
-
                 } catch (e) {}
             });
-            thread.join(1000);
+            thread.join(timeoutTimes * 1000);
             thread.interrupt();
             if (res && (res.statusCode === 204 || res.statusCode === 200))
                 return true;

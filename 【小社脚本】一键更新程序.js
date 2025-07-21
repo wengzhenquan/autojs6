@@ -122,11 +122,26 @@ var proxy_index = 0;
 //var api_proxy_arr = getRandomNumbers(api_proxys.length - 1);
 var api_proxy_index = 0;
 
+
+// 数组去重
+function deduplicateInPlace(arr) {
+    const set = new Set(arr);
+    arr.length = 0;                   // 清空原数组
+    // 方法1: 使用 Array.from 填充
+    //Array.from(set).forEach(item => arr.push(item));
+    // 方法2: 直接循环 Set（兼容性更好）
+    set.forEach(item => arr.push(item));
+}
+
+
 /**
  * Fisher-Yates洗牌算法（原地打乱，ES5兼容）
  * @param {Array} array 需要打乱的原数组（直接修改此数组）
  */
 function shuffleArray(array) {
+    
+    deduplicateInPlace(array);
+    
     var length = array.length;
     var temp, randomIndex;
     while (length) {
@@ -145,15 +160,22 @@ function shuffleArray(array) {
  * @param {Array} arr2 数组2（将被添加到数组1末尾）
  */
 function processArrays(arr1, arr2) {
+    // 原地删除 arr2 中与 arr1 重复的元素
+    const set = new Set(arr1);
+    for (let i = arr2.length - 1; i >= 0; i--) {
+        if (set.has(arr2[i])) {
+            arr2.splice(i, 1); // 直接修改原数组
+        }
+    }
+
     // 原地打乱数组1
     shuffleArray(arr1);
     // 原地打乱数组2
     shuffleArray(arr2);
-    // 将打乱后的数组2的所有元素添加到数组1末尾
-    for (var i = 0; i < arr2.length; i++) {
-        arr1.push(arr2[i]);
-    }
+    // 追加到数组1
+    arr2.forEach(item => arr1.push(item));
 }
+
 
 
 //对比版本大小，前面的大，返回1，相等0，后面大-1
