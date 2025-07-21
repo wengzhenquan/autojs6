@@ -530,7 +530,7 @@ function toSeconds(milliseconds) {
 // 数组去重
 function deduplicateInPlace(arr) {
     const set = new Set(arr);
-    arr.length = 0;                   // 清空原数组
+    arr.length = 0; // 清空原数组
     // 方法1: 使用 Array.from 填充
     //Array.from(set).forEach(item => arr.push(item));
     // 方法2: 直接循环 Set（兼容性更好）
@@ -543,9 +543,9 @@ function deduplicateInPlace(arr) {
  * @param {Array} array 需要打乱的原数组（直接修改此数组）
  */
 function shuffleArray(array) {
-    
+
     deduplicateInPlace(array);
-    
+
     var length = array.length;
     var temp, randomIndex;
     while (length) {
@@ -1535,6 +1535,7 @@ function permissionv() {
             canRestarAuto = 1;
         } else {
             console.error('→自动启用无障碍，[未开启]');
+            console.error('可在AutoJS6设置里开启');
         }
     } else {
         log("修改安全设置权限，[未启用]!");
@@ -1553,6 +1554,7 @@ function permissionv() {
             canRestarAuto = 1;
         } else {
             console.error('→自动启用无障碍，[未开启]');
+            console.error('可在AutoJS6设置里开启');
         }
 
     } else {
@@ -1638,7 +1640,8 @@ function permissionv() {
 function main() {
 
     //屏幕点亮
-    while (!device.isScreenOn()) {
+    let m = 10;
+    while (!device.isScreenOn() && m--) {
         // 设备激活
         device.wakeUpIfNeeded();
         device.wakeUp();
