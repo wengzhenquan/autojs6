@@ -1540,8 +1540,8 @@ function permissionv() {
     } else {
         log("修改安全设置权限，[未启用]!");
         console.warn('当无障碍服务故障时，')
-        console.warn('程序可通过该权限自动重启无障碍')
-        console.info('该权限开启方式与[投影媒体权限]一样')
+        console.warn('可通过该权限自动重启无障碍')
+        console.info('开启方式与[投影媒体权限]一样')
         console.info('可通过Shizuku或Root开启')
     }
 
