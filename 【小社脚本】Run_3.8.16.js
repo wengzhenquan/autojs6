@@ -277,7 +277,7 @@ function launchAPP(packageN) {
             // 从详情页启动小米社区
             let yyxq = text("应用详情");
             if (text("应用信息").exists()) {
-                toastLog("堵车我就抄小路，\n看我排水沟过弯大法！", "long", "forcible");
+                toastError("堵车我就抄小路，\n看我排水沟过弯大法！", "long", "forcible");
 
                 let gd = className("android.widget.LinearLayout")
                     .desc("更多");
@@ -299,7 +299,7 @@ function launchAPP(packageN) {
             }
             if (wait(() => packageName(packageN).exists(), 8, 500)) break;
 
-            toastLog("无法打开小米社区，(*꒦ິ⌓꒦ີ)", "forcible");
+            toastError("无法打开小米社区，(*꒦ິ⌓꒦ີ)", "forcible");
             notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("无法打开小米社区APP！"));
 
             return false;
@@ -353,12 +353,12 @@ function posts(n) {
             .text("关注");
         while (!(gz.exists() || gz2.exists())) {
             if (n > 5) {
-                toastLog("打开帖子失败！")
+                toastError("打开帖子失败！")
                 unfinished_mark = 1;
                 //backAppIndex();
                 return;
             }
-            toastLog("第" + n + "次重试")
+            toastError("第" + n + "次重试")
             // 误点开图片
             if (text("保存").exists()) {
                 back();
@@ -385,14 +385,14 @@ function posts(n) {
         }
 
     } else {
-        toastLog("第" + n + "次重试")
+        toastError("第" + n + "次重试")
         // 小米社区重置首页
         backAppIndex();
         // 下滑刷新列表
         swipe(dwidth * 0.5, dheight * 0.5, dwidth * 0.5, dheight * 0.8, 300);
         sleep(1500);
         if (n > 5) {
-            toastLog("打开帖子失败！")
+            toastError("打开帖子失败！")
             unfinished_mark = 1;
             //backAppIndex();
             return;
@@ -506,7 +506,7 @@ function findCenter(pram) {
 
     // 没找到入口
     while (!wait(() => qdbt.exists(), 3, 800)) {
-        toastLog("未找到活动入口，重新进入", "forcible")
+        toastError("未找到活动入口，重新进入", "forcible")
         back();
         // 小米社区重置首页
         //backAppIndex();
@@ -571,7 +571,7 @@ function captureScr() {
     try {
         // 请求截图权限
         if (!images.requestScreenCapture()) {
-            toastLog("请求截图权限失败！˚‧º·(˚ ˃̣̣̥᷄⌓˂̣̣̥᷅ )‧º·˚", "forcible");
+            toastError("请求截图权限失败！˚‧º·(˚ ˃̣̣̥᷄⌓˂̣̣̥᷅ )‧º·˚", "forcible");
             console.error("可能涉及'投影媒体'权限、手机屏幕共享，或者手机重启试试！");
             return;
         }
@@ -977,12 +977,12 @@ function auth_hk() {
             qd2(0); //新版签到
         } catch (e) {
             console.error(e.message);
-            toastLog("新版签到失败，尝试使用旧版签到！")
+            toastError("新版签到失败，尝试使用旧版签到！")
             qd(); //开始签到
         }
 
     } else {
-        toastLog("没有找到滑块", "forcible");
+        toastError("没有找到滑块", "forcible");
         throw Error();
     }
 }
@@ -1360,7 +1360,7 @@ function pullingCarrots(pram) {
 
     var button = className("android.widget.Button").content(pram);
     if (!wait(() => blb.exists() && button.exists(), 5, 500)) {
-        toastLog("未找到活动入口，重新进入", "forcible")
+        toastError("未找到活动入口，重新进入", "forcible")
         back();
         // 小米社区重置首页
         //backAppIndex();
@@ -1408,7 +1408,7 @@ function fans() {
             clickAndLog(dianl || chouka);
             back();
         } else {
-            toastLog("未找米粉节参与按钮", "forcible");
+            toastError("未找米粉节参与按钮", "forcible");
         }
     } else {
         toastLog("未找到'去参与'按钮", "forcible");
@@ -1511,7 +1511,7 @@ function ganenji(pram) {
 
     // 没找到入口
     if (!wait(() => zngn.exists() && qucanyu.exists(), 5, 500)) {
-        toastLog("未找到活动入口，重新进入", "forcible")
+        toastError("未找到活动入口，重新进入", "forcible")
         back();
         sleep(1000);
         // 小米社区重置首页
@@ -1562,7 +1562,7 @@ function dualFlagships(pram) {
 
     let cj = className("android.widget.Button").content(pram);
     if (!wait(() => qj.exists() && cj.exists(), 5, 500)) {
-        toastLog("未找到活动入口，重新进入", "forcible")
+        toastError("未找到活动入口，重新进入", "forcible")
         back();
         sleep(1000);
         // 小米社区重置首页
@@ -1729,8 +1729,8 @@ function 小程序签到(pram) {
         // 不能确保成功打开小程序
         if (config.跳过小程序打开验证) {
             //再次尝试打开一次，以确保能顺利打开小程序
-            toastLog("无法验证小程序是否已打开，", "forcible")
-            toastLog("准备重试！", "forcible")
+            toastError("无法验证小程序是否已打开，", "forcible")
+            toastError("准备重试！", "forcible")
             home();
             sleep(666);
             if (isEnabled && v53 && !config.坐标点击) {
@@ -1749,7 +1749,7 @@ function 小程序签到(pram) {
             }
 
         } else {
-            toastLog("进不了微信小程序，我尽力了！(ó﹏ò｡) ", "long", "forcible");
+            toastError("进不了微信小程序，我尽力了！(ó﹏ò｡) ", "long", "forcible");
             console.error("如果您确定小程序已打开，就能肯定布局分析失效了，")
             console.error("那么请把配置[跳过小程序打开验证 : 0]的值改成1 ");
             notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("进不了微信小程序，我尽力了！(ó﹏ò｡)"));
@@ -1764,7 +1764,7 @@ function 小程序签到(pram) {
         // if (!wait(() => xxcx.exists(), 6, 500)) {
         // 找不到微信的包名，自然也没能进入小程序
         console.error("packageName")
-        toastLog("进不了微信小程序，我尽力了！(ó﹏ò｡) ", "long", "forcible");
+        toastError("进不了微信小程序，我尽力了！(ó﹏ò｡) ", "long", "forcible");
         notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("进不了微信小程序，我尽力了！"));
         back();
         return;
@@ -1774,8 +1774,8 @@ function 小程序签到(pram) {
     if ((text("通讯录").exists() || desc("返回").exists() || descStartsWith("更多功能").exists())
         //&& !wait(() => xxcx.exists(), 10, 500)
     ) {
-        toastLog("已打开微信，但未打开小程序！", "forcible");
-        toastLog("尝试从微信进入小程序……", "long", "forcible");
+        toastError("已打开微信，但未打开小程序！", "forcible");
+        toastError("尝试从微信进入小程序……", "long", "forcible");
         sleep(1000)
         // 确保回到微信首页
         let bak = className("android.widget.ImageView")
@@ -1807,9 +1807,9 @@ function 小程序签到(pram) {
                 m++;
                 if (m > 6) {
                     //sleep(500);
-                    toastLog("好累啊，你多久没用小米社区小程序了？", "forcible")
-                    toastLog("翻遍了你的小程序使用记录都没有！", "forcible")
-                    toastLog("老子不玩了！", "forcible")
+                    toastError("好累啊，你多久没用小米社区小程序了？", "forcible")
+                    toastError("翻遍了你的小程序使用记录都没有！", "forcible")
+                    toastError("老子不玩了！", "forcible")
                     notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("找不到小米社区小程序！"));
 
                     return;
@@ -1859,17 +1859,17 @@ function 小程序签到(pram) {
                 toastLog("小程序签到成功！✧٩(ˊωˋ*)و✧", "forcible")
             }
         } else {
-            toastLog("不好了！布局分析失效了！Σ(ŎдŎ|||)ﾉﾉ", "forcible")
-            toastLog("只能摸黑操作，点击坐标试试看……")
+            toastError("不好了！布局分析失效了！Σ(ŎдŎ|||)ﾉﾉ", "forcible")
+            toastError("只能摸黑操作，点击坐标试试看……")
             sleep(5000);
             // 点击"签到"
             mhqdClick();
         }
 
     } else {
-        toastLog("不好了！布局分析失效了！Σ(ŎдŎ|||)ﾉﾉ", "forcible")
+        toastError("不好了！布局分析失效了！Σ(ŎдŎ|||)ﾉﾉ", "forcible")
         sleep(1500)
-        toastLog("只能摸黑操作，点击坐标试试看……")
+        toastError("只能摸黑操作，点击坐标试试看……")
         // 先点击"论坛"，以防页面卡顿
         click(dwidth * 0.15, dheight * 0.939);
         click(dwidth * 0.15, dheight * 0.9415);
@@ -1920,7 +1920,7 @@ function mhqdClick() {
     }
 
     //  sleep(1000);
-    log("[不确定][签到]，假装已完成！")
+    toastError("[不确定][签到]，假装已完成！")
 }
 // 跳转打开微信小程序
 function openVChat(button) {
@@ -1982,7 +1982,7 @@ function desktopRun() {
                     ableClick(xcx.get(i));
                     log("正在尝试打开→第[ " + (i + 1) + " ]个！");
                     if (wait(() => packageName(xmPckageName).exists(), 6, 500)) {
-                        toastLog("这个不对，尝试下一个！", "forcible");
+                        toastError("这个不对，尝试下一个！", "forcible");
                         home();
                         sleep(600);
                     } else {
@@ -2002,8 +2002,8 @@ function desktopRun() {
                 ableClick(xcx);
             }
         } else {
-            toastLog("也许你对我的爱藏的太深，让我无法发现……", "forcible")
-            toastLog("也许你根本就是在骗我……（▼へ▼メ）", "forcible")
+            toastError("也许你对我的爱藏的太深，让我无法发现……", "forcible")
+            toastError("也许你根本就是在骗我……（▼へ▼メ）", "forcible")
             console.error("请把小程序图标放在桌面上，无论放第几屏都好。")
             console.error("但不要藏在文件夹里，那样真找不到。")
             notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("我在桌面上找不到小程序图标，\n麻烦把它放在好找的地方（˃̣̣̥᷄⌓˂̣̣̥᷅）！"));
@@ -2019,7 +2019,7 @@ function level2() {
     toastLog("[小程序]：记录成长值ing……", "forcible")
     var num = text("成长值").findOne(2000);
     if (!num) {
-        toastLog("布局分析失效，未找到成长值！", "forcible");
+        toastError("布局分析失效，未找到成长值！", "forcible");
         toastLog("[不确定操作]摸黑→点击[成长值]", "forcible");
         //点击查看明细
         click(dwidth * 0.5, dheight * 0.6);
@@ -2221,8 +2221,8 @@ function run() {
 
     } else {
         sleep(500);
-        toastLog("(*꒦ິ⌓꒦ີ) 为什么打不开社区APP？", "forcible");
-        toastLog("哪里出错了？", "forcible");
+        toastError("(*꒦ິ⌓꒦ີ) 为什么打不开社区APP？", "forcible");
+        toastError("哪里出错了？", "forcible");
         console.error('请检查权限')
         console.error('无障碍服务可能故障了')
         notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("芭比Q了，小米社区里的操作都没完成。"));
