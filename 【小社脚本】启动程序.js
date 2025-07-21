@@ -800,7 +800,7 @@ function checkConfig() {
             console.warn("├ 当前值: \"" + detail.value + "\" (应为数值类型)");
             console.error(" ├ 正确值: " + detail.value + " (没有引号)");
             console.warn("└ 行内容: " + detail.content);
-            console.info("──");
+            console.info("────");
         });
         console.error("💡 请将上述属性的值改为数值类型");
 
