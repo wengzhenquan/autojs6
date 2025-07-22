@@ -131,7 +131,7 @@ function sortAndProcessResults(data) {
             const group = groups[label];
 
             // 规则1：跳过全组低置信度
-            if (group.every(item => item.prob < 0.15)) return;
+            if (group.every(item => item.prob < 0.16)) return;
 
             // 规则2：跳过单一元素组
             if (group.length === 1) return;
