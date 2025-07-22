@@ -28,7 +28,7 @@
     },
     "configValueTransform": {
         "社区APP签到": {
-            "oldV": [1, "1", "立即签到"],
+            "oldV": ["1", "立即签到"],
             "newV": "立即签到"
         }
     }
