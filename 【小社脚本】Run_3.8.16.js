@@ -698,7 +698,10 @@ function clickPic(list, clipParam) {
         let x = list[i][0] + clipParam.x;
         let y = list[i][1] + clipParam.y;
         let icon = list[i][2];
-        log("点击第" + (i + 1) + "个图标：" + icon);
+        let prob = list[i][3];
+        console.info("点击——→");
+        log("第" + (i + 1) + "个图标：" + icon);
+        log("置信度：" + prob)
         log("坐标：(" + x + ", " + y + ")")
         log("点击结果：" + click(x, y));
         sleep(500)
@@ -711,9 +714,10 @@ function clickPic(list, clipParam) {
             .content("提交答案").findOne(1500);
     }
     ableClick(tida);
-    click("确认");
-    click("提交答案");
     sleep(1000);
+    click("确认");
+    sleep(1000);
+    click("提交答案");
     if (text("已签到").findOne(3000)) {
         toastLog("识图签到成功！！！(๑´∀`๑)");
         return true;
