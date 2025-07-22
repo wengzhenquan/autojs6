@@ -131,12 +131,12 @@ function sortAndProcessResults(data) {
             const group = groups[label];
 
             // 规则1：跳过全组低置信度
-            if (group.every(item => item.prob < 0.1)) return;
+            if (group.every(item => item.prob < 0.15)) return;
 
-            // 规则2：跳过单元素组
+            // 规则2：跳过单一元素组
             if (group.length === 1) return;
 
-            // 规则3：按概率降序排序
+            // 规则3：按置信度降序排序
             const sortedGroup = group.slice().sort((a, b) => b.prob - a.prob);
             const topItem = sortedGroup[0]; // 最高置信度项
 
@@ -185,6 +185,7 @@ function sortAndProcessResults(data) {
 
 
     try {
+        //log(data)
         // ==================== 1. 数据准备阶段 ====================
         // 1.1 按y坐标升序排序（浅拷贝避免修改原数组）
         const sortedByY = data.slice().sort((a, b) => a.y - b.y);
