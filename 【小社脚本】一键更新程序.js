@@ -71,35 +71,40 @@ var proxys = [
     "https://proxy.yaoyaoling.net/", // 请求时间：0.40s
     "https://cccccccccccccccccccccccccccccccccccccccccccccccccccc.cc/", // 请求时间：0.47s
     "https://gh.799154.xyz/", // 请求时间：0.55s
-    "https://gh.b52m.cn/", // 请求时间：0.15s
     "https://hub.gitmirror.com/", // 请求时间：0.75s
     "https://github.chenc.dev/", // 请求时间：0.77s
-    "https://git.40609891.xyz/", // 请求时间：0.78s
-    "https://gh-proxy.net/", // 请求时间：0.89s
     "https://g.blfrp.cn/", // 请求时间：0.91s
-    "https://git.669966.xyz/", // 请求时间：0.93s
     "https://ghfast.top/", // 请求时间：1.39s
     "https://git.yylx.win/", // 请求时间：1.41s
     "https://ghproxy.monkeyray.net/",
-    "https://gh.catmak.name/",
     "https://github.sagolu.top/", // 请求时间：0.37s
-    "https://gh.llkk.cc/",
     "https://gh.monlor.com/",
-    "https://ghproxy.net/", // 请求时间：1.05s
-    "https://ghfile.geekertao.top/", // 请求时间：0.87s
-    "https://gh.xxooo.cf/",
+    "https://git.mokoc.live/", // 请求时间：0.25s
+    "https://git.ppp.ac.cn/",
+    "https://ghproxy.gpnu.org/",
+    "https://gh.tryxd.cn/",
+    "https://gh.222322.xyz/",
 ]
 
 // 备用代理
 var proxys2 = [
     //2
-    "https://gitproxy.click/", //
+    "https://g.cachecdn.ggff.net/", // 请求时间：0.95s
+    "https://gh.llkk.cc/",
     "https://gh.qninq.cn/",
     "https://github.kkproxy.dpdns.org/",
-    "https://g.cachecdn.ggff.net/", // 请求时间：0.95s
-    "https://git.mokoc.live/", // 请求时间：0.25s
     "https://gh.xx9527.cn/",
     "https://github.dpik.top/",
+    "https://gh.b52m.cn/", // 请求时间：0.15s
+    "https://ghproxy.net/", // 请求时间：1.05s
+    "https://gh.xxooo.cf/",
+    "https://gh-proxy.net/", // 请求时间：0.89s
+    "https://git.669966.xyz/", // 请求时间：0.93s
+    "https://github.bullb.net/",
+    "https://git.40609891.xyz/", // 请求时间：0.78s
+    "https://gh.catmak.name/",
+    "https://ghfile.geekertao.top/", // 请求时间：0.87s
+    "https://gitproxy.click/", //
 
 
 ]
