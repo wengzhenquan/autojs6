@@ -902,9 +902,17 @@ function mergeConfigs(oldConfigPath, newConfigPath, outputPath) {
         var result = [];
 
         // 2. 数据预处理
+        var serverConfig = serverVersion.configUpdate;
         for (var key in newConfig) {
             if (oldConfig.hasOwnProperty(key)) {
-                oldConfig[key] = convertValueType(oldConfig[key], newConfig[key]);
+                if (serverConfig &&
+                    serverConfig.hasOwnProperty(key)) {
+                    // 将本地配置强制改为远程配置
+                    oldConfig[key] = serverConfig[key];
+                } else {
+                    // 搬运本地配置
+                    oldConfig[key] = convertValueType(oldConfig[key], newConfig[key]);
+                }
             }
         }
 

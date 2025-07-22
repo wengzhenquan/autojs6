@@ -19,5 +19,11 @@
     "updateScript": "【小社脚本】一键更新程序.js",
     "apk": {
         "yolov11/Yolo-plugin.apk": "com.circlefork.yolo"
+    },
+    "configUpdate": {
+        "本地YOLO识图": 1,
+        "YOLO启用GPU": 0,
+        "YOLO置信度阈值": 0.01,
+        "YOLO重叠率阈值": 0.1
     }
 }
