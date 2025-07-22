@@ -108,10 +108,13 @@ log("制造商：" + manufacturer + "，品牌：" + brand);
 log("产品：" + device.product + "，型号：" + device.model);
 log(`设备分辨率：${dwidth}x${dheight}`);
 log(`现在是：${date}`);
+console.error('QQ群：197511003');
+
 
 
 
 events.on("exit", function() {
+    console.info('q群反馈：197511003');
     console.setTouchable(true);
     device.cancelKeepingAwake();
     if (window) window.close();
@@ -356,12 +359,13 @@ function clickCenter(obj) {
             }
 
             if (obj && (obj instanceof UiObject)) {
-                obj.show();
+                if (obj.show())
+                    wait(() => false, 500);
                 let x = obj.bounds().centerX()
                 let y = obj.bounds().centerY()
                 //log(x,y)
                 if (x > 0 && y > 0) {
-                    sleep(500);
+                    //sleep(500);
                     return click(x, y);
                 }
             }
@@ -384,8 +388,8 @@ function ableClick(obj) {
             }
 
             if (obj && (obj instanceof UiObject)) {
-                obj.show();
-                sleep(500);
+                if (obj.show())
+                    wait(() => false, 500);
                 // click
                 let result = obj.click();
                 // 最多向上爬3层
@@ -1123,7 +1127,7 @@ function unLock() {
     let n = 3;
     while (isLocked && n--) {
         //多次上滑
-        for (i = 0; i < 2; i++) {
+        for (let i = 0; i < 2; i++) {
             swipe(dwidth * 5 / 8, dheight * 0.95, dwidth * 5 / 8, dheight * (0.6 - 0.2 * i), 202 * (i + 1));
             wait(() => false, 500)
             gesture(228 * (2 - i), [dwidth * 3 / 8, dheight * (0.95 - 0.3 * i)], [dwidth * 3 / 8, dheight * (0.3 - 0.1 * i)]);
@@ -1148,7 +1152,9 @@ function unLock() {
 
                 for (let i = 0; i < config.锁屏数字密码.length; i++) {
                     let num = content(config.锁屏数字密码[i]).findOne(800);
-                    clickCenter(num);
+                    if (!clickCenter(num)) {
+                        console.error(num + '点击失败!')
+                    };
                     wait(() => false, 300);
                 }
                 if (textContains('混合').exists()) {
@@ -1159,14 +1165,15 @@ function unLock() {
         }
 
         //去桌面
-        for (i = 0; i < 3; i++) {
-            wait(() => false, 300);
+        for (let i = 0; i < 3; i++) {
             home();
+            wait(() => false, 300);
         }
-        wait(() => false, 666);
+        
 
         //更新锁屏状态
         isLocked = KeyguardManager.isKeyguardLocked();
+        wait(() => false, 666);
 
     }
     //let result = wait(() => existsOne('电话', '拨号', '短信', '信息', '微信', '小米社区'), 5, 1000);
