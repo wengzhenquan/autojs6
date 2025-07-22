@@ -137,7 +137,8 @@ function sortAndProcessResults(data) {
             if (group.length === 1) return;
 
             // 规则3：按置信度降序排序
-            const sortedGroup = group.slice().sort((a, b) => b.prob - a.prob);
+            const sortedGroup = group.slice()
+                .sort((a, b) => b.prob - a.prob);
             const topItem = sortedGroup[0]; // 最高置信度项
 
             // 核心逻辑：寻找配对项
