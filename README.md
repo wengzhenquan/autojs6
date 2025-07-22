@@ -532,6 +532,9 @@ github：https://github.com/wengzhenquan/autojs6
 
 --- 
 
+v3.8.17:
+1. 更新程序更新config时，强制更新预设配置
+
 v3.8.16:
 1. 联网权限添加更多验证链接
 2. 开盒页面等待时间延长
