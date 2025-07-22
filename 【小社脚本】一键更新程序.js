@@ -796,9 +796,9 @@ function mergeConfigs(oldConfigPath, newConfigPath, outputPath) {
         // 数字字符串→数字
         if (typeof oldValue === 'number') {
             // 1时允许使用中文字符串
-            if (oldValue === 1 && isNaN(newValue)) {
-                return newValue;
-            }
+            // if (oldValue === 1 && isNaN(newValue)) {
+            //     return newValue;
+            // }
             return oldValue;
         }
 
