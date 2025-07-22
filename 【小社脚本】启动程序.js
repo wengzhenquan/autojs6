@@ -116,6 +116,7 @@ console.error('QQ群：197511003');
 events.on("exit", function() {
     console.info('q群反馈：197511003');
     console.setTouchable(true);
+    consoleMax();
     device.cancelKeepingAwake();
     if (window) window.close();
     floaty.closeAll();
@@ -779,7 +780,7 @@ function checkConfig() {
     // 2. 创建问题详情对象数组
     let problemDetails = [];
     problemFields.forEach(field => {
-        let found = false;
+        //let found = false;
         for (let i = 0; i < lines.length; i++) {
             if (lines[i].includes(field + ':')) {
                 problemDetails.push({
@@ -788,7 +789,7 @@ function checkConfig() {
                     value: config[field],
                     content: lines[i].trim()
                 });
-                found = true;
+                //found = true;
                 break;
             }
         }
