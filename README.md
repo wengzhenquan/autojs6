@@ -524,7 +524,7 @@ github：https://github.com/wengzhenquan/autojs6
 
 --- 
 
-v3.8.17:
+**v3.8.17:**
  >1. 更新程序更新config时，强制更新预设配置
  >2. 删除'跳过小程序打开验证'配置
 
