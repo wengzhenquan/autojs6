@@ -3,19 +3,19 @@
     "updateFile": {
         "version": 20250720,
         "config.js": 20250718,
-        "【小社脚本】启动程序.js": 20250721,
-        "【小社脚本】一键更新程序.js": 20250721,
+        "【小社脚本】启动程序.js": 20250720,
+        "【小社脚本】一键更新程序.js": 20250720,
         "【小社脚本】Run_3.8.14.js": 20250716,
         "【小社脚本】Run_3.8.16.js": 20250720,
         "【小社脚本】Run_3.8.15.js": 20250718,
-        "yolov11/yolov11_w.js": 20250721,
+        "yolov11/yolov11_w.js": 20250720,
         "yolov11/Yolo-plugin.apk": 20250513,
         "yolov11/model/yzm.bin": 20250513,
         "yolov11/model/yzm.param": 20250513,
         "tmp/公益梯子[魔法].txt": 20250617
     },
     "main": "【小社脚本】启动程序.js",
-    "run": "【小社脚本】Run_3.8.16.js",
+    "run": "【小社脚本】Run_3.8.17.js",
     "updateScript": "【小社脚本】一键更新程序.js",
     "apk": {
         "yolov11/Yolo-plugin.apk": "com.circlefork.yolo"
@@ -25,5 +25,11 @@
         "YOLO启用GPU": 0,
         "YOLO置信度阈值": 0.01,
         "YOLO重叠率阈值": 0.1
+    },
+    "configValueTransform": {
+        "社区APP签到": {
+            "oldV": [1, "1", "立即签到"],
+            "newV": "立即签到"
+        }
     }
 }

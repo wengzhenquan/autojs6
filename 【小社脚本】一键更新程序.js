@@ -902,7 +902,11 @@ function mergeConfigs(oldConfigPath, newConfigPath, outputPath) {
         var result = [];
 
         // 2. 数据预处理
+        //  强制使用的配置
         var serverConfig = serverVersion.configUpdate;
+        //  包含值域时，转化为目标值
+        var valueTransform = serverVersion.configValueTransform;
+        // 开始执行
         for (var key in newConfig) {
             if (oldConfig.hasOwnProperty(key)) {
                 if (serverConfig &&
@@ -910,6 +914,15 @@ function mergeConfigs(oldConfigPath, newConfigPath, outputPath) {
                     // 将本地配置强制改为远程配置
                     oldConfig[key] = serverConfig[key];
                 } else {
+                    // 值转换，当字段包含oldV值范围时，转换成newV
+                    if (valueTransform && valueTransform.hasOwnProperty(key)) {
+                        let valueObj = valueTransform[key];
+                        // log(valueObj)
+                        if (valueObj.oldV.includes(oldConfig[key])) {
+                            oldConfig[key] = valueObj.newV;
+                            log(oldConfig[key])
+                        }
+                    }
                     // 搬运本地配置
                     oldConfig[key] = convertValueType(oldConfig[key], newConfig[key]);
                 }
