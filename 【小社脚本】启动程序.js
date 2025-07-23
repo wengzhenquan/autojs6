@@ -303,13 +303,16 @@ function consoleShow() {
 
 //悬浮窗控制台变成30%
 function console3() {
-    console.setSize(0.96, 0.3);
+    let h = config && config.悬浮窗控制台运行高度 ?
+        config.悬浮窗控制台运行高度 : 0.3;
+    console.setSize(0.96, h);
 }
 //悬浮窗控制台变成17%
 function consoleMin() {
-    if (console.isShowing()) {
-        console.setSize(0.96, 0.17);
-    }
+    let h = config && config.悬浮窗控制台签到高度 ?
+        config.悬浮窗控制台签到高度 : 0.17;
+    console.setSize(0.96, h);
+
 }
 
 //悬浮窗控制台高度变成80%
