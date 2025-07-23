@@ -392,8 +392,8 @@ function ableClick(obj) {
                     wait(() => false, 500);
                 // click
                 let result = obj.click();
-                // 最多向上爬3层
-                let n = 3;
+                // 最多向上爬2层
+                let n = 2;
                 while (n-- && !result &&
                     !obj.clickable() &&
                     obj.parent() &&
