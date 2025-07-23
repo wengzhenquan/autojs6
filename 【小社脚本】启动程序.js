@@ -870,7 +870,7 @@ function checkVersion() {
         let thread = threads.start(() => {
             try {
                 let res = http.get(url, {
-                    timeout: 4 * 1000,
+                    timeout: 5 * 1000,
                     headers: {
                         'Cache-Control': 'no-cache',
                         'Pragma': 'no-cache',
@@ -884,9 +884,9 @@ function checkVersion() {
                 }
             } catch (e) {}
         });
-        thread.join(4 * 1000);
+        thread.join(5 * 1000);
         thread.interrupt();
-        if (result && result.length > 300 && serverVersion) {
+        if (result && result.length > 500 && serverVersion) {
             if (!files.exists("./version")) {
                 down_version = true;
                 // 缺失version文件，下载

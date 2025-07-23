@@ -31,7 +31,7 @@ console.launch();
 var download_timeout = 15;
 
 // 最小文件大小(B)，小于这个值都认为错误，将重试
-var filemin = 300;
+var filemin = 500;
 
 // 忽略的更新列表
 var ignoreList = [
