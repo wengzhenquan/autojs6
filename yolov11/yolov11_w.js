@@ -24,7 +24,7 @@ const confThreshold = config && config.YOLO置信度阈值 ?
     config.YOLO置信度阈值 : 0.01;
 //重叠率阈值
 const nmsThreshold = config && config.YOLO重叠率阈值 ?
-    config.YOLO重叠率阈值 : 0.1;
+    config.YOLO重叠率阈值 : 0.5;
 
 const tag = "[YOLO]";
 // --- 模块级变量 (用于存储初始化状态和实例) ---
