@@ -218,7 +218,7 @@ function sortAndProcessResults(data) {
 
 
     try {
-        // log(data)
+        //log(data)
         // ==================== 1. 数据准备阶段 ====================
         // 1.1 按y坐标升序排序（浅拷贝避免修改原数组）
         const sortedByY = data.slice().sort((a, b) => a.y - b.y);
@@ -248,13 +248,13 @@ function sortAndProcessResults(data) {
                 console.error(' 2.提升[YOLO置信度阈值]值');
                 console.warn(`当前 (置信度阈值: ${confThreshold})`);
             }
-            
+
             log(tag + '数据修正后长度：' + groupA2.length * 2)
             groupA = groupA2;
         }
 
 
-       // log(groupA)
+        // log(groupA)
         // 1.5 检查分组A的y差，必须在同一高度上的小图标
         let check = checkYDiffLessThan(groupA, cY(10));
         if (!check) {
@@ -274,7 +274,24 @@ function sortAndProcessResults(data) {
         }
 
         // 1.6 创建分组B（y值较大的后半部分，按prob倒序）
-        const groupB = sortedByY.slice(halfLen).sort((a, b) => b.prob - a.prob);
+        var groupB = sortedByY.slice(halfLen).sort((a, b) => b.prob - a.prob);
+        
+        // 去重检查
+        const groupB2 = Array.from(
+            groupB.reduce((m, i) =>
+                m.has(i.label) && m.get(i.label).prob >= i.prob ? m : m.set(i.label, i),
+                new Map()
+            ).values()
+        );
+        if (groupB2.length < groupB.length) {
+            console.error('结果解析错误')
+            if (confThreshold > 0.1) {
+                console.error("请尝试：");
+                console.error(' 2.降低[YOLO置信度阈值]值');
+                console.warn(`当前 (置信度阈值: ${confThreshold})`);
+            }
+        }
+
         //log(groupB)
         // ==================== 2. 建立快速查找索引 ====================
         // 2.1 使用Map结构存储分组B的元素（label作为key）
