@@ -526,6 +526,7 @@ github：https://github.com/wengzhenquan/autojs6
 
 v3.8.19:
  >1. 优化YOLO识图错误识别判断
+ >2. 优化YOLO识图，去除重复识别项
 
 v3.8.18:
  >1. 修改部分日志
