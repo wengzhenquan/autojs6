@@ -112,7 +112,7 @@ function sortAndProcessResults(data) {
     let len = data.length;
     // 检查数据长度是否满足处理逻辑要求 (4或6)
     if (len !== 4 && len !== 6) {
-        console.error("结果处理: 预期数据长度为 4 或 6");
+        console.error("结果处理: 预期长度为 4 或 6");
         console.error("实际长度为：" + len);
         console.log(tag + "开始尝试进行修正...");
 
