@@ -123,7 +123,7 @@ function sortAndProcessResults(data) {
                 console.error(' 1.提高[YOLO重叠率阈值]值');
                 console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
             }
-            if (nmsThreshold > 0.4 && confThreshold > 0.1) {
+            if (confThreshold > 0.1) {
                 console.error(' 2.降低[YOLO置信度阈值]值');
                 console.warn(`当前 (置信度阈值: ${confThreshold})`);
             }
@@ -266,7 +266,7 @@ function sortAndProcessResults(data) {
                 console.error(' 1.提高[YOLO重叠率阈值]值');
                 console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
             }
-            if (nmsThreshold > 0.4 && confThreshold > 0.1) {
+            if (confThreshold > 0.1) {
                 console.error(' 2.降低[YOLO置信度阈值]值');
                 console.warn(`当前 (置信度阈值: ${confThreshold})`);
             }
