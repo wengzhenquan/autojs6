@@ -205,8 +205,8 @@ function sortAndProcessResults(data) {
         // 1.4 检查分组A的y差，必须在同一高度上的小图标
         let check = checkYDiffLessThan(groupA, cY(10));
         if (!check) {
-            console.warn('解析结果异常')
-            console.warn('可能验证码区域有遮挡')
+            console.error('解析结果异常')
+            console.error('可能验证码区域有遮挡')
             console.error('请检查tmp/pic.png验证码截图')
             console.error('若无遮挡，可尝试提高[YOLO重叠率阈值]值')
         }
