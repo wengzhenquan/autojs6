@@ -524,6 +524,9 @@ github：https://github.com/wengzhenquan/autojs6
 
 --- 
 
+v3.8.19:
+ >1. 优化YOLO识图错误识别判断
+
 v3.8.18:
  >1. 修改部分日志
  >2. 悬浮窗控制台自由调整高度
