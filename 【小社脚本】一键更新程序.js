@@ -63,7 +63,6 @@ var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs
 var proxys = [
     //  1 
     "https://ghproxy.sakuramoe.dev/", // 请求时间：0.25s
-    "https://ghp.ml1.one/", // 请求时间：0.26s
     "https://github.xxlab.tech/", // 请求时间：0.26s
     "https://gh.halonice.com/", // 请求时间：0.22s
     "https://x.whereisdoge.work/",
@@ -79,6 +78,8 @@ var proxys = [
     "https://gh.tryxd.cn/",
     "https://gh.222322.xyz/",
 
+
+
 ]
 
 // 备用代理
@@ -87,13 +88,11 @@ var proxys2 = [
     "https://github.chenc.dev/", // 请求时间：0.77s
     "https://g.cachecdn.ggff.net/", // 请求时间：0.95s
     "https://gh.b52m.cn/", // 请求时间：0.15s
-    "https://gh.xxooo.cf/",
     "https://gh-proxy.net/", // 请求时间：0.89s
     "https://git.669966.xyz/", // 请求时间：0.93s
     "https://git.40609891.xyz/", // 请求时间：0.78s
 
     //3
-    "https://git.ppp.ac.cn/",
     "https://gh.catmak.name/",
     "https://ghfile.geekertao.top/",
     "https://gitproxy.click/", //
@@ -103,13 +102,14 @@ var proxys2 = [
     "https://ghproxy.monkeyray.net/",
     "https://gh.qninq.cn/",
 
+    "https://ghp.ml1.one/",
+    "https://git.ppp.ac.cn/",
     "https://github.sagolu.top/",
     "https://github.dpik.top/",
     "https://git.mokoc.live/",
     "https://github.bullb.net/",
     "https://ghproxy.net/",
-
-
+    "https://gh.xxooo.cf/",
 ]
 // 打乱并整合两个数组
 processArrays(proxys, proxys2);
