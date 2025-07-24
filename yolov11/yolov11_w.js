@@ -120,7 +120,7 @@ function sortAndProcessResults(data) {
 
             if (nmsThreshold < 0.9)
                 console.error(' 1.提高[YOLO重叠率阈值]值');
-            if (nmsThreshold > 0.5 && confThreshold > 0.1)
+            if (nmsThreshold > 0.4 && confThreshold > 0.1)
                 console.error(' 2.降低[YOLO置信度阈值]值');
 
             return new Array();
@@ -217,7 +217,7 @@ function sortAndProcessResults(data) {
             console.error('若无遮挡，可尝试：')
             if (nmsThreshold < 0.9)
                 console.error(' 1.提高[YOLO重叠率阈值]值');
-            if (nmsThreshold > 0.5 && confThreshold > 0.1)
+            if (nmsThreshold > 0.4 && confThreshold > 0.1)
                 console.error(' 2.降低[YOLO置信度阈值]值');
 
         }
