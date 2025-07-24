@@ -203,11 +203,11 @@ function sortAndProcessResults(data) {
         const groupA = sortedByY.slice(0, halfLen).sort((a, b) => a.x - b.x);
 
         // 1.4 检查分组A的y差，必须在同一高度上的小图标
-        let check = checkYDiffLessThan(groupA, 50);
+        let check = checkYDiffLessThan(groupA, cY(10));
         if (!check) {
-            console.error('解析结果异常')
-            console.error('可能验证码区域有遮挡')
-            console.info('请检查tmp/pic.png验证码截图')
+            console.warn('解析结果异常')
+            console.warn('可能验证码区域有遮挡')
+            console.error('请检查tmp/pic.png验证码截图')
         }
 
         // 1.4 创建分组B（y值较大的后半部分，保持原始顺序）
