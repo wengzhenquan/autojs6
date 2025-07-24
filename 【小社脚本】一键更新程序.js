@@ -74,9 +74,7 @@ var proxys = [
     "https://g.blfrp.cn/", // 请求时间：0.91s
     "https://ghfast.top/", // 请求时间：1.39s
     "https://git.yylx.win/", // 请求时间：1.41s
-    "https://github.sagolu.top/", // 请求时间：0.37s
     "https://gh.monlor.com/",
-    "https://git.ppp.ac.cn/",
     "https://ghproxy.gpnu.org/",
     "https://gh.tryxd.cn/",
     "https://gh.222322.xyz/",
@@ -94,7 +92,8 @@ var proxys2 = [
     "https://git.669966.xyz/", // 请求时间：0.93s
     "https://git.40609891.xyz/", // 请求时间：0.78s
 
-    //2
+    //3
+    "https://git.ppp.ac.cn/",
     "https://gh.catmak.name/",
     "https://ghfile.geekertao.top/",
     "https://gitproxy.click/", //
@@ -104,7 +103,7 @@ var proxys2 = [
     "https://ghproxy.monkeyray.net/",
     "https://gh.qninq.cn/",
 
-
+    "https://github.sagolu.top/",
     "https://github.dpik.top/",
     "https://git.mokoc.live/",
     "https://github.bullb.net/",
