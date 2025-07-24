@@ -114,6 +114,7 @@ function sortAndProcessResults(data) {
     if (len !== 4 && len !== 6) {
         console.error("结果处理: 预期长度为 4 或 6");
         console.error("实际长度为：" + len);
+        
         if (len < 4) {
             console.error("长度过小");
             console.error("请尝试：");
@@ -128,6 +129,22 @@ function sortAndProcessResults(data) {
             }
 
             return new Array();
+        }
+        
+        if (len > 14) {
+            console.error("长度过多，但能修复");
+            console.error("可尝试：");
+
+            if (nmsThreshold > 0.1) {
+                console.error(' 1.降低[YOLO重叠率阈值]值');
+                console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
+            }
+            if (nmsThreshold < 0.2 && confThreshold < 0.7) {
+                console.error(' 2.提升[YOLO置信度阈值]值');
+                console.warn(`当前 (置信度阈值: ${confThreshold})`);
+            }
+            
+            
         }
         console.log(tag + "开始尝试进行修正...");
 
