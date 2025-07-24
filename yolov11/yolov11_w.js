@@ -283,7 +283,7 @@ function sortAndProcessResults(data) {
                 new Map()
             ).values()
         );
-        if (groupB2.length < groupB.length) {
+        if (groupB2.length < groupA.length) {
             console.error('结果解析错误')
             if (confThreshold > 0.1) {
                 console.error("请尝试：");
