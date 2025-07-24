@@ -229,7 +229,7 @@ function sortAndProcessResults(data) {
         // 1.3 创建分组A（y值较小的前半部分，按x升序排序）
         var groupA = sortedByY.slice(0, halfLen).sort((a, b) => a.x - b.x);
 
-        // 1.4 去重，删除相同label项目
+        // 1.3.1 去重，删除相同label项目
         const groupA2 = Array.from(
             groupA.reduce((m, i) =>
                 m.has(i.label) && m.get(i.label).prob >= i.prob ? m : m.set(i.label, i),
@@ -255,7 +255,7 @@ function sortAndProcessResults(data) {
 
 
         // log(groupA)
-        // 1.5 检查分组A的y差，必须在同一高度上的小图标
+        // 1.3.2 检查分组A的y差，必须在同一高度上的小图标
         let check = checkYDiffLessThan(groupA, cY(10));
         if (!check) {
             console.error('解析结果异常')
@@ -273,10 +273,10 @@ function sortAndProcessResults(data) {
 
         }
 
-        // 1.6 创建分组B（y值较大的后半部分，按prob倒序）
+        // 1.4 创建分组B（y值较大的后半部分，按prob倒序）
         var groupB = sortedByY.slice(halfLen).sort((a, b) => b.prob - a.prob);
-        
-        // 去重检查
+
+        // 1.4.1 去重检查
         const groupB2 = Array.from(
             groupB.reduce((m, i) =>
                 m.has(i.label) && m.get(i.label).prob >= i.prob ? m : m.set(i.label, i),
@@ -290,6 +290,9 @@ function sortAndProcessResults(data) {
                 console.error(' 2.降低[YOLO置信度阈值]值');
                 console.warn(`当前 (置信度阈值: ${confThreshold})`);
             }
+        } else {
+            // 替换去重后的结果
+            groupB = groupB2.sort((a, b) => b.prob - a.prob);
         }
 
         //log(groupB)
