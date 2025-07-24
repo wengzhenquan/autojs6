@@ -118,7 +118,6 @@ function sortAndProcessResults(data) {
             console.error("长度过小");
             console.error("请提高[YOLO重叠率阈值]参数值");
             return new Array();
-
         }
         console.log(tag + "开始尝试进行修正...");
 
