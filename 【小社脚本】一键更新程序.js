@@ -66,17 +66,22 @@ var proxys = [
     "https://github.xxlab.tech/", // 请求时间：0.26s
     "https://gh.halonice.com/", // 请求时间：0.22s
     "https://x.whereisdoge.work/",
-    "https://proxy.yaoyaoling.net/", // 请求时间：0.40s
     "https://cccccccccccccccccccccccccccccccccccccccccccccccccccc.cc/", // 请求时间：0.47s
     "https://gh.799154.xyz/", // 请求时间：0.55s
     "https://hub.gitmirror.com/", // 请求时间：0.75s
     "https://g.blfrp.cn/", // 请求时间：0.91s
     "https://ghfast.top/", // 请求时间：1.39s
-    "https://git.yylx.win/", // 请求时间：1.41s
-    "https://gh.monlor.com/",
     "https://ghproxy.gpnu.org/",
     "https://gh.tryxd.cn/",
-    "https://gh.222322.xyz/",
+    "https://git.tangbai.cc/", // 请求时间：0.57s
+    "https://gh.b52m.cn/", // 请求时间：0.15s
+    "https://gh-proxy.net/", // 请求时间：0.89s
+
+    //2
+    "https://ghfile.geekertao.top/",
+    "https://ghproxy.monkeyray.net/",
+    "https://git.40609891.xyz/", // 请求时间：0.78s
+    "https://git.mokoc.live/",
 
 
 
@@ -86,30 +91,21 @@ var proxys = [
 var proxys2 = [
     //2
     "https://github.chenc.dev/", // 请求时间：0.77s
-    "https://g.cachecdn.ggff.net/", // 请求时间：0.95s
-    "https://gh.b52m.cn/", // 请求时间：0.15s
-    "https://gh-proxy.net/", // 请求时间：0.89s
-    "https://git.669966.xyz/", // 请求时间：0.93s
-    "https://git.40609891.xyz/", // 请求时间：0.78s
-
-    //3
-    "https://gh.catmak.name/",
-    "https://ghfile.geekertao.top/",
-    "https://gitproxy.click/", //
     "https://gh.llkk.cc/",
-    "https://github.kkproxy.dpdns.org/",
-    "https://gh.xx9527.cn/",
-    "https://ghproxy.monkeyray.net/",
-    "https://gh.qninq.cn/",
-
     "https://ghp.ml1.one/",
+    "https://gh.222322.xyz/",
     "https://git.ppp.ac.cn/",
-    "https://github.sagolu.top/",
-    "https://github.dpik.top/",
-    "https://git.mokoc.live/",
-    "https://github.bullb.net/",
+    
+    
+    "https://gh.monlor.com/",
+    "https://gh.catmak.name/",
+    "https://proxy.yaoyaoling.net/",
+    
+    "https://gh.qninq.cn/",
     "https://ghproxy.net/",
-    "https://gh.xxooo.cf/",
+    "https://github.dpik.top/",
+    "https://gitproxy.click/", //
+    
 ]
 // 打乱并整合两个数组
 processArrays(proxys, proxys2);
