@@ -103,7 +103,7 @@ function initializeYolo() {
  * @returns {Array<object>|null} - 处理后的 B 组结果数组 [{centerX, centerY, prob, label}, ...]，或在失败/无效输入时返回 null。
  */
 function sortAndProcessResults(data) {
-    // log(data)
+    log(data)
     // 输入验证
     if (!Array.isArray(data)) {
         console.error("结果处理: 输入数据不是数组。");
@@ -202,6 +202,14 @@ function sortAndProcessResults(data) {
         // 1.3 创建分组A（y值较小的前半部分，按x升序排序）
         const groupA = sortedByY.slice(0, halfLen).sort((a, b) => a.x - b.x);
 
+        // 1.4 检查分组A的y差，必须在同一高度上的小图标
+        let check = checkYDiffLessThan(groupA, 50);
+        if (!check) {
+            console.error('解析结果异常')
+            console.error('可能验证码区域有遮挡')
+            console.info('请检查tmp/pic.png验证码截图')
+        }
+
         // 1.4 创建分组B（y值较大的后半部分，保持原始顺序）
         const groupB = sortedByY.slice(halfLen);
 
@@ -272,6 +280,20 @@ function sortAndProcessResults(data) {
         return new Array();
     }
 }
+
+// 检查数组中所有元素的y值差距是否全小于
+function checkYDiffLessThan(arr, max) {
+    // 提取所有y值
+    const yValues = arr.map(item => item.y);
+    // 元素数量≤1时，默认满足条件
+    if (yValues.length <= 1) return true;
+    // 计算最大y值和最小y值的差值
+    const maxY = Math.max.apply(null, yValues);
+    const minY = Math.min.apply(null, yValues);
+    // 返回差值是否小于60
+    return maxY - minY < max;
+};
+
 
 /**
  * @description 对指定路径的图片执行 YOLO 检测并处理结果。
