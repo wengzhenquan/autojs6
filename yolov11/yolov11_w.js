@@ -208,6 +208,7 @@ function sortAndProcessResults(data) {
             console.warn('解析结果异常')
             console.warn('可能验证码区域有遮挡')
             console.error('请检查tmp/pic.png验证码截图')
+            console.error('若无遮挡，可尝试提高[YOLO重叠率阈值]值')
         }
 
         // 1.4 创建分组B（y值较大的后半部分，保持原始顺序）
