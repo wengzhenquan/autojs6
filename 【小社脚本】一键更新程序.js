@@ -85,28 +85,30 @@ var proxys = [
 
 // 备用代理
 var proxys2 = [
-
     //2
     "https://github.chenc.dev/", // 请求时间：0.77s
     "https://g.cachecdn.ggff.net/", // 请求时间：0.95s
-    "https://github.dpik.top/",
     "https://gh.b52m.cn/", // 请求时间：0.15s
-    "https://ghproxy.net/", // 请求时间：1.05s
     "https://gh.xxooo.cf/",
     "https://gh-proxy.net/", // 请求时间：0.89s
     "https://git.669966.xyz/", // 请求时间：0.93s
     "https://git.40609891.xyz/", // 请求时间：0.78s
+
     //2
     "https://gh.catmak.name/",
     "https://ghfile.geekertao.top/",
     "https://gitproxy.click/", //
-    "https://git.mokoc.live/",
     "https://gh.llkk.cc/",
     "https://github.kkproxy.dpdns.org/",
     "https://gh.xx9527.cn/",
     "https://ghproxy.monkeyray.net/",
     "https://gh.qninq.cn/",
+
+
+    "https://github.dpik.top/",
+    "https://git.mokoc.live/",
     "https://github.bullb.net/",
+    "https://ghproxy.net/",
 
 
 ]
