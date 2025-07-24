@@ -118,10 +118,14 @@ function sortAndProcessResults(data) {
             console.error("长度过小");
             console.error("请尝试：");
 
-            if (nmsThreshold < 0.9)
+            if (nmsThreshold < 0.9) {
                 console.error(' 1.提高[YOLO重叠率阈值]值');
-            if (nmsThreshold > 0.4 && confThreshold > 0.1)
+                console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
+            }
+            if (nmsThreshold > 0.4 && confThreshold > 0.1) {
                 console.error(' 2.降低[YOLO置信度阈值]值');
+                console.warn(`当前 (置信度阈值: ${confThreshold})`);
+            }
 
             return new Array();
         }
@@ -215,10 +219,14 @@ function sortAndProcessResults(data) {
             console.error('可能验证码区域有遮挡')
             console.error('请检查tmp/pic.png验证码截图')
             console.error('若无遮挡，可尝试：')
-            if (nmsThreshold < 0.9)
+            if (nmsThreshold < 0.9) {
                 console.error(' 1.提高[YOLO重叠率阈值]值');
-            if (nmsThreshold > 0.4 && confThreshold > 0.1)
+                console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
+            }
+            if (nmsThreshold > 0.4 && confThreshold > 0.1) {
                 console.error(' 2.降低[YOLO置信度阈值]值');
+                console.warn(`当前 (置信度阈值: ${confThreshold})`);
+            }
 
         }
 
