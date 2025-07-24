@@ -114,6 +114,12 @@ function sortAndProcessResults(data) {
     if (len !== 4 && len !== 6) {
         console.error("结果处理: 预期长度为 4 或 6");
         console.error("实际长度为：" + len);
+        if (len < 4) {
+            console.error("长度过小");
+            console.error("请提高[YOLO重叠率阈值]参数值");
+            return new Array();
+
+        }
         console.log(tag + "开始尝试进行修正...");
 
         // 步骤1：分组
