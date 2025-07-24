@@ -133,7 +133,7 @@ function sortAndProcessResults(data) {
         
         if (len > 14) {
             console.error("长度过多，但能修正");
-            console.error("可尝试：");
+            console.error("建议尝试：");
 
             if (nmsThreshold > 0.1) {
                 console.error(' 1.降低[YOLO重叠率阈值]值');
