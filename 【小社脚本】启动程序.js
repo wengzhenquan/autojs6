@@ -166,7 +166,7 @@ function checkAutoJS6() {
 function maintain() {
     let hours = new Date().getHours();
     if (hours < 2 || hours >= 20) {
-        console.error('维护时间20点~凌晨2点');
+        console.error('维护时间：20点~凌晨2点');
         if (config && config.维护期间禁止检查更新 === 1) {
             console.error('停止更新！');
             ableUpdate = 0;
@@ -208,7 +208,8 @@ function startTimeoutMonitor() {
                 console.error('可能是兼容性问题，或布局分析问题，导致页面卡住');
                 console.error('也有可能是无障碍服务故障，可重新授权无障碍');
                 console.error('请截图保存最后卡住的页面，反馈问题。')
-                notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("发生未知错误，脚本强制停止\n详细问题，请查看日志"));
+                if (config && config.通知提醒)
+                    notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("发生未知错误，脚本强制停止\n详细问题，请查看日志"));
                 exit();
             }
         }, 5 * 1000); // 每 5 秒检查一次
@@ -811,7 +812,8 @@ function checkConfig() {
         });
         console.error("💡 请将上述属性的值改为数值类型");
 
-        notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("config.js配置文件错误\n详情查看日志"));
+        if (config && config.通知提醒)
+            notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("config.js配置文件错误\n详情查看日志"));
 
         wait(() => false, 2000);
         exit();
@@ -845,7 +847,7 @@ let proxys = [
     "https://ghproxy.monkeyray.net/",
     "https://git.40609891.xyz/", // 请求时间：0.78s
     "https://git.mokoc.live/",
-    
+
 ]
 // 打乱数组
 shuffleArray(proxys);
@@ -1177,7 +1179,8 @@ function unLock() {
     // if (!result) {
     if (isLocked) {
         console.error("屏幕解锁失败！！！");
-        notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String('屏幕解锁失败了！'));
+        if (config && config.通知提醒)
+            notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String('屏幕解锁失败了！'));
         wait(() => false, 2000);
         exit();
         wait(() => false, 2000);
@@ -1642,7 +1645,8 @@ function permissionv() {
         console.error("需重新启用无障碍服务");
         console.error("或重启手机");
         if (notice.isEnabled()) {
-            notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("无障碍服务故障或未启用"));
+            if (config && config.通知提醒)
+                notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("无障碍服务故障或未启用"));
         }
         wait(() => false, 2000);
         exit();
