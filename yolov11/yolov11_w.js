@@ -117,10 +117,12 @@ function sortAndProcessResults(data) {
         if (len < 4) {
             console.error("长度过小");
             console.error("请尝试：");
+
             if (nmsThreshold < 0.9)
-                console.error(' 1.提高[YOLO重叠率阈值]值')
-            if (confThreshold > 0.5)
-                console.error(' 2.降低[YOLO置信度阈值]值')
+                console.error(' 1.提高[YOLO重叠率阈值]值');
+            if (nmsThreshold > 0.5 && confThreshold > 0.1)
+                console.error(' 2.降低[YOLO置信度阈值]值');
+
             return new Array();
         }
         console.log(tag + "开始尝试进行修正...");
@@ -214,9 +216,10 @@ function sortAndProcessResults(data) {
             console.error('请检查tmp/pic.png验证码截图')
             console.error('若无遮挡，可尝试：')
             if (nmsThreshold < 0.9)
-                console.error(' 1.提高[YOLO重叠率阈值]值')
-            if (confThreshold > 0.5)
-                console.error(' 2.降低[YOLO置信度阈值]值')
+                console.error(' 1.提高[YOLO重叠率阈值]值');
+            if (nmsThreshold > 0.5 && confThreshold > 0.1)
+                console.error(' 2.降低[YOLO置信度阈值]值');
+
         }
 
         // 1.4 创建分组B（y值较大的后半部分，保持原始顺序）
