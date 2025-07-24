@@ -114,7 +114,7 @@ function sortAndProcessResults(data) {
     if (len !== 4 && len !== 6) {
         console.error("结果处理: 预期长度为 4 或 6");
         console.error("实际长度为：" + len);
-        
+
         if (len < 4) {
             console.error("长度过小");
             console.error("请尝试：");
@@ -130,7 +130,7 @@ function sortAndProcessResults(data) {
 
             return new Array();
         }
-        
+
         if (len > 14) {
             console.error("长度过多，但能修正");
             console.error("建议尝试：");
@@ -143,8 +143,8 @@ function sortAndProcessResults(data) {
                 console.error(' 2.提升[YOLO置信度阈值]值');
                 console.warn(`当前 (置信度阈值: ${confThreshold})`);
             }
-            
-            
+
+
         }
         console.log(tag + "开始尝试进行修正...");
 
@@ -218,7 +218,7 @@ function sortAndProcessResults(data) {
 
 
     try {
-        //log(data)
+        // log(data)
         // ==================== 1. 数据准备阶段 ====================
         // 1.1 按y坐标升序排序（浅拷贝避免修改原数组）
         const sortedByY = data.slice().sort((a, b) => a.y - b.y);
@@ -227,9 +227,35 @@ function sortAndProcessResults(data) {
         const halfLen = Math.floor(sortedByY.length / 2);
 
         // 1.3 创建分组A（y值较小的前半部分，按x升序排序）
-        const groupA = sortedByY.slice(0, halfLen).sort((a, b) => a.x - b.x);
+        var groupA = sortedByY.slice(0, halfLen).sort((a, b) => a.x - b.x);
 
-        // 1.4 检查分组A的y差，必须在同一高度上的小图标
+        // 1.4 去重，删除相同label项目
+        const groupA2 = Array.from(
+            groupA.reduce((m, i) =>
+                m.has(i.label) && m.get(i.label).prob >= i.prob ? m : m.set(i.label, i),
+                new Map()
+            ).values()
+        ).sort((a, b) => a.x - b.x);
+        if (groupA.length > groupA2.length) {
+            console.error('发现重复数据！')
+            console.error("建议尝试：");
+
+            if (nmsThreshold > 0.1) {
+                console.error(' 1.降低[YOLO重叠率阈值]值');
+                console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
+            }
+            if (nmsThreshold < 0.6 && confThreshold < 0.7) {
+                console.error(' 2.提升[YOLO置信度阈值]值');
+                console.warn(`当前 (置信度阈值: ${confThreshold})`);
+            }
+            
+            log(tag + '数据修正后长度：' + groupA2.length * 2)
+            groupA = groupA2;
+        }
+
+
+       // log(groupA)
+        // 1.5 检查分组A的y差，必须在同一高度上的小图标
         let check = checkYDiffLessThan(groupA, cY(10));
         if (!check) {
             console.error('解析结果异常')
@@ -247,9 +273,9 @@ function sortAndProcessResults(data) {
 
         }
 
-        // 1.4 创建分组B（y值较大的后半部分，保持原始顺序）
-        const groupB = sortedByY.slice(halfLen);
-
+        // 1.6 创建分组B（y值较大的后半部分，按prob倒序）
+        const groupB = sortedByY.slice(halfLen).sort((a, b) => b.prob - a.prob);
+        //log(groupB)
         // ==================== 2. 建立快速查找索引 ====================
         // 2.1 使用Map结构存储分组B的元素（label作为key）
         const labelMap = new Map();
