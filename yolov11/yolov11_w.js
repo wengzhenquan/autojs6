@@ -235,42 +235,24 @@ function sortAndProcessResults(data) {
                 m.has(i.label) && m.get(i.label).prob >= i.prob ? m : m.set(i.label, i),
                 new Map()
             ).values()
-        ).sort((a, b) => a.x - b.x);
+        );
         if (groupA.length > groupA2.length) {
             console.error('发现重复数据！')
-            console.error("建议尝试：");
-
-            if (nmsThreshold > 0.1) {
-                console.error(' 1.降低[YOLO重叠率阈值]值');
-                console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
-            }
-            if (nmsThreshold < 0.6 && confThreshold < 0.7) {
-                console.error(' 2.提升[YOLO置信度阈值]值');
-                console.warn(`当前 (置信度阈值: ${confThreshold})`);
-            }
-
-            log(tag + '数据修正后长度：' + groupA2.length * 2)
-            groupA = groupA2;
+            log(tag + '数据修正后长度：' + groupA2.length * 2);
+            // 替换结果
+            groupA = groupA2.sort((a, b) => a.x - b.x);
         }
 
 
         // log(groupA)
         // 1.3.2 检查分组A的y差，必须在同一高度上的小图标
+        // 或只找到1个图标
         let check = checkYDiffLessThan(groupA, cY(10));
-        if (!check) {
+        if (groupA.length < 2 || !check) {
             console.error('解析结果异常')
             console.error('可能验证码区域有遮挡')
             console.error('请检查tmp/pic.png验证码截图')
-            console.error('若无遮挡，可尝试：')
-            if (nmsThreshold < 0.9) {
-                console.error(' 1.提高[YOLO重叠率阈值]值');
-                console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
-            }
-            if (confThreshold > 0.1) {
-                console.error(' 2.降低[YOLO置信度阈值]值');
-                console.warn(`当前 (置信度阈值: ${confThreshold})`);
-            }
-
+            return new Array();
         }
 
         // 1.4 创建分组B（y值较大的后半部分，按prob倒序）
@@ -290,6 +272,7 @@ function sortAndProcessResults(data) {
                 console.error(' 2.降低[YOLO置信度阈值]值');
                 console.warn(`当前 (置信度阈值: ${confThreshold})`);
             }
+            return new Array();
         } else {
             // 替换去重后的结果
             groupB = groupB2.sort((a, b) => b.prob - a.prob);
@@ -368,8 +351,8 @@ function sortAndProcessResults(data) {
 function checkYDiffLessThan(arr, max) {
     // 提取所有y值
     const yValues = arr.map(item => item.y);
-    // 元素数量≤1时，默认满足条件
-    if (yValues.length <= 1) return true;
+    // 元素数量≤1时，默认不满足
+    if (yValues.length <= 1) return false;
     // 计算最大y值和最小y值的差值
     const maxY = Math.max.apply(null, yValues);
     const minY = Math.min.apply(null, yValues);
