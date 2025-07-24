@@ -72,7 +72,6 @@ var proxys = [
     "https://g.blfrp.cn/", // 请求时间：0.91s
     "https://ghfast.top/", // 请求时间：1.39s
     "https://ghproxy.gpnu.org/",
-    "https://gh.tryxd.cn/",
     "https://git.tangbai.cc/", // 请求时间：0.57s
     "https://gh.b52m.cn/", // 请求时间：0.15s
     "https://gh-proxy.net/", // 请求时间：0.89s
@@ -82,6 +81,7 @@ var proxys = [
     "https://ghproxy.monkeyray.net/",
     "https://git.40609891.xyz/", // 请求时间：0.78s
     "https://git.mokoc.live/",
+
 
 
 
