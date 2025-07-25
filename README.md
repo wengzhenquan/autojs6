@@ -481,16 +481,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
    3) 布局分析问题，可能安卓版本不兼容。
    4) 再不行当bug反馈
    
-#### 16. 启动不了。日志只有“开始运行”、“结束运行”。  
-   
-   删除tmp目录下的以下文件，或者删除tmp/一整个文件夹：
-   ``` 
-   
-   launch_main_locked
-   update_locked
-   
-   ``` 
-   
+
    
 
 --- 
@@ -523,6 +514,11 @@ github：https://github.com/wengzhenquan/autojs6
 
 
 --- 
+
+v3.8.20:
+ >1. YOLO初始化优化
+ >2. 添加'社区APP签到方式'配置
+ >3. 识图签到准备阶段失败时，点击'立即签到'按钮前取消签到
 
 v3.8.19:
  >1. 优化YOLO识图错误识别判断
