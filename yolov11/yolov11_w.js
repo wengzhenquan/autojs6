@@ -33,7 +33,7 @@ let isYoloInitialized = false;
 
 
 events.on("exit", function() {
-    if (yoloInstance && isYoloInitialized) {
+    if (yoloInstance) {
         yoloInstance.release();
     }
 });
@@ -79,10 +79,10 @@ function initializeYolo() {
             console.error(tag + " yolo.init() 初始化失败！请检查模型路径、名称、标签及插件权限。");
             console.error('请尝试将配置{YOLO启用GPU:1}改为0再试。');
             yoloInstance = null; // 初始化失败，清空实例
-            throw '';
+            isYoloInitialized = false;
+            throw Error();
             return false;
         }
-
         console.log(tag + "初始化成功！");
         return true;
 
@@ -90,7 +90,7 @@ function initializeYolo() {
         //console.error(`${tag}初始化过程中发生错误: ${error}`);
         yoloInstance = null; // 出错时清空实例
         isYoloInitialized = false;
-        //throw error;
+        throw error;
         return false;
     }
 }
@@ -389,8 +389,10 @@ function detectAndProcess(imagePath) {
     // 检查初始化状态
     if (!isYoloInitialized || !yoloInstance) {
         console.error(tag + "未初始化或初始化失败，尝试重新初始化...");
-        // 尝试再次初始化
-        initializeYolo();
+        try {
+            // 尝试再次初始化
+            initializeYolo();
+        } catch (e) {}
         if (!isYoloInitialized || !yoloInstance)
             return null;
     }
