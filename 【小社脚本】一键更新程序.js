@@ -79,8 +79,7 @@ var proxys = [
     //2
     "https://ghfile.geekertao.top/",
     "https://ghproxy.monkeyray.net/",
-    "https://git.40609891.xyz/", // 请求时间：0.78s
-    "https://git.mokoc.live/",
+    "https://git.40609891.xyz/",
 
 
 
@@ -95,17 +94,18 @@ var proxys2 = [
     "https://ghp.ml1.one/",
     "https://gh.222322.xyz/",
     "https://git.ppp.ac.cn/",
-    
-    
+
+
     "https://gh.monlor.com/",
     "https://gh.catmak.name/",
     "https://proxy.yaoyaoling.net/",
-    
+
     "https://gh.qninq.cn/",
     "https://ghproxy.net/",
     "https://github.dpik.top/",
     "https://gitproxy.click/", //
-    
+    "https://git.mokoc.live/",
+
 ]
 // 打乱并整合两个数组
 processArrays(proxys, proxys2);

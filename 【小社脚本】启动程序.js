@@ -844,8 +844,7 @@ let proxys = [
     //2
     "https://ghfile.geekertao.top/",
     "https://ghproxy.monkeyray.net/",
-    "https://git.40609891.xyz/", // 请求时间：0.78s
-    "https://git.mokoc.live/",
+    "https://git.40609891.xyz/", 
 
 
 ]
