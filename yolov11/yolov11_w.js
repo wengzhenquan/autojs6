@@ -239,6 +239,14 @@ function sortAndProcessResults(data) {
         if (groupA.length > groupA2.length) {
             console.error('发现重复数据！')
             log(tag + '数据修正后长度：' + groupA2.length * 2);
+
+
+            if (nmsThreshold > 0.1) {
+                console.error("建议尝试：");
+                console.error(' 1.降低[YOLO重叠率阈值]值');
+                console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
+            }
+
             // 替换结果
             groupA = groupA2.sort((a, b) => a.x - b.x);
         }
