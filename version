@@ -22,7 +22,8 @@
     },
     "configUpdate": {
         "本地YOLO识图": 1,
-        "YOLO启用GPU": 0
+        "YOLO启用GPU": 0,
+        "社区APP签到方式": 1
     },
     "configValueTransform": {
         "社区APP签到": {
