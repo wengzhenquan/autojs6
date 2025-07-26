@@ -42,6 +42,10 @@ try {
 //快速模式. 该模式下会启用控件缓存
 if (config && config.fast模式)
     auto.setMode("fast");
+    
+//设置参考坐标，不能动，开发环境标准比例。
+setScaleBaseX(1080);
+setScaleBaseY(2400);
 
 var github = "https://github.com/wengzhenquan/autojs6";
 var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs6/refs/heads/main/"
@@ -51,11 +55,6 @@ var serverVersion = null;
 var localVersion = null;
 var run = null;
 var mainFile = null;
-
-
-//设置参考坐标，不能动，开发环境标准比例。
-setScaleBaseX(1080);
-setScaleBaseY(2400);
 
 date = nowDate();
 
@@ -83,7 +82,7 @@ var brand = device.brand;
 
 // 签到未完成标志
 var unfinished_mark = 0;
-//退出按钮
+// 退出按钮
 var window = null;
 // 允许更新
 var ableUpdate = 1;
@@ -111,9 +110,10 @@ log(`现在是：${date}`);
 console.error('QQ群：197511003');
 
 
-
-
 events.on("exit", function() {
+    if (config && !config.fast模式)
+        auto.clearCache();
+        
     console.info('q群反馈：197511003');
     console.setTouchable(true);
     consoleMax();
@@ -121,9 +121,6 @@ events.on("exit", function() {
     if (window) window.close();
     floaty.closeAll();
     threads.shutDownAll();
-
-    if (config && !config.fast模式)
-        auto.clearCache();
 
     // verbose(nowDate());
 });
@@ -139,7 +136,6 @@ maintain();
 
 
 // 启动悬浮窗关闭按钮
-//stopButton();
 threads.start(() => stopButton());
 
 
@@ -290,8 +286,8 @@ function consoleShow() {
                 warn: 'cyan',
                 error: 'magenta'
             });
-            if (config && config.悬浮窗控制台字体大小)
-                console.setContentTextSize(config.悬浮窗控制台字体大小);
+            if (config && config.悬浮窗控制台_字体大小)
+                console.setContentTextSize(config.悬浮窗控制台_字体大小);
 
             console3();
 
@@ -304,14 +300,14 @@ function consoleShow() {
 
 //悬浮窗控制台变成30%
 function console3() {
-    let h = config && config.悬浮窗控制台运行高度 ?
-        config.悬浮窗控制台运行高度 : 0.3;
+    let h = config && config.悬浮窗控制台_运行高度 ?
+        config.悬浮窗控制台_运行高度 : 0.3;
     console.setSize(0.96, h);
 }
 //悬浮窗控制台变成17%
 function consoleMin() {
-    let h = config && config.悬浮窗控制台签到高度 ?
-        config.悬浮窗控制台签到高度 : 0.17;
+    let h = config && config.悬浮窗控制台_签到高度 ?
+        config.悬浮窗控制台_签到高度 : 0.17;
     console.setSize(0.96, h);
 
 }
@@ -342,9 +338,9 @@ function consoleExpand() {
 
 // 关闭悬浮窗控制台
 function consoleExitOnClose() {
-    if (config && typeof config.悬浮窗控制台关闭延迟 !== 'undefined') {
-        let times = config.悬浮窗控制台关闭延迟 > 0 ?
-            config.悬浮窗控制台关闭延迟 * 1000 : false;
+    if (config && typeof config.悬浮窗控制台_关闭延迟 !== 'undefined') {
+        let times = config.悬浮窗控制台_关闭延迟 > 0 ?
+            config.悬浮窗控制台_关闭延迟 * 1000 : false;
         console.setExitOnClose(times);
     }
 }
@@ -843,8 +839,7 @@ let proxys = [
 
     //2
     "https://ghfile.geekertao.top/",
-    "https://ghproxy.monkeyray.net/",
-    "https://git.40609891.xyz/", 
+    "https://git.40609891.xyz/",
 
 
 ]
