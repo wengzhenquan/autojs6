@@ -515,6 +515,10 @@ github：https://github.com/wengzhenquan/autojs6
 
 --- 
 
+v3.8.21:
+ >1. 添加页面检查刷新逻辑
+ >2. 数字密码输入失败添加提醒
+
 v3.8.20:
  >1. YOLO初始化优化
  >2. 添加'社区APP签到方式'配置
