@@ -352,9 +352,10 @@ function console3() {
         config.悬浮窗控制台_运行高度 : 0.3;
     console.setSize(0.96, h);
 }
-//悬浮窗控制台变成17%
+//悬浮窗控制台变成18%
 function consoleMin() {
-    let h = 0.17;
+    let h = 0.18;
+    // 自动适配
     if (global.picY) {
         h = (global.picY - cY(110));
     }
