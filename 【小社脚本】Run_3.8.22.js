@@ -358,7 +358,7 @@ function posts(n) {
         while (!(gz.exists() || gz2.exists())) {
             if (n > 5) {
                 toastError("打开帖子失败！")
-                unfinished_mark = 1;
+                global.unfinished_mark = 1;
                 //backAppIndex();
                 return;
             }
@@ -397,7 +397,7 @@ function posts(n) {
         sleep(1500);
         if (n > 5) {
             toastError("打开帖子失败！")
-            unfinished_mark = 1;
+            global.unfinished_mark = 1;
             //backAppIndex();
             return;
         }
@@ -494,7 +494,7 @@ function start(pram) {
         }
         toastLog("今日已签到！", "forcible");
     } catch (e) {
-        unfinished_mark = 1;
+        global.unfinished_mark = 1;
         console.error("社区APP签到失败！");
         console.error(e.message);
 
@@ -539,7 +539,7 @@ function findCenter(pram) {
         // 识图签到都挂了
         if ((!enlocalYOLO || !yoloProcessor) &&
             serverInitSum === 0) {
-            unfinished_mark = 1;
+            global.unfinished_mark = 1;
             console.error('识图签到准备阶段失败');
             toastError("取消签到！", "forcible")
             back();
@@ -742,9 +742,11 @@ function getClipPic() {
     pic.recycle();
 
     // 反馈截图最上方高度
-    picY = y;
+    global.picY = y;
     // 修正控制台高度
     threads.start(() => consoleMin());
+    //sleep(1000)
+    //consoleMin();
 
     return param;
 }
@@ -2318,7 +2320,7 @@ function run() {
     // 打印明细
     let lResult = levelResult();
 
-    if (unfinished_mark) {
+    if (global.unfinished_mark) {
         //启动小米社区
         launchAPP(xmPckageName);
         // 控制台缩小

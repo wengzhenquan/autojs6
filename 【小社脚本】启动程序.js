@@ -37,7 +37,7 @@ if (!files.exists(launch_locked)) {
 
 try {
     //加载配置
-    var config = require("./config.js");
+    config = require("./config.js");
 } catch (e) {}
 //快速模式. 该模式下会启用控件缓存
 if (config && config.fast模式)
@@ -82,10 +82,10 @@ var brand = device.brand;
 
 
 // 截图验证码最高y
-var picY = null;
+global.picY = null;
 
 // 签到未完成标志
-var unfinished_mark = 0;
+global.unfinished_mark = 0;
 // 退出按钮
 var window = null;
 // 允许更新
@@ -355,7 +355,9 @@ function console3() {
 //悬浮窗控制台变成17%
 function consoleMin() {
     let h = 0.17;
-    if (picY) h = (picY - cY(110));
+    if (global.picY) {
+        h = (global.picY - cY(110));
+    }
 
     if (config && config.悬浮窗控制台_签到高度)
         h = config.悬浮窗控制台_签到高度;
@@ -1801,7 +1803,7 @@ function main() {
         //允许息屏信号
         ableScreenOff = 1;
         abnormalInterrupt = 0;
-        if (!unfinished_mark) {
+        if (!global.unfinished_mark) {
             // 关闭悬浮窗控制台
             consoleExitOnClose();
         }
