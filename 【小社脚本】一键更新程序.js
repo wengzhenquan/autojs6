@@ -497,6 +497,12 @@ function startUpdate() {
                     if (res && res.statusCode === 200) {
                         filebytes = res.body.bytes();
                     }
+                    if (res && res.statusCode === 404 &&
+                        n > 3) {
+                        console.error('文件不存在，可能被作者删除')
+                        console.error('请稍后重试！')
+                        exit();
+                    }
                 } catch (e) {}
             });
             thread.join(timeoutTimes * 1000);
