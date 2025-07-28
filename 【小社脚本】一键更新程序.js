@@ -28,7 +28,7 @@ console.launch();
 // 参考：50~100Mbps宽带30s，100~300Mbps宽带15s，
 //      300~500Mbps宽带10s，千兆5s，
 //      不建议改成小于5
-var download_timeout = 15;
+var download_timeout = 20;
 
 // 最小文件大小(B)，小于这个值都认为错误，将重试
 var filemin = 500;
@@ -102,9 +102,10 @@ var proxys2 = [
     "https://gh.qninq.cn/",
     "https://ghproxy.net/",
     "https://github.dpik.top/",
-    "https://gitproxy.click/", //
     "https://git.mokoc.live/",
     "https://ghproxy.monkeyray.net/",
+
+    // "https://gitproxy.click/", //
 
 ]
 // 打乱并整合两个数组

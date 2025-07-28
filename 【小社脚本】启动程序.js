@@ -42,7 +42,7 @@ try {
 //快速模式. 该模式下会启用控件缓存
 if (config && config.fast模式)
     auto.setMode("fast");
-    
+
 //设置参考坐标，不能动，开发环境标准比例。
 setScaleBaseX(1080);
 setScaleBaseY(2400);
@@ -86,6 +86,8 @@ var unfinished_mark = 0;
 var window = null;
 // 允许更新
 var ableUpdate = 1;
+// 异常中断
+var abnormalInterrupt = 1;
 
 // 允许息屏信号
 var ableScreenOff = 0;
@@ -113,7 +115,10 @@ console.error('QQ群：197511003');
 events.on("exit", function() {
     if (config && !config.fast模式)
         auto.clearCache();
-        
+
+    if (abnormalInterrupt && config && config.通知提醒)
+        notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("发生未知错误，脚本异常中断\n详细问题，请查看日志"));
+
     console.info('q群反馈：197511003');
     console.setTouchable(true);
     consoleMax();
@@ -152,6 +157,7 @@ function checkAutoJS6() {
     if (!(v650 || vAtLest)) {
         console.error('不支持的AutoJS6版本');
         console.error('请升级AutoJS6');
+        abnormalInterrupt = 0;
         wait(() => false, 2000);
         exit();
         wait(() => false, 2000);
@@ -168,6 +174,7 @@ function maintain() {
             ableUpdate = 0;
         }
         if (config && config.维护期间禁止检查更新 === 2) {
+            abnormalInterrupt = 0;
             console.error('禁止运行！');
             wait(() => false, 2000);
             exit();
@@ -183,6 +190,9 @@ function maintain() {
 function startTimeoutMonitor() {
     threads.start(() => {
         setInterval(function() {
+            // 尝试刷新
+            tryRefresh();
+
             const startTime = new Date(date.replace(/-/g, '/')).getTime();
             let currentTime = new Date().getTime();
 
@@ -200,6 +210,7 @@ function startTimeoutMonitor() {
             // 停止脚本
             if (currentTime - startTime > (maxRuntime - 10 * 1000)) {
                 ableScreenOff = 1;
+                abnormalInterrupt = 0;
                 console.error(`脚本运行 ${(maxRuntime)/60/1000} 分钟，强制退出`);
                 console.error('可能是兼容性问题，或布局分析问题，导致页面卡住');
                 console.error('也有可能是无障碍服务故障，可重新授权无障碍');
@@ -210,6 +221,35 @@ function startTimeoutMonitor() {
             }
         }, 5 * 1000); // 每 5 秒检查一次
     });
+}
+
+// 尝试刷新
+function tryRefresh() {
+    let n = 3;
+    while (n-- && (content('刷新').exists() ||
+            content('重新加载').exists() ||
+            content('refresh').exists())) {
+        console.warn('页面未成功加载')
+        console.warn('第 ' + (3 - n) + ' 次尝试刷新...')
+        click(text('刷新'));
+        sleep(200);
+        click(text('重新加载'));
+        sleep(200);
+        click(text('refresh'));
+    }
+
+    if (content('刷新').exists() ||
+        content('重新加载').exists() ||
+        content('refresh').exists()) {
+        console.error('页面加载失败！');
+        console.error('小米社区APP异常！')
+        console.error('或许可以考虑尝试更换社区APP版本！');
+        abnormalInterrupt = 0;
+        wait(() => false, 2000);
+        exit();
+        wait(() => false, 2000);
+
+    }
 }
 
 //------------ 左下角“停止脚本”按钮 ----------//
@@ -236,8 +276,10 @@ function stopButton() {
     //  window.action.click(() => window.close());
     let n = 0;
     window.action.click(() => {
+        abnormalInterrupt = 0;
         // 关闭悬浮窗控制台
         consoleExitOnClose();
+
         console.error("动作：点击[停止脚本]");
         exit();
         engines.stopAll();
@@ -596,15 +638,19 @@ function systemSetting() {
         events.setKeyInterceptionEnabled("volume_down", true);
         events.observeKey();
         events.onKeyDown("volume_up", () => {
+            abnormalInterrupt = 0;
             console.error("[音量+]停止脚本！！！");
             // 关闭悬浮窗控制台
             consoleExitOnClose();
+            abnormalInterrupt = 0;
             exit();
         });
         events.onKeyDown("volume_down", () => {
+            abnormalInterrupt = 0;
             console.error("[音量-]停止脚本！！！");
             // 关闭悬浮窗控制台
             consoleExitOnClose();
+            abnormalInterrupt = 0;
             exit();
         });
     }
@@ -811,6 +857,7 @@ function checkConfig() {
         if (config && config.通知提醒)
             notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("config.js配置文件错误\n详情查看日志"));
 
+        abnormalInterrupt = 0;
         wait(() => false, 2000);
         exit();
         wait(() => false, 2000);
@@ -1090,6 +1137,7 @@ function updateScript() {
     engines.execScriptFile("./" + mainFile, {
         delay: 2000
     });
+    abnormalInterrupt = 0;
     //退出本线程
     exit();
 
@@ -1137,16 +1185,52 @@ function unLock() {
                 gesture(600, config.锁屏图案坐标);
             }
             if (config.解锁方式 === 2) {
+                let password = config.锁屏数字密码;
+                if (typeof password !== 'string') {
+                    console.error('密码格式错误！');
+                    console.error('密码开始和结束，必须有英文双引号！');
+                    abnormalInterrupt = 0;
+                    wait(() => false, 2000);
+                    exit();
+                    wait(() => false, 2000);
+                }
+                password = String(password).trim();
+
+                if (password.length < 4) {
+                    console.error('密码长度必须>=4位！');
+                    abnormalInterrupt = 0;
+                    wait(() => false, 2000);
+                    exit();
+                    wait(() => false, 2000);
+                }
+
                 if (textContains('混合').exists()) {
                     log("→数字密码(混合密码)解锁");
                 } else {
                     log("→数字密码解锁");
                 }
 
-                for (let i = 0; i < config.锁屏数字密码.length; i++) {
-                    let num = content(config.锁屏数字密码[i]).findOne(800);
+                for (let i = 0; i < password.length; i++) {
+                    let num = content(password[i]).findOne(800);
                     if (!clickCenter(num)) {
-                        console.error(num + '点击失败!')
+                        console.error('[' + password[i] + '] 点击失败!')
+                        if (!num) {
+                            console.error('布局分析失效了！')
+                            console.warn('如果是偶发现象，可尝试：')
+                            console.warn(' 1.开启[修改安全设置]权限')
+                            console.warn(' 2.可将{fast模式}改成1，开启缓存');
+                            console.warn(' 3.重启无障碍服务');
+                            console.warn(' 4.重启手机')
+
+                            console.warn('如果经常发生，建议改成图案解锁！')
+                            
+                            abnormalInterrupt = 0;
+                            wait(() => false, 2000);
+                            exit();
+                            wait(() => false, 2000);
+
+                        }
+
                     };
                     wait(() => false, 300);
                 }
@@ -1175,6 +1259,8 @@ function unLock() {
         console.error("屏幕解锁失败！！！");
         if (config && config.通知提醒)
             notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String('屏幕解锁失败了！'));
+        
+        abnormalInterrupt = 0;
         wait(() => false, 2000);
         exit();
         wait(() => false, 2000);
@@ -1335,11 +1421,15 @@ function restart() {
         engines.execScriptFile("./" + fileName, {
             delay: 2000
         });
+        
+        abnormalInterrupt = 0;
         //退出本线程
         exit();
     } else {
         files.remove(restart_main_locked);
         console.error('重启失败');
+        
+        abnormalInterrupt = 0;
         wait(() => false, 2000);
         exit();
         wait(() => false, 2000);
@@ -1371,6 +1461,8 @@ function permissionv() {
     } else {
         console.error("悬浮窗权限，[未启用]!");
         console.error("或：显示在其它应用上层");
+        
+        abnormalInterrupt = 0;
         wait(() => false, 2000);
         exit();
         wait(() => false, 2000);
@@ -1386,6 +1478,8 @@ function permissionv() {
         console.error("发送通知权限，[未启用]!");
         //去设置
         notice.launchSettings();
+        
+        abnormalInterrupt = 0;
         wait(() => false, 2000);
         exit();
         wait(() => false, 2000);
@@ -1642,6 +1736,7 @@ function permissionv() {
             if (config && config.通知提醒)
                 notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("无障碍服务故障或未启用"));
         }
+        abnormalInterrupt = 0;
         wait(() => false, 2000);
         exit();
         wait(() => false, 2000);
@@ -1698,6 +1793,7 @@ function main() {
         console.warn("—----->--- End ---<-----—");
         //允许息屏信号
         ableScreenOff = 1;
+        abnormalInterrupt = 0;
         if (!unfinished_mark) {
             // 关闭悬浮窗控制台
             consoleExitOnClose();
