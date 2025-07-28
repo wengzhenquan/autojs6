@@ -1879,7 +1879,7 @@ function 小程序签到(pram) {
 
         if (clickCenter(bak)) sleep(1000);
 
-        click(text("微信"));
+        clickCenter("微信");
 
         // 微信下滑
         let n = 5;
