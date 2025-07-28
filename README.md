@@ -515,6 +515,10 @@ github：https://github.com/wengzhenquan/autojs6
 
 --- 
 
+v3.8.22:
+ >1. 签到时控制台高度自动适配
+
+
 v3.8.21:
  >1. 添加页面检查刷新逻辑
  >2. 数字密码输入失败添加提醒
