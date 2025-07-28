@@ -80,6 +80,10 @@ var brand = device.brand;
 //var jsversion = (engines.myEngine().getSource().getName()
 //   .match(/\d[\s\S]*/) || [""])[0];
 
+
+// 截图验证码最高y
+var picY = null;
+
 // 签到未完成标志
 var unfinished_mark = 0;
 // 退出按钮
@@ -113,8 +117,10 @@ console.error('QQ群：197511003');
 
 
 events.on("exit", function() {
-    if (config && !config.fast模式)
-        auto.clearCache();
+    try {
+        if (config && !config.fast模式)
+            auto.clearCache();
+    } catch (e) {}
 
     if (abnormalInterrupt && config && config.通知提醒)
         notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("发生未知错误，脚本异常中断\n详细问题，请查看日志"));
@@ -348,8 +354,12 @@ function console3() {
 }
 //悬浮窗控制台变成17%
 function consoleMin() {
-    let h = config && config.悬浮窗控制台_签到高度 ?
-        config.悬浮窗控制台_签到高度 : 0.17;
+    let h = 0.17;
+    if (picY) h = (picY - cY(110));
+
+    if (config && config.悬浮窗控制台_签到高度)
+        h = config.悬浮窗控制台_签到高度;
+
     console.setSize(0.96, h);
 
 }
@@ -875,13 +885,10 @@ let proxys = [
     "https://gh.halonice.com/", // 请求时间：0.22s
     "https://x.whereisdoge.work/",
     "https://cccccccccccccccccccccccccccccccccccccccccccccccccccc.cc/", // 请求时间：0.47s
-    "https://gh.799154.xyz/", // 请求时间：0.55s
     "https://hub.gitmirror.com/", // 请求时间：0.75s
     "https://g.blfrp.cn/", // 请求时间：0.91s
     "https://ghfast.top/", // 请求时间：1.39s
     "https://ghproxy.gpnu.org/",
-    "https://git.tangbai.cc/", // 请求时间：0.57s
-    "https://gh.b52m.cn/", // 请求时间：0.15s
     "https://gh-proxy.net/", // 请求时间：0.89s
 
     //2
@@ -1223,7 +1230,7 @@ function unLock() {
                             console.warn(' 4.重启手机')
 
                             console.warn('如果经常发生，建议改成图案解锁！')
-                            
+
                             abnormalInterrupt = 0;
                             wait(() => false, 2000);
                             exit();
@@ -1259,7 +1266,7 @@ function unLock() {
         console.error("屏幕解锁失败！！！");
         if (config && config.通知提醒)
             notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String('屏幕解锁失败了！'));
-        
+
         abnormalInterrupt = 0;
         wait(() => false, 2000);
         exit();
@@ -1421,14 +1428,14 @@ function restart() {
         engines.execScriptFile("./" + fileName, {
             delay: 2000
         });
-        
+
         abnormalInterrupt = 0;
         //退出本线程
         exit();
     } else {
         files.remove(restart_main_locked);
         console.error('重启失败');
-        
+
         abnormalInterrupt = 0;
         wait(() => false, 2000);
         exit();
@@ -1461,7 +1468,7 @@ function permissionv() {
     } else {
         console.error("悬浮窗权限，[未启用]!");
         console.error("或：显示在其它应用上层");
-        
+
         abnormalInterrupt = 0;
         wait(() => false, 2000);
         exit();
@@ -1478,7 +1485,7 @@ function permissionv() {
         console.error("发送通知权限，[未启用]!");
         //去设置
         notice.launchSettings();
-        
+
         abnormalInterrupt = 0;
         wait(() => false, 2000);
         exit();
