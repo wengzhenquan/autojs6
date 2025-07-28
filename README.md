@@ -517,6 +517,7 @@ github：https://github.com/wengzhenquan/autojs6
 
 v3.8.22:
  >1. 签到时控制台高度自动适配
+ >2. 解决autoJS6 6.5.0不支持auto.clearCache()问题
 
 
 v3.8.21:
