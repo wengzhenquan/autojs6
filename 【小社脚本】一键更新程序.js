@@ -499,8 +499,8 @@ function startUpdate() {
                     }
                     if (res && res.statusCode === 404 &&
                         n > 3) {
-                        console.error('文件不存在，可能被作者删除')
-                        console.error('请稍后重试！')
+                        console.error('文件不存在，可能作者正在维护')
+                        console.error('请过5分钟以后再试！')
                         exit();
                     }
                 } catch (e) {}
