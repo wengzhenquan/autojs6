@@ -357,7 +357,12 @@ function consoleMin() {
     let h = 0.18;
     // 自动适配
     if (global.picY) {
-        h = (global.picY - cY(110));
+        // h = (global.picY - cY(110));
+
+        const STATUS_BAR_HEIGHT = ui.statusBarHeight;
+        const BORDER_OFFSET = util.dpToPx(12);
+        // h = a - STATUS_BAR_HEIGHT - y + BORDER_OFFSET;
+        h = (global.picY - cY(15)) - STATUS_BAR_HEIGHT - (0.02 * dheight) + BORDER_OFFSET;
     }
 
     if (config && config.悬浮窗控制台_签到高度)
@@ -893,7 +898,7 @@ let proxys = [
     "https://g.blfrp.cn/", // 请求时间：0.91s
     "https://ghfast.top/", // 请求时间：1.39s
     "https://ghproxy.gpnu.org/",
-    
+
 
     //2
     "https://ghfile.geekertao.top/",

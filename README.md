@@ -515,6 +515,10 @@ github：https://github.com/wengzhenquan/autojs6
 
 --- 
 
+v3.8.24:
+ >1. 修正'悬浮窗控制台_签到高度：0'自动适配高度
+ >2. 修改一些日志
+
 v3.8.23:
  >1. config重复加载
  >2. 修复读取成长值信息错误
