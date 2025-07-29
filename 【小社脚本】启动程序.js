@@ -237,11 +237,11 @@ function tryRefresh() {
             content('refresh').exists())) {
         console.warn('页面未成功加载')
         console.warn('第 ' + (3 - n) + ' 次尝试刷新...')
-        click(text('刷新'));
+        click('刷新');
         sleep(200);
-        click(text('重新加载'));
+        click('重新加载');
         sleep(200);
-        click(text('refresh'));
+        click('refresh');
     }
 
     if (content('刷新').exists() ||
@@ -450,10 +450,9 @@ function ableClick(obj) {
                 // 最多向上爬2层
                 let n = 2;
                 while (n-- && !result &&
-                    !obj.clickable() &&
                     obj.parent() &&
-                    obj.parent().depth() > 0 &&
-                    obj.parent().indexInParent() > -1) {
+                    obj.parent().depth() > 0
+                ) {
 
                     obj = obj.parent();
                     // 父控件click
@@ -744,7 +743,7 @@ function init() {
     }
     //加载本地版本文件
     loadLocalVersion();
-    console.info("当前版本：" + localVersion.version);
+    console.info("当前脚本版本：" + localVersion.version);
 
     if (!files.exists("./" + localVersion.run)) {
         console.error("缺失Run文件");
@@ -753,6 +752,7 @@ function init() {
         return;
     }
     // 加载run函数
+    console.info('加载run版本：' + localVersion.run.match(/【小社脚本】(.+)\.js/)[1]);
     run = require("./" + localVersion.run);
 
     if (!files.exists("./config.js")) {
@@ -801,6 +801,7 @@ function init() {
                     key.toLowerCase().includes('yolo'))
                     continue;
                 console.error(key + " 未安装");
+                console.warn("若找不到文件，请下滑刷新文件列表");
             }
         }
     }
