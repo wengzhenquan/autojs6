@@ -71,7 +71,7 @@ var proxys = [
     "https://g.blfrp.cn/", // 请求时间：0.91s
     "https://ghfast.top/", // 请求时间：1.39s
     "https://ghproxy.gpnu.org/",
-    "https://gh-proxy.net/", // 请求时间：0.89s
+
 
     //2
     "https://ghfile.geekertao.top/",
@@ -95,15 +95,17 @@ var proxys2 = [
     "https://gh.catmak.name/",
     "https://proxy.yaoyaoling.net/",
     "https://ghproxy.net/",
+    "https://gh-proxy.net/",
     "https://github.dpik.top/",
     "https://ghproxy.monkeyray.net/",
     "https://gitproxy.click/", //
-    
-    "https://gh.b52m.cn/", 
+
+    "https://gh.b52m.cn/",
     "https://gh.qninq.cn/",
     "https://git.mokoc.live/",
     "https://git.tangbai.cc/", // 请求时间：0.57s
     "https://gh.799154.xyz/", // 请求时间：0.55s
+
 
 ]
 // 打乱并整合两个数组

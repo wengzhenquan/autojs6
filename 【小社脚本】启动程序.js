@@ -893,7 +893,7 @@ let proxys = [
     "https://g.blfrp.cn/", // 请求时间：0.91s
     "https://ghfast.top/", // 请求时间：1.39s
     "https://ghproxy.gpnu.org/",
-    "https://gh-proxy.net/", // 请求时间：0.89s
+    
 
     //2
     "https://ghfile.geekertao.top/",
