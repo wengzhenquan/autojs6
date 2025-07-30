@@ -95,16 +95,16 @@ var proxys2 = [
     "https://gh.catmak.name/",
     "https://proxy.yaoyaoling.net/",
     "https://ghproxy.net/",
-    "https://gh-proxy.net/",
+    //"https://gh-proxy.net/", 
     "https://github.dpik.top/",
     "https://ghproxy.monkeyray.net/",
-    "https://gitproxy.click/", //
-
-    "https://gh.b52m.cn/",
+   // "https://gitproxy.click/", //
+    
+    "https://gh.b52m.cn/", 
     "https://gh.qninq.cn/",
-    "https://git.mokoc.live/",
+    //"https://git.mokoc.live/",
     "https://git.tangbai.cc/", // 请求时间：0.57s
-    "https://gh.799154.xyz/", // 请求时间：0.55s
+   // "https://gh.799154.xyz/", // 请求时间：0.55s
 
 
 ]
