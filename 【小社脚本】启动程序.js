@@ -890,20 +890,14 @@ function checkConfig() {
 let proxys = [
     //  1 
     "https://ghproxy.sakuramoe.dev/", // 请求时间：0.25s
-    "https://github.xxlab.tech/", // 请求时间：0.26s
     "https://gh.halonice.com/", // 请求时间：0.22s
     "https://x.whereisdoge.work/",
     "https://cccccccccccccccccccccccccccccccccccccccccccccccccccc.cc/", // 请求时间：0.47s
     "https://hub.gitmirror.com/", // 请求时间：0.75s
     "https://g.blfrp.cn/", // 请求时间：0.91s
     "https://ghfast.top/", // 请求时间：1.39s
-    "https://ghproxy.gpnu.org/",
-
-
-    //2
     "https://ghfile.geekertao.top/",
     "https://git.40609891.xyz/",
-
 
 ]
 // 打乱数组
