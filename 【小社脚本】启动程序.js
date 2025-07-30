@@ -237,11 +237,9 @@ function tryRefresh() {
             content('refresh').exists())) {
         console.warn('页面未成功加载')
         console.warn('第 ' + (3 - n) + ' 次尝试刷新...')
-        click('刷新');
-        sleep(200);
-        click('重新加载');
-        sleep(200);
-        click('refresh');
+        clickCenter('刷新');
+        clickCenter('重新加载');
+        clickCenter('refresh');
     }
 
     if (content('刷新').exists() ||
