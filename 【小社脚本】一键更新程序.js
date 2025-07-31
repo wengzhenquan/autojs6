@@ -71,6 +71,10 @@ var proxys = [
     "https://ghfast.top/", // 请求时间：1.39s
     "https://ghfile.geekertao.top/",
     "https://git.40609891.xyz/",
+    "https://hub.mwm.moe/",
+    "https://git.yylx.win/",
+
+  
 
 
 ]
@@ -91,6 +95,7 @@ var proxys2 = [
     "https://gh.b52m.cn/",
     "https://git.tangbai.cc/",
     "https://gh.qninq.cn/",
+    "https://hub.mwm.moe/",
 ]
 // 打乱并整合两个数组
 processArrays(proxys, proxys2);

@@ -896,6 +896,21 @@ let proxys = [
     "https://ghfast.top/", // 请求时间：1.39s
     "https://ghfile.geekertao.top/",
     "https://git.40609891.xyz/",
+    "https://hub.mwm.moe/",
+    "https://git.yylx.win/",
+
+    //2
+    "https://github.chenc.dev/",
+    "https://gh.llkk.cc/",
+    "https://ghp.ml1.one/",
+    "https://gh.222322.xyz/",
+    "https://gh.monlor.com/",
+    "https://gh.catmak.name/",
+    "https://proxy.yaoyaoling.net/",
+    "https://ghproxy.net/",
+    "https://github.dpik.top/",
+    "https://ghproxy.monkeyray.net/",
+    "https://gh.qninq.cn/",
 
 ]
 // 打乱数组
