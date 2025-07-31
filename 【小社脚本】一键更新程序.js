@@ -95,7 +95,7 @@ var proxys2 = [
     "https://gh.b52m.cn/",
     "https://git.tangbai.cc/",
     "https://gh.qninq.cn/",
-    "https://hub.mwm.moe/",
+    
 ]
 // 打乱并整合两个数组
 processArrays(proxys, proxys2);
@@ -127,6 +127,7 @@ var api_proxys = [
     "https://gh-proxy.com/",
     "https://99z.top/",
     "https://gh.944446.xyz/",
+    "https://hub.mwm.moe/",
 
 ]
 // 打乱数组
