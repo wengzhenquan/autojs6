@@ -123,7 +123,7 @@
   ---- (YOLO本地签到模块) ----  
   
 └─  yolov11/     
-   ├─  yolov11_w.js # 本地YOLO脚本
+   ├─  yolov11_w.js # 本地YOLO脚本(增强版)
    └─  model/       # 模型文件目录
       ├─  yzm.bin
       └─  yzm.param
