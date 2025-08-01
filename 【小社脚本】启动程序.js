@@ -367,7 +367,7 @@ function consoleMin() {
         h = config.悬浮窗控制台_签到高度;
 
     console.setSize(0.96, h);
-    
+
     // 像素转换
     function dpToPx2(dp) {
         // 获取设备屏幕密度（dpi），AutoJS6中通过context获取
@@ -900,25 +900,16 @@ let proxys = [
     "https://x.whereisdoge.work/",
     "https://cccccccccccccccccccccccccccccccccccccccccccccccccccc.cc/", // 请求时间：0.47s
     "https://hub.gitmirror.com/", // 请求时间：0.75s
-    "https://g.blfrp.cn/", // 请求时间：0.91s
-    "https://ghfast.top/", // 请求时间：1.39s
     "https://ghfile.geekertao.top/",
-    "https://git.40609891.xyz/",
-    "https://hub.mwm.moe/",
     "https://git.yylx.win/",
 
     //2
-    "https://github.chenc.dev/",
     "https://gh.llkk.cc/",
     "https://ghp.ml1.one/",
     "https://gh.222322.xyz/",
-    "https://gh.monlor.com/",
     "https://gh.catmak.name/",
     "https://proxy.yaoyaoling.net/",
-    "https://ghproxy.net/",
     "https://github.dpik.top/",
-    "https://ghproxy.monkeyray.net/",
-    "https://gh.qninq.cn/",
 
 ]
 // 打乱数组

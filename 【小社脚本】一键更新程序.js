@@ -67,14 +67,16 @@ var proxys = [
     "https://x.whereisdoge.work/",
     "https://cccccccccccccccccccccccccccccccccccccccccccccccccccc.cc/", // 请求时间：0.47s
     "https://hub.gitmirror.com/", // 请求时间：0.75s
-    "https://g.blfrp.cn/", // 请求时间：0.91s
-    "https://ghfast.top/", // 请求时间：1.39s
     "https://ghfile.geekertao.top/",
-    "https://git.40609891.xyz/",
-    "https://hub.mwm.moe/",
     "https://git.yylx.win/",
 
-  
+    //2
+    "https://gh.llkk.cc/",
+    "https://ghp.ml1.one/",
+    "https://gh.222322.xyz/",
+    "https://gh.catmak.name/",
+    "https://proxy.yaoyaoling.net/",
+    "https://github.dpik.top/",
 
 
 ]
@@ -82,20 +84,19 @@ var proxys = [
 // 备用代理
 var proxys2 = [
     //2
-    "https://github.chenc.dev/", // 请求时间：0.77s
-    "https://gh.llkk.cc/",
-    "https://ghp.ml1.one/",
-    "https://gh.222322.xyz/",
-    "https://gh.monlor.com/",
-    "https://gh.catmak.name/",
-    "https://proxy.yaoyaoling.net/",
-    "https://ghproxy.net/",
-    "https://github.dpik.top/",
     "https://ghproxy.monkeyray.net/",
+    "https://gh.monlor.com/",
+    "https://g.blfrp.cn/", // 请求时间：0.91s
+    "https://ghfast.top/", // 请求时间：1.39s
+    "https://git.40609891.xyz/",
     "https://gh.b52m.cn/",
-    "https://git.tangbai.cc/",
-    "https://gh.qninq.cn/",
-    
+    "https://github.chenc.dev/",
+    "https://gitproxy.click/", //
+    "https://gh-proxy.net/",
+    "https://github.xxlab.tech/",
+    "https://hub.mwm.moe/",
+    "https://ghproxy.net/",
+
 ]
 // 打乱并整合两个数组
 processArrays(proxys, proxys2);
