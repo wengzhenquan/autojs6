@@ -358,7 +358,7 @@ function consoleMin() {
         // h = (global.picY - cY(110));
 
         const STATUS_BAR_HEIGHT = ui.statusBarHeight;
-        const BORDER_OFFSET = util.dpToPx(12);
+        const BORDER_OFFSET = dpToPx2(12);
         // h = a - STATUS_BAR_HEIGHT - y + BORDER_OFFSET;
         h = (global.picY - cY(15)) - STATUS_BAR_HEIGHT - (0.02 * dheight) + BORDER_OFFSET;
     }
@@ -367,6 +367,14 @@ function consoleMin() {
         h = config.悬浮窗控制台_签到高度;
 
     console.setSize(0.96, h);
+    
+    // 像素转换
+    function dpToPx2(dp) {
+        // 获取设备屏幕密度（dpi），AutoJS6中通过context获取
+        let dpi = context.getResources().getDisplayMetrics().densityDpi;
+        // 标准密度为160dpi，1dp = 1px，其他密度按比例计算
+        return dp * (dpi / 160);
+    }
 
 }
 
