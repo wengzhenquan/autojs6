@@ -1,6 +1,10 @@
 // yolov11.js - YOLO 检测与结果处理模块
 if (typeof config === 'undefined' || !config) {
-    config = require("../config.js");
+    try {
+        config = require("../config.js");
+    } catch (e) {
+        config = {};
+    }
 }
 // --- 常量定义 ---
 const YOLO_PLUGIN_NAME = "com.circlefork.yolo"; // 插件包名
@@ -22,11 +26,9 @@ const MODEL_LABELS = ["面条", "牙齿", "喷漆", "戒指", "汉堡", "双串"
 ];
 // --- 模型参数 ---
 //类别置信度阈值
-const confThreshold = config && config.YOLO置信度阈值 ?
-    config.YOLO置信度阈值 : 0.01;
+const confThreshold = (config && config.YOLO置信度阈值) || 0.01;
 //重叠率阈值
-const nmsThreshold = config && config.YOLO重叠率阈值 ?
-    config.YOLO重叠率阈值 : 0.1;
+const nmsThreshold = (config && config.YOLO重叠率阈值) || 0.1;
 
 const tag = "[YOLO]";
 // --- 模块级变量 (用于存储初始化状态和实例) ---
