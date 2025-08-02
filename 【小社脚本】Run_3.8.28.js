@@ -1,5 +1,6 @@
 // 引入配置文件
-if (typeof config === 'undefined' || !config) {
+if (typeof config === 'undefined' || !config ||
+    Object.keys(config).length === 0) {
     try {
         config = require("./config.js");
     } catch (e) {
