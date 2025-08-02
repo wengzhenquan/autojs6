@@ -1,5 +1,6 @@
 // yolov11.js - YOLO 检测与结果处理模块
-if (typeof config === 'undefined' || !config) {
+if (typeof config === 'undefined' || !config ||
+    Object.keys(config).length === 0) {
     try {
         config = require("../config.js");
     } catch (e) {
