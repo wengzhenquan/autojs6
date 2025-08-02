@@ -245,7 +245,7 @@ function sortAndProcessResults(data) {
             ).values()
         ).sort((a, b) => a.x - b.x);
 
-        log(groupA)
+        //log(groupA)
 
         // 1.4 创建分组B（y值较大的后半部分，按prob倒序）
         //var groupB = sortedByY.slice(halfLen).sort((a, b) => b.prob - a.prob);
