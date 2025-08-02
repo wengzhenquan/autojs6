@@ -266,7 +266,7 @@ function sortAndProcessResults(data) {
             sleep(500);
         }
 
-        if (groupB.length < groupA.length) {
+        if (groupA.length < 2 || groupB.length < groupA.length) {
             console.error('结果解析错误！');
             console.warn('上方指标数据长度：' + groupA.length)
             console.warn('下方目标数据长度：' + groupB.length)
