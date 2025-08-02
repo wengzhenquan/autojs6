@@ -168,7 +168,7 @@ function sortAndProcessResults(data) {
             if (group.every(item => item.prob < 0.16)) return;
 
             // 规则2：跳过单一元素组
-            if (group.length === 1) return;
+            if (group.length < 2) return;
 
             // 规则3：按置信度降序排序
             const sortedGroup = group.slice()
@@ -215,6 +215,7 @@ function sortAndProcessResults(data) {
         //替换数据
         data = result;
         console.warn("数据减少，结果不一定正确");
+        sleep(500);
 
     }
 
@@ -226,40 +227,49 @@ function sortAndProcessResults(data) {
         const sortedByY = data.slice().sort((a, b) => a.y - b.y);
 
         // 1.2 计算分组边界位置（原数组的一半长度）
-        const halfLen = Math.floor(sortedByY.length / 2);
+        //  const halfLen = Math.floor(sortedByY.length / 2);
+        // 最小的Y
+        const minY = sortedByY[0].y;
 
         // 1.3 创建分组A（y值较小的前半部分，按x升序排序）
-        var groupA = sortedByY.slice(0, halfLen).sort((a, b) => a.x - b.x);
-
-        // 1.3.1 去重，删除相同label项目
-        const groupA2 = Array.from(
-            groupA.reduce((m, i) =>
+        // var groupA = sortedByY.slice(0, halfLen).sort((a, b) => a.x - b.x);
+        // 收集y与minY差小于50的数据，且去重
+        const groupA = Array.from(
+            sortedByY
+            .filter(item => Math.abs(item.y - minY) < cY(50))
+            .reduce((m, i) =>
+                // 然后执行去重逻辑
                 m.has(i.label) && m.get(i.label).prob >= i.prob ? m : m.set(i.label, i),
                 new Map()
             ).values()
-        );
-        if (groupA.length > groupA2.length) {
-            console.error('发现重复数据！')
-            log(tag + '数据修正后长度：' + groupA2.length * 2);
+        ).sort((a, b) => a.x - b.x);
 
+        //log(groupA)
 
-            if (nmsThreshold > 0.1) {
-                console.error("建议尝试：");
-                console.error(' 1.降低[YOLO重叠率阈值]值');
-                console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
-            }
+        // 1.4 创建分组B（y值较大的后半部分，按prob倒序）
+        //var groupB = sortedByY.slice(halfLen).sort((a, b) => b.prob - a.prob);
+        // 收集y与minY差大于50的数据，且去重
+        const groupB = Array.from(
+            sortedByY
+            .filter(item => Math.abs(item.y - minY) > cY(50))
+            .reduce((m, i) =>
+                // 然后执行去重逻辑
+                m.has(i.label) && m.get(i.label).prob >= i.prob ? m : m.set(i.label, i),
+                new Map()
+            ).values()
+        ).sort((a, b) => b.prob - a.prob);
 
-            // 替换结果
-            groupA = groupA2.sort((a, b) => a.x - b.x);
+        //log(groupB)
+        if (groupA.length + groupB.length < sortedByY) {
+            console.warn('发现重复数据！');
+            log(tag + '去重后数据长度：' + (groupA.length + groupB.length));
+            sleep(500);
         }
 
-
-        // log(groupA)
-        // 1.3.2 检查分组A的y差，必须在同一高度上的小图标
-        // 或只找到1个图标
-        let check = checkYDiffLessThan(groupA, cY(10));
-        if (groupA.length < 2 || !check) {
-            console.error('解析结果异常')
+        if (groupB.length < groupA.length) {
+            console.error('结果解析错误！')
+            console.warn('上方指标数据长度：' + groupA.length)
+            console.warn('下方目标数据长度：' + groupB.length)
             console.error('可能验证码区域有遮挡')
             console.error('请检查tmp/pic.png验证码截图')
             console.error("若无遮挡，请尝试：");
@@ -275,30 +285,7 @@ function sortAndProcessResults(data) {
             return new Array();
         }
 
-        // 1.4 创建分组B（y值较大的后半部分，按prob倒序）
-        var groupB = sortedByY.slice(halfLen).sort((a, b) => b.prob - a.prob);
 
-        // 1.4.1 去重检查
-        const groupB2 = Array.from(
-            groupB.reduce((m, i) =>
-                m.has(i.label) && m.get(i.label).prob >= i.prob ? m : m.set(i.label, i),
-                new Map()
-            ).values()
-        );
-        if (groupB2.length < groupA.length) {
-            console.error('结果解析错误')
-            if (confThreshold > 0.1) {
-                console.error("请尝试：");
-                console.error(' 2.降低[YOLO置信度阈值]值');
-                console.warn(`当前 (置信度阈值: ${confThreshold})`);
-            }
-            return new Array();
-        } else {
-            // 替换去重后的结果
-            groupB = groupB2.sort((a, b) => b.prob - a.prob);
-        }
-
-        //log(groupB)
         // ==================== 2. 建立快速查找索引 ====================
         // 2.1 使用Map结构存储分组B的元素（label作为key）
         const labelMap = new Map();
@@ -367,7 +354,7 @@ function sortAndProcessResults(data) {
     }
 }
 
-// 检查数组中所有元素的y值差距是否全小于
+// 检查数组中所有元素的y值差距是否全小于，是则返回y
 function checkYDiffLessThan(arr, max) {
     // 提取所有y值
     const yValues = arr.map(item => item.y);
@@ -377,7 +364,7 @@ function checkYDiffLessThan(arr, max) {
     const maxY = Math.max.apply(null, yValues);
     const minY = Math.min.apply(null, yValues);
     // 返回差值是否小于60
-    return maxY - minY < max;
+    return (maxY - minY < max) ? (maxY + minY) / 2 : false;
 };
 
 
