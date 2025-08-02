@@ -233,10 +233,10 @@ function sortAndProcessResults(data) {
 
         // 1.3 创建分组A（y值较小的前半部分，按x升序排序）
         // var groupA = sortedByY.slice(0, halfLen).sort((a, b) => a.x - b.x);
-        // 收集y与minY差小于100的数据，且去重
+        // 收集y与minY差小于80的数据，且去重
         const groupA = Array.from(
             sortedByY
-            .filter(item => Math.abs(item.y - minY) < 100)
+            .filter(item => Math.abs(item.y - minY) < 80)
             .reduce((m, i) =>
                 // 然后执行去重逻辑
                 m.has(i.label) && m.get(i.label).prob >= i.prob ? m : m.set(i.label, i),
@@ -248,10 +248,10 @@ function sortAndProcessResults(data) {
 
         // 1.4 创建分组B（y值较大的后半部分，按prob倒序）
         //var groupB = sortedByY.slice(halfLen).sort((a, b) => b.prob - a.prob);
-        // 收集y与minY差大于100的数据，且去重
+        // 收集y与minY差大于80的数据，且去重
         const groupB = Array.from(
             sortedByY
-            .filter(item => Math.abs(item.y - minY) > 100)
+            .filter(item => Math.abs(item.y - minY) > 80)
             .reduce((m, i) =>
                 // 然后执行去重逻辑
                 m.has(i.label) && m.get(i.label).prob >= i.prob ? m : m.set(i.label, i),
