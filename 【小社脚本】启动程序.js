@@ -811,7 +811,7 @@ function init() {
             let name = app.isInstalled(value);
             if (!name) {
                 //根据配置不检查YOLO
-                if (file.toLowerCase().includes('yolo')) {
+                if (key.toLowerCase().includes('yolo')) {
                     if (config.本地YOLO识图)
                         error = true;
                     else return;
