@@ -521,6 +521,9 @@ github：https://github.com/wengzhenquan/autojs6
 
 --- 
 
+v3.8.28:
+ >1. YOLO本地识图坐标处理逻辑优化
+
 v3.8.26:
  >1. 解决打开小程序误报
  >2. 解决util.dpToPx兼容性报错
