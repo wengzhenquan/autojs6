@@ -799,8 +799,8 @@ function init() {
             }
 
             console.error(file);
-            console.error("执行一键更新程序，会自动下载缺失文件");
         });
+        console.info("执行一键更新程序，会自动下载缺失文件");
         log("----------------------------");
     }
 
@@ -817,7 +817,7 @@ function init() {
                     else return;
                 }
                 console.error(key + " 未安装");
-                console.error("若找不到文件，请下滑刷新文件列表");
+                console.info("若找不到文件，请下滑刷新文件列表");
             }
         }
     }
