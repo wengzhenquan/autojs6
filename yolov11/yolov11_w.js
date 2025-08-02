@@ -267,11 +267,11 @@ function sortAndProcessResults(data) {
         }
 
         if (groupB.length < groupA.length) {
-            console.error('结果解析错误！')
+            console.error('结果解析错误！');
             console.warn('上方指标数据长度：' + groupA.length)
             console.warn('下方目标数据长度：' + groupB.length)
-            console.error('可能验证码区域有遮挡')
-            console.error('请检查tmp/pic.png验证码截图')
+            console.error('可能验证码区域有遮挡');
+            console.error('请检查tmp/pic.png验证码截图');
             console.error("若无遮挡，请尝试：");
 
             if (nmsThreshold < 0.9) {
