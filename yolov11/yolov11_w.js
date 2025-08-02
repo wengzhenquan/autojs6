@@ -228,15 +228,16 @@ function sortAndProcessResults(data) {
 
         // 1.2 计算分组边界位置（原数组的一半长度）
         //  const halfLen = Math.floor(sortedByY.length / 2);
-        // 最小的Y
+        // 最小的Y，最小Y的height
         const minY = sortedByY[0].y;
+        const height = sortedByY[0].height;
 
         // 1.3 创建分组A（y值较小的前半部分，按x升序排序）
         // var groupA = sortedByY.slice(0, halfLen).sort((a, b) => a.x - b.x);
-        // 收集y与minY差小于80的数据，且去重
+        // 收集y与minY差小于height的数据，且去重
         const groupA = Array.from(
             sortedByY
-            .filter(item => Math.abs(item.y - minY) < 80)
+            .filter(item => Math.abs(item.y - minY) < height)
             .reduce((m, i) =>
                 // 然后执行去重逻辑
                 m.has(i.label) && m.get(i.label).prob >= i.prob ? m : m.set(i.label, i),
@@ -244,14 +245,14 @@ function sortAndProcessResults(data) {
             ).values()
         ).sort((a, b) => a.x - b.x);
 
-        //log(groupA)
+        log(groupA)
 
         // 1.4 创建分组B（y值较大的后半部分，按prob倒序）
         //var groupB = sortedByY.slice(halfLen).sort((a, b) => b.prob - a.prob);
-        // 收集y与minY差大于80的数据，且去重
+        // 收集y与minY差大于height的数据，且去重
         const groupB = Array.from(
             sortedByY
-            .filter(item => Math.abs(item.y - minY) > 80)
+            .filter(item => Math.abs(item.y - minY) > height)
             .reduce((m, i) =>
                 // 然后执行去重逻辑
                 m.has(i.label) && m.get(i.label).prob >= i.prob ? m : m.set(i.label, i),
