@@ -36,9 +36,11 @@ if (!files.exists(launch_locked)) {
 }
 
 try {
-    //加载配置
     config = require("./config.js");
-} catch (e) {}
+} catch (e) {
+    config = {};
+}
+
 //快速模式. 该模式下会启用控件缓存
 if (config && config.fast模式)
     auto.setMode("fast");
@@ -346,8 +348,7 @@ function consoleShow() {
 
 //悬浮窗控制台变成30%
 function console3() {
-    let h = config && config.悬浮窗控制台_运行高度 ?
-        config.悬浮窗控制台_运行高度 : 0.3;
+    let h = (config && config.悬浮窗控制台_运行高度) || 0.3;
     console.setSize(0.96, h);
 }
 //悬浮窗控制台变成18%
@@ -405,8 +406,7 @@ function consoleExpand() {
 // 关闭悬浮窗控制台
 function consoleExitOnClose() {
     if (config && typeof config.悬浮窗控制台_关闭延迟 !== 'undefined') {
-        let times = config.悬浮窗控制台_关闭延迟 > 0 ?
-            config.悬浮窗控制台_关闭延迟 * 1000 : false;
+        let times = config.悬浮窗控制台_关闭延迟 * 1000 || false;
         console.setExitOnClose(times);
     }
 }
@@ -898,22 +898,34 @@ let proxys = [
     "https://ghproxy.sakuramoe.dev/", // 请求时间：0.25s
     "https://gh.halonice.com/", // 请求时间：0.22s
     "https://x.whereisdoge.work/",
-    "https://cccccccccccccccccccccccccccccccccccccccccccccccccccc.cc/", // 请求时间：0.47s
     "https://hub.gitmirror.com/", // 请求时间：0.75s
     "https://ghfile.geekertao.top/",
     "https://git.yylx.win/",
 
     //2
-    "https://gh.llkk.cc/",
     "https://ghp.ml1.one/",
     "https://gh.222322.xyz/",
     "https://gh.catmak.name/",
     "https://proxy.yaoyaoling.net/",
-    "https://github.dpik.top/",
 
 ]
-// 打乱数组
-shuffleArray(proxys);
+
+// 备用代理
+var proxys2 = [
+    //3
+    "https://github.xxlab.tech/", // 请求时间：0.23s
+    "https://github.chenc.dev/", // 请求时间：0.67s
+    "https://ghproxy.gpnu.org/", // 请求时间：0.78s
+    "https://gh.b52m.cn/", // 请求时间：0.94s
+    "https://g.blfrp.cn/", // 请求时间：1.05s
+    "https://ghfast.top/", // 请求时间：1.42s
+    "https://git.40609891.xyz/", // 请求时间：1.46s
+    "https://git.669966.xyz/", // 请求时间：2.80s
+
+
+]
+// 打乱并整合两个数组
+processArrays(proxys, proxys2);
 
 
 // 检查脚本更新，version文件存在才检查更新。
