@@ -799,6 +799,7 @@ function init() {
             }
 
             console.error(file);
+            console.error("执行一键更新程序，会自动下载缺失文件");
         });
         log("----------------------------");
     }
