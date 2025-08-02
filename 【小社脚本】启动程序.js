@@ -788,14 +788,16 @@ function init() {
     }
     let error = false;
     if (missingFiles.length > 0) {
-        error = true;
         log("----------------------------");
         log("文件缺失列表：")
         missingFiles.forEach((file) => {
             //根据配置不检查YOLO
-            if (!config.本地YOLO识图 &&
-                file.toLowerCase().includes('yolo'))
-                return;
+            if (file.toLowerCase().includes('yolo')) {
+                if (config.本地YOLO识图)
+                    error = true;
+                else return;
+            }
+
             console.error(file);
         });
         log("----------------------------");
@@ -808,13 +810,26 @@ function init() {
             let name = app.isInstalled(value);
             if (!name) {
                 //根据配置不检查YOLO
-                if (!config.本地YOLO识图 &&
-                    key.toLowerCase().includes('yolo'))
-                    continue;
+                if (file.toLowerCase().includes('yolo')) {
+                    if (config.本地YOLO识图)
+                        error = true;
+                    else return;
+                }
                 console.error(key + " 未安装");
-                console.warn("若找不到文件，请下滑刷新文件列表");
+                console.error("若找不到文件，请下滑刷新文件列表");
             }
         }
+    }
+
+    if (error) {
+        if (config && config.通知提醒)
+            notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("有错误！\n详情查看日志"));
+
+        abnormalInterrupt = 0;
+        wait(() => false, 2000);
+        exit();
+        wait(() => false, 2000);
+
     }
     log("✅ 脚本完整性检查结束");
 
