@@ -910,16 +910,13 @@ function checkConfig() {
 
 //加速代理
 let proxys = [
-    //  1 
+    //1 
     "https://ghproxy.sakuramoe.dev/", // 请求时间：0.25s
-    "https://gh.halonice.com/", // 请求时间：0.22s
     "https://x.whereisdoge.work/",
     "https://hub.gitmirror.com/", // 请求时间：0.75s
     "https://ghfile.geekertao.top/",
     "https://git.yylx.win/",
-
     //2
-    "https://ghp.ml1.one/",
     "https://gh.222322.xyz/",
     "https://gh.catmak.name/",
     "https://proxy.yaoyaoling.net/",
@@ -931,14 +928,18 @@ var proxys2 = [
     //3
     "https://github.xxlab.tech/", // 请求时间：0.23s
     "https://github.chenc.dev/", // 请求时间：0.67s
-    "https://ghproxy.gpnu.org/", // 请求时间：0.78s
     "https://gh.b52m.cn/", // 请求时间：0.94s
     "https://g.blfrp.cn/", // 请求时间：1.05s
     "https://ghfast.top/", // 请求时间：1.42s
     "https://git.40609891.xyz/", // 请求时间：1.46s
     "https://git.669966.xyz/", // 请求时间：2.80s
-
-
+    //4
+    "https://cccccccccccccccccccccccccccccccccccccccccccccccccccc.cc/", // 请求时间：0.47s
+    "https://github.dpik.top/",
+    "https://gh.monlor.com/",
+    "https://gh-proxy.net/",
+    "https://hub.mwm.moe/",
+    
 ]
 // 打乱并整合两个数组
 processArrays(proxys, proxys2);

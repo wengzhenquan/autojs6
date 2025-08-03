@@ -61,21 +61,16 @@ var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs
 
 //加速代理
 var proxys = [
-    //  1 
+    //1 
     "https://ghproxy.sakuramoe.dev/", // 请求时间：0.25s
-    "https://gh.halonice.com/", // 请求时间：0.22s
     "https://x.whereisdoge.work/",
     "https://hub.gitmirror.com/", // 请求时间：0.75s
     "https://ghfile.geekertao.top/",
     "https://git.yylx.win/",
-
     //2
-    "https://ghp.ml1.one/",
     "https://gh.222322.xyz/",
     "https://gh.catmak.name/",
     "https://proxy.yaoyaoling.net/",
-
-
 ]
 
 // 备用代理
@@ -83,13 +78,18 @@ var proxys2 = [
     //3
     "https://github.xxlab.tech/", // 请求时间：0.23s
     "https://github.chenc.dev/", // 请求时间：0.67s
-    "https://ghproxy.gpnu.org/", // 请求时间：0.78s
     "https://gh.b52m.cn/", // 请求时间：0.94s
     "https://g.blfrp.cn/", // 请求时间：1.05s
     "https://ghfast.top/", // 请求时间：1.42s
     "https://git.40609891.xyz/", // 请求时间：1.46s
     "https://git.669966.xyz/", // 请求时间：2.80s
-
+    //4
+    "https://cccccccccccccccccccccccccccccccccccccccccccccccccccc.cc/", // 请求时间：0.47s
+    "https://github.dpik.top/",
+    "https://gh.monlor.com/",
+    "https://gh-proxy.net/",
+    "https://hub.mwm.moe/",
+    
 
 ]
 // 打乱并整合两个数组
@@ -99,16 +99,19 @@ processArrays(proxys, proxys2);
 var api_github = "https://api.github.com/repos/wengzhenquan/autojs6/contents/";
 var api_proxys = [
 
-    "https://github.sagolu.top/",
-    "https://github.cmsz.dpdns.org/",
+    "https://github.dpik.top/",
     "https://gh.catmak.name/",
-    "https://g.cachecdn.ggff.net/",
     "https://ghproxy.monkeyray.net/",
     "https://ghfile.geekertao.top/",
-    "https://github.dpik.top/",
-    "https://xiazai.de/",
-    "https://gh.llkk.cc/",
     "https://git.yylx.win/",
+    "https://hub.mwm.moe/",
+    "https://gh.noki.icu/",
+    "https://tvv.tw/",
+    "https://99z.top/",
+    "https://ghm.078465.xyz/",
+    "https://gh.944446.xyz/",
+    "https://xiazai.de/",
+    "https://gh-proxy.com/",
 
     "https://j.1win.ip-ddns.com/",
     "https://j.1win.ggff.net/",
@@ -117,12 +120,10 @@ var api_proxys = [
     "https://j.1win.ddns-ip.net/",
     "https://jiashu.1win.eu.org/",
 
-    "https://ghm.078465.xyz/",
-    "https://tvv.tw/",
-    "https://gh-proxy.com/",
-    "https://99z.top/",
-    "https://gh.944446.xyz/",
-    "https://hub.mwm.moe/",
+    //"https://github.sagolu.top/",
+    //"https://github.cmsz.dpdns.org/",
+    //"https://g.cachecdn.ggff.net/",
+    //"https://gh.llkk.cc/",
 
 ]
 // 打乱数组
@@ -675,7 +676,7 @@ function getGitHubFileInfo(filePath, branch) {
         let thread = threads.start(() => {
             try {
                 res = http.get(url, {
-                    timeout: 5 * 1000,
+                    timeout: 10 * 1000,
                     headers: {
                         'Cache-Control': 'no-cache',
                         'Pragma': 'no-cache',
@@ -688,7 +689,7 @@ function getGitHubFileInfo(filePath, branch) {
                 }
             } catch (e) {}
         });
-        thread.join(5 * 1000);
+        thread.join(10 * 1000);
         thread.interrupt();
         //  let time = (new Date().getTime() - startTime);
         // log("请求时间：" + toSeconds(time));
