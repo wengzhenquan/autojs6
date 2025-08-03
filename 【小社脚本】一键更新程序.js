@@ -916,7 +916,7 @@ function mergeConfigs(oldConfigPath, newConfigPath, outputPath) {
                         // log(valueObj)
                         if (valueObj.oldV.includes(oldConfig[key])) {
                             oldConfig[key] = valueObj.newV;
-                            log(oldConfig[key])
+                           // log(oldConfig[key])
                         }
                     }
                     // 搬运本地配置
