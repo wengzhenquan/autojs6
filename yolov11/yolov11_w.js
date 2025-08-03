@@ -233,7 +233,7 @@ function sortAndProcessResults(data) {
         //  const halfLen = Math.floor(sortedByY.length / 2);
         // 最小的Y，最小Y的height
         const minY = sortedByY[0].y;
-        const height = Math.max(sortedByY[0].height, 40);
+        const height = Math.max(sortedByY[0].height, 50);
 
         // 1.3 创建分组A（y值较小的前半部分，按x升序排序）
         // var groupA = sortedByY.slice(0, halfLen).sort((a, b) => a.x - b.x);
