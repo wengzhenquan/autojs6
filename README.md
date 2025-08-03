@@ -520,7 +520,11 @@ github：https://github.com/wengzhenquan/autojs6
 
 
 --- 
-
+v3.8.29:
+ >1. 优化yolo
+ 
+ 
+ 
 v3.8.28:
  >1. YOLO本地识图坐标处理逻辑优化
 
