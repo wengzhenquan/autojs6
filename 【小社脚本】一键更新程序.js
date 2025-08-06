@@ -90,7 +90,11 @@ var proxys2 = [
     "https://hub.mwm.moe/",
     "https://gh.catmak.name/",
     "https://github.chenc.dev/",
-    
+    "https://git.ppp.ac.cn/",
+    "https://gp-us.fyan.top/",
+    "http://gh.927223.xyz/",
+    "https://gh.bugdey.us.kg/",
+
 
 ]
 // 打乱并整合两个数组
@@ -918,7 +922,7 @@ function mergeConfigs(oldConfigPath, newConfigPath, outputPath) {
                         // log(valueObj)
                         if (valueObj.oldV.includes(oldConfig[key])) {
                             oldConfig[key] = valueObj.newV;
-                           // log(oldConfig[key])
+                            // log(oldConfig[key])
                         }
                     }
                     // 搬运本地配置

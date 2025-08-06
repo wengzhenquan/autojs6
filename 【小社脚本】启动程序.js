@@ -910,7 +910,7 @@ function checkConfig() {
 
 //加速代理
 let proxys = [
-     //1 
+    //1 
     "https://ghproxy.sakuramoe.dev/", // 请求时间：0.25s
     "https://x.whereisdoge.work/",
     "https://hub.gitmirror.com/", // 请求时间：0.75s
@@ -939,7 +939,11 @@ var proxys2 = [
     "https://hub.mwm.moe/",
     "https://gh.catmak.name/",
     "https://github.chenc.dev/",
-    
+    "https://git.ppp.ac.cn/",
+    "https://gp-us.fyan.top/",
+    "http://gh.927223.xyz/",
+    "https://gh.bugdey.us.kg/",
+
 ]
 // 打乱并整合两个数组
 processArrays(proxys, proxys2);
