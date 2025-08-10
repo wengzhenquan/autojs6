@@ -396,9 +396,7 @@ function checkVersion() {
 
     if (hasNewVersion || updateAll) {
         console.warn("有新版本！！！")
-        if (localVersion)
-            console.info("当前版本：" + localVersion.version);
-        console.info("最新版本：" + serverVersion.version)
+        
         console.error("增量更新列表：")
         if (updateList.length > 0) {
             log("----------------------------");
