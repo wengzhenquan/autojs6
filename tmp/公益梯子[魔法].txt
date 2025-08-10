@@ -11,25 +11,12 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
 均是免费！！！！！
 
 一、公益订阅地址：
-    1、Marisa_kristi(挂了)
-        // 线路一：https://etc.mesa.ip-ddns.com/9g4C1UAZeaBQD86WfCV0
-        // 线路二：https://mihu.sorry.ip-ddns.com/6oFtgiYFBA77zDwFRA4b
-        // 线路三：https://oty.myto.ip-ddns.com/jJh3s4xu97d5eNPi7e0T
-        // 线路四：https://miku.mikuru.ip-ddns.com/nYMU6Xk61WsKCCXF941K
-        // 线路五：https://mot.morisi.ggff.net/Y1JRPHZXm4LXM6R9MRzi
-        // 线路六：https://ennyfe.zipgd3vx91o.ddns-ip.net/wen1u1aHn4kahKQeQN8j
-        // 线路七：https://mikuyo.bpd67081tsq.ddns-ip.net/xe3K5Bi0FsU2VxAb5aXi
-        // 线路八：https://mot.gike.dpdns.org/N49o8kZF0qp0447j3kyc
-        // 线路九：https://mot.majusti.dpdns.org/2z2U5XtM39rh2fW84isg
-        // 线路十：https://mot.luyuju.dpdns.org/dyRkcYMfQavqC0wMghhv
-        
-    2、CMLiussss（每日更新节点）
+    1、CMLiussss（每日更新节点）
         订阅地址：https://cmliussss.net
         防失联SOS：https://SOS.CMLiussss.net/auto
         
-    3、辣子鸡：(每日更新节点)
+    2、辣子鸡：(每日更新节点)
         公益订阅链接15选1即可，订阅内容一样
-        https://lzjgy.zone.id/token=lzjnb
         https://gy.xiaozi.us.kg/sub?token=lzjnb
         https://gy.lzj.pp.ua/sub?token=lzjnb
         https://gy.lzjjjjjjj.pp.ua/sub?token=lzjnb
@@ -45,7 +32,22 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
         https://gy.lzj.x10.mx/sub?token=lzjnb
         https://gy.lzj.elementfx.com/sub?token=lzjnb
         
+     3、hong：
+        https://lsmgy.xygyx.ggff.net/hong
         
+     4、Poland
+        https://sub1.qa.run.place/sub?token=db6bf1aa155aa5058046af1a7e1c2566
+    
+        
+     5、防失联 fsl 系列：
+        订阅: https://fsl.nano.ip-ddns.com
+        订阅 (ipv6): https://fsl6.nano.ip-ddns.com
+
+     6、玩具 wanju 系列
+        订阅: https://wanju.nano.ip-ddns.com
+
+    
+     
 二、支持的代理软件列表：
     1、Windows：
             v2rayN、
