@@ -119,6 +119,10 @@ console.error('QQ群：197511003');
 
 
 events.on("exit", function() {
+    console.setTouchable(true);
+    device.cancelKeepingAwake();
+    if (window) window.close();
+    floaty.closeAll();
     try {
         if (config && !config.fast模式)
             auto.clearCache();
@@ -127,13 +131,9 @@ events.on("exit", function() {
     if (abnormalInterrupt && config && config.通知提醒)
         notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("发生未知错误，脚本异常中断\n详细问题，请查看日志"));
 
-    console.info('q群反馈：197511003');
-    console.setTouchable(true);
     consoleMax();
-    device.cancelKeepingAwake();
-    if (window) window.close();
-    floaty.closeAll();
     threads.shutDownAll();
+    console.info('q群反馈：197511003');
 
     // verbose(nowDate());
 });
@@ -351,6 +351,8 @@ function console3() {
     let h = (config && config.悬浮窗控制台_运行高度) || 0.3;
     console.setSize(0.96, h);
 }
+
+
 //悬浮窗控制台变成18%
 function consoleMin() {
     let h = 0.18;
@@ -910,38 +912,41 @@ function checkConfig() {
 
 //加速代理
 let proxys = [
+   
     //1 
-    "https://ghproxy.sakuramoe.dev/", // 请求时间：0.25s
     "https://x.whereisdoge.work/",
     "https://hub.gitmirror.com/", // 请求时间：0.75s
     "https://ghfile.geekertao.top/",
     "https://git.yylx.win/",
-    //2
-    "https://gh.222322.xyz/",
     "https://proxy.yaoyaoling.net/",
+    
+    "https://gh.222322.xyz/",
+    "https://ghproxy.sakuramoe.dev/", // 请求时间：0.25s
+    "https://github.xxlab.tech/", // 请求时间：0.23s
+    "https://github.chenc.dev/",
+    "https://git.ppp.ac.cn/",
+    "https://cccccccccccccccccccccccccccccccccccccccccccccccccccc.cc/", // 请求时间：0.47s
+    "http://gh.927223.xyz/",
 
 ]
 
 // 备用代理
 var proxys2 = [
     //3
-    "https://github.xxlab.tech/", // 请求时间：0.23s
     "https://gh.b52m.cn/", // 请求时间：0.94s
     "https://g.blfrp.cn/", // 请求时间：1.05s
     "https://ghfast.top/", // 请求时间：1.42s
     "https://git.40609891.xyz/", // 请求时间：1.46s
     "https://git.669966.xyz/", // 请求时间：2.80s
+    
+    
     //4
-    "https://cccccccccccccccccccccccccccccccccccccccccccccccccccc.cc/", // 请求时间：0.47s
     "https://github.dpik.top/",
     "https://gh.monlor.com/",
     "https://gh-proxy.net/",
     "https://hub.mwm.moe/",
     "https://gh.catmak.name/",
-    "https://github.chenc.dev/",
-    "https://git.ppp.ac.cn/",
     "https://gp-us.fyan.top/",
-    "http://gh.927223.xyz/",
     "https://gh.bugdey.us.kg/",
 
 ]
