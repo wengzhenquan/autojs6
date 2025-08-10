@@ -166,13 +166,14 @@ function sortAndProcessResults(data) {
 
         Object.keys(groups).forEach(label => {
             const group = groups[label];
-
-            // 规则1：跳过全组低置信度
-            if (group.every(item => item.prob < 0.16)) return;
-
-            // 规则2：跳过单一元素组
+            
+            // 规则1：跳过单一元素组
             if (group.length < 2) return;
 
+            // 规则2：跳过全组低置信度
+            if (group.every(item => item.prob < 0.15)) return;
+
+            
             // 规则3：按置信度降序排序
             const sortedGroup = group.slice()
                 .sort((a, b) => b.prob - a.prob);
