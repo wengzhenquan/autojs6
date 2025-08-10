@@ -61,14 +61,14 @@ var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs
 
 //加速代理
 var proxys = [
-   
+
     //1 
     "https://x.whereisdoge.work/",
     "https://hub.gitmirror.com/", // 请求时间：0.75s
     "https://ghfile.geekertao.top/",
     "https://git.yylx.win/",
     "https://proxy.yaoyaoling.net/",
-    
+
     "https://gh.222322.xyz/",
     "https://ghproxy.sakuramoe.dev/", // 请求时间：0.25s
     "https://github.xxlab.tech/", // 请求时间：0.23s
@@ -87,8 +87,8 @@ var proxys2 = [
     "https://ghfast.top/", // 请求时间：1.42s
     "https://git.40609891.xyz/", // 请求时间：1.46s
     "https://git.669966.xyz/", // 请求时间：2.80s
-    
-    
+
+
     //4
     "https://github.dpik.top/",
     "https://gh.monlor.com/",
@@ -344,11 +344,13 @@ function checkVersion() {
         console.error("更新服务器连接失败")
         return;
     }
+    log("最新版本：" + serverVersion.version)
 
     //本地version文件，不检查更新
     if (files.exists("./version")) {
         //本地版本信息
         localVersion = JSON.parse(files.read("./version"));
+        log("本地版本：" + localVersion.version)
 
         hasNewVersion = compareVersions(serverVersion.version, localVersion.version) > 0;
 
@@ -356,6 +358,9 @@ function checkVersion() {
             console.info("已经是最新版");
             log("开始文件完整性检查……");
             integrityCheck();
+            console.error("如果有问题，可按照下面步骤操作：")
+            console.error("  1、将version文件删除")
+            console.error("  2、重新执行更新程序");
             return;
         }
 
