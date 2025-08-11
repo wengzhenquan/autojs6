@@ -391,10 +391,10 @@ function posts(n) {
         backAppIndex();
         // 下滑刷新列表
         swipe(dwidth * 0.5, dheight * 0.5, dwidth * 0.5, dheight * 0.8, 200);
-        sleep(1500);
+        wait(() => false, 3000);
 
         // 点击
-        //pkly = descEndsWith("评论").findOne().parent();
+        pkly = descEndsWith("评论").findOne().parent();
         ableClick(pkly);
         sleep(1500);
     }
