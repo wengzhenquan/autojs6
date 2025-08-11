@@ -365,7 +365,7 @@ function posts(n) {
     // 小米社区重置首页
     //backAppIndex();
     let pkly = descEndsWith("评论");
-    if (wait(() => pkly.exists(), 6, 500)) {
+    while (wait(() => pkly.exists(), 6, 500)) {
         let pkly1 = pkly.findOne().parent();
         ableClick(pkly1);
         sleep(1500);
@@ -396,7 +396,7 @@ function posts(n) {
             // 小米社区重置首页
             backAppIndex();
             // 下滑刷新列表
-            swipe(dwidth * 0.5, dheight * 0.6, dwidth * 0.5, dheight * 0.9, 300);
+            swipe(dwidth * 0.5, dheight * 0.4, dwidth * 0.5, dheight * 0.8, 300);
             sleep(1500);
 
             // 坐标点击第一个“评论”入口上方
@@ -406,21 +406,7 @@ function posts(n) {
             n++;
         }
 
-    } else {
-        console.warn("第" + n + "次重试")
-        // 小米社区重置首页
-        backAppIndex();
-        // 下滑刷新列表
-        swipe(dwidth * 0.5, dheight * 0.5, dwidth * 0.5, dheight * 0.8, 300);
-        sleep(1500);
-        if (n > 5) {
-            toastError("打开帖子失败！")
-            global.unfinished_mark = 1;
-            //backAppIndex();
-            return;
-        }
-        return posts(n + 1);
-    }
+    } 
     log("正在浏览帖子……");
     for (i = 0; i < 4; i++) {
         wait(() => false, 1000);
