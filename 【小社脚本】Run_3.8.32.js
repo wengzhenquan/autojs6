@@ -1170,7 +1170,7 @@ function findCenter(pram) {
         }
     }
 
-    if (!signEntrance('立即签到', pram))
+    if (!signEntrance(pram, pram))
         return;
 
 
