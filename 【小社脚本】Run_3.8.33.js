@@ -383,7 +383,7 @@ function posts(n) {
         }
         // 点开视频贴
         if (idStartsWith('videoPlayer_').exists() ||
-            text("视频播放器").exists()) {
+            content("视频播放器").exists()) {
             back();
         }
 
