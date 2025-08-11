@@ -49,8 +49,8 @@ if (config && config.fast模式)
 setScaleBaseX(1080);
 setScaleBaseY(2400);
 
-var github = "https://github.com/wengzhenquan/autojs6";
-var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs6/refs/heads/main/"
+const github = "https://github.com/wengzhenquan/autojs6";
+const github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs6/refs/heads/main/"
 
 var update_script = "【小社脚本】一键更新程序.js";
 var serverVersion = null;
@@ -60,24 +60,24 @@ var mainFile = null;
 
 date = nowDate();
 
-var xmPckageName = "com.xiaomi.vipaccount"; // 社区APP包名
-var wchatpn = "com.tencent.mm"; //微信包名，用来校验小程序是否打开
-var xmVersionName = getAppVersionName(xmPckageName);
-var wchatVersionName = getAppVersionName(wchatpn);
+const xmPckageName = "com.xiaomi.vipaccount"; // 社区APP包名
+const wchatpn = "com.tencent.mm"; //微信包名，用来校验小程序是否打开
+const xmVersionName = getAppVersionName(xmPckageName);
+const wchatVersionName = getAppVersionName(wchatpn);
 //社区APP最低支持跳转入口的版本
-var xmAtLeastVersionName = "5.3.2";
+const xmAtLeastVersionName = "5.3.2";
 
 var serviceId = "org.autojs.autojs6/org.autojs.autojs.core.accessibility.AccessibilityServiceUsher";
-var serviceId_file = "./tmp/service_id.txt"
+const serviceId_file = "./tmp/service_id.txt"
 
 
 // 设备信息
-var dwidth = device.width;
-var dheight = device.height;
+const dwidth = device.width;
+const dheight = device.height;
 // 获取设备制造商
-var manufacturer = android.os.Build.MANUFACTURER;
+const manufacturer = android.os.Build.MANUFACTURER;
 // 获取设备品牌
-var brand = device.brand;
+const brand = device.brand;
 
 //var jsversion = (engines.myEngine().getSource().getName()
 //   .match(/\d[\s\S]*/) || [""])[0];
