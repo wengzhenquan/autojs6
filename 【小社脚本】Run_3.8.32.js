@@ -374,7 +374,6 @@ function posts(n) {
 
     let n = 6;
     while (n-- && !wait(() => (gz.exists() || gz2.exists()), 3)) {
-
         console.warn("第" + (6 - n) + "次重试")
         // 误点开图片
         if (text("保存").exists()) {
@@ -394,8 +393,8 @@ function posts(n) {
         swipe(dwidth * 0.5, dheight * 0.5, dwidth * 0.5, dheight * 0.8, 200);
         sleep(1500);
 
-        // 坐标点击第一个“评论”入口上方
-        pkly = descEndsWith("评论").findOne().parent();
+        // 点击
+        //pkly = descEndsWith("评论").findOne().parent();
         ableClick(pkly);
         sleep(1500);
     }
