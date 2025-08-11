@@ -391,7 +391,7 @@ function posts(n) {
         // 小米社区重置首页
         backAppIndex();
         // 下滑刷新列表
-        swipe(dwidth * 0.5, dheight * 0.4, dwidth * 0.5, dheight * 0.8, 300);
+        swipe(dwidth * 0.5, dheight * 0.5, dwidth * 0.5, dheight * 0.8, 200);
         sleep(1500);
 
         // 坐标点击第一个“评论”入口上方
@@ -466,6 +466,7 @@ function backAppIndex() {
         sleep(1000);
     }
     ableClick('论坛');
+    sleep(1000);
 
 }
 
