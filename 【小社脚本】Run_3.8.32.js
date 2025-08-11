@@ -364,49 +364,48 @@ function posts(n) {
     sleep(500)
     // 小米社区重置首页
     //backAppIndex();
-    let pkly = descEndsWith("评论");
-    while (wait(() => pkly.exists(), 6, 500)) {
-        let pkly1 = pkly.findOne().parent();
-        ableClick(pkly1);
-        sleep(1500);
-        let gz = className("android.widget.TextView")
-            .text("关注");
-        let gz2 = className("android.view.View")
-            .text("关注");
-        while (!(gz.exists() || gz2.exists())) {
-            if (n > 5) {
-                toastError("打开帖子失败！")
-                global.unfinished_mark = 1;
-                //backAppIndex();
-                return;
-            }
-            console.warn("第" + n + "次重试")
-            // 误点开图片
-            if (text("保存").exists()) {
-                back();
-                sleep(500);
-                break;
-            }
-            // 点开视频贴
-            if (idStartsWith('videoPlayer_').exists() ||
-                text("视频播放器").exists()) {
-                back();
-            }
+    let pkly = descEndsWith("评论").findOne().parent();
+    ableClick(pkly);
+    sleep(1500);
+    let gz = className("android.widget.TextView")
+        .text("关注");
+    let gz2 = className("android.view.View")
+        .text("关注");
 
-            // 小米社区重置首页
-            backAppIndex();
-            // 下滑刷新列表
-            swipe(dwidth * 0.5, dheight * 0.4, dwidth * 0.5, dheight * 0.8, 300);
-            sleep(1500);
+    let n = 6;
+    while (n-- && !wait(() => (gz.exists() || gz2.exists()), 3)) {
 
-            // 坐标点击第一个“评论”入口上方
-            pkly1 = pkly.findOne();
-            click(pkly1.bounds().centerX(), pkly1.bounds().centerY() - cY(90));
-            sleep(1500);
-            n++;
+        console.warn("第" + (6 - n) + "次重试")
+        // 误点开图片
+        if (text("保存").exists()) {
+            back();
+            sleep(500);
+            break;
+        }
+        // 点开视频贴
+        if (idStartsWith('videoPlayer_').exists() ||
+            text("视频播放器").exists()) {
+            back();
         }
 
-    } 
+        // 小米社区重置首页
+        backAppIndex();
+        // 下滑刷新列表
+        swipe(dwidth * 0.5, dheight * 0.4, dwidth * 0.5, dheight * 0.8, 300);
+        sleep(1500);
+
+        // 坐标点击第一个“评论”入口上方
+        pkly = descEndsWith("评论").findOne().parent();
+        ableClick(pkly);
+        sleep(1500);
+    }
+    if (!wait(() => (gz.exists() || gz2.exists()), 3)) {
+        toastError("打开帖子失败！")
+        global.unfinished_mark = 1;
+        //backAppIndex();
+        return;
+    }
+
     log("正在浏览帖子……");
     for (i = 0; i < 4; i++) {
         wait(() => false, 1000);
