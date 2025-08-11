@@ -198,8 +198,6 @@ function maintain() {
 function startTimeoutMonitor() {
     threads.start(() => {
         setInterval(function() {
-            // 尝试刷新
-            tryRefresh();
 
             const startTime = new Date(date.replace(/-/g, '/')).getTime();
             let currentTime = new Date().getTime();
@@ -227,6 +225,9 @@ function startTimeoutMonitor() {
                     notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("发生未知错误，脚本强制停止\n详细问题，请查看日志"));
                 exit();
             }
+            
+            // 尝试刷新
+            tryRefresh();
         }, 5 * 1000); // 每 5 秒检查一次
     });
 }
