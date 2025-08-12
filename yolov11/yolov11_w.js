@@ -347,7 +347,7 @@ function sortAndProcessResults(data) {
             };
         });
 
-        log(tag + '识别成功，图标数量: ' + finalResult.length);
+        log(tag + '处理完毕，图标数量: ' + finalResult.length);
 
         return finalResult;
 
