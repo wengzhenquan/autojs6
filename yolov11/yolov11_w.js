@@ -151,8 +151,6 @@ function sortAndProcessResults(data) {
                     console.error(' 2.提升[YOLO置信度阈值]值');
                     console.warn(`当前 (置信度阈值: ${confThreshold})`);
                 }
-
-
             }
             console.log(tag + "开始尝试进行修正...");
 
