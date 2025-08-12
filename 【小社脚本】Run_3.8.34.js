@@ -341,7 +341,7 @@ function skipAd() {
         log("跳过了开屏广告!");
     }
 
-    if (wait(() => text('发现新版本').exists(), 4, 500)) {
+    if (wait(() => text('发现新版本').exists(), 2, 800)) {
         ableClick('以后再说');
         log("关闭了升级提示!");
     }
@@ -349,7 +349,7 @@ function skipAd() {
     let adClose = className("android.widget.ImageView")
         .desc("关闭");
 
-    if (wait(() => adClose.exists(), 4, 500) &&
+    if (wait(() => adClose.exists(), 2, 500) &&
         ableClick(adClose.findOne(800))) {
         log("关闭了1个广告!");
     }
