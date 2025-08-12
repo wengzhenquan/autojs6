@@ -358,6 +358,8 @@ function sortAndProcessResults(data) {
             };
         });
 
+        log(tag + '识别成功，图标数量: ' + finalResult.length );
+
         return finalResult;
 
     } catch (error) {
@@ -411,7 +413,7 @@ function detectAndProcess(imagePath) {
         // 注意：yolo.detect 可能需要 Bitmap 对象，images.read 返回的是 Image 对象
         // 需要确认 yolo.detect 接受的参数类型，如果是 Bitmap，需要 img.bitmap
         let rawResults = yoloInstance.detect(img.bitmap, confThreshold, nmsThreshold, 640);
-        console.log(`${tag}识别完成，结果数量: ${rawResults ? rawResults.length : 'N/A'}`);
+        console.log(`${tag}识别完成，数据数量: ${rawResults ? rawResults.length : 'N/A'}`);
         //log(rawResults)
         // 处理并返回结果
         return sortAndProcessResults(rawResults);
