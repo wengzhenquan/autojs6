@@ -139,7 +139,7 @@ function sortAndProcessResults(data) {
                 return new Array();
             }
 
-            if (len > 14) {
+            if (len > 15) {
                 console.error("长度过多，但能修正");
                 console.error("建议尝试：");
 
