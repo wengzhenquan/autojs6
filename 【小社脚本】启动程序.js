@@ -202,7 +202,7 @@ function startTimeoutMonitor() {
             const startTime = new Date(date.replace(/-/g, '/')).getTime();
             let currentTime = new Date().getTime();
 
-            if (currentTime - startTime < (9 * 1000)) {
+            if (currentTime - startTime < (13 * 1000)) {
                 // 悬浮窗配置纠正
                 if (console.isShowing()) {
                     consoleShow();
@@ -320,8 +320,8 @@ function consoleShow() {
                 contentTextSize: 15,
                 contentBackgroundAlpha: 0.8,
                 contentBackgroundColor: colors.BLACK,
-                touchable: false,
-                exitOnClose: false,
+                // touchable: false,
+                // exitOnClose: false,
             });
 
             if (config && !config.未完成任务不关闭悬浮窗控制台) {
