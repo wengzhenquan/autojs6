@@ -117,8 +117,8 @@ function sortAndProcessResults(data) {
     let len = data.length;
     // 检查数据长度是否满足处理逻辑要求 (4或6)
     if (len !== 4 && len !== 6) {
-        console.error("结果处理: 预期长度为 4 或 6");
-        console.error("实际长度为：" + len);
+        console.error("预期长度为 4 或 6");
+        // console.error("实际长度为：" + len);
 
         if (len < 4) {
             console.error("长度过小");
@@ -166,14 +166,14 @@ function sortAndProcessResults(data) {
 
         Object.keys(groups).forEach(label => {
             const group = groups[label];
-            
+
             // 规则1：跳过单一元素组
             if (group.length < 2) return;
 
             // 规则2：跳过全组低置信度
             if (group.every(item => item.prob < 0.15)) return;
 
-            
+
             // 规则3：按置信度降序排序
             const sortedGroup = group.slice()
                 .sort((a, b) => b.prob - a.prob);
@@ -205,7 +205,7 @@ function sortAndProcessResults(data) {
             result.push(topItem, pairItem);
         });
         //log(groups)
-        // log(result)
+        //log(result)
 
 
         len = result.length;
@@ -265,18 +265,25 @@ function sortAndProcessResults(data) {
         ).sort((a, b) => b.prob - a.prob);
 
         //log(groupB)
-        if (groupA.length + groupB.length < sortedByY) {
-            console.warn('发现重复数据！');
-            log(tag + '去重后数据长度：' + (groupA.length + groupB.length));
+        if (groupA.length + groupB.length < sortedByY.length) {
+            console.error('发现预期长度错误！');
+            log(tag + ('→处理后长度：').padStart(7) + (groupA.length + groupB.length));
+            console.error(('→上方指标数据：').padStart(17) + groupA.length)
+            console.error(('→下方候选数据：').padStart(17) + groupB.length)
+            log(tag + '预期有效数据：' + (groupA.length * 2));
             sleep(500);
         }
 
         if (groupA.length < 2 || groupB.length < groupA.length) {
             console.error('结果解析错误！');
-            console.warn('上方指标数据长度：' + groupA.length)
-            console.warn('下方目标数据长度：' + groupB.length)
+            if (groupA.length < 2)
+                console.error('→指标数据＜2！');
+            if (groupB.length < groupA.length)
+                console.error('→候选数据＜指标数据！');
+
             console.error('可能验证码区域有遮挡');
             console.error('请检查tmp/pic.png验证码截图');
+            console.error('或tmp/error/local/');
             console.error("若无遮挡，请尝试：");
 
             if (nmsThreshold < 0.9) {
@@ -359,19 +366,6 @@ function sortAndProcessResults(data) {
     }
 }
 
-// 检查数组中所有元素的y值差距是否全小于，是则返回y
-function checkYDiffLessThan(arr, max) {
-    // 提取所有y值
-    const yValues = arr.map(item => item.y);
-    // 元素数量≤1时，默认不满足
-    if (yValues.length <= 1) return false;
-    // 计算最大y值和最小y值的差值
-    const maxY = Math.max.apply(null, yValues);
-    const minY = Math.min.apply(null, yValues);
-    // 返回差值是否小于60
-    return (maxY - minY < max) ? (maxY + minY) / 2 : false;
-};
-
 
 /**
  * @description 对指定路径的图片执行 YOLO 检测并处理结果。
@@ -412,12 +406,12 @@ function detectAndProcess(imagePath) {
         }
 
         // 执行检测
-        console.log(`${tag}检测 (置信度阈值: ${confThreshold})`);
-        console.log(`${tag}检测 (重叠率阈值: ${nmsThreshold})`);
+        console.log(`${tag}配置 (置信度阈值: ${confThreshold})`);
+        console.log(`${tag}配置 (重叠率阈值: ${nmsThreshold})`);
         // 注意：yolo.detect 可能需要 Bitmap 对象，images.read 返回的是 Image 对象
         // 需要确认 yolo.detect 接受的参数类型，如果是 Bitmap，需要 img.bitmap
         let rawResults = yoloInstance.detect(img.bitmap, confThreshold, nmsThreshold, 640);
-        console.log(`${tag}检测完成，结果数量: ${rawResults ? rawResults.length : 'N/A'}`);
+        console.log(`${tag}识别完成，结果数量: ${rawResults ? rawResults.length : 'N/A'}`);
         //log(rawResults)
         // 处理并返回结果
         return sortAndProcessResults(rawResults);
