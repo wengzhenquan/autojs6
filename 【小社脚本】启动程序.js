@@ -321,7 +321,7 @@ function consoleShow() {
                 contentBackgroundAlpha: 0.8,
                 contentBackgroundColor: colors.BLACK,
                 touchable: false,
-                // exitOnClose: false,
+                exitOnClose: false,
             });
 
             if (config && !config.未完成任务不关闭悬浮窗控制台) {
