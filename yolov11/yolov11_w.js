@@ -114,117 +114,120 @@ function sortAndProcessResults(data) {
         console.error("结果处理: 输入数据不是数组。");
         return new Array();
     }
-    let len = data.length;
-    // 检查数据长度是否满足处理逻辑要求 (4或6)
-    if (len !== 4 && len !== 6) {
-        console.error("预期长度为 4 或 6");
-        // console.error("实际长度为：" + len);
-
-        if (len < 4) {
-            console.error("长度过小");
-            console.error("请尝试：");
-
-            if (nmsThreshold < 0.9) {
-                console.error(' 1.提高[YOLO重叠率阈值]值');
-                console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
-            }
-            if (confThreshold > 0.1) {
-                console.error(' 2.降低[YOLO置信度阈值]值');
-                console.warn(`当前 (置信度阈值: ${confThreshold})`);
-            }
-
-            return new Array();
-        }
-
-        if (len > 14) {
-            console.error("长度过多，但能修正");
-            console.error("建议尝试：");
-
-            if (nmsThreshold > 0.1) {
-                console.error(' 1.降低[YOLO重叠率阈值]值');
-                console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
-            }
-            if (nmsThreshold < 0.6 && confThreshold < 0.7) {
-                console.error(' 2.提升[YOLO置信度阈值]值');
-                console.warn(`当前 (置信度阈值: ${confThreshold})`);
-            }
-
-
-        }
-        console.log(tag + "开始尝试进行修正...");
-
-        // 步骤1：分组
-        const groups = {};
-        data.forEach(item => {
-            const label = item.label;
-            groups[label] = groups[label] || [];
-            groups[label].push(item);
-        });
-
-        // 步骤2：筛选结果
-        const result = [];
-
-        Object.keys(groups).forEach(label => {
-            const group = groups[label];
-
-            // 规则1：跳过单一元素组
-            if (group.length < 2) return;
-
-            // 规则2：跳过全组低置信度
-            if (group.every(item => item.prob < 0.15)) return;
-
-
-            // 规则3：按置信度降序排序
-            const sortedGroup = group.slice()
-                .sort((a, b) => b.prob - a.prob);
-            const topItem = sortedGroup[0]; // 最高置信度项
-
-            // 核心逻辑：寻找配对项
-            let pairItem = null;
-            let maxDiff = -1; // 记录最大Y差（初始值-1）
-
-            // 遍历剩余项（从置信度第2高开始）
-            for (let i = 1; i < sortedGroup.length; i++) {
-                let currentItem = sortedGroup[i];
-                let diff = Math.round(Math.abs(currentItem.y - topItem.y));
-
-                // 策略1：优先匹配Y差>100的项
-                if (diff > 100) {
-                    pairItem = currentItem;
-                    break; // 找到即停止
-                }
-
-                // 策略2：记录最大Y差项（用于无>100时）
-                if (diff > maxDiff) {
-                    maxDiff = diff;
-                    pairItem = currentItem; // 更新候选
-                }
-            }
-
-            // 添加到结果（必须保留两项）
-            result.push(topItem, pairItem);
-        });
-        //log(groups)
-        //log(result)
-
-
-        len = result.length;
-        console.log(tag + "修正后长度为：" + len);
-        // 检查数据长度是否满足处理逻辑要求 (4或6)
-        if (len !== 4 && len !== 6) {
-            //log(data)
-            console.error('结果依旧不符合预期')
-            return new Array();
-        }
-        //替换数据
-        data = result;
-        console.warn("数据减少，结果不一定正确");
-        sleep(500);
-
-    }
-
 
     try {
+
+        let len = data.length;
+        // 检查数据长度是否满足处理逻辑要求 (4或6)
+        if (len !== 4 && len !== 6) {
+            console.error("预期长度为 4 或 6");
+            // console.error("实际长度为：" + len);
+
+            if (len < 4) {
+                console.error("长度过小");
+                console.error("请尝试：");
+
+                if (nmsThreshold < 0.9) {
+                    console.error(' 1.提高[YOLO重叠率阈值]值');
+                    console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
+                }
+                if (confThreshold > 0.1) {
+                    console.error(' 2.降低[YOLO置信度阈值]值');
+                    console.warn(`当前 (置信度阈值: ${confThreshold})`);
+                }
+
+                return new Array();
+            }
+
+            if (len > 14) {
+                console.error("长度过多，但能修正");
+                console.error("建议尝试：");
+
+                if (nmsThreshold > 0.1) {
+                    console.error(' 1.降低[YOLO重叠率阈值]值');
+                    console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
+                }
+                if (nmsThreshold < 0.6 && confThreshold < 0.7) {
+                    console.error(' 2.提升[YOLO置信度阈值]值');
+                    console.warn(`当前 (置信度阈值: ${confThreshold})`);
+                }
+
+
+            }
+            console.log(tag + "开始尝试进行修正...");
+
+            // 步骤1：分组
+            const groups = {};
+            data.forEach(item => {
+                const label = item.label;
+                groups[label] = groups[label] || [];
+                groups[label].push(item);
+            });
+
+            // 步骤2：筛选结果
+            const result = [];
+
+            Object.keys(groups).forEach(label => {
+                const group = groups[label];
+
+                // 规则1：跳过单一元素组
+                if (group.length < 2) return;
+
+                // 规则2：跳过全组低置信度
+                if (group.every(item => item.prob < 0.15)) return;
+
+
+                // 规则3：按置信度降序排序
+                const sortedGroup = group.slice()
+                    .sort((a, b) => b.prob - a.prob);
+                const topItem = sortedGroup[0]; // 最高置信度项
+
+                // 核心逻辑：寻找配对项
+                let pairItem = null;
+                let maxDiff = -1; // 记录最大Y差（初始值-1）
+
+                // 遍历剩余项（从置信度第2高开始）
+                for (let i = 1; i < sortedGroup.length; i++) {
+                    let currentItem = sortedGroup[i];
+                    let diff = Math.round(Math.abs(currentItem.y - topItem.y));
+
+                    // 策略1：优先匹配Y差>100的项
+                    if (diff > 100) {
+                        pairItem = currentItem;
+                        break; // 找到即停止
+                    }
+
+                    // 策略2：记录最大Y差项（用于无>100时）
+                    if (diff > maxDiff) {
+                        maxDiff = diff;
+                        pairItem = currentItem; // 更新候选
+                    }
+                }
+
+                // 添加到结果（必须保留两项）
+                result.push(topItem, pairItem);
+            });
+            //log(groups)
+            //log(result)
+
+
+            len = result.length;
+            console.log(tag + "修正后长度为：" + len);
+            // 检查数据长度是否满足处理逻辑要求 (4或6)
+            if (len !== 4 && len !== 6) {
+                //log(data)
+                console.error('结果依旧不符合预期')
+                return new Array();
+            }
+            //替换数据
+            data = result;
+            console.warn("数据减少，结果不一定正确");
+            sleep(500);
+
+        }
+
+
+
         //log(data)
         // ==================== 1. 数据准备阶段 ====================
         // 1.1 按y坐标升序排序（浅拷贝避免修改原数组）
@@ -358,7 +361,7 @@ function sortAndProcessResults(data) {
             };
         });
 
-        log(tag + '识别成功，图标数量: ' + finalResult.length );
+        log(tag + '识别成功，图标数量: ' + finalResult.length);
 
         return finalResult;
 
