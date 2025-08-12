@@ -139,19 +139,7 @@ function sortAndProcessResults(data) {
                 return new Array();
             }
 
-            if (len > 15) {
-                console.error("长度过多，但能修正");
-                console.error("建议尝试：");
-
-                if (nmsThreshold > 0.1) {
-                    console.error(' 1.降低[YOLO重叠率阈值]值');
-                    console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
-                }
-                if (nmsThreshold < 0.6 && confThreshold < 0.7) {
-                    console.error(' 2.提升[YOLO置信度阈值]值');
-                    console.warn(`当前 (置信度阈值: ${confThreshold})`);
-                }
-            }
+            
             console.log(tag + "开始尝试进行修正...");
 
             // 步骤1：分组
