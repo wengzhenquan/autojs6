@@ -320,7 +320,7 @@ function consoleShow() {
                 contentTextSize: 15,
                 contentBackgroundAlpha: 0.8,
                 contentBackgroundColor: colors.BLACK,
-                // touchable: false,
+                touchable: false,
                 // exitOnClose: false,
             });
 
