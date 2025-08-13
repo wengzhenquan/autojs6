@@ -1279,7 +1279,7 @@ function unLock() {
                 }
 
                 for (let i = 0; i < password.length; i++) {
-                    let num = content(password[i]).findOne(800);
+                    let num = content(password[i]).findOne(1000);
                     if (!clickCenter(num)) {
                         console.error('[' + password[i] + '] 点击失败!')
                         if (!num) {
@@ -1300,7 +1300,7 @@ function unLock() {
                         }
 
                     };
-                    wait(() => false, 300);
+                    wait(() => false, 500);
                 }
                 if (textContains('混合').exists()) {
                     clickCenter(desc('回车').findOne(1000));
