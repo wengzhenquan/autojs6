@@ -156,7 +156,7 @@ threads.start(() => stopButton());
 startTimeoutMonitor();
 
 
-wait(() => false, 1000);
+wait(() => false, 1500);
 
 //AutoJS6版本检查
 function checkAutoJS6() {
