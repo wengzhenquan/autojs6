@@ -227,7 +227,7 @@ function startTimeoutMonitor() {
                     notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("发生未知错误，脚本强制停止\n详细问题，请查看日志"));
                 exit();
             }
-            
+
             // 尝试刷新
             tryRefresh();
         }, 5 * 1000); // 每 5 秒检查一次
@@ -915,14 +915,14 @@ function checkConfig() {
 
 //加速代理
 let proxys = [
-   
+
     //1 
     "https://x.whereisdoge.work/",
     "https://hub.gitmirror.com/", // 请求时间：0.75s
     "https://ghfile.geekertao.top/",
     "https://git.yylx.win/",
     "https://proxy.yaoyaoling.net/",
-    
+
     "https://gh.222322.xyz/",
     "https://ghproxy.sakuramoe.dev/", // 请求时间：0.25s
     "https://github.xxlab.tech/", // 请求时间：0.23s
@@ -941,8 +941,8 @@ var proxys2 = [
     "https://ghfast.top/", // 请求时间：1.42s
     "https://git.40609891.xyz/", // 请求时间：1.46s
     "https://git.669966.xyz/", // 请求时间：2.80s
-    
-    
+
+
     //4
     "https://github.dpik.top/",
     "https://gh.monlor.com/",
@@ -1239,7 +1239,12 @@ function unLock() {
 
         }
         wait(() => false, 1000);
-        log("上滑！");
+        if (!wait(() => contentStartsWith('紧急').exists(), 3)) {
+            console.error('上滑失败，重试！')
+            continue;
+        }
+
+        log("上滑成功！");
 
         // 有安全加密
         if (isSecure) {
