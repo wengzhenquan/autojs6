@@ -127,7 +127,7 @@ function sortAndProcessResults(data) {
                 console.error("长度过小");
                 console.error("请尝试：");
 
-                if (nmsThreshold < 0.9) {
+                if (nmsThreshold < 1) {
                     console.error(' 1.提高[YOLO重叠率阈值]值');
                     console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
                 }
@@ -139,7 +139,7 @@ function sortAndProcessResults(data) {
                 return new Array();
             }
 
-            
+
             console.log(tag + "开始尝试进行修正...");
 
             // 步骤1：分组
@@ -160,7 +160,7 @@ function sortAndProcessResults(data) {
                 if (group.length < 2) return;
 
                 // 规则2：跳过全组低置信度
-                if (group.every(item => item.prob < 0.15)) return;
+                if (group.every(item => item.prob < 0.2)) return;
 
 
                 // 规则3：按置信度降序排序
@@ -203,7 +203,7 @@ function sortAndProcessResults(data) {
             if (len !== 4 && len !== 6) {
                 //log(data)
                 console.error('结果依旧不符合预期')
-                return new Array();
+                //return new Array();
             }
             //替换数据
             data = result;
@@ -263,25 +263,45 @@ function sortAndProcessResults(data) {
             sleep(500);
         }
 
-        if (groupA.length < 2 || groupB.length < groupA.length) {
+        if (groupA.length < 2 || groupA.length > 3 ||
+            groupB.length < groupA.length) {
             console.error('结果解析错误！');
-            if (groupA.length < 2)
-                console.error('→指标数据＜2！');
-            if (groupB.length < groupA.length)
-                console.error('→候选数据＜指标数据！');
-
             console.error('可能验证码区域有遮挡');
             console.error('请检查tmp/pic.png验证码截图');
             console.error('或tmp/error/local/');
-            console.error("若无遮挡，请尝试：");
+            
+            
+            if (groupA.length > 3) {
+                log('——→')
+                console.error('→指标数据>3！');
+                console.error("请尝试：");
 
-            if (nmsThreshold < 0.9) {
-                console.error(' 1.提高[YOLO重叠率阈值]值');
-                console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
-            }
-            if (confThreshold > 0.1) {
-                console.error(' 2.降低[YOLO置信度阈值]值');
-                console.warn(`当前 (置信度阈值: ${confThreshold})`);
+                if (nmsThreshold > 0.1) {
+                    console.error(' 1.降低[YOLO重叠率阈值]值');
+                    console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
+                }
+                if (confThreshold < 1) {
+                    console.error(' 2.提高[YOLO置信度阈值]值');
+                    console.warn(`当前 (置信度阈值: ${confThreshold})`);
+                }
+
+            } else {
+                log('——→')
+                if (groupA.length < 2)
+                    console.error('→指标数据＜2！');
+                if (groupB.length < groupA.length)
+                    console.error('→候选数据＜指标数据！');
+
+                console.error("请尝试：");
+
+                if (nmsThreshold < 1) {
+                    console.error(' 1.提高[YOLO重叠率阈值]值');
+                    console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
+                }
+                if (confThreshold > 0.1) {
+                    console.error(' 2.降低[YOLO置信度阈值]值');
+                    console.warn(`当前 (置信度阈值: ${confThreshold})`);
+                }
             }
             return new Array();
         }
