@@ -150,7 +150,7 @@ maintain();
 
 // 启动悬浮窗关闭按钮
 threads.start(() => stopButton());
-
+wait(() => false, 1000);
 
 // 程序运行监控
 startTimeoutMonitor();
