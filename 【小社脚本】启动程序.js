@@ -914,7 +914,7 @@ function checkConfig() {
 // -------- 脚本更新  --------//
 
 //加速代理
-let proxys = [
+var proxys = [
 
     //1 
     "https://x.whereisdoge.work/",
@@ -962,8 +962,6 @@ function checkVersion() {
     console.info("---→>→脚本检查更新←<←---")
 
     let down_version = false;
-    // 乱序数组
-    //let arr = getRandomNumbers(proxys.length - 1);
 
     //远程version文件数据
     log("正在查询版本更新……")
@@ -1097,8 +1095,6 @@ function updateScript() {
         console.error(update_script + ' 不存在');
         log("开始下载更新程序：" + update_script)
 
-        // 乱序数组
-        // let arr = getRandomNumbers(proxys.length - 1);
         // 下载更新脚本
         var file = null;
         for (let i = 0; i < proxys.length; i++) {
