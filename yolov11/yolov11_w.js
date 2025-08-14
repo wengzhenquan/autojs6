@@ -182,8 +182,8 @@ function sortAndProcessResults(data) {
                 for (let i = 1; i < sortedGroup.length; i++) {
                     let currentItem = sortedGroup[i];
                     // 于topItem区分，跳过相同区域的数据
-                    if (topItem.y > y_limit && currentItem.y > y_limit ||
-                        topItem.y < y_limit && currentItem.y < y_limit)
+                    if ((topItem.y > y_limit && currentItem.y > y_limit) ||
+                        (topItem.y < y_limit && currentItem.y < y_limit))
                         continue;
 
                     let diff = Math.round(Math.abs(currentItem.y - topItem.y));
@@ -200,9 +200,11 @@ function sortAndProcessResults(data) {
                         pairItem = currentItem; // 更新候选
                     }
                 }
+                // 没找到
                 if (!pairItem) return;
 
                 // 添加到结果（必须保留两项）
+                // 经过上面处理，能确保数据都是成对，上面1个，下面1个
                 result.push(topItem, pairItem);
             });
             //log(groups)
@@ -229,14 +231,12 @@ function sortAndProcessResults(data) {
         // 1.1 按y坐标升序排序（浅拷贝避免修改原数组）
         const sortedByY = data.slice().sort((a, b) => a.y - b.y);
 
-        // 1.2 计算分组边界位置（原数组的一半长度）
-        //  const halfLen = Math.floor(sortedByY.length / 2);
+        // 1.2 计算分组边界位置
         // 最小的Y，最小Y的height
         const minY = sortedByY[0].y;
         const height = Math.max(minY, 50);
 
-        // 1.3 创建分组A（y值较小的前半部分，按x升序排序）
-        // var groupA = sortedByY.slice(0, halfLen).sort((a, b) => a.x - b.x);
+        // 1.3 创建分组A（y值较小的部分，按x升序排序）
         // 收集y与minY差小于height的数据，且去重
         const groupA = Array.from(
             sortedByY
@@ -250,8 +250,7 @@ function sortAndProcessResults(data) {
 
         //log(groupA)
 
-        // 1.4 创建分组B（y值较大的后半部分，按prob倒序）
-        //var groupB = sortedByY.slice(halfLen).sort((a, b) => b.prob - a.prob);
+        // 1.4 创建分组B（y值较大的部分，按prob倒序）
         // 收集y与minY差大于height的数据，且去重
         const groupB = Array.from(
             sortedByY
@@ -265,8 +264,8 @@ function sortAndProcessResults(data) {
 
         //log(groupB)
         let glen = groupA.length + groupB.length;
-        if (glen < 4 || groupA.length < 2 || groupA.length > 3 ||
-            glen < sortedByY.length) {
+        if (groupA.length < 2 || groupA.length > 3 ||
+            glen < 4 || glen < sortedByY.length) {
             console.error('发现预期长度错误！');
             log(tag + ('→处理后长度：').padStart(7) + (glen));
             console.error(('→上方指标数据：').padStart(17) + groupA.length)
@@ -310,8 +309,7 @@ function sortAndProcessResults(data) {
                     console.error(' 1.提高[YOLO重叠率阈值]值');
                     console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
                 }
-                if (groupA.length < 2 ||
-                    confThreshold > 0.1) {
+                if (confThreshold > 0.1) {
                     console.error(' 2.降低[YOLO置信度阈值]值');
                     console.warn(`当前 (置信度阈值: ${confThreshold})`);
                 }
