@@ -229,18 +229,19 @@ function sortAndProcessResults(data) {
         //log(data)
         // ==================== 1. 数据准备阶段 ====================
         // 1.1 按y坐标升序排序（浅拷贝避免修改原数组）
-        const sortedByY = data.slice().sort((a, b) => a.y - b.y);
+        //const sortedByY = data.slice().sort((a, b) => a.y - b.y);
+        const sortedByY = data;
 
         // 1.2 计算分组边界位置
         // 最小的Y，最小Y的height
-        const minY = sortedByY[0].y;
-        const height = Math.max(minY, 50);
+        //const minY = sortedByY[0].y;
+        //const height = Math.max(minY, 50);
 
         // 1.3 创建分组A（y值较小的部分，按x升序排序）
         // 收集y与minY差小于height的数据，且去重
         const groupA = Array.from(
             sortedByY
-            .filter(item => Math.abs(item.y - minY) < height)
+            .filter(item => item.y < y_limit)
             .reduce((m, i) =>
                 // 然后执行去重逻辑
                 m.has(i.label) && m.get(i.label).prob >= i.prob ? m : m.set(i.label, i),
@@ -254,7 +255,7 @@ function sortAndProcessResults(data) {
         // 收集y与minY差大于height的数据，且去重
         const groupB = Array.from(
             sortedByY
-            .filter(item => Math.abs(item.y - minY) > height)
+            .filter(item => item.y > y_limit)
             .reduce((m, i) =>
                 // 然后执行去重逻辑
                 m.has(i.label) && m.get(i.label).prob >= i.prob ? m : m.set(i.label, i),
@@ -263,6 +264,8 @@ function sortAndProcessResults(data) {
         ).sort((a, b) => b.prob - a.prob);
 
         //log(groupB)
+
+        // 1.5 校验结果
         let glen = groupA.length + groupB.length;
         if (groupA.length < 2 || groupA.length > 3 ||
             glen < 4 || glen < sortedByY.length) {
