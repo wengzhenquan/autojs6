@@ -115,14 +115,22 @@ function sortAndProcessResults(data) {
         return new Array();
     }
 
-    try {
+    // 获取y最小的一个有效元素(其中prob最大的)
+    const f = data.filter(item => item.y > 5);
+    const minYItem = f.reduce((a, b) => a.y < b.y ? a : b);
+    //log(minYItem)
+    let y_limit = minYItem.y + minYItem.height;
+    const maxProb = f.filter(item => (item.y < y_limit && item.y >= minYItem.y))
+        .reduce((a, b) => a.prob > b.prob ? a : b);
+    y_limit = maxProb.y + maxProb.height;
+    //log(maxProb)
 
+    try {
         let len = data.length;
         // 检查数据长度是否满足处理逻辑要求 (4或6)
         if (len !== 4 && len !== 6) {
             console.error("预期长度为 4 或 6");
             // console.error("实际长度为：" + len);
-
             if (len < 4) {
                 console.error("长度过小");
                 console.error("请尝试：");
@@ -135,10 +143,8 @@ function sortAndProcessResults(data) {
                     console.error(' 2.降低[YOLO置信度阈值]值');
                     console.warn(`当前 (置信度阈值: ${confThreshold})`);
                 }
-
                 return new Array();
             }
-
 
             console.log(tag + "开始尝试进行修正...");
 
@@ -163,7 +169,6 @@ function sortAndProcessResults(data) {
                 // 规则2：跳过全组低置信度
                 if (group.every(item => item.prob < 0.2)) return;
 
-
                 // 规则3：按置信度降序排序
                 const sortedGroup = group.slice()
                     .sort((a, b) => b.prob - a.prob);
@@ -176,6 +181,11 @@ function sortAndProcessResults(data) {
                 // 遍历剩余项（从置信度第2高开始）
                 for (let i = 1; i < sortedGroup.length; i++) {
                     let currentItem = sortedGroup[i];
+                    // 于topItem区分，跳过相同区域的数据
+                    if (topItem.y > y_limit && currentItem.y > y_limit ||
+                        topItem.y < y_limit && currentItem.y < y_limit)
+                        continue;
+
                     let diff = Math.round(Math.abs(currentItem.y - topItem.y));
 
                     // 策略1：优先匹配Y差>100的项
@@ -190,6 +200,7 @@ function sortAndProcessResults(data) {
                         pairItem = currentItem; // 更新候选
                     }
                 }
+                if (!pairItem) return;
 
                 // 添加到结果（必须保留两项）
                 result.push(topItem, pairItem);
@@ -213,8 +224,6 @@ function sortAndProcessResults(data) {
 
         }
 
-
-
         //log(data)
         // ==================== 1. 数据准备阶段 ====================
         // 1.1 按y坐标升序排序（浅拷贝避免修改原数组）
@@ -224,7 +233,7 @@ function sortAndProcessResults(data) {
         //  const halfLen = Math.floor(sortedByY.length / 2);
         // 最小的Y，最小Y的height
         const minY = sortedByY[0].y;
-        const height = Math.max(sortedByY[0].height, 50);
+        const height = Math.max(minY, 50);
 
         // 1.3 创建分组A（y值较小的前半部分，按x升序排序）
         // var groupA = sortedByY.slice(0, halfLen).sort((a, b) => a.x - b.x);
@@ -301,7 +310,8 @@ function sortAndProcessResults(data) {
                     console.error(' 1.提高[YOLO重叠率阈值]值');
                     console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
                 }
-                if (confThreshold > 0.1 && len <= 6) {
+                if (groupA.length < 2 ||
+                    confThreshold > 0.1 && len <= 6) {
                     console.error(' 2.降低[YOLO置信度阈值]值');
                     console.warn(`当前 (置信度阈值: ${confThreshold})`);
                 }
@@ -361,7 +371,7 @@ function sortAndProcessResults(data) {
                 }
                 return item;
             });
-            
+
             console.error('存在占位匹配，结果不确保正确！');
 
         }
