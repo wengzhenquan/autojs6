@@ -149,6 +149,7 @@ function sortAndProcessResults(data) {
                 groups[label] = groups[label] || [];
                 groups[label].push(item);
             });
+            //log(groups)
 
             // 步骤2：筛选结果
             const result = [];
