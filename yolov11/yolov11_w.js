@@ -254,9 +254,11 @@ function sortAndProcessResults(data) {
         ).sort((a, b) => b.prob - a.prob);
 
         //log(groupB)
-        if (groupA.length + groupB.length < sortedByY.length) {
+        let glen = groupA.length + groupB.length;
+        if (glen < 4 || groupA.length < 2 || groupA.length > 3 ||
+            glen < sortedByY.length) {
             console.error('发现预期长度错误！');
-            log(tag + ('→处理后长度：').padStart(7) + (groupA.length + groupB.length));
+            log(tag + ('→处理后长度：').padStart(7) + (glen));
             console.error(('→上方指标数据：').padStart(17) + groupA.length)
             console.error(('→下方候选数据：').padStart(17) + groupB.length)
             log(tag + '预期有效数据：' + (groupA.length * 2));
@@ -340,23 +342,30 @@ function sortAndProcessResults(data) {
                 groupC.push(placeholder); // 无匹配则占位
             }
         });
+        //log(groupC)
+        let finalGroupC = groupC;
 
         // ==================== 4. 处理未匹配元素 ====================
-        // 4.1 收集所有未被使用的groupB元素（按原始顺序）
-        const unusedItems = groupB.filter(item => !usedItems.has(item));
+        // 使用placeholder占位的数据，需再次替换成真实数据
+        if (groupC.includes(placeholder)) {
+            // 4.1 收集所有未被使用的groupB元素（按原始顺序）
+            const unusedItems = groupB.filter(item => !usedItems.has(item));
+            //log(unusedItems)
+
+            // 4.2 替换占位符（按groupC原始顺序填充）
+            let replaceIndex = 0;
+            finalGroupC = groupC.map(item => {
+                if (item === placeholder && replaceIndex < unusedItems.length) {
+                    return unusedItems[replaceIndex++];
+                }
+                return item;
+            });
+        }
 
         // ==================== 5. 最终结果处理 ====================
-        // 5.1 替换占位符（按groupC原始顺序填充）
-        let replaceIndex = 0;
-        const finalGroupC = groupC.map(item => {
-            if (item === placeholder && replaceIndex < unusedItems.length) {
-                return unusedItems[replaceIndex++];
-            }
-            return item;
-        });
 
-        // 6. 格式化 groupC 的结果
-        let finalResult = finalGroupC.map(item => {
+        // 5. 格式化 groupC 的结果
+        const finalResult = finalGroupC.map(item => {
             let centerX = item.x + (item.width / 2);
             let centerY = item.y + (item.height / 2);
             return {
