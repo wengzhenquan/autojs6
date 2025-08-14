@@ -209,10 +209,10 @@ function sortAndProcessResults(data) {
             //log(result)
 
 
-            len = result.length;
-            console.log(tag + "修正后长度为：" + len);
+            //len = result.length;
+            console.log(tag + "修正后长度为：" + result.length);
             // 检查数据长度是否满足处理逻辑要求 (4或6)
-            if (len !== 4 && len !== 6) {
+            if (result.length !== 4 && result.length !== 6) {
                 //log(data)
                 console.error('结果依旧不符合预期')
                 //return new Array();
@@ -288,11 +288,11 @@ function sortAndProcessResults(data) {
                 console.error('→指标数据>3！');
                 console.error("请尝试：");
 
-                if (nmsThreshold > 0.1 && len > 6) {
+                if (nmsThreshold > 0.1 && len > 15) {
                     console.error(' 1.降低[YOLO重叠率阈值]值');
                     console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
                 }
-                if (confThreshold < 0.9 && len > 6) {
+                if (confThreshold < 0.9) {
                     console.error(' 2.提高[YOLO置信度阈值]值');
                     console.warn(`当前 (置信度阈值: ${confThreshold})`);
                 }
@@ -306,12 +306,12 @@ function sortAndProcessResults(data) {
 
                 console.error("请尝试：");
 
-                if (nmsThreshold < 0.9 && len <= 6) {
+                if (nmsThreshold < 0.9 && len <= 15) {
                     console.error(' 1.提高[YOLO重叠率阈值]值');
                     console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
                 }
                 if (groupA.length < 2 ||
-                    confThreshold > 0.1 && len <= 6) {
+                    confThreshold > 0.1) {
                     console.error(' 2.降低[YOLO置信度阈值]值');
                     console.warn(`当前 (置信度阈值: ${confThreshold})`);
                 }
