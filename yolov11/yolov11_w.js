@@ -360,6 +360,9 @@ function sortAndProcessResults(data) {
                 }
                 return item;
             });
+            
+            console.error('存在占位匹配，结果不确保正确！');
+
         }
 
         // ==================== 5. 最终结果处理 ====================
