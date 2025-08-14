@@ -270,7 +270,7 @@ function sortAndProcessResults(data) {
             console.error('结果解析错误！');
             console.error('可能验证码区域有遮挡');
             console.error('请检查tmp/pic.png验证码截图');
-            console.error('或tmp/error/local/');
+            console.error('或tmp/error/local/目录');
 
 
             if (groupA.length > 3) {
