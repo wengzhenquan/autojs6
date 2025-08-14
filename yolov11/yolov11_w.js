@@ -120,6 +120,7 @@ function sortAndProcessResults(data) {
     const minYItem = f.reduce((a, b) => a.y < b.y ? a : b);
     //log(minYItem)
     let y_limit = minYItem.y + minYItem.height;
+    
     const maxProb = f.filter(item => (item.y < y_limit && item.y >= minYItem.y))
         .reduce((a, b) => a.prob > b.prob ? a : b);
     y_limit = maxProb.y + maxProb.height;
