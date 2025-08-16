@@ -272,7 +272,7 @@ function sortAndProcessResults(data) {
             glen < 4 || glen < sortedByY.length) {
             console.error('发现预期长度错误！');
             log(tag + ('→处理后长度：').padStart(7) + (glen));
-            console.error(('→上方指标数据：').padStart(17) + groupA.length)
+            console.error(('→上方参照数据：').padStart(17) + groupA.length)
             console.error(('→下方候选数据：').padStart(17) + groupB.length)
             log(tag + '预期有效数据：' + (groupA.length * 2));
             sleep(500);
@@ -287,8 +287,9 @@ function sortAndProcessResults(data) {
 
 
             if (groupA.length > 3) {
-                log('——→')
-                console.error('→指标数据>3！');
+                console.warn('若无遮挡——→')
+                
+                console.error('→参照数据>3！');
                 console.error("请尝试：");
 
                 if (nmsThreshold > 0.1 && len > 15) {
@@ -301,11 +302,12 @@ function sortAndProcessResults(data) {
                 }
 
             } else {
-                log('——→')
+                console.warn('若无遮挡——→')
+                
                 if (groupA.length < 2)
-                    console.error('→指标数据＜2！');
+                    console.error('→参照数据＜2！');
                 if (groupB.length < groupA.length)
-                    console.error('→候选数据＜指标数据！');
+                    console.error('→候选数据＜参照数据！');
 
                 console.error("请尝试：");
 
