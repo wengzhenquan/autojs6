@@ -120,7 +120,7 @@ function sortAndProcessResults(data) {
     const minYItem = f.reduce((a, b) => a.y < b.y ? a : b);
     //log(minYItem)
     let y_limit = minYItem.y + minYItem.height;
-    
+
     const maxProb = f.filter(item => (item.y < y_limit && item.y >= minYItem.y))
         .reduce((a, b) => a.prob > b.prob ? a : b);
     y_limit = maxProb.y + maxProb.height;
@@ -270,6 +270,7 @@ function sortAndProcessResults(data) {
         let glen = groupA.length + groupB.length;
         if (groupA.length < 2 || groupA.length > 3 ||
             glen < 4 || glen < sortedByY.length) {
+                
             console.error('发现预期长度错误！');
             log(tag + ('→处理后长度：').padStart(7) + (glen));
             console.error(('→上方参照数据：').padStart(17) + groupA.length)
@@ -280,6 +281,7 @@ function sortAndProcessResults(data) {
 
         if (groupA.length < 2 || groupA.length > 3 ||
             groupB.length < groupA.length) {
+                
             console.error('结果解析错误！');
             console.error('可能验证码区域有遮挡');
             console.error('请检查tmp/pic.png验证码截图');
@@ -288,7 +290,7 @@ function sortAndProcessResults(data) {
 
             if (groupA.length > 3) {
                 console.warn('若无遮挡——→')
-                
+
                 console.error('    异常原因：[参照数据>3]');
                 console.error("请尝试：");
 
@@ -303,7 +305,7 @@ function sortAndProcessResults(data) {
 
             } else {
                 console.warn('若无遮挡——→')
-                
+
                 if (groupA.length < 2)
                     console.error('    异常原因：[参照数据＜2]');
                 if (groupB.length < groupA.length)
@@ -349,7 +351,9 @@ function sortAndProcessResults(data) {
             const candidates = labelMap.get(item.label);
 
             // 检查候选元素是否存在且未被使用过
-            if (candidates && candidates.length > 0 && !usedItems.has(candidates[0])) {
+            if (candidates && candidates.length > 0 &&
+                !usedItems.has(candidates[0])) {
+                    
                 const matchedItem = candidates.shift();
                 groupC.push(matchedItem);
                 usedItems.add(matchedItem); // 标记为已使用
@@ -377,7 +381,6 @@ function sortAndProcessResults(data) {
             });
 
             console.error('存在占位匹配，结果不确保正确！');
-
         }
 
         // ==================== 5. 最终结果处理 ====================
