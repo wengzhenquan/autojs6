@@ -289,7 +289,7 @@ function sortAndProcessResults(data) {
             if (groupA.length > 3) {
                 console.warn('若无遮挡——→')
                 
-                console.error('  异常原因：[参照数据>3！]');
+                console.error('    异常原因：[参照数据>3]');
                 console.error("请尝试：");
 
                 if (nmsThreshold > 0.1 && len > 15) {
@@ -305,9 +305,9 @@ function sortAndProcessResults(data) {
                 console.warn('若无遮挡——→')
                 
                 if (groupA.length < 2)
-                    console.error('  异常原因：[参照数据＜2！]');
+                    console.error('    异常原因：[参照数据＜2]');
                 if (groupB.length < groupA.length)
-                    console.error('  异常原因：[候选数据＜参照数据！]');
+                    console.error('    异常原因：[候选数据＜参照数据]');
 
                 console.error("请尝试：");
 
