@@ -137,11 +137,11 @@ function sortAndProcessResults(data) {
                 console.error("请尝试：");
 
                 if (nmsThreshold < 0.9) {
-                    console.error(' 1.提高[YOLO重叠率阈值]值');
+                    console.error('   1.提高[YOLO重叠率阈值]值');
                     console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
                 }
                 if (confThreshold > 0.1) {
-                    console.error(' 2.降低[YOLO置信度阈值]值');
+                    console.error('   2.降低[YOLO置信度阈值]值');
                     console.warn(`当前 (置信度阈值: ${confThreshold})`);
                 }
                 return new Array();
@@ -283,21 +283,21 @@ function sortAndProcessResults(data) {
             console.error('结果解析错误！');
             console.error('可能验证码区域有遮挡');
             console.error('请检查tmp/pic.png验证码截图');
-            console.error('或tmp/error/local/目录');
+            console.error('    或tmp/error/local/目录');
 
 
             if (groupA.length > 3) {
                 console.warn('若无遮挡——→')
                 
-                console.error('→参照数据>3！');
+                console.error('  异常原因：[参照数据>3！]');
                 console.error("请尝试：");
 
                 if (nmsThreshold > 0.1 && len > 15) {
-                    console.error(' 1.降低[YOLO重叠率阈值]值');
+                    console.error('   1.降低[YOLO重叠率阈值]值');
                     console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
                 }
                 if (confThreshold < 0.9) {
-                    console.error(' 2.提高[YOLO置信度阈值]值');
+                    console.error('   2.提高[YOLO置信度阈值]值');
                     console.warn(`当前 (置信度阈值: ${confThreshold})`);
                 }
 
@@ -305,18 +305,18 @@ function sortAndProcessResults(data) {
                 console.warn('若无遮挡——→')
                 
                 if (groupA.length < 2)
-                    console.error('→参照数据＜2！');
+                    console.error('  异常原因：[参照数据＜2！]');
                 if (groupB.length < groupA.length)
-                    console.error('→候选数据＜参照数据！');
+                    console.error('  异常原因：[候选数据＜参照数据！]');
 
                 console.error("请尝试：");
 
                 if (nmsThreshold < 0.9 && len <= 15) {
-                    console.error(' 1.提高[YOLO重叠率阈值]值');
+                    console.error('   1.提高[YOLO重叠率阈值]值');
                     console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
                 }
                 if (confThreshold > 0.1) {
-                    console.error(' 2.降低[YOLO置信度阈值]值');
+                    console.error('   2.降低[YOLO置信度阈值]值');
                     console.warn(`当前 (置信度阈值: ${confThreshold})`);
                 }
             }
