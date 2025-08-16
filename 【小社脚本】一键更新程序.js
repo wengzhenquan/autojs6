@@ -61,42 +61,41 @@ var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs
 
 //加速代理
 var proxys = [
-
     //1 
     "https://x.whereisdoge.work/",
     "https://hub.gitmirror.com/", // 请求时间：0.75s
     "https://ghfile.geekertao.top/",
-    "https://git.yylx.win/",
     "https://proxy.yaoyaoling.net/",
 
-    "https://gh.222322.xyz/",
-    "https://ghproxy.sakuramoe.dev/", // 请求时间：0.25s
-    "https://github.xxlab.tech/", // 请求时间：0.23s
+    //2
+    "https://ghp.ml1.one/", // 请求时间：0.53s
+    "https://gh.bugdey.us.kg/", // 请求时间：0.77s
+    "https://gh-proxy.net/", // 请求时间：0.78s
+
+    //3
     "https://github.chenc.dev/",
-    "https://git.ppp.ac.cn/",
-    "https://cccccccccccccccccccccccccccccccccccccccccccccccccccc.cc/", // 请求时间：0.47s
-    "http://gh.927223.xyz/",
+    "https://gh.927223.xyz/",
 
 ]
 
 // 备用代理
 var proxys2 = [
-    //3
+    //4
+    "https://git.yylx.win/",
     "https://gh.b52m.cn/", // 请求时间：0.94s
     "https://g.blfrp.cn/", // 请求时间：1.05s
     "https://ghfast.top/", // 请求时间：1.42s
-    "https://git.40609891.xyz/", // 请求时间：1.46s
     "https://git.669966.xyz/", // 请求时间：2.80s
 
-
-    //4
-    "https://github.dpik.top/",
+    //5
+    "https://git.ppp.ac.cn/", // 请求时间：0.69s   
+    "https://github.dpik.top/", // 请求时间：0.95s
+    "https://gh.qninq.cn/", // 请求时间：1.38s
+    "https://ghproxy.sakuramoe.dev/", // 请求时间：0.25s
+    "https://git.40609891.xyz/", 
     "https://gh.monlor.com/",
-    "https://gh-proxy.net/",
-    "https://hub.mwm.moe/",
-    "https://gh.catmak.name/",
     "https://gp-us.fyan.top/",
-    "https://gh.bugdey.us.kg/",
+    "https://ghproxy.monkeyray.net/",
 
 
 ]
@@ -396,7 +395,7 @@ function checkVersion() {
 
     if (hasNewVersion || updateAll) {
         console.warn("有新版本！！！")
-        
+
         console.error("增量更新列表：")
         if (updateList.length > 0) {
             log("----------------------------");
