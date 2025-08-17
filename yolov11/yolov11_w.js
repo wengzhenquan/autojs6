@@ -402,6 +402,7 @@ function sortAndProcessResults(data) {
 
 // 获取小图标与大图标分界y
 function getYRefer(data) {
+    // ------- 根据数据计算（但有局限性，如果上方参照全被遮挡，分界y将没有意义）
     // 获取y最小的一个有效元素(其中prob最大的)
     const f = data.filter(item => item.y > 5);
     const minYItem = f.reduce((a, b) => a.y < b.y ? a : b);
@@ -417,7 +418,7 @@ function getYRefer(data) {
 
     if (typeof global.y_refer === 'undefined' || !global.y_refer)
         return y;
-    
+    // -------- global.y_refer由前置程序根据控件获取，真实有效
     //log(global.y_refer)
     return global.y_refer > y ? global.y_refer : -1;
 }
