@@ -117,7 +117,7 @@ function sortAndProcessResults(data) {
 
     // 获得分界y
     const y_limit = getYRefer(data);
-    //log(maxProb)
+    //log(y_limit)
 
     try {
         let len = data.length;
@@ -411,13 +411,15 @@ function getYRefer(data) {
 
     const maxProb = f.filter(item => (item.y < y && item.y >= minYItem.y))
         .reduce((a, b) => a.prob > b.prob ? a : b);
-
+    //log(maxProb)
+    
     y = maxProb.y + maxProb.height;
 
-    if (typeof y_refer === 'undefined' || !y_refer)
+    if (typeof global.y_refer === 'undefined' || !global.y_refer)
         return y;
-
-    return y_refer > y ? y_refer : -1;
+    
+    //log(global.y_refer)
+    return global.y_refer > y ? global.y_refer : -1;
 }
 
 /**
