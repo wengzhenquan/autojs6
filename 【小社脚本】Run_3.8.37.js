@@ -1360,7 +1360,7 @@ function getClipPic() {
         if (tida) {
             param.h = tida.top() - param.y;
         }
-    } while (param.w > 0 && param.h > 0 && n--);
+    } while ((param.w < 1 || param.h < 1) && n--);
 
     // 反馈截图最上方高度
     global.picY = param.y;
