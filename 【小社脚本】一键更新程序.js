@@ -92,7 +92,7 @@ var proxys2 = [
     "https://github.dpik.top/", // 请求时间：0.95s
     "https://gh.qninq.cn/", // 请求时间：1.38s
     "https://ghproxy.sakuramoe.dev/", // 请求时间：0.25s
-    "https://git.40609891.xyz/", 
+    "https://git.40609891.xyz/",
     "https://gh.monlor.com/",
     "https://gp-us.fyan.top/",
     "https://ghproxy.monkeyray.net/",
