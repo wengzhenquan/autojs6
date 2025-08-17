@@ -728,22 +728,22 @@ function getGitHubFileInfo(filePath, branch) {
 // 获取sha
 function getGitFileSha(fileBytes) {
     // 构造 Blob 头部
-    const headerStr = "blob " + fileBytes.length + "\u0000"; // 注意 Unicode 空字符
-    const headerBytes = new java.lang.String(headerStr).getBytes("UTF-8"); // 转换为 UTF-8 字节
+    var headerStr = "blob " + fileBytes.length + "\u0000"; // 注意 Unicode 空字符
+    var headerBytes = new java.lang.String(headerStr).getBytes("UTF-8"); // 转换为 UTF-8 字节
 
     // 合并头部和内容
-    const blobBytes = util.java.array('byte', headerBytes.length + fileBytes.length);
+    var blobBytes = util.java.array('byte', headerBytes.length + fileBytes.length);
     java.lang.System.arraycopy(headerBytes, 0, blobBytes, 0, headerBytes.length);
     java.lang.System.arraycopy(fileBytes, 0, blobBytes, headerBytes.length, fileBytes.length);
 
     // 计算 SHA-1
-    const md = java.security.MessageDigest.getInstance("SHA-1");
-    const digestBytes = md.digest(blobBytes);
+    var md = java.security.MessageDigest.getInstance("SHA-1");
+    var digestBytes = md.digest(blobBytes);
     // const digestBytes= crypto.digest(blobBytes, 'SHA-1' ,{ input: 'file' }); 
     //  return digestBytes;
 
     // 转换为十六进制字符串
-    const hexChars = [];
+    var hexChars = [];
     for (let b of digestBytes) {
         hexChars.push(((b & 0xFF) < 0x10 ? '0' : '') + (b & 0xFF).toString(16));
     }
