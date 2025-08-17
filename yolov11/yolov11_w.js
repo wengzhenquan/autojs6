@@ -105,7 +105,7 @@ function initializeYolo() {
  * 规则: 1. 按Y坐标升序；2. 分为(A组)和(B组)；3. A组按X坐标升序；
  *       4. B组按A组排序后的标签顺序排序；5. 计算B组中心点并格式化输出。
  * @param {Array<object>} data - YOLO 检测原始结果数组，格式: [{x, y, width, height, prob, label}, ...]
- * @returns {Array<object>|null} - 处理后的 B 组结果数组 [{centerX, centerY, prob, label}, ...]，或在失败/无效输入时返回 null。
+ * @returns {Array<object>|null} - 处理后的 C 组结果数组 [{centerX, centerY, prob, label}, ...]，或在失败/无效输入时返回 null。
  */
 function sortAndProcessResults(data) {
     //log(data)
@@ -117,7 +117,7 @@ function sortAndProcessResults(data) {
 
     // 获得分界y
     const y_limit = getYRefer(data);
-    //log(y_limit)
+    log(y_limit)
 
     try {
         let len = data.length;
@@ -149,7 +149,7 @@ function sortAndProcessResults(data) {
                 groups[label] = groups[label] || [];
                 groups[label].push(item);
             });
-            //log(groups)
+            log(groups)
 
             // 步骤2：筛选结果
             const result = [];
