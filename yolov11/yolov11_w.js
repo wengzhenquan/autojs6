@@ -115,15 +115,8 @@ function sortAndProcessResults(data) {
         return new Array();
     }
 
-    // 获取y最小的一个有效元素(其中prob最大的)
-    const f = data.filter(item => item.y > 5);
-    const minYItem = f.reduce((a, b) => a.y < b.y ? a : b);
-    //log(minYItem)
-    let y_limit = minYItem.y + minYItem.height;
-
-    const maxProb = f.filter(item => (item.y < y_limit && item.y >= minYItem.y))
-        .reduce((a, b) => a.prob > b.prob ? a : b);
-    y_limit = maxProb.y + maxProb.height;
+    // 获得分界y
+    const y_limit = getYRefer(data);
     //log(maxProb)
 
     try {
@@ -270,7 +263,7 @@ function sortAndProcessResults(data) {
         let glen = groupA.length + groupB.length;
         if (groupA.length < 2 || groupA.length > 3 ||
             glen < 4 || glen < sortedByY.length) {
-                
+
             console.error('发现预期长度错误！');
             log(tag + ('→处理后长度：').padStart(7) + (glen));
             console.error(('→上方参照数据：').padStart(17) + groupA.length)
@@ -281,7 +274,7 @@ function sortAndProcessResults(data) {
 
         if (groupA.length < 2 || groupA.length > 3 ||
             groupB.length < groupA.length) {
-                
+
             console.error('结果解析错误！');
             console.error('可能验证码区域有遮挡');
             console.error('请检查tmp/pic.png验证码截图');
@@ -353,7 +346,7 @@ function sortAndProcessResults(data) {
             // 检查候选元素是否存在且未被使用过
             if (candidates && candidates.length > 0 &&
                 !usedItems.has(candidates[0])) {
-                    
+
                 const matchedItem = candidates.shift();
                 groupC.push(matchedItem);
                 usedItems.add(matchedItem); // 标记为已使用
@@ -407,6 +400,25 @@ function sortAndProcessResults(data) {
     }
 }
 
+// 获取小图标与大图标分界y
+function getYRefer(data) {
+    // 获取y最小的一个有效元素(其中prob最大的)
+    const f = data.filter(item => item.y > 5);
+    const minYItem = f.reduce((a, b) => a.y < b.y ? a : b);
+    //log(minYItem)
+    let y = minYItem.y + minYItem.height;
+    //let y_limit = checkYRefer(minYItem.y + minYItem.height);
+
+    const maxProb = f.filter(item => (item.y < y && item.y >= minYItem.y))
+        .reduce((a, b) => a.prob > b.prob ? a : b);
+
+    y = maxProb.y + maxProb.height;
+
+    if (typeof y_refer === 'undefined' || !y_refer)
+        return y;
+
+    return y_refer > y ? y_refer : -1;
+}
 
 /**
  * @description 对指定路径的图片执行 YOLO 检测并处理结果。
