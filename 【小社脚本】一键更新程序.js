@@ -547,6 +547,8 @@ function startUpdate() {
                 fixConfigFile('./' + fileName, './' + oldName)
                 wait(() => false, 500);
                 console.error("旧" + fileName + " 已重命名为 " + oldName);
+                files.remove('./' + fileName)
+                wait(() => false, 300);
 
                 // 下载的新文件
                 files.write('./' + fileName, new java.lang.String(filebytes, "utf-8"), "utf-8");
@@ -557,6 +559,8 @@ function startUpdate() {
                 let newName = "tmp/" + name + ".new." + ext;
                 fixConfigFile('./' + fileName, './' + newName)
                 wait(() => false, 500);
+                files.remove('./' + fileName)
+                wait(() => false, 300);
 
                 console.info("开始尝试自动搬运配置");
                 console.info(oldName + "→" + fileName);
