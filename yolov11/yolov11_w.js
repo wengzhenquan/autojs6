@@ -232,7 +232,7 @@ function sortAndProcessResults(data) {
         //const height = Math.max(minY, 50);
 
         // 1.3 创建分组A（y值较小的部分，按x升序排序）
-        // 收集y与minY差小于height的数据，且去重
+        // 收集小于分界y的图标，且去重
         const groupA = Array.from(
             sortedByY
             .filter(item => item.y < y_limit)
@@ -246,7 +246,7 @@ function sortAndProcessResults(data) {
         //log(groupA)
 
         // 1.4 创建分组B（y值较大的部分，按prob倒序）
-        // 收集y与minY差大于height的数据，且去重
+        // 收集大于分界y的图标，且去重
         const groupB = Array.from(
             sortedByY
             .filter(item => item.y > y_limit)
