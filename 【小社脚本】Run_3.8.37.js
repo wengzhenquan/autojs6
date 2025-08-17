@@ -1333,12 +1333,14 @@ function getClipPic() {
         // 若找到参照组件，就更新参数
         let ycdj = textStartsWith("请在下图依次点击").findOne(1500);
         if (ycdj) {
+            var bottom = ycdj.bottom();
             //找到合适的父组件
             while (
                 ycdj.right() < dwidth * 0.7 ||
                 (ycdj.parent() &&
                     ycdj.parent().right() < dwidth &&
-                    ycdj.parent().bottom() < dheight * 0.5)
+                    ycdj.parent().bottom() < dheight * 0.5 &&
+                    ycdj.parent().bounds().centerY() < bottom)
             ) {
                 ycdj = ycdj.parent();
             }
