@@ -578,7 +578,10 @@ function startUpdate() {
                 }
 
             } else {
-                files.ensureDir('./' + fileName)
+                files.ensureDir('./' + fileName);
+                // 先删除
+                files.remove('./' + fileName);
+                wait(() => false, 300);
 
                 if (isText) {
                     try {
