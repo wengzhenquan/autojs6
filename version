@@ -1,21 +1,21 @@
 {
-    "version": "3.8.36",
+    "version": "3.8.37",
     "updateFile": {
-        "version": 20250816,
+        "version": 20250818,
         "config.js": 20250813,
-        "【小社脚本】启动程序.js": 20250817,
-        "【小社脚本】一键更新程序.js": 20250817,
+        "【小社脚本】启动程序.js": 20250818,
+        "【小社脚本】一键更新程序.js": 20250818,
         "【小社脚本】Run_3.8.35.js": 20250814,
-        "【小社脚本】Run_3.8.34.js": 20250813,
+        "【小社脚本】Run_3.8.37.js": 20250818,
         "【小社脚本】Run_3.8.36.js": 20250816,
-        "yolov11/yolov11_w.js": 20250817,
+        "yolov11/yolov11_w.js": 20250818,
         "yolov11/Yolo-plugin.apk": 20250513,
         "yolov11/model/yzm.bin": 20250513,
         "yolov11/model/yzm.param": 20250513,
         "tmp/公益梯子[魔法].txt": 20250816
     },
     "main": "【小社脚本】启动程序.js",
-    "run": "【小社脚本】Run_3.8.36.js",
+    "run": "【小社脚本】Run_3.8.37.js",
     "updateScript": "【小社脚本】一键更新程序.js",
     "apk": {
         "yolov11/Yolo-plugin.apk": "com.circlefork.yolo"
