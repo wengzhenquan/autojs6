@@ -112,28 +112,25 @@ var api_proxys = [
     "https://ghfile.geekertao.top/",
     "https://git.yylx.win/",
     "https://hub.mwm.moe/",
-    "https://gh.noki.icu/",
     "https://gh.bugdey.us.kg/",
     "https://tvv.tw/",
-    "https://99z.top/",
     "https://ghm.078465.xyz/",
-    "https://gh.944446.xyz/",
-    "https://xiazai.de/",
-    "https://gh-proxy.com/",
-    "http://gh.927223.xyz/",
+    "https://gh.927223.xyz/",
+    "https://gh.noki.icu/",
     "https://gh.qninq.cn/",
     "https://gh.llkk.cc/",
+    "https://gh-proxy.com/",
+    "https://xiazai.de/",
+    "https://99z.top/",
+    "https://gh.944446.xyz/",
 
-    "https://j.1win.ip-ddns.com/",
+
     "https://j.1win.ggff.net/",
     "https://j.n1win.dpdns.org/",
     "https://j.1lin.dpdns.org/",
-    "https://j.1win.ddns-ip.net/",
     "https://jiashu.1win.eu.org/",
-
-    //"https://github.sagolu.top/",
-    //"https://github.cmsz.dpdns.org/",
-    //"https://g.cachecdn.ggff.net/",
+    // "https://j.1win.ip-ddns.com/",
+    // "https://j.1win.ddns-ip.net/",
 
 ]
 // 打乱数组
