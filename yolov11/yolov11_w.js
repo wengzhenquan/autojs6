@@ -117,7 +117,7 @@ function sortAndProcessResults(data) {
 
     // 获得分界y
     const y_limit = getYRefer(data);
-    log(y_limit)
+    //log(y_limit)
 
     try {
         let len = data.length;
@@ -149,7 +149,7 @@ function sortAndProcessResults(data) {
                 groups[label] = groups[label] || [];
                 groups[label].push(item);
             });
-            log(groups)
+            //log(groups)
 
             // 步骤2：筛选结果
             const result = [];
