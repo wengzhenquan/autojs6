@@ -165,6 +165,7 @@ function sortAndProcessResults(data) {
 
                 // 规则3：按置信度降序排序
                 const sortedGroup = group.slice()
+                    .filter(item => item.y > 5)
                     .sort((a, b) => b.prob - a.prob);
                 const topItem = sortedGroup[0]; // 最高置信度项
 
@@ -234,8 +235,8 @@ function sortAndProcessResults(data) {
         // 1.3 创建分组A（y值较小的部分，按x升序排序）
         // 收集小于分界y的图标，且去重
         const groupA = Array.from(
-            sortedByY
-            .filter(item => item.y < y_limit)
+            sortedByY.slice()
+            .filter(item => item.y < y_limit && item.y > 5)
             .reduce((m, i) =>
                 // 然后执行去重逻辑
                 m.has(i.label) && m.get(i.label).prob >= i.prob ? m : m.set(i.label, i),
@@ -248,7 +249,7 @@ function sortAndProcessResults(data) {
         // 1.4 创建分组B（y值较大的部分，按prob倒序）
         // 收集大于分界y的图标，且去重
         const groupB = Array.from(
-            sortedByY
+            sortedByY.slice()
             .filter(item => item.y > y_limit)
             .reduce((m, i) =>
                 // 然后执行去重逻辑
@@ -404,16 +405,18 @@ function sortAndProcessResults(data) {
 function getYRefer(data) {
     // ------- 根据数据计算（但有局限性，如果上方参照图标全被遮挡，分界y将没有意义）
     // 获取y最小的一个有效元素(其中prob最大的)
-    const f = data.filter(item => item.y > 5);
+    
+    // y最小的有效元素
+    const f = data.slice().filter(item => item.y > 5);
     const minYItem = f.reduce((a, b) => a.y < b.y ? a : b);
     //log(minYItem)
     let y = minYItem.y + minYItem.height;
-    //let y_limit = checkYRefer(minYItem.y + minYItem.height);
-
+    
+    // 其中prob最大的有效元素
     const maxProb = f.filter(item => (item.y < y && item.y >= minYItem.y))
         .reduce((a, b) => a.prob > b.prob ? a : b);
     //log(maxProb)
-    
+    // 该元素的数据整合成分界y
     y = maxProb.y + maxProb.height;
 
     if (typeof global.y_refer === 'undefined' || !global.y_refer)
