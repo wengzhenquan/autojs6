@@ -99,7 +99,7 @@ var abnormalInterrupt = 1;
 // 允许息屏信号
 var ableScreenOff = 0;
 // 程序最大运行时间，超过该时间会强制停止(ms)。  3分钟
-var maxRuntime = 3 * 60 * 1000;
+var maxRuntime = (config && config.运行超时时间 || 3) * 60 * 1000;
 
 
 //打开悬浮窗控制台
@@ -220,6 +220,7 @@ function startTimeoutMonitor() {
             if (currentTime - startTime > (maxRuntime - 10 * 1000)) {
                 ableScreenOff = 1;
                 abnormalInterrupt = 0;
+                console.error('配置：运行超时时间：' + config.运行超时时间 + ' 分钟')
                 console.error(`脚本运行 ${(maxRuntime)/60/1000} 分钟，强制退出`);
                 console.error('可能是兼容性问题，或布局分析问题，导致页面卡住');
                 console.error('也有可能是无障碍服务故障，可重新授权无障碍');
@@ -1826,12 +1827,12 @@ function permissionv() {
 function main() {
 
     //屏幕点亮
-    let m = 10;
+    let m = 20;
     while (!device.isScreenOn() && m--) {
         // 设备激活
         device.wakeUpIfNeeded();
         device.wakeUp();
-        wait(() => false, 1000);
+        wait(() => false, 500);
     }
     //亮屏
     device.keepScreenDim(maxRuntime);
