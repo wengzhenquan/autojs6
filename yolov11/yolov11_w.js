@@ -127,6 +127,10 @@ function sortAndProcessResults(data) {
             // console.error("实际长度为：" + len);
             if (len < 4) {
                 console.error("长度过小");
+                console.error('可能验证码区域有遮挡');
+                console.error('请检查tmp/pic.png验证码截图');
+                console.error('    或tmp/error/local/目录');
+                console.warn('若无遮挡——→')
                 console.error("请尝试：");
 
                 if (nmsThreshold < 0.9) {
@@ -405,13 +409,13 @@ function sortAndProcessResults(data) {
 function getYRefer(data) {
     // ------- 根据数据计算（但有局限性，如果上方参照图标全被遮挡，分界y将没有意义）
     // 获取y最小的一个有效元素(其中prob最大的)
-    
+
     // y最小的有效元素
     const f = data.slice().filter(item => item.y > 5);
     const minYItem = f.reduce((a, b) => a.y < b.y ? a : b);
     //log(minYItem)
     let y = minYItem.y + minYItem.height;
-    
+
     // 其中prob最大的有效元素
     const maxProb = f.filter(item => (item.y < y && item.y >= minYItem.y))
         .reduce((a, b) => a.prob > b.prob ? a : b);
