@@ -731,8 +731,8 @@ function systemSetting() {
 
         if (config && config.结束息屏 && ableScreenOff) {
             let hours = new Date().getHours();
-            let dayu = config && config.息屏时间范围_大于等于 || 0;
-            let xiaoyu = config && config.息屏时间范围_小于等于 || 8;
+            let dayu = (config && config.息屏时间范围_大于等于) || 0;
+            let xiaoyu = (config && config.息屏时间范围_小于等于) || 8;
             if ((hours >= dayu || hours <= xiaoyu) ||
                 (hours >= dayu && hours <= xiaoyu)) {
                 console.error('3秒后息屏！');
@@ -929,7 +929,7 @@ var proxys = [
 
     "http://github-proxy.teach-english.tech/",
     "https://ghproxy.cxkpro.top/", // 请求时间：0.89s
-   // "https://github.bullb.net/", // 请求时间：2.23s
+    // "https://github.bullb.net/", // 请求时间：2.23s
 
     //1 
     "https://x.whereisdoge.work/",
