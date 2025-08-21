@@ -63,7 +63,7 @@ var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs
 var proxys = [
     "http://github-proxy.teach-english.tech/",
     "https://ghproxy.cxkpro.top/", // 请求时间：0.89s
-    "https://github.bullb.net/", // 请求时间：2.23s
+   // "https://github.bullb.net/", // 请求时间：2.23s
 
     //1 
     "https://x.whereisdoge.work/",

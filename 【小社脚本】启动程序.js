@@ -339,7 +339,7 @@ function consoleShow() {
                 warn: 'cyan',
                 error: 'magenta'
             });
-            
+
             if (config && config.悬浮窗控制台_字体大小)
                 console.setContentTextSize(config.悬浮窗控制台_字体大小);
 
@@ -730,10 +730,18 @@ function systemSetting() {
         }
 
         if (config && config.结束息屏 && ableScreenOff) {
-            wait(() => false, 3000);
-            //console.hide();
-            // 无障碍服务调用系统锁屏
-            auto.service.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN);
+            let hours = new Date().getHours();
+            let dayu = config && config.息屏时间范围_大于等于 || 0;
+            let xiaoyu = config && config.息屏时间范围_小于等于 || 8;
+            if ((hours >= dayu || hours <= xiaoyu) ||
+                (hours >= dayu && hours <= xiaoyu)) {
+                console.error('3秒后息屏！');
+                wait(() => false, 3000);
+                //console.hide();
+                // 无障碍服务调用系统锁屏
+                auto.service.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN);
+
+            }
 
         }
 
@@ -919,10 +927,10 @@ function checkConfig() {
 //加速代理
 var proxys = [
 
-   "http://github-proxy.teach-english.tech/",
+    "http://github-proxy.teach-english.tech/",
     "https://ghproxy.cxkpro.top/", // 请求时间：0.89s
-    "https://github.bullb.net/", // 请求时间：2.23s
- 
+   // "https://github.bullb.net/", // 请求时间：2.23s
+
     //1 
     "https://x.whereisdoge.work/",
     "https://g.blfrp.cn/", // 请求时间：1.05s
@@ -943,7 +951,7 @@ var proxys = [
 // 备用代理
 var proxys2 = [
 
-     // 4
+    // 4
     "https://git.yylx.win/",
     "https://gh.b52m.cn/", // 请求时间：0.94s
     "https://ghfast.top/", // 请求时间：1.42s
