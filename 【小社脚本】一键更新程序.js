@@ -63,7 +63,7 @@ var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs
 var proxys = [
     "http://github-proxy.teach-english.tech/",
     "https://ghproxy.cxkpro.top/", // 请求时间：0.89s
-   // "https://github.bullb.net/", // 请求时间：2.23s
+    // "https://github.bullb.net/", // 请求时间：2.23s
 
     //1 
     "https://x.whereisdoge.work/",
@@ -787,7 +787,8 @@ function mergeConfigs(oldConfigPath, newConfigPath, outputPath) {
      */
     function convertValueType(oldValue, newValue) {
         // 数字类型纠正：数字字符串→数字
-        if (typeof oldValue === 'string' && !isNaN(oldValue)) {
+        if (typeof oldValue === 'string' &&
+            oldValue.length < 4 && !isNaN(oldValue)) {
             let oldp = parseFloat(oldValue);
             // 小于1000(排除屏幕解锁数字密码，安卓最少4位数)，
             // 且转换前后长度一样(排除0开头的字符串)
