@@ -31,6 +31,9 @@ const confThreshold = (config && config.YOLO置信度阈值) || 0.01;
 //重叠率阈值
 const nmsThreshold = (config && config.YOLO重叠率阈值) || 0.1;
 
+// 尝试遮挡修复
+const OccRepair = (config && config.YOLO尝试遮挡修复) || 0;
+
 const tag = "[YOLO]";
 // --- 模块级变量 (用于存储初始化状态和实例) ---
 let yoloInstance = null;
@@ -157,12 +160,23 @@ function sortAndProcessResults(data) {
 
             // 步骤2：筛选结果
             const result = [];
+            // 修复遮挡数组
+            const y_limit_single = [];
 
             Object.keys(groups).forEach(label => {
                 const group = groups[label];
 
                 // 规则1：跳过单一元素组
-                if (group.length < 2) return;
+                if (group.length < 2) {
+                    // 尝试修复遮挡上方参照图标
+                    let one = group[0];
+                    // 添加小于y_limit的元素，其中y=0的元素仅保留一个
+                    if (one.y < y_limit &&
+                        y_limit_single.every(item => item.y !== 0))
+                        y_limit_single.push(one);
+
+                    return;
+                }
 
                 // 规则2：跳过全组低置信度
                 if (group.every(item => item.prob < 0.2)) return;
@@ -171,6 +185,7 @@ function sortAndProcessResults(data) {
                 const sortedGroup = group.slice()
                     .filter(item => item.y > 5)
                     .sort((a, b) => b.prob - a.prob);
+
                 const topItem = sortedGroup[0]; // 最高置信度项
 
                 // 核心逻辑：寻找配对项
@@ -206,8 +221,35 @@ function sortAndProcessResults(data) {
                 // 经过上面处理，能确保数据都是成对，上面1个，下面1个
                 result.push(topItem, pairItem);
             });
-            //log(groups)
+            // log(y_limit_single)
             //log(result)
+            // 尝试修复遮挡
+            if (y_limit_single.length > 0 && OccRepair) {
+                console.error('尝试遮挡修复……');
+                console.error("遮挡修复，结果不一定正确!");
+                // 提取数组result中所有的label，用于去重过滤
+                const aLabels = new Set(result.map(item => item.label));
+                // 过滤去重
+                const B_data = Array.from(
+                    data.slice()
+                    // 目标为分界y下方的候选项，去除已存在label
+                    .filter(item => item.y > y_limit && !aLabels.has(item.label))
+                    .reduce((m, i) =>
+                        // 然后执行去重逻辑
+                        m.has(i.label) && m.get(i.label).prob >= i.prob ? m : m.set(i.label, i),
+                        new Map()
+                    ).values()
+                ).sort((a, b) => b.prob - a.prob);
+                //log(B_data)
+
+                for (let i = 0; i < y_limit_single.length; i++) {
+                    let single = y_limit_single[i];
+                    let single_b = B_data[i];
+
+                    if (typeof single_b !== 'undefined')
+                        result.push(single, single_b);
+                }
+            }
 
 
             //len = result.length;
@@ -220,7 +262,7 @@ function sortAndProcessResults(data) {
             }
             //替换数据
             data = result;
-            console.warn("数据减少，结果不一定正确");
+
             sleep(500);
 
         }
@@ -240,7 +282,7 @@ function sortAndProcessResults(data) {
         // 收集小于分界y的图标，且去重
         const groupA = Array.from(
             sortedByY.slice()
-            .filter(item => item.y < y_limit && item.y > 5)
+            .filter(item => item.y < y_limit)
             .reduce((m, i) =>
                 // 然后执行去重逻辑
                 m.has(i.label) && m.get(i.label).prob >= i.prob ? m : m.set(i.label, i),
