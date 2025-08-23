@@ -1769,7 +1769,7 @@ function permissionv() {
     // ---------- 重启无障碍服务权限 ---------- //
     if (config && config.自动重启无障碍服务 && !autoRun &&
         (canRestarAuto || shizukuAuto || secureSettingAuto || rootAuto)) {
-        console.error('无障碍服务未启动或异常！')
+        console.error('无障碍服务未启用或发生故障！')
         console.warn('发现已启用高级权限')
         console.warn('可尝试重启无障碍服务')
         console.error('正在重启无障碍服务......')
