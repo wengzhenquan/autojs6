@@ -40,6 +40,15 @@ let yoloInstance = null;
 let isYoloInitialized = false;
 
 
+// global.x_refer由前置程序根据控件获取，小图标有效分界x
+// 小图标x必须大于global.x_refer，在它右边。
+if (typeof global.x_refer === 'undefined' ||
+    !global.x_refer || global.x_refer < 0) {
+    // 若前置程序没有赋值，则根据实际初始化为200
+    global.x_refer = 200;
+}
+
+
 events.on("exit", function() {
     if (yoloInstance) {
         yoloInstance.release();
@@ -282,7 +291,7 @@ function sortAndProcessResults(data) {
         // 收集小于分界y的图标，且去重
         const groupA = Array.from(
             sortedByY.slice()
-            .filter(item => item.y < y_limit)
+            .filter(item => item.y < y_limit && item.x > global.x_refer)
             .reduce((m, i) =>
                 // 然后执行去重逻辑
                 m.has(i.label) && m.get(i.label).prob >= i.prob ? m : m.set(i.label, i),
@@ -453,7 +462,7 @@ function getYRefer(data) {
     // 获取y最小的一个有效元素(其中prob最大的)
 
     // y最小的有效元素
-    const f = data.slice().filter(item => item.y > 5);
+    const f = data.slice().filter(item => item.y > 5 && item.x > global.x_refer);
     const minYItem = f.reduce((a, b) => a.y < b.y ? a : b);
     //log(minYItem)
     let y = minYItem.y + minYItem.height;
@@ -522,7 +531,7 @@ function detectAndProcess(imagePath) {
         return sortAndProcessResults(rawResults);
 
     } catch (error) {
-        console.error(`${tag}检测过程中发生错误: ${error}`);
+        console.error(`${tag}识别过程中发生错误: ${error}`);
         return null;
     } finally {
         // 释放图片资源（如果需要）
