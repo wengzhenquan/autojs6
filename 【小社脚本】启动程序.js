@@ -740,8 +740,8 @@ function systemSetting() {
             let hours = new Date().getHours();
             let dayu = (config && config.息屏时间范围_大于等于) || 0;
             let xiaoyu = (config && config.息屏时间范围_小于等于) || 8;
-            if ((hours >= dayu || hours <= xiaoyu) ||
-                (hours >= dayu && hours <= xiaoyu)) {
+            if ((hours >= dayu && hours <= xiaoyu) ||
+                (xiaoyu < dayu && (hours >= dayu || hours <= xiaoyu))) {
                 console.error('3秒后息屏！');
                 wait(() => false, 3000);
                 //console.hide();
@@ -1769,6 +1769,7 @@ function permissionv() {
     // ---------- 重启无障碍服务权限 ---------- //
     if (config && config.自动重启无障碍服务 && !autoRun &&
         (canRestarAuto || shizukuAuto || secureSettingAuto || rootAuto)) {
+        console.error('无障碍服务未启动或异常！')
         console.warn('发现已启用高级权限')
         console.warn('可尝试重启无障碍服务')
         console.error('正在重启无障碍服务......')
