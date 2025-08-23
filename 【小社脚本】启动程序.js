@@ -1782,7 +1782,7 @@ function permissionv() {
             wait(() => false, 1000);
             
             if (!auto.isRunning() &&
-                !auto.service && ) {
+                !auto.service) {
                 try {
                     auto.stop();
                     wait(() => false, 1000);
