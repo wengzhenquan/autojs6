@@ -1780,13 +1780,16 @@ function permissionv() {
                 auto(true);
             } catch (e) {}
             wait(() => false, 1000);
-            try {
-                auto.stop();
+            
+            if (!auto.isRunning() &&
+                !auto.service && ) {
+                try {
+                    auto.stop();
+                    wait(() => false, 1000);
+                    auto.start();
+                } catch (e) {}
                 wait(() => false, 1000);
-                auto.start();
-            } catch (e) {}
-
-            wait(() => false, 1000);
+            }
         }
         if (!auto.isRunning() &&
             !auto.service && rootAuto) {
