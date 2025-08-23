@@ -1777,13 +1777,15 @@ function permissionv() {
         if (canRestarAuto) {
             log('使用AutoJS6方法重启无障碍服务...')
             try {
+                auto(true);
+            } catch (e) {}
+            wait(() => false, 1000);
+            try {
                 auto.stop();
                 wait(() => false, 1000);
                 auto.start();
             } catch (e) {}
-            try {
-                auto(true);
-            } catch (e) {}
+
             wait(() => false, 1000);
         }
         if (!auto.isRunning() &&
