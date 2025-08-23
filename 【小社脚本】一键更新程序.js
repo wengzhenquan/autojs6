@@ -67,7 +67,7 @@ var proxys = [
 
     //1 
     "https://x.whereisdoge.work/",
-    "https://g.blfrp.cn/", // 请求时间：1.05s
+   // "https://g.blfrp.cn/", // 请求时间：1.05s
     "https://ghfile.geekertao.top/",
     "https://proxy.yaoyaoling.net/",
 
