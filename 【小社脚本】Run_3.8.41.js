@@ -234,7 +234,7 @@ let urls = [
     "https://ijakryikwhug.ap-southeast-1.clawcloudrun.com/upload", // 10
 
 
-    //  "http://up.kuandana.v6.rocks/upload", //11
+    // "http://up.kuandana.v6.rocks/upload", //11
     "http://up.风中拾叶.top/upload", //12
 
 ];
@@ -333,29 +333,27 @@ function launchAPP(packageN) {
 //跳过广告
 function skipAd() {
     while (!packageName(xmPckageName).exists()) sleep(500);
-    // let n = 5;
-    // while (n-- && !(content('签到').exists() ||
-    //         content('论坛').exists() ||
-    //         content('我的').exists())) {
-    //开屏广告
-    let skilCloseBtn = textStartsWith("跳过").findOne(800);
-    if (ableClick(skilCloseBtn)) {
-        log("跳过了开屏广告!");
-    }
+    let n = 3;
+    while (n--) {
+        //开屏广告
+        let skilCloseBtn = textStartsWith("跳过").findOne(800);
+        if (clickCenter(skilCloseBtn)) {
+            log("跳过了开屏广告!");
+        }
 
-    if (wait(() => text('发现新版本').exists(), 2, 800)) {
-        ableClick('以后再说');
-        log("关闭了升级提示!");
+        if (wait(() => text('发现新版本').exists(), 2, 600)) {
+            ableClick('以后再说');
+            log("关闭了升级提示!");
+        }
+        
+        //sleep(1000);
+        let adClose = className("android.widget.ImageView")
+            .desc("关闭");
+        if (wait(() => adClose.exists(), 2, 500)) {
+            ableClick(adClose.findOne(800));
+            log("关闭了1个广告!");
+        }
     }
-    //sleep(1000);
-    let adClose = className("android.widget.ImageView")
-        .desc("关闭");
-
-    if (wait(() => adClose.exists(), 2, 500) &&
-        ableClick(adClose.findOne(800))) {
-        log("关闭了1个广告!");
-    }
-    //}
 }
 
 //浏览帖子
@@ -1173,7 +1171,7 @@ function findCenter(pram) {
             content("刷新验证").exists() ||
             content("视觉障碍").exists()),
         5, 800);
-        
+
     // 加强识别
     let n = 3;
     while (!result && n--) {
