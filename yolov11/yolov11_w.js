@@ -190,18 +190,24 @@ function sortAndProcessResults(data) {
                 // 规则2：跳过全组低置信度
                 if (group.every(item => item.prob < 0.2)) return;
 
-                // 规则3：按置信度降序排序
+                // 规则3：跳过全组y>y_limit
+                if (group.every(item => item.y > y_limit)) return;
+                
+                // ========== 规则3：成对匹配 =========
+
+                // 步骤1：按置信度降序排序
                 const sortedGroup = group.slice()
                     .filter(item => item.y > 5)
                     .sort((a, b) => b.prob - a.prob);
-
-                const topItem = sortedGroup[0]; // 最高置信度项
+                    
+                // 保留最高置信度项
+                const topItem = sortedGroup[0]; 
 
                 // 核心逻辑：寻找配对项
                 let pairItem = null;
                 let maxDiff = -1; // 记录最大Y差（初始值-1）
 
-                // 遍历剩余项（从置信度第2高开始）
+                // 步骤2：遍历匹配（从置信度第2高开始）
                 for (let i = 1; i < sortedGroup.length; i++) {
                     let currentItem = sortedGroup[i];
                     // 于topItem区分，跳过相同区域的数据
@@ -230,8 +236,9 @@ function sortAndProcessResults(data) {
                 // 经过上面处理，能确保数据都是成对，上面1个，下面1个
                 result.push(topItem, pairItem);
             });
+            
             // log(y_limit_single)
-            //log(result)
+            // log(result)
             // 尝试修复遮挡
             if (y_limit_single.length > 0 && OccRepair) {
                 console.error('尝试遮挡修复……');
