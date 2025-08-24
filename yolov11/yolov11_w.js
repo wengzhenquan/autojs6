@@ -40,6 +40,7 @@ var yoloInstance = null;
 var isYoloInitialized = false;
 
 
+// global.x_refer表示截图上的文案“请在下图依次点击：”末尾的x，也就是小图标的开始
 // global.x_refer由前置程序根据控件获取，小图标有效分界x
 // 小图标x必须大于global.x_refer，在它右边。
 if (typeof global.x_refer === 'undefined' ||
@@ -485,7 +486,9 @@ function getYRefer(data) {
 
     if (typeof global.y_refer === 'undefined' || !global.y_refer)
         return y;
+        
     // -------- global.y_refer由前置程序根据控件获取，真实有效
+    // global.y_refer表示截图上的文案“请在下图依次点击：”与下方点击区域的分界
     //log(global.y_refer)
     return global.y_refer > y ? global.y_refer : -1;
 }
