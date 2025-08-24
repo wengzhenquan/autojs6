@@ -173,6 +173,8 @@ function sortAndProcessResults(data) {
             // 修复遮挡数组
             var y_limit_single = [];
 
+            var n = 3;
+
             Object.keys(groups).forEach(label => {
                 // ======= 前置通用处理 =======
                 // 按置信度降序排序(按label提取)
@@ -188,8 +190,7 @@ function sortAndProcessResults(data) {
 
                 // 跳过空数组
                 if (typeof topItem === 'undefined' ||
-                    !topItem ||
-                    group.length < 1)
+                    !topItem || group.length < 1)
                     return;
 
                 // 规则1：跳过全组y>y_limit
@@ -201,8 +202,10 @@ function sortAndProcessResults(data) {
                     // 添加小于y_limit的元素，其中y=0的元素仅保留一个
                     if (topItem.y < y_limit &&
                         // y_limit_single.every(item => item.label !== topItem.label) &&
-                        y_limit_single.every(item => item.y !== 0))
+                        y_limit_single.every(item => item.y !== 0) &&
+                        n--) {
                         y_limit_single.push(topItem);
+                    }
 
                     return;
                 }
@@ -220,6 +223,7 @@ function sortAndProcessResults(data) {
                         continue;
 
                     pairItem = currentItem;
+                    n--
                     break;
                 }
 
@@ -229,7 +233,7 @@ function sortAndProcessResults(data) {
             });
 
             //log(y_limit_single)
-            // log(result)
+            //log(result)
             // 尝试修复遮挡
             if (y_limit_single.length > 0 && OccRepair) {
                 console.error('尝试遮挡修复……');
@@ -256,7 +260,6 @@ function sortAndProcessResults(data) {
                         result.push(y_limit_single[i], single_b);
                 }
             }
-
 
             //len = result.length;
             console.log(tag + "修正后长度为：" + result.length);
