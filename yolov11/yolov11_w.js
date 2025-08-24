@@ -177,6 +177,8 @@ function sortAndProcessResults(data) {
                 // ======= 前置通用处理 =======
                 // 按置信度降序排序(按label提取)
                 var group = groups[label].slice()
+                    // 过滤掉无效项
+                    .filter(item => !(item.y < y_limit && item.x < global.x_refer))
                     .sort((a, b) => b.prob - a.prob);
 
                 // 最高置信度项(第1项)
@@ -184,16 +186,10 @@ function sortAndProcessResults(data) {
 
                 // ========== 跳过规则 =========
 
-                // 第一项如果小于分界y，且小于分界global.x_refer，则重新寻找
-                // 显然在文案“请在下图依次点击：”区域是不可能存在图标的
-                if (topItem.y < y_limit && topItem.x < global.x_refer) {
-                    let tit = group.find(item => item.y < y_limit && item.x > global.x_refer);
-                    // 没找到，跳过
-                    if (typeof tit === 'undefined')
-                        return;
-
-                    topItem = tit;
-                }
+                // 跳过空数组
+                if (typeof topItem === 'undefined' ||
+                    group.length < 1)
+                    return;
 
                 // 规则1：跳过全组y>y_limit
                 if (group.every(item => item.y > y_limit)) return;
@@ -203,7 +199,6 @@ function sortAndProcessResults(data) {
                     // 尝试修复遮挡上方参照图标
                     // 添加小于y_limit的元素，其中y=0的元素仅保留一个
                     if (topItem.y < y_limit &&
-                        topItem.x > global.x_refer &&
                         // y_limit_single.every(item => item.label !== topItem.label) &&
                         y_limit_single.every(item => item.y !== 0))
                         y_limit_single.push(topItem);
@@ -216,21 +211,8 @@ function sortAndProcessResults(data) {
                 // 核心逻辑：寻找配对项
                 let pairItem = null;
                 // 遍历匹配
-                for (let i = 0; i < group.length; i++) {
+                for (let i = 1; i < group.length; i++) {
                     let currentItem = group[i];
-                    // 跳过相同项
-                    if (topItem.height === currentItem.height &&
-                        topItem.width === currentItem.width &&
-                        topItem.label === currentItem.label &&
-                        topItem.prob === currentItem.prob &&
-                        topItem.x === currentItem.x &&
-                        topItem.y === currentItem.y)
-                        continue;
-                        
-                    // 跳过无效项
-                    if (currentItem.y < y_limit && currentItem.x < global.x_refer)
-                        continue;
-
                     // 于topItem区分，跳过相同区域的数据
                     if ((topItem.y > y_limit && currentItem.y > y_limit) ||
                         (topItem.y < y_limit && currentItem.y < y_limit))
