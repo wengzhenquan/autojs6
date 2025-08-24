@@ -197,7 +197,6 @@ function sortAndProcessResults(data) {
 
                 // 步骤1：按置信度降序排序
                 var sortedGroup = group.slice()
-                    .filter(item => item.y > 5)
                     .sort((a, b) => b.prob - a.prob);
 
                 // 保留最高置信度项
@@ -469,7 +468,7 @@ function getYRefer(data) {
     // 获取y最小的一个有效元素(其中prob最大的)
 
     // y最小的有效元素
-    var f = data.slice().filter(item => item.y > 5 && item.x > global.x_refer);
+    var f = data.slice().filter(item => item.x > global.x_refer);
     var minYItem = f.reduce((a, b) => a.y < b.y ? a : b);
     //log(minYItem)
     var y = minYItem.y + minYItem.height;
