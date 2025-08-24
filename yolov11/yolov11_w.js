@@ -36,8 +36,8 @@ const OccRepair = (config && config.YOLO尝试遮挡修复) || 0;
 
 const tag = "[YOLO]";
 // --- 模块级变量 (用于存储初始化状态和实例) ---
-let yoloInstance = null;
-let isYoloInitialized = false;
+var yoloInstance = null;
+var isYoloInitialized = false;
 
 
 // global.x_refer由前置程序根据控件获取，小图标有效分界x
@@ -74,7 +74,7 @@ function initializeYolo() {
     console.log(tag + "正在初始化...");
     try {
         console.log(`${tag}加载插件Yolo-plugin...`);
-        let YoloPlugin = plugins.load(YOLO_PLUGIN_NAME);
+        var YoloPlugin = plugins.load(YOLO_PLUGIN_NAME);
         if (!YoloPlugin) {
             throw new Error(`插件Yolo-plugin加载失败！`);
         }
@@ -159,21 +159,21 @@ function sortAndProcessResults(data) {
             console.log(tag + "开始尝试进行修正...");
 
             // 步骤1：分组
-            const groups = {};
+            var groups = {};
             data.forEach(item => {
-                const label = item.label;
+                let label = item.label;
                 groups[label] = groups[label] || [];
                 groups[label].push(item);
             });
             //log(groups)
 
             // 步骤2：筛选结果
-            const result = [];
+            var result = [];
             // 修复遮挡数组
-            const y_limit_single = [];
+            var y_limit_single = [];
 
             Object.keys(groups).forEach(label => {
-                const group = groups[label];
+                var group = groups[label];
 
                 // 规则1：跳过单一元素组
                 if (group.length < 2) {
@@ -192,16 +192,16 @@ function sortAndProcessResults(data) {
 
                 // 规则3：跳过全组y>y_limit
                 if (group.every(item => item.y > y_limit)) return;
-                
+
                 // ========== 规则3：成对匹配 =========
 
                 // 步骤1：按置信度降序排序
-                const sortedGroup = group.slice()
+                var sortedGroup = group.slice()
                     .filter(item => item.y > 5)
                     .sort((a, b) => b.prob - a.prob);
-                    
+
                 // 保留最高置信度项
-                const topItem = sortedGroup[0]; 
+                var topItem = sortedGroup[0];
 
                 // 核心逻辑：寻找配对项
                 let pairItem = null;
@@ -236,7 +236,7 @@ function sortAndProcessResults(data) {
                 // 经过上面处理，能确保数据都是成对，上面1个，下面1个
                 result.push(topItem, pairItem);
             });
-            
+
             // log(y_limit_single)
             // log(result)
             // 尝试修复遮挡
@@ -244,9 +244,9 @@ function sortAndProcessResults(data) {
                 console.error('尝试遮挡修复……');
                 console.error("遮挡修复，结果不一定正确!");
                 // 提取数组result中所有的label，用于去重过滤
-                const aLabels = new Set(result.map(item => item.label));
+                let aLabels = new Set(result.map(item => item.label));
                 // 过滤去重
-                const B_data = Array.from(
+                var B_data = Array.from(
                     data.slice()
                     // 目标为分界y下方的候选项，去除已存在label
                     .filter(item => item.y > y_limit && !aLabels.has(item.label))
@@ -287,7 +287,7 @@ function sortAndProcessResults(data) {
         // ==================== 1. 数据准备阶段 ====================
         // 1.1 按y坐标升序排序（浅拷贝避免修改原数组）
         //const sortedByY = data.slice().sort((a, b) => a.y - b.y);
-        const sortedByY = data;
+        var sortedByY = data;
 
         // 1.2 计算分组边界位置
         // 最小的Y，最小Y的height
@@ -296,7 +296,7 @@ function sortAndProcessResults(data) {
 
         // 1.3 创建分组A（y值较小的部分，按x升序排序）
         // 收集小于分界y的图标，且去重
-        const groupA = Array.from(
+        var groupA = Array.from(
             sortedByY.slice()
             .filter(item => item.y < y_limit && item.x > global.x_refer)
             .reduce((m, i) =>
@@ -310,7 +310,7 @@ function sortAndProcessResults(data) {
 
         // 1.4 创建分组B（y值较大的部分，按prob倒序）
         // 收集大于分界y的图标，且去重
-        const groupB = Array.from(
+        var groupB = Array.from(
             sortedByY.slice()
             .filter(item => item.y > y_limit)
             .reduce((m, i) =>
@@ -384,7 +384,7 @@ function sortAndProcessResults(data) {
 
         // ==================== 2. 建立快速查找索引 ====================
         // 2.1 使用Map结构存储分组B的元素（label作为key）
-        const labelMap = new Map();
+        var labelMap = new Map();
 
         // 2.2 遍历分组B，建立label到元素的映射关系
         groupB.forEach(item => {
@@ -399,18 +399,18 @@ function sortAndProcessResults(data) {
         const placeholder = {
             label: "PLACEHOLDER"
         };
-        const groupC = [];
-        const usedItems = new Set(); // 新增：记录已使用的元素
+        var groupC = [];
+        var usedItems = new Set(); // 新增：记录已使用的元素
 
         // 3.2 第一轮匹配：按分组A的顺序处理
         groupA.forEach(item => {
-            const candidates = labelMap.get(item.label);
+            let candidates = labelMap.get(item.label);
 
             // 检查候选元素是否存在且未被使用过
             if (candidates && candidates.length > 0 &&
                 !usedItems.has(candidates[0])) {
 
-                const matchedItem = candidates.shift();
+                let matchedItem = candidates.shift();
                 groupC.push(matchedItem);
                 usedItems.add(matchedItem); // 标记为已使用
             } else {
@@ -418,13 +418,13 @@ function sortAndProcessResults(data) {
             }
         });
         //log(groupC)
-        let finalGroupC = groupC;
+        var finalGroupC = groupC;
 
         // ==================== 4. 处理未匹配元素 ====================
         // 使用placeholder占位的数据，需再次替换成真实数据
         if (groupC.includes(placeholder)) {
             // 4.1 收集所有未被使用的groupB元素（按原始顺序）
-            const unusedItems = groupB.filter(item => !usedItems.has(item));
+            let unusedItems = groupB.filter(item => !usedItems.has(item));
             //log(unusedItems)
 
             // 4.2 替换占位符（按groupC原始顺序填充）
@@ -442,7 +442,7 @@ function sortAndProcessResults(data) {
         // ==================== 5. 最终结果处理 ====================
 
         // 5. 格式化 groupC 的结果
-        const finalResult = finalGroupC.map(item => {
+        var finalResult = finalGroupC.map(item => {
             let centerX = item.x + (item.width / 2);
             let centerY = item.y + (item.height / 2);
             return {
@@ -469,13 +469,13 @@ function getYRefer(data) {
     // 获取y最小的一个有效元素(其中prob最大的)
 
     // y最小的有效元素
-    const f = data.slice().filter(item => item.y > 5 && item.x > global.x_refer);
-    const minYItem = f.reduce((a, b) => a.y < b.y ? a : b);
+    var f = data.slice().filter(item => item.y > 5 && item.x > global.x_refer);
+    var minYItem = f.reduce((a, b) => a.y < b.y ? a : b);
     //log(minYItem)
-    let y = minYItem.y + minYItem.height;
+    var y = minYItem.y + minYItem.height;
 
     // 其中prob最大的有效元素
-    const maxProb = f.filter(item => (item.y < y && item.y >= minYItem.y))
+    var maxProb = f.filter(item => (item.y < y && item.y >= minYItem.y))
         .reduce((a, b) => a.prob > b.prob ? a : b);
     //log(maxProb)
     // 该元素的数据整合成分界y
