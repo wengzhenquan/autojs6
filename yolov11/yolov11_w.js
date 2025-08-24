@@ -185,6 +185,7 @@ function sortAndProcessResults(data) {
                 // ========== 跳过规则 =========
 
                 // 第一项如果小于分界y，且小于分界global.x_refer，则重新寻找
+                // 显然在文案“请在下图依次点击：”区域是不可能存在图标的
                 if (topItem.y < y_limit && topItem.x < global.x_refer) {
                     let tit = group.find(item => item.y < y_limit && item.x > global.x_refer);
                     // 没找到，跳过
