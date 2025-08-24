@@ -210,7 +210,7 @@ function sortAndProcessResults(data) {
 
                 // 核心逻辑：寻找配对项
                 let pairItem = null;
-                // 遍历匹配
+                // 遍历匹配(从第2项开始)
                 for (let i = 1; i < group.length; i++) {
                     let currentItem = group[i];
                     // 于topItem区分，跳过相同区域的数据
