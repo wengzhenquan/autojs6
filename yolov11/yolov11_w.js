@@ -226,6 +226,10 @@ function sortAndProcessResults(data) {
                         topItem.x === currentItem.x &&
                         topItem.y === currentItem.y)
                         continue;
+                        
+                    // 跳过无效项
+                    if (currentItem.y < y_limit && currentItem.x < global.x_refer)
+                        continue;
 
                     // 于topItem区分，跳过相同区域的数据
                     if ((topItem.y > y_limit && currentItem.y > y_limit) ||
@@ -487,7 +491,7 @@ function getYRefer(data) {
 
     if (typeof global.y_refer === 'undefined' || !global.y_refer)
         return y;
-        
+
     // -------- global.y_refer由前置程序根据控件获取，真实有效
     // global.y_refer表示截图上的文案“请在下图依次点击：”后面的小图标，与下方点击区域的分界，主要点击区域上边缘y
     //log(global.y_refer)
