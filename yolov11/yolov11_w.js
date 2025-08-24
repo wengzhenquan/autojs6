@@ -173,70 +173,53 @@ function sortAndProcessResults(data) {
             var y_limit_single = [];
 
             Object.keys(groups).forEach(label => {
-                var group = groups[label];
+                // ======= 前置通用处理 =======
+                // 按置信度降序排序(按label提取)
+                var group = groups[label].slice()
+                    .sort((a, b) => b.prob - a.prob);
 
-                // 规则1：跳过单一元素组
-                if (group.length < 2) {
+                // 最高置信度项(第1项)
+                var topItem = group[0];
+
+                // ========== 跳过规则 =========
+
+                // 规则1：跳过全组y>y_limit
+                if (group.every(item => item.y > y_limit)) return;
+
+                // 规则2：全组y<y_limit，保留第一个
+                if (group.every(item => item.y < y_limit)) {
                     // 尝试修复遮挡上方参照图标
-                    let one = group[0];
                     // 添加小于y_limit的元素，其中y=0的元素仅保留一个
-                    if (one.y < y_limit &&
+                    if (topItem.y < y_limit &&
+                        // y_limit_single.every(item => item.label !== topItem.label) &&
                         y_limit_single.every(item => item.y !== 0))
-                        y_limit_single.push(one);
+                        y_limit_single.push(topItem);
 
                     return;
                 }
 
-                // 规则2：跳过全组低置信度
-                if (group.every(item => item.prob < 0.2)) return;
-
-                // 规则3：跳过全组y>y_limit
-                if (group.every(item => item.y > y_limit)) return;
-
-                // ========== 规则3：成对匹配 =========
-
-                // 步骤1：按置信度降序排序
-                var sortedGroup = group.slice()
-                    .sort((a, b) => b.prob - a.prob);
-
-                // 保留最高置信度项
-                var topItem = sortedGroup[0];
+                // ========== 成对匹配(经过前面跳过规则，剩下的必有匹配) =========
 
                 // 核心逻辑：寻找配对项
                 let pairItem = null;
-                let maxDiff = -1; // 记录最大Y差（初始值-1）
-
-                // 步骤2：遍历匹配（从置信度第2高开始）
-                for (let i = 1; i < sortedGroup.length; i++) {
-                    let currentItem = sortedGroup[i];
+                // 遍历匹配（从置信度第2项开始）
+                for (let i = 1; i < group.length; i++) {
+                    let currentItem = group[i];
                     // 于topItem区分，跳过相同区域的数据
                     if ((topItem.y > y_limit && currentItem.y > y_limit) ||
                         (topItem.y < y_limit && currentItem.y < y_limit))
                         continue;
 
-                    let diff = Math.round(Math.abs(currentItem.y - topItem.y));
-
-                    // 策略1：优先匹配Y差>100的项
-                    if (diff > 100) {
-                        pairItem = currentItem;
-                        break; // 找到即停止
-                    }
-
-                    // 策略2：记录最大Y差项（用于无>100时）
-                    if (diff > maxDiff) {
-                        maxDiff = diff;
-                        pairItem = currentItem; // 更新候选
-                    }
+                    pairItem = currentItem;
+                    break;
                 }
-                // 没找到
-                if (!pairItem) return;
-
+                
                 // 添加到结果（必须保留两项）
                 // 经过上面处理，能确保数据都是成对，上面1个，下面1个
                 result.push(topItem, pairItem);
             });
 
-            // log(y_limit_single)
+            //log(y_limit_single)
             // log(result)
             // 尝试修复遮挡
             if (y_limit_single.length > 0 && OccRepair) {
@@ -260,7 +243,7 @@ function sortAndProcessResults(data) {
                 for (let i = 0; i < y_limit_single.length; i++) {
                     let single = y_limit_single[i];
                     let single_b = B_data[i];
-
+                    // 成对匹配
                     if (typeof single_b !== 'undefined')
                         result.push(single, single_b);
                 }
