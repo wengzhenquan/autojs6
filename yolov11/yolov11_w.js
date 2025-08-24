@@ -188,6 +188,7 @@ function sortAndProcessResults(data) {
 
                 // 跳过空数组
                 if (typeof topItem === 'undefined' ||
+                    !topItem ||
                     group.length < 1)
                     return;
 
