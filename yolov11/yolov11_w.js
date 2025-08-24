@@ -183,6 +183,16 @@ function sortAndProcessResults(data) {
 
                 // ========== 跳过规则 =========
 
+                // 第一项如果小于分界y，且小于分界global.x_refer，重新寻找
+                if (topItem.y < y_limit && topItem.x < global.x_refer) {
+                    let tit = group.find(item => item.y < y_limit && item.x > global.x_refer);
+                    // 没找到，跳过
+                    if (typeof tit === 'undefined')
+                        return;
+
+                    topItem = tit;
+                }
+
                 // 规则1：跳过全组y>y_limit
                 if (group.every(item => item.y > y_limit)) return;
 
@@ -191,6 +201,7 @@ function sortAndProcessResults(data) {
                     // 尝试修复遮挡上方参照图标
                     // 添加小于y_limit的元素，其中y=0的元素仅保留一个
                     if (topItem.y < y_limit &&
+                        topItem.x > global.x_refer &&
                         // y_limit_single.every(item => item.label !== topItem.label) &&
                         y_limit_single.every(item => item.y !== 0))
                         y_limit_single.push(topItem);
@@ -202,9 +213,18 @@ function sortAndProcessResults(data) {
 
                 // 核心逻辑：寻找配对项
                 let pairItem = null;
-                // 遍历匹配（从置信度第2项开始）
-                for (let i = 1; i < group.length; i++) {
+                // 遍历匹配
+                for (let i = 0; i < group.length; i++) {
                     let currentItem = group[i];
+                    // 跳过相同项
+                    if (topItem.height === currentItem.height &&
+                        topItem.width === currentItem.width &&
+                        topItem.label === currentItem.label &&
+                        topItem.prob === currentItem.prob &&
+                        topItem.x === currentItem.x &&
+                        topItem.y === currentItem.y)
+                        continue;
+
                     // 于topItem区分，跳过相同区域的数据
                     if ((topItem.y > y_limit && currentItem.y > y_limit) ||
                         (topItem.y < y_limit && currentItem.y < y_limit))
@@ -213,7 +233,7 @@ function sortAndProcessResults(data) {
                     pairItem = currentItem;
                     break;
                 }
-                
+
                 // 添加到结果（必须保留两项）
                 // 经过上面处理，能确保数据都是成对，上面1个，下面1个
                 result.push(topItem, pairItem);
