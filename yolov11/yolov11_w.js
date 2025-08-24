@@ -250,11 +250,10 @@ function sortAndProcessResults(data) {
                 //log(B_data)
 
                 for (let i = 0; i < y_limit_single.length; i++) {
-                    let single = y_limit_single[i];
                     let single_b = B_data[i];
                     // 成对匹配
                     if (typeof single_b !== 'undefined')
-                        result.push(single, single_b);
+                        result.push(y_limit_single[i], single_b);
                 }
             }
 
