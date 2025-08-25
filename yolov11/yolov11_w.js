@@ -223,7 +223,7 @@ function sortAndProcessResults(data) {
                         continue;
 
                     pairItem = currentItem;
-                    n--
+                    n--;
                     break;
                 }
 
