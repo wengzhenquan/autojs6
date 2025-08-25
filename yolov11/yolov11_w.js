@@ -55,6 +55,8 @@ events.on("exit", function() {
         yoloInstance.release();
     }
 });
+
+
 /**
  * @description 初始化 YOLO 插件和模型。
  * 该函数在模块首次加载时自动执行一次。
@@ -112,6 +114,7 @@ function initializeYolo() {
         return false;
     }
 }
+
 
 /**
  * @description 对原始检测结果进行排序和处理。
@@ -480,6 +483,8 @@ function getYRefer(data) {
     //log(global.y_refer)
     return global.y_refer > y ? global.y_refer : -1;
 }
+
+
 
 /**
  * @description 对指定路径的图片执行 YOLO 检测并处理结果。
