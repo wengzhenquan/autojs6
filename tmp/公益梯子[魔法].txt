@@ -12,12 +12,12 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
 
 一、公益订阅地址：
     ————————————————— 首推 —————————————————
-    
-    1、CMLiussss（每日更新节点）：
+        
+    1、CMLiussss(每日更新节点)[优质]：
         订阅地址：https://cmliussss.net
         防失联SOS：https://SOS.CMLiussss.net/auto
         
-    2、Marisa_kristi(每日更新)：
+    2、Marisa_kristi(每日更新)[优质]：
         订阅地址：https://mar.haxtop.ggff.net
         
     3、辣子鸡(哪吒)：
@@ -37,24 +37,27 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
         https://gy.lzj.elementfx.com/sub?token=laziji
         
         
-     4、hong六扇门：
+    4、hong六扇门：
         订阅：https://lsmgy.xygyx.ggff.net/hong
         
      ————————————————— 防失联 —————————————————
         
-     5、Poland：
+    5、Poland：
         订阅：https://sub1.qa.run.place/sub?token=db6bf1aa155aa5058046af1a7e1c2566
     
         
-     6、防失联 fsl 系列(哪吒)：
+    6、防失联 fsl 系列(哪吒)：
         订阅: https://fsl.nano.ip-ddns.com
         订阅 (ipv6): https://fsl6.nano.ip-ddns.com
 
-     7、玩具 wanju 系列(哪吒)：
+    7、玩具 wanju 系列(哪吒)：
         订阅: https://wanju.nano.ip-ddns.com
 
     
-     
+     注：节点名称上带有百分比%表示欺诈度。
+        百分比值越低，IP越纯净。
+        注册账号、特殊用途，建议选欺诈度<20%的节点。
+       
 二、支持的代理软件列表：
     1、Windows：
             v2rayN、
