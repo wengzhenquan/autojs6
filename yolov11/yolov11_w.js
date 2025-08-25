@@ -200,9 +200,7 @@ function sortAndProcessResults(data) {
                 if (group.every(item => item.y < y_limit)) {
                     // 尝试修复遮挡上方参照图标
                     // 添加小于y_limit的元素，其中y=0的元素仅保留一个
-                    if (topItem.y < y_limit &&
-                        // y_limit_single.every(item => item.label !== topItem.label) &&
-                        y_limit_single.every(item => item.y !== 0) &&
+                    if (y_limit_single.every(item => item.y !== 0) &&
                         n--) {
                         y_limit_single.push(topItem);
                     }
