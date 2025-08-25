@@ -172,7 +172,7 @@ function sortAndProcessResults(data) {
             var result = [];
             // 修复遮挡数组
             var y_limit_single = [];
-
+            // 最多3个图标
             var n = 3;
 
             Object.keys(groups).forEach(label => {
