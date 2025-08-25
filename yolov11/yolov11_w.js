@@ -319,7 +319,8 @@ function sortAndProcessResults(data) {
         // 1.5 校验结果
         let glen = groupA.length + groupB.length;
         if (groupA.length < 2 || groupA.length > 3 ||
-            glen < 4 || glen < sortedByY.length) {
+            glen < 4 || glen < sortedByY.length ||
+            groupA.length !== groupB.length) {
 
             console.error('发现预期长度错误！');
             log(tag + ('→处理后长度：').padStart(7) + (glen));
