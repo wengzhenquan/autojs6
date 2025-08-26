@@ -538,7 +538,7 @@ function detectAndProcess(imagePath) {
 
     } catch (error) {
         console.error(`${tag}识别过程中发生错误: ${error}`);
-        return null;
+        return new Array();
     } finally {
         // 释放图片资源（如果需要）
         if (img) {
