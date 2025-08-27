@@ -28,7 +28,7 @@ console.launch();
 // 参考：50~100Mbps宽带30s，100~300Mbps宽带15s，
 //      300~500Mbps宽带10s，千兆5s，
 //      不建议改成小于5
-var download_timeout = 20;
+var download_timeout = 25;
 
 // 最小文件大小(B)，小于这个值都认为错误，将重试
 var filemin = 500;
