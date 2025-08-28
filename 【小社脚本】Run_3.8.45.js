@@ -1348,6 +1348,7 @@ function getClipPic() {
         w: (cX(979) - x),
         h: (cY(1622) - y)
     };
+    sleep(1000);
 
     let m = 20;
     do {
@@ -1548,7 +1549,7 @@ function localYOLOSign() {
 
             ableClick(refresh);
             clickCenter(refresh);
-            sleep(1000);
+            //sleep(1000);
             //重新截图
             // captureScr();
             clipParam = getClipPic();
@@ -1656,7 +1657,7 @@ function serverYOLOSign() {
 
                 ableClick(refresh);
                 clickCenter(refresh);
-                sleep(1000);
+                //sleep(1000);
                 //重新截图
                 // captureScr();
                 clipParam = getClipPic();
