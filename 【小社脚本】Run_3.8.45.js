@@ -1548,6 +1548,7 @@ function localYOLOSign() {
 
             ableClick(refresh);
             clickCenter(refresh);
+            sleep(1000);
             //重新截图
             // captureScr();
             clipParam = getClipPic();
@@ -1655,6 +1656,7 @@ function serverYOLOSign() {
 
                 ableClick(refresh);
                 clickCenter(refresh);
+                sleep(1000);
                 //重新截图
                 // captureScr();
                 clipParam = getClipPic();
