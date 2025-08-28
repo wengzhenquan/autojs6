@@ -124,18 +124,19 @@ function initializeYolo() {
  * @returns {Array<object>|null} - 处理后的 C 组结果数组 [{centerX, centerY, prob, label}, ...]，或在失败/无效输入时返回 null。
  */
 function sortAndProcessResults(data) {
-   // log(data)
+    // log(data)
     // 输入验证
     if (!Array.isArray(data)) {
         console.error("结果处理: 输入数据不是数组。");
         return new Array();
     }
 
-    // 获得分界y
-    const y_limit = getYRefer(data);
-    //log(y_limit)
 
     try {
+        // 获得分界y
+        const y_limit = getYRefer(data);
+        //log(y_limit)
+
         var len = data.length;
         // 检查数据长度是否满足处理逻辑要求 (4或6)
         if (len !== 4 && len !== 6) {
@@ -454,7 +455,7 @@ function sortAndProcessResults(data) {
 
     } catch (error) {
         console.error(`结果处理: 排序或格式化过程中发生错误: ${error}`);
-        console.error(error.lineNumber); 
+        console.error(error.lineNumber);
         return new Array();
     }
 }
@@ -540,7 +541,7 @@ function detectAndProcess(imagePath) {
 
     } catch (error) {
         console.error(`${tag}识别过程中发生错误: ${error}`);
-        console.error(error.lineNumber); 
+        console.error(error.lineNumber);
         return new Array();
     } finally {
         // 释放图片资源（如果需要）
