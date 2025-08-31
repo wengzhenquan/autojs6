@@ -223,7 +223,7 @@ function startTimeoutMonitor() {
                 console.error('配置：运行超时时间：' + config.运行超时时间 + ' 分钟')
                 console.error(`脚本运行 ${(maxRuntime)/60/1000} 分钟，强制退出`);
                 console.error('可能是兼容性问题，或布局分析问题，导致页面卡住');
-                console.error('也有可能是无障碍服务故障，可重新授权无障碍');
+                console.error('如果刚刚升级过操作系统，或升级过AutoJS6，请重启一次无障碍服务');
                 console.error('请截图保存最后卡住的页面，反馈问题。')
                 if (config && config.通知提醒)
                     notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("发生未知错误，脚本强制停止\n详细问题，请查看日志"));
@@ -437,7 +437,7 @@ function clickCenter(obj) {
             }
 
             if (obj instanceof UiSelector) {
-                obj = obj.findOne(1000);
+                obj = obj.findOne(2000);
             }
 
             if (obj && (obj instanceof UiObject)) {
@@ -465,7 +465,7 @@ function ableClick(obj) {
             }
 
             if (obj instanceof UiSelector) {
-                obj = obj.findOne(1000);
+                obj = obj.findOne(2000);
             }
 
             if (obj && (obj instanceof UiObject)) {
@@ -676,27 +676,25 @@ function systemSetting() {
         events.setKeyInterceptionEnabled("volume_down", true);
         events.observeKey();
         events.onKeyDown("volume_up", () => {
-            abnormalInterrupt = 0;
             console.error("[音量+]停止脚本！！！");
+            abnormalInterrupt = 0;
             // 关闭悬浮窗控制台
             consoleExitOnClose();
-            abnormalInterrupt = 0;
             exit();
         });
         events.onKeyDown("volume_down", () => {
-            abnormalInterrupt = 0;
             console.error("[音量-]停止脚本！！！");
+            abnormalInterrupt = 0;
             // 关闭悬浮窗控制台
             consoleExitOnClose();
-            abnormalInterrupt = 0;
             exit();
         });
     }
 
     // 媒体声音
-    let musicVolume = device.getMusicVolume();
+    const musicVolume = device.getMusicVolume();
     // 通知声音
-    let nVolume = device.getNotificationVolume();
+    const nVolume = device.getNotificationVolume();
     if (config && config.静音级别) {
         //关掉媒体声音
         if (config.静音级别 === 1) {
@@ -711,9 +709,9 @@ function systemSetting() {
     }
 
     // 返回当前亮度模式, 0为手动亮度, 1为自动亮度.
-    let brightMode = device.getBrightnessMode();
+    const brightMode = device.getBrightnessMode();
     // 返回当前的(手动)亮度. 范围为0~255.
-    let bright = device.getBrightness();
+    const bright = device.getBrightness();
     if (config && config.运行亮度) {
         device.setBrightnessMode(0);
         device.setBrightness(130 * config.运行亮度);
@@ -870,7 +868,8 @@ function checkConfig() {
     let problemFields = [];
     for (let key in config) {
         let value = config[key];
-        if (typeof value === 'string' && !isNaN(value)) {
+        if (typeof value === 'string' &&
+            value.length < 4 && !isNaN(value)) {
             let numValue = parseFloat(value);
             let strNum = String(numValue);
             if (numValue < 1000 && strNum.length === value.length) {
@@ -934,18 +933,25 @@ function checkConfig() {
 //加速代理
 var proxys = [
 
-    "http://github-proxy.teach-english.tech/",
     "https://x.whereisdoge.work/",
     "https://proxy.yaoyaoling.net/",
-    "https://gh.bugdey.us.kg/", // 请求时间：0.77s
-    "https://gh-proxy.net/", // 请求时间：0.78s
-    "http://gh.927223.xyz/",
     "https://git.yylx.win/",
-    "https://gh.b52m.cn/", // 请求时间：0.94s
     "https://ghfast.top/", // 请求时间：1.42s
     "https://git.669966.xyz/", // 请求时间：2.80s
-    "https://github.dpik.top/", // 请求时间：0.95s
     "https://ghproxy.monkeyray.net/",
+    "https://gh.halonice.com/",
+    "https://github.xxlab.tech/", // 请求时间：0.23s
+    "https://ghproxy.sakuramoe.dev/", // 请求时间：0.25s
+    "https://ghfile.geekertao.top/",
+    "https://github.chenc.dev/",
+    "http://gh.927223.xyz/",
+    "https://github.dpik.top/", // 请求时间：0.95s
+    "https://gh.catmak.name/", // 请求时间：1.03s
+    "https://gh.pylas.xyz/", // 请求时间：1.10s
+    "https://gh.bugdey.us.kg/", // 请求时间：0.77s
+    "https://hub.gitmirror.com/", // 请求时间：0.75s
+
+
 
 
 ]
@@ -953,21 +959,38 @@ var proxys = [
 // 备用代理
 var proxys2 = [
 
-    "https://ghproxy.cxkpro.top/", // 请求时间：0.89s
-    "https://github.bullb.net/", // 请求时间：2.23s
-    "https://g.blfrp.cn/", // 请求时间：1.05s
-    "https://ghfile.geekertao.top/",
-    "https://github.chenc.dev/",
-    "https://hub.gitmirror.com/", // 请求时间：0.75s
-    "https://ghproxy.sakuramoe.dev/", // 请求时间：0.25s
-    "https://ghproxy.net/",
-    "https://gh.monlor.com/",
-    "https://gitproxy.click/", //
-    "https://gh.halonice.com/",
-    "https://github.xxlab.tech/", // 请求时间：0.23s
-    "https://ghproxy.gpnu.org/", // 请求时间：0.59s
     "https://gh.noki.icu/", // 请求时间：2.64s
+
+    "https://gh.monlor.com/",
+    "https://ghproxy.gpnu.org/", // 请求时间：0.59s
+    "https://g.blfrp.cn/", // 请求时间：1.05s
+    "https://gh-proxy.net/", // 请求时间：0.78s
+
+    "https://ghproxy.net/",
     "https://proxy.atoposs.com/", // 请求时间：2.82s
+    "https://ghproxy.fangkuai.fun/", // 请求时间：1.18s
+
+    "http://github-proxy.teach-english.tech/",
+    "https://gh.wsmdn.dpdns.org/", // 请求时间：0.82s
+    "https://gh-proxy.com/", // 请求时间：0.90s
+    "https://github.tianrld.top/", // 请求时间：1.07s
+    "https://gh.nxnow.top/", // 请求时间：1.27s
+    "https://cf.ghproxy.cc/", // 请求时间：1.28s
+    "https://ghp.keleyaa.com/", // 请求时间：0.78s
+    "https://github.bullb.net/", // 请求时间：2.23s
+    "https://github-proxy.memory-echoes.cn/", // 请求时间：0.72s
+    "https://ghproxy.cfd/", // 请求时间：0.80s
+    "https://ghproxy.1888866.xyz/", // 请求时间：0.94s
+    "https://fastgit.cc/", // 请求时间：0.75s
+
+    "https://gh.qninq.cn/", // 请求时间：1.38s
+    "https://gitproxy.127731.xyz/", // 请求时间：1.15s
+    "https://gitproxy1.127731.xyz/", // 请求时间：1.72s
+    "https://gitproxy.click/", //
+    "https://tvv.tw/", // 请求时间：1.12s
+    "https://gh-proxy.llyke.com/", // 请求时间：1.34s
+    "https://ghproxy.cc/", // 请求时间：1.34s
+    "https://github.cn86.dev/", // 请求时间：0.97s
 
 
 
@@ -1779,7 +1802,7 @@ function permissionv() {
                 auto(true);
             } catch (e) {}
             wait(() => false, 1000);
-            
+
             if (!auto.isRunning() &&
                 !auto.service) {
                 try {
