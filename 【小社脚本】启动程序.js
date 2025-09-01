@@ -315,7 +315,7 @@ function consoleShow() {
                 size: [0.96, 0.3],
                 position: [0.02, 0.02],
                 title: '会装逼的控制台',
-                titleTextSize: 20,
+                titleTextSize: 18,
                 titleTextColor: 'green',
                 titleIconsTint: 'yellow',
                 titleBackgroundAlpha: 0.9,
@@ -340,8 +340,10 @@ function consoleShow() {
                 error: 'magenta'
             });
 
-            if (config && config.悬浮窗控制台_字体大小)
+            if (config && config.悬浮窗控制台_字体大小) {
                 console.setContentTextSize(config.悬浮窗控制台_字体大小);
+                console.setTitleTextSize(config.悬浮窗控制台_字体大小 + 3);
+            }
 
             console3();
 
