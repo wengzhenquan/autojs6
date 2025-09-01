@@ -290,6 +290,13 @@ function launchAPP(packageN) {
             ableClick(yx);
             break;
         }
+        // 残留微信分身选项
+        if (descContains('微信').exists() &&
+            (textContains("选择").exists() ||
+                textContains("默认").exists())) {
+            ableClick('取消');
+        }
+
         // 两种启动写法
         if (n % 2 === 0) app.launchPackage(packageN)
         else app.launchApp(app.getAppName(packageN));
@@ -2366,7 +2373,7 @@ function run() {
             if (!packageName(xmPckageName).exists()) {
                 //回到小米社区app
                 launchAPP(xmPckageName);
-                ableClick('取消');
+
             }
             // 按配置启用功能
             // if (config.加入圈子) join();
