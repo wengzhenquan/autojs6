@@ -72,7 +72,7 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
             Karing(跨平台)、
             Hiddify(跨平台)、
             Clash Verge Rev、
-            Shadowrocket
+            Shadowrocket(小火箭)
     3、Android/Harmony：
             v2rayNG、
             Karing(跨平台)、
