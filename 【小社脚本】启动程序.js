@@ -1395,30 +1395,40 @@ function writingServiceId() {
 
 // 在已启动无障碍的条件下，查询服务id
 function getServiceId() {
+    let sid = null;
+
     try {
         // Android 8.0+ 标准方式
-        if (device.sdkInt >= 26) {
-            let am = context.getSystemService("accessibility");
-            let services = am.getEnabledAccessibilityServiceList(-1);
-            for (let i = 0; i < services.size(); i++) {
-                let id = services.get(i).getId();
-                if (id.startsWith("org.autojs.autojs6/")) return id;
-            }
-            return null;
+        // if (device.sdkInt >= 26) {
+        let am = context.getSystemService("accessibility");
+        let services = am.getEnabledAccessibilityServiceList(-1);
+        for (let i = 0; i < services.size(); i++) {
+            let id = services.get(i).getId();
+            if (id.startsWith("org.autojs.autojs6/"))
+                sid = id;
         }
-
-        // Android 7.x 反射调用
-        let Settings = android.provider.Settings.Secure;
-        let enabledServices = Settings.getString(
-            context.getContentResolver(),
-            "enabled_accessibility_services"
-        );
-        let match = enabledServices.match(/org\.autojs\.autojs6\/[\w\.]+/);
-        return match ? match[0] : null;
+        //}
     } catch (e) {
-        console.error("查询失败:", e);
-        return null;
+        console.error("1查询失败:", e);
+
+        //return null;
     }
+
+    if (!sid) {
+        try {
+            // Android 7.x 反射调用
+            let Settings = android.provider.Settings.Secure;
+            let enabledServices = Settings.getString(
+                context.getContentResolver(),
+                "enabled_accessibility_services"
+            );
+            let match = enabledServices.match(/org\.autojs\.autojs6\/[\w\.]+/);
+            sid = match ? match[0] : null;
+        } catch (e) {
+            console.error("2查询失败:", e);
+        }
+    }
+    return sid;
 }
 
 
