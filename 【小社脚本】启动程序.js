@@ -450,8 +450,8 @@ function clickCenter(obj) {
             if (obj && (obj instanceof UiObject)) {
                 if (obj.show())
                     wait(() => false, 500);
-                let x = obj.bounds().centerX()
-                let y = obj.bounds().centerY()
+                let x = obj.bounds().centerX();
+                let y = obj.bounds().centerY();
                 //log(x,y)
                 if (x > 0 && y > 0) {
                     return click(x, y);
