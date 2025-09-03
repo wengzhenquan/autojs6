@@ -521,18 +521,18 @@ function formatDate(date) {
 // 返回时长间隔 01:23 （分：秒）
 function getDurTime(startTimeStr) {
     // 将时间字符串转换为时间戳
-    const startTime = new Date(startTimeStr.replace(/-/g, '/')).getTime();
+    var startTime = new Date(startTimeStr.replace(/-/g, '/')).getTime();
     // 获取当前时间的时间戳
-    const currentTime = new Date().getTime();
+    var currentTime = new Date().getTime();
     // 计算时间差（单位：毫秒）
-    const timeDiff = currentTime - startTime;
-    const absTimeDiff = Math.abs(timeDiff);
+    var timeDiff = currentTime - startTime;
+    var absTimeDiff = Math.abs(timeDiff);
     // 先将时间差转换为秒数
-    const totalSeconds = Math.floor(absTimeDiff / 1000);
+    var totalSeconds = Math.floor(absTimeDiff / 1000);
     // 计算分钟数
-    const minutes = Math.floor(totalSeconds / 60);
+    var minutes = Math.floor(totalSeconds / 60);
     // 计算剩余的秒数
-    const seconds = totalSeconds % 60;
+    var seconds = totalSeconds % 60;
     // 格式化输出
     return `${minutes}:${seconds < 10? '0' + seconds : seconds}`;
 }
@@ -609,7 +609,7 @@ function formatFileSize(size) {
 function toSeconds(milliseconds) {
     if (milliseconds >= 100) {
         // 转换为秒，保留两位小数
-        const seconds = (milliseconds / 1000).toFixed(2);
+        let seconds = (milliseconds / 1000).toFixed(2);
         return `${seconds} s`;
     } else {
         // 直接返回毫秒
@@ -656,7 +656,7 @@ function shuffleArray(array) {
  */
 function processArrays(arr1, arr2) {
     // 原地删除 arr2 中与 arr1 重复的元素
-    const set = new Set(arr1);
+    var set = new Set(arr1);
     for (let i = arr2.length - 1; i >= 0; i--) {
         if (set.has(arr2[i])) {
             arr2.splice(i, 1); // 直接修改原数组
