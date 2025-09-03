@@ -372,8 +372,10 @@ function consoleMin() {
         const BORDER_OFFSET = dpToPx2(12);
         // h = a - STATUS_BAR_HEIGHT - y + BORDER_OFFSET;
         // 计算得到的h是像素单位，不是百分比
+        // 523
         h = (global.picY - cY(20)) - STATUS_BAR_HEIGHT - (0.02 * dheight) + BORDER_OFFSET;
         // 转化百分百
+        // 0.21791666666666668
         if (h > 1) h = h / dheight;
 
         // 阈值限制，防出错
