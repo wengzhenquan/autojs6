@@ -1382,7 +1382,7 @@ function unLock() {
 // 写入服务id
 function writingServiceId() {
     let id = getServiceId();
-    if (!id) serviceId = id;
+    if (id) serviceId = id;
 
     //写入文件
     files.write(serviceId_file, serviceId, "utf-8");
