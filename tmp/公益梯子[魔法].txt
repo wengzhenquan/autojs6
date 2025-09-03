@@ -96,7 +96,7 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
         4)、Neko系列(跳转github下载）：
             https://matsuridayo.github.io/download/
             
-        5)、Clash Verge Rev：
+        5)、Clash Verge Rev(桌面版)：
             https://clashverge.net/
             https://www.clashverge.dev/install.html
             
