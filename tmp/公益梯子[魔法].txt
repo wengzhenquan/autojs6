@@ -65,20 +65,24 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
             v2rayN、
             Karing(跨平台)、
             Hiddify(跨平台)、
-            Clash Verge/Clash Verge Reborn/Clash for Windows、
+            Clash Verge Rev/Clash Verge Reborn
             NekoRay等等
     2、Mac/IOS：
-            v2rayU、
+            v2rayN/v2rayU、
             Karing(跨平台)、
             Hiddify(跨平台)、
-            Shadowrocket、
-            Clash Verge/Clash Verge Reborn/Clash.Meta/ClashX等等
+            Clash Verge Rev/Clash Verge Reborn/Clash.Meta/ClashX等等
+            Shadowrocket
     3、Android/Harmony：
             v2rayNG、
             Karing(跨平台)、
             Hiddify(跨平台)、
             Clash Meta for Android、
-            NekoBox等等。
+            NekoBox for Android。
+    4、Linux：
+            v2rayN、
+            Karing(跨平台)、
+            Clash Verge Rev
             
     4、部分软件官网地址：
         1)、Hiddify(无墙)：https://hiddify.com/
@@ -92,13 +96,15 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
         4)、Neko系列(跳转github下载）：
             https://matsuridayo.github.io/download/
             
-        5)、Clash Verge Reborn（跳转github下载）：
-            https://www.clashverge.dev/
+        5)、Clash Verge Rev：
+            直下：https://clashverge.net/
+            跳转GitHub下载：https://www.clashverge.dev/
             
         6)、Clash Meta for Android(github)：
             https://github.com/MetaCubeX/ClashMetaForAndroid
         
-        小白推荐使用：Hiddify、Karing、v2ray系列
+        小白推荐使用：Hiddify、Karing系列、
+           进阶使用：v2ray、clash系列。
         
 三、使用方法：
     不同的代理软件，ui界面不同，但是基本功能都差不多。
