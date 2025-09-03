@@ -521,18 +521,18 @@ function formatDate(date) {
 // 返回时长间隔 01:23 （分：秒）
 function getDurTime(startTimeStr) {
     // 将时间字符串转换为时间戳
-    var startTime = new Date(startTimeStr.replace(/-/g, '/')).getTime();
+    let startTime = new Date(startTimeStr.replace(/-/g, '/')).getTime();
     // 获取当前时间的时间戳
-    var currentTime = new Date().getTime();
+    let currentTime = new Date().getTime();
     // 计算时间差（单位：毫秒）
-    var timeDiff = currentTime - startTime;
-    var absTimeDiff = Math.abs(timeDiff);
+    let timeDiff = currentTime - startTime;
+    let absTimeDiff = Math.abs(timeDiff);
     // 先将时间差转换为秒数
-    var totalSeconds = Math.floor(absTimeDiff / 1000);
+    let totalSeconds = Math.floor(absTimeDiff / 1000);
     // 计算分钟数
-    var minutes = Math.floor(totalSeconds / 60);
+    let minutes = Math.floor(totalSeconds / 60);
     // 计算剩余的秒数
-    var seconds = totalSeconds % 60;
+    let seconds = totalSeconds % 60;
     // 格式化输出
     return `${minutes}:${seconds < 10? '0' + seconds : seconds}`;
 }
