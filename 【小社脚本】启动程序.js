@@ -389,7 +389,10 @@ function consoleMin() {
     // 像素转换
     function dpToPx2(dp) {
         // 获取设备屏幕密度（dpi），AutoJS6中通过context获取
-        let dpi = context.getResources().getDisplayMetrics().densityDpi;
+        let dpi = context
+            .getResources()
+            .getDisplayMetrics()
+            .densityDpi;
         // 标准密度为160dpi，1dp = 1px，其他密度按比例计算
         return dp * (dpi / 160);
     }
