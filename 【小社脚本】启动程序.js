@@ -1307,6 +1307,7 @@ function unLock() {
                     exit();
                     wait(() => false, 2000);
                 }
+                
                 password = String(password).trim();
 
                 if (password.length < 4) {
