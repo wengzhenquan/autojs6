@@ -776,7 +776,7 @@ function init() {
     console.info(">>>>→程序完整性校验←<<<<")
 
     if (!files.exists("./version")) {
-        console.error("缺失version文件");
+        console.error("缺失[version]文件");
         console.error("启动版本检查/下载version/全量更新");
         checkVersion();
     }
@@ -785,7 +785,7 @@ function init() {
     console.info("当前脚本版本：" + localVersion.version);
 
     if (!files.exists("./" + localVersion.run)) {
-        console.error("缺失Run文件");
+        console.error("缺失[Run]文件");
         console.error("启动更新程序下载文件");
         updateScript();
         return;
@@ -795,7 +795,14 @@ function init() {
     run = require("./" + localVersion.run);
 
     if (!files.exists("./config.js")) {
-        console.error("缺失config.js文件");
+        console.error("缺失[config.js]文件");
+        console.error("启动更新程序下载文件");
+        updateScript();
+        return;
+    }
+
+    if (!files.exists("./" + localVersion.updateScript)) {
+        console.error("缺失[" + localVersion.updateScript + "]文件");
         console.error("启动更新程序下载文件");
         updateScript();
         return;
@@ -1307,7 +1314,7 @@ function unLock() {
                     exit();
                     wait(() => false, 2000);
                 }
-                
+
                 password = String(password).trim();
 
                 if (password.length < 4) {
