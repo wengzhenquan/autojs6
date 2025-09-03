@@ -1284,7 +1284,7 @@ function unLock() {
 
         }
         wait(() => false, 1000);
-        if (!wait(() => contentStartsWith('紧急').exists(), 3)) {
+        if (!wait(() => (contentStartsWith('紧急').exists() || content('返回').exists()), 3)) {
             console.error('上滑失败，重试！')
             continue;
         }
@@ -1327,7 +1327,7 @@ function unLock() {
                     let num = content(password[i]).findOne(1000);
                     if (!clickCenter(num)) {
                         console.error('[' + password[i] + '] 点击失败!')
-                        if (!num) {
+                        if (!num && n === 0) {
                             console.error('布局分析失效了！')
                             console.warn('如果是偶发现象，可尝试：')
                             console.warn(' 1.开启[修改安全设置]权限')
@@ -1363,7 +1363,14 @@ function unLock() {
 
         //更新锁屏状态
         isLocked = KeyguardManager.isKeyguardLocked();
-        wait(() => false, 666);
+        wait(() => false, 300);
+        if (isLocked) {
+            let k = 20;
+            while (!clickCenter('返回') &&
+                clickCenter('删除') &&
+                k--);
+            console.error('解锁失败，重试！')
+        }
 
     }
     //let result = wait(() => existsOne('电话', '拨号', '短信', '信息', '微信', '小米社区'), 5, 1000);
