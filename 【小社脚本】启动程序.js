@@ -1273,7 +1273,7 @@ function unLock() {
 
     //解锁
     // while (!existsOne('电话', '拨号', '短信', '信息', '微信', '小米社区')) {
-    let n = 3;
+    let n = 5;
     while (isLocked && n--) {
         //多次上滑
         for (let i = 0; i < 2; i++) {
