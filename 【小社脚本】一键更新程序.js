@@ -280,10 +280,10 @@ function toSeconds(milliseconds) {
         // 转换为秒，保留两位小数
         const seconds = (milliseconds / 1000).toFixed(2);
         return `${seconds} s`;
-    } else {
-        // 直接返回毫秒
-        return `${milliseconds} ms`;
     }
+    // 直接返回毫秒
+    return `${milliseconds} ms`;
+
 }
 
 // ----------- 脚本更新 ---------------------//

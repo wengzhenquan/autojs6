@@ -492,7 +492,7 @@ function ableClick(obj) {
                     result = obj.click();
                 }
                 wait(() => false, 500);
-                
+
                 return result;
             }
         }
@@ -613,10 +613,10 @@ function toSeconds(milliseconds) {
         // 转换为秒，保留两位小数
         let seconds = (milliseconds / 1000).toFixed(2);
         return `${seconds} s`;
-    } else {
-        // 直接返回毫秒
-        return `${milliseconds} ms`;
     }
+    // 直接返回毫秒
+    return `${milliseconds} ms`;
+
 }
 
 
