@@ -491,6 +491,8 @@ function ableClick(obj) {
                     // 父控件click
                     result = obj.click();
                 }
+                wait(() => false, 500);
+                
                 return result;
             }
         }
