@@ -1288,7 +1288,7 @@ function unLock() {
         for (let i = 0; i < 2; i++) {
             swipe(dwidth * 5 / 8, dheight * 0.95, dwidth * 5 / 8, dheight * (0.6 - 0.1 * i), 202 * (i + 1));
             wait(() => false, 500)
-            gesture(228 * (2 - i), [dwidth * 3 / 8, dheight * (0.95 - 0.2 * i)], [dwidth * 3 / 8, dheight * (0.5 - 0.1 * i)]);
+            gesture(228 * (2 - i), [dwidth * 3 / 8, dheight * (0.95 - 0.2 * i)], [dwidth * 3 / 8, dheight * (0.5 - 0.2 * i)]);
             wait(() => false, 500)
 
         }
