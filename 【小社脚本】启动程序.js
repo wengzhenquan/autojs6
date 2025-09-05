@@ -1286,17 +1286,17 @@ function unLock() {
     while (isLocked && n--) {
         //多次上滑
         for (let i = 0; i < 2; i++) {
-            swipe(dwidth * 5 / 8, dheight * 0.95, dwidth * 5 / 8, dheight * (0.6 - 0.2 * i), 202 * (i + 1));
+            swipe(dwidth * 5 / 8, dheight * 0.95, dwidth * 5 / 8, dheight * (0.6 - 0.1 * i), 202 * (i + 1));
             wait(() => false, 500)
-            gesture(228 * (2 - i), [dwidth * 3 / 8, dheight * (0.95 - 0.3 * i)], [dwidth * 3 / 8, dheight * (0.3 - 0.1 * i)]);
+            gesture(228 * (2 - i), [dwidth * 3 / 8, dheight * (0.95 - 0.2 * i)], [dwidth * 3 / 8, dheight * (0.5 - 0.1 * i)]);
             wait(() => false, 500)
 
         }
         wait(() => false, 1000);
-        if (!wait(() => (contentStartsWith('紧急').exists() || content('返回').exists()), 3)) {
-            console.error('上滑失败，重试！')
-            continue;
-        }
+        // if (!wait(() => (contentStartsWith('紧急').exists() || content('返回').exists()), 3)) {
+        //     console.error('上滑失败，重试！')
+        //     continue;
+        // }
 
         log("上滑成功！");
 
