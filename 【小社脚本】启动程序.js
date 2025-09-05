@@ -1293,15 +1293,17 @@ function unLock() {
 
         }
         wait(() => false, 1000);
-        // if (!wait(() => (contentStartsWith('紧急').exists() || content('返回').exists()), 3)) {
-        //     console.error('上滑失败，重试！')
-        //     continue;
-        // }
 
         log("上滑成功！");
 
         // 有安全加密
         if (isSecure) {
+            
+            if (!wait(() => (contentStartsWith('紧急').exists() || content('返回').exists()), 3)) {
+                console.error('上滑失败，重试！')
+                continue;
+            }
+
             if (config.解锁方式 === 1) {
                 log("→图案解锁");
                 gesture(600, config.锁屏图案坐标);
