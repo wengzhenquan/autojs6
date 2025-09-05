@@ -1298,7 +1298,7 @@ function unLock() {
 
         // 有安全加密
         if (isSecure) {
-            
+            // 有加密的情况下，才有解密页面
             if (!wait(() => (contentStartsWith('紧急').exists() || content('返回').exists()), 3)) {
                 console.error('上滑失败，重试！')
                 continue;
