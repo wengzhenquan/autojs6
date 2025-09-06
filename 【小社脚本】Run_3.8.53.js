@@ -1479,18 +1479,20 @@ function getClipPic() {
                 ycdj = ycdj.parent();
             }
 
-            if (ycdj.top() > top || ycdj.top() > bottom)
+            if (ycdj.top() > top ||
+                ycdj.top() > bottom ||
+                ycdj.bottom() > tida.top())
                 continue;
 
-            if (ycdj.bottom() < tida.top()) {
-                param.x = ycdj.left();
-                param.y = ycdj.top();
-                param.w = ycdj.right() - param.x;
-                param.h = tida.top() - param.y;
+            // if (ycdj.bottom() < tida.top()) {
+            param.x = ycdj.left();
+            param.y = ycdj.top();
+            param.w = ycdj.right() - param.x;
+            param.h = tida.top() - param.y;
 
-                // 上下图标分界y
-                global.y_refer = ycdj.bottom() - ycdj.top();
-            }
+            // 上下图标分界y
+            global.y_refer = ycdj.bottom() - ycdj.top();
+            //  }
 
         } while ((param.w < 1 || param.h < 1) &&
             ycdj && tida && m--);
