@@ -1362,7 +1362,7 @@ function unLock() {
                     let num = content(password[i]).findOne(1000);
                     if (!clickCenter(num)) {
                         console.error('[' + password[i] + '] 点击失败!')
-                        if (!num && n === 0) {
+                        if (!num && i === 0) {
                             console.error('布局分析失效了！')
                             console.warn('如果是偶发现象，可尝试：')
                             console.warn(' 1.开启[修改安全设置]权限')
