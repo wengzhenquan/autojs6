@@ -296,8 +296,12 @@ function launchAPP(packageN) {
         if (descContains('微信').exists() &&
             (textContains("选择").exists() ||
                 textContains("默认").exists())) {
-            log('点击：取消')
-            while (click('取消'));
+            if (appName === '微信') {
+                ableClick(descContains('微信'));
+            } else {
+                log('点击：取消')
+                while (click('取消'));
+            }
         }
 
         // 两种启动写法
