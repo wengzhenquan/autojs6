@@ -794,8 +794,8 @@ function 解锁() {
         log("只能[摸黑]点击了再说。")
         log('滑到最下面')
         for (let i = 0; i < 5; i++) {
-            swipe(dwidth * 5 / 8, dheight * 0.5, dwidth * 5 / 8, dheight * 0.3, 100);
-            gesture(100, [dwidth * 3 / 8, dheight * 0.5], [dwidth * 3 / 8, dheight * 0.3]);
+            swipe(dwidth * (2 + i) / 8, dheight * 0.5, dwidth * (2 + i) / 8, dheight * 0.3, 100);
+            gesture(100, [dwidth * (2 + (5 - i)) / 8, dheight * 0.5], [dwidth * (2 + (5 - i)) / 8, dheight * 0.3]);
             sleep(100);
         }
         sleep(600);
