@@ -2429,6 +2429,9 @@ function run() {
         // 尝试刷新
         tryRefresh();
 
+        // 空白页
+        blankMaintain();
+
         //backAppIndex();
 
         if (config.浏览帖子) posts(1);
