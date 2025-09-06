@@ -572,7 +572,6 @@ function signEntrance(name, pram) {
         toSign();
         sleep(1000);
     }
-    //while (!existsOne(text('今天'), text('签到'), text('全新升级'))) sleep(500);
     let n = 20;
     while (n-- && !(text('今天').exists() &&
             text('签到').exists() &&
