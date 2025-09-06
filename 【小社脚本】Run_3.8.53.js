@@ -296,6 +296,7 @@ function launchAPP(packageN) {
         if (descContains('微信').exists() &&
             (textContains("选择").exists() ||
                 textContains("默认").exists())) {
+            log('点击：取消')
             while (click('取消'));
         }
 
