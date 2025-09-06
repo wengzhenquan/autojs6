@@ -1433,7 +1433,7 @@ function getClipPic() {
         x: x,
         y: y,
         w: (cX(979) - x),
-        h: (cY(1622) - y)
+        h: (cY(1633) - y)
     };
     sleep(1000);
 
