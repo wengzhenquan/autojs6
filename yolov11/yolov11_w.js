@@ -215,7 +215,7 @@ function sortAndProcessResults(data) {
                 // ========== 成对匹配(经过前面跳过规则，剩下的必有匹配) =========
 
                 // 核心逻辑：寻找配对项
-                let pairItem = null;
+                //let pairItem = null;
                 // 遍历匹配(从第2项开始)
                 for (let i = 1; i < group.length; i++) {
                     let currentItem = group[i];
@@ -224,14 +224,13 @@ function sortAndProcessResults(data) {
                         (topItem.y < y_limit && currentItem.y < y_limit))
                         continue;
 
-                    pairItem = currentItem;
+                    //pairItem = currentItem;
+                    // 添加到结果（必须保留两项）
+                    // 经过上面处理，能确保数据都是成对，上面1个，下面1个
+                    result.push(topItem, currentItem);
                     n--;
                     break;
                 }
-
-                // 添加到结果（必须保留两项）
-                // 经过上面处理，能确保数据都是成对，上面1个，下面1个
-                result.push(topItem, pairItem);
             });
 
             //log(y_limit_single)
