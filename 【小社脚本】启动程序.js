@@ -238,7 +238,7 @@ function startTimeoutMonitor() {
 
 // 小米社区空白维护
 function blankMaintain() {
-    let xmpl = packageName(xmPckageName).find();
+    let xmpl = packageName(xmPckageName).find(2000);
     // if (xmpl < 10) {
     //     tryRefresh();
     //     xmpl = packageName(xmPckageName).find().length;
