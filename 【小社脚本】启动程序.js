@@ -178,8 +178,8 @@ function checkAutoJS6() {
 // 维护期禁止更新
 function maintain() {
     let hours = new Date().getHours();
-    if (hours < 2 || hours >= 20) {
-        console.error('维护时间：20点~凌晨2点');
+    if (hours < 2 || hours >= 21) {
+        console.error('维护时间：21点~凌晨2点');
         if (config && config.维护期间禁止检查更新 === 1) {
             console.error('停止更新！');
             ableUpdate = 0;
@@ -236,6 +236,26 @@ function startTimeoutMonitor() {
     });
 }
 
+// 小米社区空白维护
+function blankMaintain() {
+    let xmpl = packageName(xmPckageName).find();
+    // if (xmpl < 10) {
+    //     tryRefresh();
+    //     xmpl = packageName(xmPckageName).find().length;
+
+    // }
+
+    if (xmpl.isEmpty() || xmpl.length < 10) {
+        console.error("小米社区APP打开了空白页!")
+        console.error("可能社区在维护！")
+        console.error("请稍后再试")
+        abnormalInterrupt = 0;
+        wait(() => false, 2000);
+        exit();
+        wait(() => false, 2000);
+    }
+}
+
 // 尝试刷新
 function tryRefresh() {
     let n = 3;
@@ -244,9 +264,12 @@ function tryRefresh() {
             content('refresh').exists())) {
         console.warn('页面未成功加载')
         console.warn('第 ' + (3 - n) + ' 次尝试刷新...')
-        clickCenter('刷新');
-        clickCenter('重新加载');
-        clickCenter('refresh');
+        ableClick('刷新');
+        ableClick('重新加载');
+        ableClick('refresh');
+        // clickCenter('刷新');
+        // clickCenter('重新加载');
+        // clickCenter('refresh');
     }
 
     if (content('刷新').exists() ||
@@ -372,8 +395,8 @@ function consoleMin() {
         const BORDER_OFFSET = dpToPx2(12);
         // h = a - STATUS_BAR_HEIGHT - y + BORDER_OFFSET;
         // 计算得到的h是像素单位，不是百分比
-        // 523
-        h = (global.picY - cY(20)) - STATUS_BAR_HEIGHT - (0.02 * dheight) + BORDER_OFFSET;
+        // 513
+        h = (global.picY - cY(30)) - STATUS_BAR_HEIGHT - (0.02 * dheight) + BORDER_OFFSET;
         // 转化百分百
         // 0.21791666666666668
         if (h > 1) h = h / dheight;
@@ -1912,12 +1935,8 @@ function main() {
     //权限验证
     permissionv();
 
-    //屏幕解锁
-    unLock();
-
-
     // 再次加载悬浮窗控制台配置，以便纠正悬浮窗控制台错误
-    consoleShow();
+    //consoleShow();
 
     // 系统修改
     systemSetting();
@@ -1927,9 +1946,11 @@ function main() {
 
     //脚本检查更新
     if (config && config.检查更新 && ableUpdate) {
-
         checkVersion();
     }
+
+    //屏幕解锁
+    unLock();
 
     try {
         // 再次加载悬浮窗控制台配置，以便纠正悬浮窗控制台错误
