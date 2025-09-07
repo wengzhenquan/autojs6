@@ -1438,7 +1438,7 @@ function getClipPic() {
     };
     sleep(1000);
 
-    let n = 10;
+    let n = 5;
     let tida = null;
     let ycdj = null;
     do {
@@ -1453,6 +1453,10 @@ function getClipPic() {
 
         if (!ycdj)
             ycdj = textStartsWith("请在下图依次点击").findOne(3000);
+
+
+        if (!tida && !ycdj)
+            ableClick(content('请点击此处重试').findOne(2000))
 
     } while ((!tida || !ycdj) && n--);
 
