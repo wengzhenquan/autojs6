@@ -78,6 +78,7 @@ var proxys = [
     "https://gh.pylas.xyz/", // 请求时间：1.10s
     "https://gh.bugdey.us.kg/", // 请求时间：0.77s
     "https://hub.gitmirror.com/", // 请求时间：0.75s
+    "https://gh.xxooo.cf/",
 
 
 ]
