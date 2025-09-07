@@ -1466,7 +1466,7 @@ function getClipPic() {
         const bottom = ycdj.bottom();
         const top = ycdj.top();
 
-        if (ycdj.right() < tida.left()) {
+        if (ycdj.right() < tida.right()) {
             // 记录小图标x分界
             global.x_refer = ycdj.right() - ycdj.left() - cX(20);
         }
