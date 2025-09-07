@@ -1474,8 +1474,7 @@ function getClipPic() {
         let m = 10;
         do {
             //找到合适的父组件
-            while ((ycdj.right() < tida.left() ||
-                    ycdj.right() < tida.right()) ||
+            while (ycdj.right() < tida.right() ||
                 (ycdj.parent() &&
                     ycdj.parent().top() <= top &&
                     ycdj.parent().top() < bottom &&
