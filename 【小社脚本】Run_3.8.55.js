@@ -1478,6 +1478,8 @@ function getClipPic() {
                 (ycdj.parent() &&
                     ycdj.parent().top() <= top &&
                     ycdj.parent().top() < bottom &&
+                    ycdj.parent().right() > tida.left() &&
+                    ycdj.parent().right() >= tida.right() &&
                     ycdj.parent().bottom() < tida.top() &&
                     ycdj.parent().bounds().centerY() < bottom)) {
                 ycdj = ycdj.parent();
