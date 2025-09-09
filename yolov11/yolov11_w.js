@@ -484,7 +484,11 @@ function getYRefer(data) {
     // -------- global.y_refer由前置程序根据控件获取，真实有效
     // global.y_refer表示截图上的文案“请在下图依次点击：”后面的小图标，与下方点击区域的分界，主要点击区域上边缘y
     //log(global.y_refer)
-    return (global.y_refer > y || global.y_refer > maxProb.y) ? global.y_refer : -1;
+    if (global.y_refer > y) return global.y_refer;
+
+    if (global.y_refer > maxProb.y) return y;
+
+    return -1;
 }
 
 
