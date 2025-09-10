@@ -465,14 +465,14 @@ function getYRefer(data) {
     // 获取y最小的一个有效元素(其中prob最大的)
 
     // y最小的有效元素
-    var f = data.slice().filter(item => item.x > global.x_refer && item.y < 130);
+    var f = data.slice().filter(item => item.y < 130 && item.x > global.x_refer);
     var minYItem = f.reduce((a, b) => a.y < b.y ? a : b, {});
     //log(minYItem)
     var y = (minYItem.y + minYItem.height) || 0;
     //log(y)
 
     // 其中prob最大的有效元素
-    var maxProb = f.filter(item => (item.y < y && item.y >= minYItem.y))
+    var maxProb = f.filter(item => item.y < y && item.y >= minYItem.y)
         .reduce((a, b) => a.prob > b.prob ? a : b, {});
     //log(maxProb)
     // 该元素的数据整合成分界y
