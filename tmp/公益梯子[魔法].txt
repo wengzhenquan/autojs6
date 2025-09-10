@@ -72,48 +72,48 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
      
 二、支持的代理软件列表：
     1、Windows：
-            v2rayN、
             Karing(跨平台)、
             Hiddify(跨平台)、
+            v2rayN、
             Clash Verge Rev、
             NekoRay等等
     2、Mac/IOS：
-            v2rayN/v2rayU、
             Karing(跨平台)、
             Hiddify(跨平台)、
+            v2rayN/v2rayU、
             Clash Verge Rev、
             Shadowrocket(小火箭)
     3、Android/Harmony：
-            v2rayNG、
             Karing(跨平台)、
             Hiddify(跨平台)、
+            v2rayN、
             Clash Meta for Android、
             NekoBox for Android。
     4、Linux：
-            v2rayN、
             Karing(跨平台)、
+            v2rayN、
             Clash Verge Rev
             
     5、部分软件官网地址：
-        1)、Hiddify(无墙)：https://hiddify.com/
-            github：https://github.com/hiddify/hiddify-app/releases
-             
-        2)、Karing(无墙）：https://karing.app/
+        1)、Karing(无墙）：https://karing.app/
         
+        2)、Hiddify(无墙)：https://hiddify.com/
+            github：https://github.com/hiddify/hiddify-app/releases
+ 
         3)、v2ray系列（广告页面底部，跳转github）：
             https://9.234456.xyz/abc.html
-            
-        4)、Neko系列(跳转github下载）：
-            https://matsuridayo.github.io/download/
-            
-        5)、Clash Verge Rev(桌面版)：
+        
+        4)、Clash Verge Rev(桌面版)：
             https://clashverge.net/
             https://www.clashverge.dev/install.html
             
-        6)、Clash Meta for Android(github)：
+        5)、Clash Meta for Android(github)：
             https://github.com/MetaCubeX/ClashMetaForAndroid
         
-        小白推荐使用：Hiddify、Karing系列、
+        6)、Neko系列(跳转github下载）：
+            https://matsuridayo.github.io/download/
+            
+        小白推荐使用：Karing、Hiddify系列、
            进阶使用：v2ray、clash系列。
         
 三、使用方法：
