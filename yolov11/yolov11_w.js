@@ -479,7 +479,7 @@ function getYRefer(data) {
     y = (maxProb.y + maxProb.height) || 0;
 
     if (typeof global.y_refer === 'undefined' || !global.y_refer)
-        return y + random(15, 20);
+        return y;
 
     // -------- global.y_refer由前置程序根据控件获取，真实有效
     // global.y_refer表示截图上的文案“请在下图依次点击：”后面的小图标，与下方点击区域的分界，主要点击区域上边缘y
