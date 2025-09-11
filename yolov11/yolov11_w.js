@@ -39,6 +39,9 @@ const tag = "[YOLO]";
 var yoloInstance = null;
 var isYoloInitialized = false;
 
+// 预估分界y，必须大于所有小图标的y
+const REFER_Y = 130;
+
 
 // global.x_refer表示截图上的文案“请在下图依次点击：”末尾的x，也就是小图标的开始
 // global.x_refer由前置程序根据控件获取，小图标有效分界x
@@ -465,8 +468,7 @@ function getYRefer(data) {
     // 获取y最小的一个有效元素(其中prob最大的)
 
     // y最小的有效元素，
-    // 130为大约分界y，通常小于实际分界y。要求大于实际y，小于实际分界y
-    var f = data.slice().filter(item => item.y < 130 && item.x > global.x_refer);
+    var f = data.slice().filter(item => item.y < REFER_Y && item.x > global.x_refer);
     var minYItem = f.reduce((a, b) => a.y < b.y ? a : b, {});
     //log(minYItem)
     var y = (minYItem.y + minYItem.height) || 0;
