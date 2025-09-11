@@ -91,6 +91,7 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
             NekoBox for Android。
     4、Linux：
             Karing(跨平台)、
+            Hiddify(跨平台)、
             v2rayN、
             Clash Verge Rev
             
