@@ -35,7 +35,7 @@ var percentage;
 // 验证码图标分界y
 global.y_refer = null;
 // 小图标x起始分界
-global.x_refer = 300;
+global.x_refer = 200;
 
 //------------ 成长值记录对象 ----------//
 // 记录成长值对象
