@@ -44,7 +44,7 @@ var isYoloInitialized = false;
 // global.x_refer由前置程序根据控件获取，小图标有效分界x
 // 小图标x必须大于global.x_refer，在它右边。
 if (typeof global.x_refer === 'undefined' ||
-    !global.x_refer || global.x_refer < 0) {
+    !global.x_refer || global.x_refer < 1) {
     // 若前置程序没有赋值，则根据实际初始化为200
     global.x_refer = 200;
 }
