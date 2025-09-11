@@ -12,6 +12,7 @@ const YOLO_PLUGIN_NAME = "com.circlefork.yolo"; // 插件包名
 const MODEL_SUBDIR = "/yolov11/model"; // 模型文件夹相对于本脚本的路径
 const MODEL_NAME = "yzm"; // 模型名
 const MODEL_USE_GPU = config && config.YOLO启用GPU ? true : false;
+
 const MODEL_LABELS = ["面条", "牙齿", "喷漆", "戒指", "汉堡", "双串", "气球", "三星", "四方角", "拉力器",
     "垃圾桶", "纽扣", "保龄球", "吊灯", "蚂蚱", "电脑", "网球", "地雷", "干杯", "猫头鹰",
     "胭脂", "橄榄球", "熊脚印", "锤子", "磁带", "五色球", "打拳击", "拉提琴", "项链模特",
@@ -25,12 +26,12 @@ const MODEL_LABELS = ["面条", "牙齿", "喷漆", "戒指", "汉堡", "双串"
     "鸟嘴", "手掌", "树叶", "火龙", "大炮", "风车", "胡萝卜", "甜筒", "木鱼", "自行车",
     "战斗", "香烟"
 ];
+
 // --- 模型参数 ---
 //类别置信度阈值
 const confThreshold = (config && config.YOLO置信度阈值) || 0.01;
 //重叠率阈值
 const nmsThreshold = (config && config.YOLO重叠率阈值) || 0.1;
-
 // 尝试遮挡修复
 const OccRepair = (config && config.YOLO尝试遮挡修复) || 0;
 
