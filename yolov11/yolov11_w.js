@@ -40,7 +40,8 @@ const tag = "[YOLO]";
 var yoloInstance = null;
 var isYoloInitialized = false;
 
-// 预估分界y，必须大于所有小图标的y
+// 预估分界y。必须大于所有小图标的y，否则结果会缺少
+// 与实际分界y越接近，结果越准确
 const REFER_Y = 130;
 
 
