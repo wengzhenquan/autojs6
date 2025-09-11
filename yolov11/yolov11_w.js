@@ -464,7 +464,8 @@ function getYRefer(data) {
     // ------- 根据数据计算（但有局限性，如果上方参照图标全被遮挡，分界y将没有意义）
     // 获取y最小的一个有效元素(其中prob最大的)
 
-    // y最小的有效元素
+    // y最小的有效元素，
+    // 130为大约分界y，通常小于实际分界y。要求大于实际y，小于实际分界y
     var f = data.slice().filter(item => item.y < 130 && item.x > global.x_refer);
     var minYItem = f.reduce((a, b) => a.y < b.y ? a : b, {});
     //log(minYItem)
