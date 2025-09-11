@@ -144,7 +144,7 @@ function sortAndProcessResults(data) {
     try {
         // 获得分界y，小于分界y为小图标，大于分界y为大图标
         const y_limit = getYRefer(data);
-        //log(y_limit)
+        log(y_limit)
 
         var len = data.length;
         // 检查数据长度是否满足处理逻辑要求 (4或6)
@@ -495,7 +495,7 @@ function getYRefer(data) {
     //log(global.y_refer)
     if (global.y_refer > y) return global.y_refer;
 
-    if (global.y_refer > maxProb.y) return y + random(15, 20);
+    if (global.y_refer > maxProb.y) return (y + random(15, 20)).toFixed(2);
 
     return -1;
 }
