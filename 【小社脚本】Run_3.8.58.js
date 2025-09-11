@@ -1515,7 +1515,7 @@ function getClipPic() {
             param.h = tida.top() - param.y;
 
             // 上下图标分界y
-            global.y_refer = ycdj.bottom() - top;
+            global.y_refer = ycdj.bottom() - param.y;
 
         } while ((param.w < 1 || param.h < 1) &&
             ycdj && tida && m--);
