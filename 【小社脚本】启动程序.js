@@ -270,6 +270,7 @@ function tryRefresh() {
         // clickCenter('刷新');
         // clickCenter('重新加载');
         // clickCenter('refresh');
+        wait(() => false, 500);
     }
 
     if (content('刷新').exists() ||
@@ -1969,7 +1970,8 @@ function main() {
         wait(() => false, 1000);
 
     } catch (e) {
-        if (!(e instanceof ScriptInterruptedException)) {
+
+        if (!(e.javaException instanceof ScriptInterruptedException)) {
             //通常只有 1 行消息. 
             console.error(e.message);
             console.error(e.stack);
