@@ -51,7 +51,7 @@ const REFER_Y = 130;
 if (typeof global.x_refer === 'undefined' ||
     !global.x_refer || global.x_refer < 1) {
     // 若前置程序没有赋值，则根据实际初始化为200
-    global.x_refer = 200;
+    global.x_refer = 300;
 }
 
 
