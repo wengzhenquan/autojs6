@@ -1970,6 +1970,8 @@ function main() {
         wait(() => false, 1000);
 
     } catch (e) {
+        // log(e.javaException instanceof ScriptInterruptedException); // true
+
 
         if (!(e.javaException instanceof ScriptInterruptedException)) {
             //通常只有 1 行消息. 
