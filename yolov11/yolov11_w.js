@@ -123,8 +123,12 @@ function initializeYolo() {
 
 /**
  * @description 对原始检测结果进行排序和处理。
- * 规则: 1. 按Y坐标升序；2. 分为(A组)和(B组)；3. A组按X坐标升序；
- *       4. B组按A组排序后的标签顺序排序；5. 计算B组中心点并格式化输出。
+ * 规则: 根据实际情况，验证码有两组数据，一组是小图标，另一组是大图标。
+        小图标是上方“请在下图依次点击：”后面，大图标是下面点击区域。
+        根据数据y的大小分类大小图标、label成对匹配，
+        小图标的x大小确定先后顺序。prob置信度越高优先匹配。
+        以及未能label成功匹配的补偿方案。
+        实际验证码图片小图标应该有2、3个，成对匹配应该有4或6个。
  * @param {Array<object>} data - YOLO 检测原始结果数组，格式: [{x, y, width, height, prob, label}, ...]
  * @returns {Array<object>|null} - 处理后的 C 组结果数组 [{centerX, centerY, prob, label}, ...]，或在失败/无效输入时返回 null。
  */
@@ -138,7 +142,7 @@ function sortAndProcessResults(data) {
 
 
     try {
-        // 获得分界y
+        // 获得分界y，小于分界y为小图标，大于分界y为大图标
         const y_limit = getYRefer(data);
         //log(y_limit)
 
@@ -293,7 +297,7 @@ function sortAndProcessResults(data) {
         //const minY = sortedByY[0].y;
         //const height = Math.max(minY, 50);
 
-        // 1.3 创建分组A（y值较小的部分，按x升序排序）
+        // 1.3 创建分组A（y值较小的部分，按x升序排序），定义为小图标
         // 收集小于分界y的图标，且去重
         var groupA = Array.from(
             sortedByY.slice()
@@ -307,7 +311,7 @@ function sortAndProcessResults(data) {
 
         //log(groupA)
 
-        // 1.4 创建分组B（y值较大的部分，按prob倒序）
+        // 1.4 创建分组B（y值较大的部分，按prob倒序），定义为大图标
         // 收集大于分界y的图标，且去重
         var groupB = Array.from(
             sortedByY.slice()
