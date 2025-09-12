@@ -18,15 +18,15 @@ https://github.com/wengzhenquan/autojs6
 //auto.waitFor();
 
 //程序运行文件标志
-files.ensureDir("./tmp/");
-var launch_locked = "./tmp/launch_main_locked";
+const launch_locked = "./tmp/launch_main_locked";
+files.ensureDir(launch_locked)
 if (!files.exists(launch_locked)) {
     events.on("exit", () => files.remove(launch_locked));
     files.create(launch_locked);
 } else {
     if (engines.all().length < 2) {
         // 防止锁残留
-        files.remove(launch_locked);
+        events.on("exit", () => files.remove(launch_locked));
     } else {
         console.info('若无法启动，可删除tmp目录下的下面文件')
         console.error('launch_main_locked')
@@ -974,7 +974,6 @@ function checkConfig() {
 var proxys = [
 
     "https://x.whereisdoge.work/",
-    "https://proxy.yaoyaoling.net/",
     "https://git.yylx.win/",
     "https://ghfast.top/", // 请求时间：1.42s
     "https://git.669966.xyz/", // 请求时间：2.80s
@@ -991,24 +990,22 @@ var proxys = [
     "https://gh.bugdey.us.kg/", // 请求时间：0.77s
     "https://hub.gitmirror.com/", // 请求时间：0.75s
     "https://gh.xxooo.cf/",
+    "https://gh.noki.icu/", // 请求时间：2.64s
+    "https://gh.monlor.com/",
+    "https://g.blfrp.cn/", // 请求时间：1.05s
+    "https://gh-proxy.net/", // 请求时间：0.78s
+    "https://proxy.atoposs.com/", // 请求时间：2.82s
 
 ]
 
 // 备用代理
 var proxys2 = [
 
-    "https://gh.noki.icu/", // 请求时间：2.64s
-
-    "https://gh.monlor.com/",
-    "https://ghproxy.gpnu.org/", // 请求时间：0.59s
-    "https://g.blfrp.cn/", // 请求时间：1.05s
-    "https://gh-proxy.net/", // 请求时间：0.78s
-
     "https://ghproxy.net/",
-    "https://proxy.atoposs.com/", // 请求时间：2.82s
-    "https://ghproxy.fangkuai.fun/", // 请求时间：1.18s
-
     "http://github-proxy.teach-english.tech/",
+    //"https://proxy.yaoyaoling.net/",
+    //  "https://ghproxy.gpnu.org/", // 请求时间：0.59s
+    "https://ghproxy.fangkuai.fun/", // 请求时间：1.18s
     "https://gh.wsmdn.dpdns.org/", // 请求时间：0.82s
     "https://gh-proxy.com/", // 请求时间：0.90s
     "https://github.tianrld.top/", // 请求时间：1.07s
@@ -1029,8 +1026,6 @@ var proxys2 = [
     "https://gh-proxy.llyke.com/", // 请求时间：1.34s
     "https://ghproxy.cc/", // 请求时间：1.34s
     "https://github.cn86.dev/", // 请求时间：0.97s
-
-
 
 ]
 // 打乱并整合两个数组
@@ -1135,7 +1130,7 @@ function checkVersion() {
             },
             autoCancel: true
         });
-        console.error("有新的版本！！！")
+        console.error("发现新的版本！！！")
         console.info("最新版本：" + serverVersion.version)
         console.log("-----→");
         console.error("增量更新列表：")

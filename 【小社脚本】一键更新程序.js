@@ -1,13 +1,13 @@
 //程序运行文件标志
-files.ensureDir("./tmp/")
-let locked = "./tmp/update_locked";
+const locked = "./tmp/update_locked";
+files.ensureDir(locked)
 if (!files.exists(locked)) {
     events.on("exit", () => files.remove(locked));
     files.create(locked);
 } else {
     if (engines.all().length < 2) {
         // 防止锁残留
-        files.remove(locked);
+        events.on("exit", () => files.remove(locked));
     } else {
         console.info('若无法启动，可删除tmp目录下的下面文件')
         console.error('update_locked')
@@ -61,8 +61,8 @@ var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs
 
 //加速代理
 var proxys = [
+
     "https://x.whereisdoge.work/",
-    "https://proxy.yaoyaoling.net/",
     "https://git.yylx.win/",
     "https://ghfast.top/", // 请求时间：1.42s
     "https://git.669966.xyz/", // 请求时间：2.80s
@@ -79,6 +79,11 @@ var proxys = [
     "https://gh.bugdey.us.kg/", // 请求时间：0.77s
     "https://hub.gitmirror.com/", // 请求时间：0.75s
     "https://gh.xxooo.cf/",
+    "https://gh.noki.icu/", // 请求时间：2.64s
+    "https://gh.monlor.com/",
+    "https://g.blfrp.cn/", // 请求时间：1.05s
+    "https://gh-proxy.net/", // 请求时间：0.78s
+    "https://proxy.atoposs.com/", // 请求时间：2.82s
 
 
 ]
@@ -86,18 +91,11 @@ var proxys = [
 // 备用代理
 var proxys2 = [
 
-    "https://gh.noki.icu/", // 请求时间：2.64s
-
-    "https://gh.monlor.com/",
-    "https://ghproxy.gpnu.org/", // 请求时间：0.59s
-    "https://g.blfrp.cn/", // 请求时间：1.05s
-    "https://gh-proxy.net/", // 请求时间：0.78s
-
     "https://ghproxy.net/",
-    "https://proxy.atoposs.com/", // 请求时间：2.82s
-    "https://ghproxy.fangkuai.fun/", // 请求时间：1.18s
-
     "http://github-proxy.teach-english.tech/",
+    //"https://proxy.yaoyaoling.net/",
+    //  "https://ghproxy.gpnu.org/", // 请求时间：0.59s
+    "https://ghproxy.fangkuai.fun/", // 请求时间：1.18s
     "https://gh.wsmdn.dpdns.org/", // 请求时间：0.82s
     "https://gh-proxy.com/", // 请求时间：0.90s
     "https://github.tianrld.top/", // 请求时间：1.07s
@@ -118,7 +116,6 @@ var proxys2 = [
     "https://gh-proxy.llyke.com/", // 请求时间：1.34s
     "https://ghproxy.cc/", // 请求时间：1.34s
     "https://github.cn86.dev/", // 请求时间：0.97s
-
 
 
 
@@ -415,7 +412,7 @@ function checkVersion() {
     }
 
     if (hasNewVersion || updateAll) {
-        console.warn("有新版本！！！")
+        console.warn("发现新的版本！！！")
 
         console.error("增量更新列表：")
         if (updateList.length > 0) {
@@ -654,6 +651,7 @@ function startUpdate() {
         });
         log("----------------------------");
     }
+
     console.error("在文件列表下滑刷新，可查看更新结果！");
     wait(() => false, 1000);
     console.error("在文件列表下滑刷新，可查看更新结果！");
@@ -661,27 +659,34 @@ function startUpdate() {
     console.error("在文件列表下滑刷新，可查看更新结果！");
     wait(() => false, 1000);
 
-    back();
-    //sleep(3000)
-    if (packageName('org.autojs.autojs6').exists()) {
-        //  ---------------- 下面是刷新列表 --------//
-        // 设备信息
-        var dwidth = device.width;
-        var dheight = device.height;
-        let a6 = className("android.widget.TextView")
-            .packageName('org.autojs.autojs6')
-            .text("AutoJs6");
-        click(text('文件'));
-        if (a6.exists() || textContains('version').exists()) {
-            wait(() => false, 1000);
-            let n = 3;
-            while (n--) {
-                swipe(dwidth * 0.4, dheight * 0.4, dwidth * 0.6, dheight * 0.8, 100);
-                sleep(500);
+    let l = 3;
+    do {
+        try {
+            back();
+            //sleep(3000)
+            if (packageName('org.autojs.autojs6').exists()) {
+                //  ---------------- 下面是刷新列表 --------//
+                // 设备信息
+                var dwidth = device.width;
+                var dheight = device.height;
+                let a6 = className("android.widget.TextView")
+                    .packageName('org.autojs.autojs6')
+                    .text("AutoJs6");
+                click(text('文件'));
+                if (a6.exists() && textContains('小社脚本').exists()) {
+                    wait(() => false, 1000);
+                    let n = 3;
+                    while (n--) {
+                        swipe(dwidth * 0.4, dheight * 0.4, dwidth * 0.6, dheight * 0.8, 100);
+                        sleep(500);
+                    }
+                }
             }
+            break;
+        } catch (e) {
+            auto(true);
         }
-
-    }
+    } while (l--);
 
 }
 
