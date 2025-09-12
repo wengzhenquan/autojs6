@@ -495,7 +495,8 @@ function getYRefer(data) {
     //log(global.y_refer)
     if (global.y_refer > y) return global.y_refer;
 
-    if (global.y_refer > maxProb.y) return (y + random(15, 20)).toFixed(2);
+    if (global.y_refer > maxProb.y)
+        return (y + random(15, 20)).toFixed(2);
 
     return -1;
 }
