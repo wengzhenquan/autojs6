@@ -37,7 +37,7 @@ const OccRepair = (config && config.YOLO尝试遮挡修复) || 0;
 
 const tag = "[YOLO]";
 // --- 模块级变量 (用于存储初始化状态和实例) ---
-var yoloInstance = null;
+var yoloV11 = null;
 var isYoloInitialized = false;
 
 // 预估分界y。必须大于所有小图标的y，否则结果会缺少
@@ -56,8 +56,8 @@ if (typeof global.x_refer === 'undefined' ||
 
 
 events.on("exit", function() {
-    if (yoloInstance) {
-        yoloInstance.release();
+    if (yoloV11) {
+        yoloV11.release();
     }
 });
 
@@ -74,7 +74,7 @@ function initializeYolo() {
         return true;
     }
     // 如果实例存在但未初始化成功（上次失败），则不再尝试
-    if (yoloInstance && !isYoloInitialized) {
+    if (yoloV11 && !isYoloInitialized) {
         console.warn(tag + "初始化曾失败，不再尝试。");
         return false;
     }
@@ -82,13 +82,12 @@ function initializeYolo() {
     console.log(tag + "正在初始化...");
     try {
         console.log(`${tag}加载插件Yolo-plugin...`);
-        var YoloPlugin = plugins.load(YOLO_PLUGIN_NAME);
-        if (!YoloPlugin) {
+        var Yolo = plugins.load(YOLO_PLUGIN_NAME);
+        if (!Yolo) {
             throw new Error(`插件Yolo-plugin加载失败！`);
         }
 
-        yoloInstance = new YoloPlugin();
-        // yoloInstance = new Yolo();
+        yoloV11 = new Yolo();
         console.log(tag + "加载成功，实例已创建");
 
         // --- 使用 __dirname 获取模型路径 ---
@@ -98,12 +97,12 @@ function initializeYolo() {
         console.log(`${tag}是否加载GPU: ${MODEL_USE_GPU?'是':'否'}`);
 
         // 初始化模型
-        isYoloInitialized = yoloInstance.init(modelPath, MODEL_NAME, MODEL_USE_GPU, MODEL_LABELS);
+        isYoloInitialized = yoloV11.init(modelPath, MODEL_NAME, MODEL_USE_GPU, MODEL_LABELS);
 
         if (!isYoloInitialized) {
             console.error(tag + " yolo.init() 初始化失败！请检查模型路径、名称、标签及插件权限。");
             console.error('请尝试将配置{YOLO启用GPU:1}改为0再试。');
-            yoloInstance = null; // 初始化失败，清空实例
+            yoloV11 = null; // 初始化失败，清空实例
             isYoloInitialized = false;
             throw Error();
             return false;
@@ -113,7 +112,7 @@ function initializeYolo() {
 
     } catch (error) {
         //console.error(`${tag}初始化过程中发生错误: ${error}`);
-        yoloInstance = null; // 出错时清空实例
+        yoloV11 = null; // 出错时清空实例
         isYoloInitialized = false;
         throw error;
         return false;
@@ -511,13 +510,13 @@ function getYRefer(data) {
  */
 function detectAndProcess(imagePath) {
     // 检查初始化状态
-    if (!isYoloInitialized || !yoloInstance) {
+    if (!isYoloInitialized || !yoloV11) {
         console.error(tag + "未初始化或初始化失败，尝试重新初始化...");
         try {
             // 尝试再次初始化
             initializeYolo();
         } catch (e) {}
-        if (!isYoloInitialized || !yoloInstance)
+        if (!isYoloInitialized || !yoloV11)
             return null;
     }
 
@@ -531,12 +530,12 @@ function detectAndProcess(imagePath) {
         return null;
     }
 
-    let img = null;
+    let cardImg = null;
     try {
         // 读取图片
         console.log(`${tag}读取图片: ${imagePath}`);
-        img = images.read(imagePath); // 使用函数参数 imagePath
-        if (!img) {
+        cardImg = images.read(imagePath); // 使用函数参数 imagePath
+        if (!cardImg) {
             console.error(`检测处理: 读取图片失败: ${imagePath}`);
             return null;
         }
@@ -546,7 +545,7 @@ function detectAndProcess(imagePath) {
         console.log(`${tag}配置 (重叠率阈值: ${nmsThreshold})`);
         // 注意：yolo.detect 可能需要 Bitmap 对象，images.read 返回的是 Image 对象
         // 需要确认 yolo.detect 接受的参数类型，如果是 Bitmap，需要 img.bitmap
-        let rawResults = yoloInstance.detect(img.bitmap, confThreshold, nmsThreshold, 640);
+        let rawResults = yoloV11.detect(cardImg.bitmap, confThreshold, nmsThreshold, 640);
         console.log(`${tag}识别完成，数据数量: ${rawResults ? rawResults.length : 'N/A'}`);
         //log(rawResults)
         // 处理并返回结果
@@ -558,8 +557,8 @@ function detectAndProcess(imagePath) {
         return new Array();
     } finally {
         // 释放图片资源（如果需要）
-        if (img) {
-            img.recycle(); // 回收图片对象，防止内存泄漏
+        if (cardImg) {
+            cardImg.recycle(); // 回收图片对象，防止内存泄漏
         }
     }
 }
