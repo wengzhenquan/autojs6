@@ -134,9 +134,10 @@ var proxys2 = [
     "https://ghproxy.cfd/", // 请求时间：28.74s
     "https://gp.zkitefly.eu.org/", // 请求时间：39.65s
 
-
-
 ]
+
+
+
 // 打乱并整合两个数组
 processArrays(proxys, proxys2);
 //timesShuffleArray(proxys);
@@ -171,6 +172,9 @@ var api_proxys = [
     // "https://j.1win.ddns-ip.net/",
 
 ]
+
+
+
 // 打乱数组
 shuffleArray(api_proxys);
 
@@ -191,6 +195,8 @@ function deduplicateInPlace(arr) {
     set.forEach(item => arr.push(item));
 }
 
+
+
 // 非高峰期乱序
 function timesShuffleArray(array) {
     let hours = new Date().getHours();
@@ -198,6 +204,7 @@ function timesShuffleArray(array) {
         shuffleArray(array);
     }
 }
+
 
 
 /**
@@ -219,6 +226,8 @@ function shuffleArray(array) {
         array[randomIndex] = temp;
     }
 }
+
+
 
 /**
  * 处理函数：打乱数组1和数组2，并将数组2添加到数组1末尾
@@ -258,6 +267,8 @@ function compareVersions(version1, version2) {
     return 0;
 }
 
+
+
 // [0-n]，不重复随机排列，返回数组，包含n
 function getRandomNumbers(n) {
     let numbers = Array.from({
@@ -271,6 +282,7 @@ function getRandomNumbers(n) {
     }
     return result;
 }
+
 
 function formatFileSize(size) {
     if (size < 1024) {
@@ -335,6 +347,8 @@ function integrityCheck() {
         console.error("  2、重新执行更新程序");
     }
 }
+
+
 
 // 检查脚本更新。
 function checkVersion() {
@@ -471,6 +485,8 @@ function checkVersion() {
 
     }
 }
+
+
 
 //开始更新
 function startUpdate() {
@@ -707,6 +723,7 @@ function startUpdate() {
 
 }
 
+
 // ==================== 文件校验系列 ====================
 
 // 校验文件
@@ -771,6 +788,7 @@ function getGitHubFileInfo(filePath, branch) {
 
     return result;
 }
+
 
 // 获取sha
 function getGitFileSha(fileBytes) {
@@ -1038,6 +1056,7 @@ function mergeConfigs(oldConfigPath, newConfigPath, outputPath) {
     }
 }
 
+
 // 使用示例：
 //mergeConfigs('./config.old.js', './config.new.js', './config.merged.js');
 
@@ -1053,6 +1072,8 @@ function fixConfigFile(sourcePath, backupPath) {
     files.write(backupPath, content, "utf-8");
     return true;
 }
+
+
 
 function fixWithContext(content) {
     let lines = content.split('\n');

@@ -119,6 +119,8 @@ log(`现在是：${date}`);
 console.error('QQ群：197511003');
 
 
+
+
 events.on("exit", function() {
     console.setTouchable(true);
     device.cancelKeepingAwake();
@@ -138,6 +140,8 @@ events.on("exit", function() {
 
     // verbose(nowDate());
 });
+
+
 
 //------------ 前置任务 ----------//
 
@@ -175,6 +179,8 @@ function checkAutoJS6() {
     }
 }
 
+
+
 // 维护期禁止更新
 function maintain() {
     let hours = new Date().getHours();
@@ -193,6 +199,8 @@ function maintain() {
         }
     }
 }
+
+
 
 /**
  * 启动脚本总运行时间监控
@@ -236,6 +244,8 @@ function startTimeoutMonitor() {
     });
 }
 
+
+
 // 小米社区空白维护
 function blankMaintain() {
     let xmpl = packageName(xmPckageName).find(2000);
@@ -255,6 +265,8 @@ function blankMaintain() {
         wait(() => false, 2000);
     }
 }
+
+
 
 // 尝试刷新
 function tryRefresh() {
@@ -286,6 +298,7 @@ function tryRefresh() {
 
     }
 }
+
 
 //------------ 左下角“停止脚本”按钮 ----------//
 //悬浮窗停止按钮
@@ -378,11 +391,13 @@ function consoleShow() {
     });
 }
 
+
 //悬浮窗控制台变成30%
 function console3() {
     let h = (config && config.悬浮窗控制台_运行高度) || 0.3;
     console.setSize(0.96, h);
 }
+
 
 
 //悬浮窗控制台变成18%
@@ -422,8 +437,9 @@ function consoleMin() {
         // 标准密度为160dpi，1dp = 1px，其他密度按比例计算
         return dp * (dpi / 160);
     }
-
 }
+
+
 
 //悬浮窗控制台高度变成80%
 function consoleMax() {
@@ -436,18 +452,23 @@ function consoleMax() {
     }
 }
 
+
+
 //悬浮窗控制台最小化
 function consoleCollapse() {
     if (console.isShowing()) {
         console.collapse();
     }
 }
+
+
 //悬浮窗控制台从最小化恢复
 function consoleExpand() {
     if (console.isShowing()) {
         console.expand();
     }
 }
+
 
 // 关闭悬浮窗控制台
 function consoleExitOnClose() {
@@ -486,6 +507,7 @@ function clickCenter(obj) {
 
     return false;
 }
+
 
 // 有效控件点击，若本控件无法点击，一路寻找到能点击的父控件
 function ableClick(obj) {
@@ -531,6 +553,7 @@ function nowDate() {
     return formatDate(new Date());
 }
 
+
 // 日期格式化
 function formatDate(date) {
     // 获取年、月、日、时、分、秒
@@ -543,6 +566,8 @@ function formatDate(date) {
     // 拼接格式化后的日期字符串
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
+
+
 
 // 返回时长间隔 01:23 （分：秒）
 function getDurTime(startTimeStr) {
@@ -562,6 +587,8 @@ function getDurTime(startTimeStr) {
     // 格式化输出
     return `${minutes}:${seconds < 10? '0' + seconds : seconds}`;
 }
+
+
 
 // 获取已安装应用版本名称
 function getAppVersionName(packageName) {
@@ -599,6 +626,7 @@ function isAtLeast(version1, version2) {
     return (compareVersions(version1, version2) > -1);
 }
 
+
 // [0-n]，不重复随机排列，返回数组，包含n
 function getRandomNumbers(n) {
     let numbers = Array.from({
@@ -612,6 +640,8 @@ function getRandomNumbers(n) {
     }
     return result;
 }
+
+
 
 // 文件大小添加单位
 function formatFileSize(size) {
@@ -674,6 +704,8 @@ function shuffleArray(array) {
         array[randomIndex] = temp;
     }
 }
+
+
 
 /**
  * 处理函数：打乱数组1和数组2，并将数组2添加到数组1末尾
@@ -784,8 +816,9 @@ function systemSetting() {
         }
 
     });
-
 }
+
+
 
 // -----------程序完整性检查---------------------//
 // 加载本地version文件
@@ -797,6 +830,8 @@ function loadLocalVersion() {
         run = require("./" + localVersion.run);
     }
 }
+
+
 
 function init() {
     console.info(">>>>→程序完整性校验←<<<<")
@@ -900,6 +935,7 @@ function init() {
 }
 
 
+
 // 检查config.js配置文件
 // 目前只检查小于1000的字符串数字
 function checkConfig() {
@@ -968,6 +1004,8 @@ function checkConfig() {
     }
 }
 
+
+
 // -------- 脚本更新  --------//
 
 //加速代理
@@ -1004,6 +1042,8 @@ var proxys = [
 
 
 ]
+
+
 
 // 备用代理
 var proxys2 = [
@@ -1045,6 +1085,8 @@ var proxys2 = [
     "https://gp.zkitefly.eu.org/", // 请求时间：39.65s
 
 ]
+
+
 // 打乱并整合两个数组
 processArrays(proxys, proxys2);
 
@@ -1177,6 +1219,8 @@ function checkVersion() {
         console.error("✅ 脚本已经是最新版！")
     }
 }
+
+
 
 function updateScript() {
     // 优先使用服务端更新脚本名称
@@ -1435,6 +1479,8 @@ function unLock() {
     return;
 }
 
+
+
 //--------- 重启无障碍 ------//
 
 // 写入服务id
@@ -1445,6 +1491,8 @@ function writingServiceId() {
     //写入文件
     files.write(serviceId_file, serviceId, "utf-8");
 }
+
+
 
 // 在已启动无障碍的条件下，查询服务id
 function getServiceId() {
@@ -1494,6 +1542,8 @@ function readdingServiceId() {
     // log(serviceId)
     return serviceId;
 }
+
+
 
 // 2. Root 权限重启无障碍服务
 function restartAccessibilityByRoot() {
@@ -1545,6 +1595,8 @@ function restartAccessibilityByShizuku() {
     shizuku("settings put secure accessibility_enabled 1");
 
 }
+
+
 
 // 2. 修改安全设置权限，重启无障碍服务
 function restartAccessibilityService() {
