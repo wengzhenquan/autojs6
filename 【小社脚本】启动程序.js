@@ -746,6 +746,7 @@ function systemSetting() {
             // 关闭悬浮窗控制台
             consoleExitOnClose();
             exit();
+            engines.stopAll();
         });
         events.onKeyDown("volume_down", () => {
             console.error("[音量-]停止脚本！！！");
@@ -753,6 +754,7 @@ function systemSetting() {
             // 关闭悬浮窗控制台
             consoleExitOnClose();
             exit();
+            engines.stopAll();
         });
     }
 
@@ -1039,6 +1041,7 @@ var proxys = [
     "https://github-proxy.lixxing.top/", // 请求时间：1.55s
     "https://gh.qninq.cn/", // 请求时间：2.01s
     "https://ghproxy.net/", // 请求时间：3.26s
+    "https://gh.llkk.cc/", // 请求时间：0.94s
 
 
 ]
@@ -1048,7 +1051,6 @@ var proxys = [
 // 备用代理
 var proxys2 = [
 
-    "https://gh.llkk.cc/", // 请求时间：0.94s
     "https://github.tbedu.top/", // 请求时间：3.15s
     "https://ghproxy.1888866.xyz/", // 请求时间：3.29s
     "https://jiashu.1win.eu.org/", // 请求时间：3.36s
@@ -1489,6 +1491,7 @@ function writingServiceId() {
     if (id) serviceId = id;
 
     //写入文件
+    files.remove(serviceId_file);
     files.write(serviceId_file, serviceId, "utf-8");
 }
 

@@ -90,6 +90,7 @@ var proxys = [
     "https://github-proxy.lixxing.top/", // 请求时间：1.55s
     "https://gh.qninq.cn/", // 请求时间：2.01s
     "https://ghproxy.net/", // 请求时间：3.26s
+    "https://gh.llkk.cc/", // 请求时间：0.94s
 
 
 
@@ -98,7 +99,6 @@ var proxys = [
 // 备用代理
 var proxys2 = [
 
-    "https://gh.llkk.cc/", // 请求时间：0.94s
     "https://github.tbedu.top/", // 请求时间：3.15s
     "https://ghproxy.1888866.xyz/", // 请求时间：3.29s
     "https://jiashu.1win.eu.org/", // 请求时间：3.36s
