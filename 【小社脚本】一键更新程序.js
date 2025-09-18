@@ -75,7 +75,6 @@ var proxys = [
     "http://gh.927223.xyz/",
     "https://github.dpik.top/", // 请求时间：0.95s
     "https://gh.catmak.name/", // 请求时间：1.03s
-    "https://gh.pylas.xyz/", // 请求时间：1.10s
     "https://gh.bugdey.us.kg/", // 请求时间：0.77s
     "https://hub.gitmirror.com/", // 请求时间：0.75s
     "https://gh.xxooo.cf/",
@@ -84,13 +83,12 @@ var proxys = [
     "https://g.blfrp.cn/", // 请求时间：1.05s
     "https://gh-proxy.net/", // 请求时间：0.78s
     "https://proxy.atoposs.com/", // 请求时间：2.82s
-    "https://gh.b52m.cn/", // 请求时间：0.61s
     "https://gh-proxy.com/", // 请求时间：0.93s
     "https://gitproxy.click/", // 请求时间：1.20s
     "https://github-proxy.lixxing.top/", // 请求时间：1.55s
     "https://gh.qninq.cn/", // 请求时间：2.01s
     "https://ghproxy.net/", // 请求时间：3.26s
-    "https://gh.llkk.cc/", // 请求时间：0.94s
+    "https://gh.llkk.cc/", // 请求时间：0.97s
 
 
 
@@ -133,6 +131,7 @@ var proxys2 = [
     "https://gh-proxy.llyke.com/", // 请求时间：21.08s
     "https://ghproxy.cfd/", // 请求时间：28.74s
     "https://gp.zkitefly.eu.org/", // 请求时间：39.65s
+    
 
 ]
 
@@ -146,6 +145,7 @@ var api_github = "https://api.github.com/repos/wengzhenquan/autojs6/contents/";
 var api_proxys = [
 
     "https://github.dpik.top/",
+    "https://gh.dpik.top/",
     "https://gh.catmak.name/",
     "https://ghproxy.monkeyray.net/",
     "https://ghfile.geekertao.top/",
@@ -154,22 +154,23 @@ var api_proxys = [
     "https://gh.bugdey.us.kg/",
     "https://tvv.tw/",
     "https://ghm.078465.xyz/",
-    "https://gh.927223.xyz/",
+    "http://gh.927223.xyz/",
     "https://gh.noki.icu/",
     "https://gh.qninq.cn/",
     "https://gh.llkk.cc/",
     "https://gh-proxy.com/",
     "https://xiazai.de/",
     "https://99z.top/",
-    "https://gh.944446.xyz/",
+    "https://ghproxy.vansour.top/",
+    "https://ghpxy.hwinzniej.top/",
 
 
     "https://j.1win.ggff.net/",
     "https://j.n1win.dpdns.org/",
     "https://j.1lin.dpdns.org/",
     "https://jiashu.1win.eu.org/",
-    // "https://j.1win.ip-ddns.com/",
-    // "https://j.1win.ddns-ip.net/",
+    "https://j.1win.ip-ddns.com/",
+    "https://j.1win.ddns-ip.net/",
 
 ]
 

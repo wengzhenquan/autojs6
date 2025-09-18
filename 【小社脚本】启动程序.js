@@ -249,12 +249,6 @@ function startTimeoutMonitor() {
 // 小米社区空白维护
 function blankMaintain() {
     let xmpl = packageName(xmPckageName).find(2000);
-    // if (xmpl < 10) {
-    //     tryRefresh();
-    //     xmpl = packageName(xmPckageName).find().length;
-
-    // }
-
     if (xmpl.isEmpty() || xmpl.length < 10) {
         console.error("小米社区APP打开了空白页!")
         console.error("可能社区在维护！")
@@ -357,7 +351,6 @@ function consoleShow() {
                 titleIconsTint: 'yellow',
                 titleBackgroundAlpha: 0.9,
                 titleBackgroundColor: 'dark-blue',
-                // titleBackgroundTint: 'dark-blue', //6.5.0版本没有
                 contentTextSize: 15,
                 contentBackgroundAlpha: 0.8,
                 contentBackgroundColor: colors.BLACK,
@@ -394,6 +387,7 @@ function consoleShow() {
 
 //悬浮窗控制台变成30%
 function console3() {
+    console.setPosition(0.02, 0.02);
     let h = (config && config.悬浮窗控制台_运行高度) || 0.3;
     console.setSize(0.96, h);
 }
@@ -402,17 +396,16 @@ function console3() {
 
 //悬浮窗控制台变成18%
 function consoleMin() {
+    console.setPosition(0.02, 0);
     let h = 0.18;
     // 自动适配
     if (global.picY) {
-        // h = (global.picY - cY(110));
-
         const STATUS_BAR_HEIGHT = ui.statusBarHeight;
         const BORDER_OFFSET = dpToPx2(12);
         // h = a - STATUS_BAR_HEIGHT - y + BORDER_OFFSET;
         // 计算得到的h是像素单位，不是百分比
         // 513
-        h = (global.picY - cY(30)) - STATUS_BAR_HEIGHT - (0.02 * dheight) + BORDER_OFFSET;
+        h = (global.picY - cY(30)) - STATUS_BAR_HEIGHT - 0 + BORDER_OFFSET;
         // 转化百分百
         // 0.21791666666666668
         if (h > 1) h = h / dheight;
@@ -444,6 +437,7 @@ function consoleMin() {
 //悬浮窗控制台高度变成80%
 function consoleMax() {
     if (console.isShowing()) {
+        console.setPosition(0.02, 0.02);
         //透明度
         console.setContentBackgroundAlpha(1)
         console.setSize(0.96, 0.8);
@@ -1026,7 +1020,6 @@ var proxys = [
     "http://gh.927223.xyz/",
     "https://github.dpik.top/", // 请求时间：0.95s
     "https://gh.catmak.name/", // 请求时间：1.03s
-    "https://gh.pylas.xyz/", // 请求时间：1.10s
     "https://gh.bugdey.us.kg/", // 请求时间：0.77s
     "https://hub.gitmirror.com/", // 请求时间：0.75s
     "https://gh.xxooo.cf/",
@@ -1035,13 +1028,12 @@ var proxys = [
     "https://g.blfrp.cn/", // 请求时间：1.05s
     "https://gh-proxy.net/", // 请求时间：0.78s
     "https://proxy.atoposs.com/", // 请求时间：2.82s
-    "https://gh.b52m.cn/", // 请求时间：0.61s
     "https://gh-proxy.com/", // 请求时间：0.93s
     "https://gitproxy.click/", // 请求时间：1.20s
     "https://github-proxy.lixxing.top/", // 请求时间：1.55s
     "https://gh.qninq.cn/", // 请求时间：2.01s
     "https://ghproxy.net/", // 请求时间：3.26s
-    "https://gh.llkk.cc/", // 请求时间：0.94s
+    "https://gh.llkk.cc/", // 请求时间：0.97s
 
 
 ]
@@ -1492,6 +1484,7 @@ function writingServiceId() {
 
     //写入文件
     files.remove(serviceId_file);
+    wait(() => false, 200);
     files.write(serviceId_file, serviceId, "utf-8");
 }
 
@@ -1812,7 +1805,6 @@ function permissionv() {
 
     function checkNetworkPermission() {
         let urls = [
-
             "http://connectivitycheck.platform.hicloud.com/generate_204", // 华为
             "http://www.qualcomm.cn/generate_204", //高通
             "http://wifi.vivo.com.cn/generate_204", // vivo
@@ -1822,11 +1814,12 @@ function permissionv() {
             "http://cp.cloudflare.com/generate_204", //CF
 
             // 延迟高
-            //"http://204.ustclug.org", //中科大学
-            //"http://noisyfox.cn/generate_204", //社区
+            "http://204.ustclug.org", //中科大学
+            "http://noisyfox.cn/generate_204", //社区
         ];
         for (let i = 0; i < urls.length; i++) {
-            let timeoutTimes = i < 4 ? 1 : 2;
+            let timeoutTimes = i < 3 ? 2 :
+                (i < 6 ? 3 : 5);
             let url = urls[i];
             //log(url)
             let res = null;
@@ -2037,9 +2030,6 @@ function main() {
         wait(() => false, 1000);
 
     } catch (e) {
-        // log(e.javaException instanceof ScriptInterruptedException); // true
-
-
         if (!(e.javaException instanceof ScriptInterruptedException)) {
             //通常只有 1 行消息. 
             console.error(e.message);
