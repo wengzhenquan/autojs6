@@ -642,13 +642,15 @@ function signEntrance(name, pram) {
 
     // 再点击一次，
     // 如果前面点击成功，页面跳转，新页面肯定找不到按钮
-    if (pram !== '立即签到' &&
-        content(pram).exists())
-        clickCenter(pram);
+    if (pram !== '立即签到') {
 
-    // 尝试刷新
-    if (pram !== '立即签到')
+        content(pram).exists() &&
+            clickCenter(pram);
+
+        // 尝试刷新
         tryRefresh();
+    }
+
 
     return true;
 }
