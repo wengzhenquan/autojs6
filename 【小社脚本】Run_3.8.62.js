@@ -1266,7 +1266,7 @@ function start(pram) {
     try {
         if (!done.findOne(1666)) {
             //控制台缩小
-            if (config.悬浮窗控制台签到时最小化)
+            if (config.悬浮窗控制台_签到时最小化)
                 consoleCollapse();
 
             consoleMin();
