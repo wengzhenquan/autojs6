@@ -265,7 +265,7 @@ function sortAndProcessResults(data) {
                 for (let i = 0; i < y_limit_single.length; i++) {
                     let single_b = B_data[i];
                     // 成对匹配
-                    if (typeof single_b !== 'undefined')
+                    if (typeof single_b !== 'undefined' || !single_b)
                         result.push(y_limit_single[i], single_b);
                 }
             }
