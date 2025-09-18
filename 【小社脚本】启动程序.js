@@ -801,8 +801,8 @@ function systemSetting() {
             let xiaoyu = (config && config.息屏时间范围_小于等于) || 8;
             if ((hours >= dayu && hours <= xiaoyu) ||
                 (xiaoyu < dayu && (hours >= dayu || hours <= xiaoyu))) {
-                device.cancelKeepingAwake();
                 console.setTouchable(true);
+                device.cancelKeepingAwake();
                 console.error('5秒后息屏！');
                 wait(() => false, 2000);
                 consoleMax();
