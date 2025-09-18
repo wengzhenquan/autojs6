@@ -801,19 +801,13 @@ function systemSetting() {
             let xiaoyu = (config && config.息屏时间范围_小于等于) || 8;
             if ((hours >= dayu && hours <= xiaoyu) ||
                 (xiaoyu < dayu && (hours >= dayu || hours <= xiaoyu))) {
-                console.setTouchable(true);
                 console.error('5秒后息屏！');
                 wait(() => false, 2000);
-                console.setContentBackgroundAlpha(1)
-                console.setSize(0.96, 0.6);
-                device.cancelKeepingAwake();
-                console.error('3');
-                wait(() => false, 1000);
-                console.error('2');
-                wait(() => false, 1000);
-                console.error('1');
-                wait(() => false, 1000);
-                console.hide();
+                let m = 4;
+                while (m--) {
+                    console.error(m);
+                    wait(() => false, 1000);
+                }
                 // 无障碍服务调用系统锁屏
                 auto.service.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN);
 
