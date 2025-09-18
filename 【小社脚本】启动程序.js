@@ -805,7 +805,8 @@ function systemSetting() {
                 device.cancelKeepingAwake();
                 console.error('5秒后息屏！');
                 wait(() => false, 2000);
-                consoleMax();
+                console.setContentBackgroundAlpha(1)
+                console.setSize(0.96, 0.6);
                 console.error('3');
                 wait(() => false, 1000);
                 console.error('2');
