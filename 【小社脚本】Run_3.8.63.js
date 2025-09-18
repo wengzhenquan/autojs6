@@ -639,7 +639,7 @@ function signEntrance(name, pram) {
     }
 
     sleep(1000);
-    
+
     // 再点击一次，
     // 如果前面点击成功，页面跳转，新页面肯定找不到按钮
     if (pram !== '立即签到' &&
@@ -647,7 +647,8 @@ function signEntrance(name, pram) {
         clickCenter(pram);
 
     // 尝试刷新
-    tryRefresh();
+    if (pram !== '立即签到')
+        tryRefresh();
 
     return true;
 }
