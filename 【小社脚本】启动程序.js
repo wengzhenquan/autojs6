@@ -184,7 +184,7 @@ function checkAutoJS6() {
 // 维护期禁止更新
 function maintain() {
     let hours = new Date().getHours();
-    if (hours < 2 || hours >= 21) {
+    if (hours <= 2 || hours >= 21) {
         console.error('维护时间：21点~凌晨2点');
         if (config && config.维护期间禁止检查更新 === 1) {
             console.error('停止更新！');
