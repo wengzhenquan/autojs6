@@ -806,8 +806,12 @@ function systemSetting() {
                 console.error('5秒后息屏！');
                 wait(() => false, 2000);
                 consoleMax();
-                console.error('3秒后息屏！');
-                wait(() => false, 3000);
+                console.error('3');
+                wait(() => false, 1000);
+                console.error('2');
+                wait(() => false, 1000);
+                console.error('1');
+                wait(() => false, 1000);
                 //console.hide();
                 // 无障碍服务调用系统锁屏
                 auto.service.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN);
