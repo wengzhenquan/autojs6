@@ -522,7 +522,7 @@ function backAppIndex() {
 
 // 小程序报名活动
 function xcxRegEvent() {
-    if (!config || !config.小程序报名活动提醒 || hasRegEvent) return;
+    if (!config.小程序报名活动提醒 || hasRegEvent) return;
     // 社区APP
     if (wait(() => packageName(xmPckageName).exists(), 2)) {
         if ((text('今天').exists() &&
