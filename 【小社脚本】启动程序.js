@@ -803,10 +803,11 @@ function systemSetting() {
                 (xiaoyu < dayu && (hours >= dayu || hours <= xiaoyu))) {
                 device.cancelKeepingAwake();
                 console.setTouchable(true);
-                console.error('3秒后息屏！');
-                wait(() => false, 1000);
-                consoleMax();
+                console.error('5秒后息屏！');
                 wait(() => false, 2000);
+                consoleMax();
+                console.error('3秒后息屏！');
+                wait(() => false, 3000);
                 //console.hide();
                 // 无障碍服务调用系统锁屏
                 auto.service.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN);
