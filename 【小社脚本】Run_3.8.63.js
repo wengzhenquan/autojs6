@@ -852,10 +852,10 @@ function 解锁() {
     let jpso = wait(() => text('可解锁').exists(), 2, 800);
     if (!ddjs && !jpso) {
         // if (1) {
-        log("不好了，布局分析失效了！")
-        log("无法判断是否有解锁次数，")
-        log("只能[摸黑]点击了再说。")
-        log('滑到最下面')
+        console.warn("不好了，布局分析失效了！")
+        console.warn("无法判断是否有解锁次数，")
+        console.warn("只能[摸黑]点击了再说。")
+        console.warn('滑到最下面')
         for (let i = 0; i < 5; i++) {
             swipe(dwidth * (2 + i) / 8, dheight * 0.5, dwidth * (2 + i) / 8, dheight * 0.3, 100);
             gesture(100, [dwidth * (2 + (5 - i)) / 8, dheight * 0.5], [dwidth * (2 + (5 - i)) / 8, dheight * 0.3]);
@@ -864,7 +864,7 @@ function 解锁() {
         sleep(600);
         let m = 3;
         while (m--) {
-            log(`点击第 ${3-m} 个`);
+            console.warn(`点击第 ${3-m} 个`);
             for (let i = 0; i < 2; i++) {
                 click(dwidth * (0.8 - m * 0.3), dheight * 0.6);
                 sleep(500);
@@ -874,7 +874,7 @@ function 解锁() {
                 click(dwidth * 0.5, dheight * (0.83 + 0.01 * i));
             }
             if (m > 0) {
-                log("等待3秒……")
+                console.warn("等待3秒……")
                 sleep(3000);
             }
         }
@@ -1481,7 +1481,7 @@ function imageRecoSign() {
             // clickCenter(refresh);
             //重新截图
             // captureScr();
-            getClipPic();
+            //getClipPic();
             sleep(1000);
 
         }
@@ -1734,10 +1734,11 @@ function localYOLOSign() {
         toastError("YOLO 模块未加载，无法本地识图签到");
         return null; // 表示签到失败
     }
-    let clipParam = getClipPic();
+    let clipParam = null;
     let result = false;
     for (let i = 0; i < 5; i++) {
         log(`开始第 ${i + 1} 次签到尝试`);
+        clipParam = getClipPic();
         // 2. 调用 YOLO 识别
         log("调用 YOLO 模型识别...");
         let detectionResult = null;
@@ -1781,7 +1782,7 @@ function localYOLOSign() {
             //sleep(1000);
             //重新截图
             // captureScr();
-            clipParam = getClipPic();
+            //clipParam = getClipPic();
             sleep(500);
             continue;
 
@@ -1851,10 +1852,11 @@ function serverYOLOSign() {
     let n = 0,
         u = 0;
 
-    let clipParam = getClipPic();
+    let clipParam = null;
     // 发送请求
     while (u < urls.length && n < 3) {
         log("开始第" + (n + u + 1) + "次申请");
+        clipParam = getClipPic();
         let url = urls[array[u]];
         try {
             console.error("----→>→ 上传识别 ←<←----")
@@ -1898,7 +1900,7 @@ function serverYOLOSign() {
                 //sleep(1000);
                 //重新截图
                 // captureScr();
-                clipParam = getClipPic();
+                //clipParam = getClipPic();
                 sleep(500);
                 n++;
                 continue;
