@@ -1361,21 +1361,19 @@ function unLock() {
     console.info(">>>>>>>→设备解锁←<<<<<<<")
 
     log("开始解锁设备……");
+    console.error('上滑一次需要4~6秒')
 
     //解锁
     // while (!existsOne('电话', '拨号', '短信', '信息', '微信', '小米社区')) {
-    let n = 5;
+    let n = 4;
     while (isLocked && n--) {
         //多次上滑
-        for (let i = 0; i < 2; i++) {
-            swipe(dwidth * 5 / 8, dheight * 0.95, dwidth * 5 / 8, dheight * (0.6 - 0.1 * i), 202 * (i + 1));
+        for (let i = 0; i < 5; i++) {
+            swipe(dwidth * (4 + Math.pow(-1, i + n)) / 8, dheight * (0.97 - 0.15 * i),
+                dwidth * (4.5 + Math.pow(-1, i + n)) / 8, dheight * (0.65 - 0.15 * i),
+                (112 + 10 * Math.pow(-1, i + n)) + (3 - n) * 100);
             wait(() => false, 500)
-            gesture(228 * (2 - i), [dwidth * 3 / 8, dheight * (0.95 - 0.2 * i)], [dwidth * 3 / 8, dheight * (0.5 - 0.2 * i)]);
-            wait(() => false, 500)
-
         }
-        wait(() => false, 1000);
-
         log("上滑成功！");
 
         // 有安全加密
@@ -1401,7 +1399,7 @@ function unLock() {
                     wait(() => false, 2000);
                 }
 
-                password = String(password).trim();
+                passwrd = String(password).trim();
 
                 if (password.length < 4) {
                     console.error('密码长度必须>=4位！');
