@@ -855,7 +855,7 @@ function 解锁() {
         console.warn("不好了，布局分析失效了！")
         console.warn("无法判断是否有解锁次数，")
         console.warn("只能[摸黑]点击了再说。")
-        console.warn('滑到最下面')
+        console.warn('滑到最下面↓')
         for (let i = 0; i < 5; i++) {
             swipe(dwidth * (2 + i) / 8, dheight * 0.5, dwidth * (2 + i) / 8, dheight * 0.3, 100);
             gesture(100, [dwidth * (2 + (5 - i)) / 8, dheight * 0.5], [dwidth * (2 + (5 - i)) / 8, dheight * 0.3]);
