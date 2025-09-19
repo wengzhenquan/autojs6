@@ -402,10 +402,15 @@ function consoleMin() {
     if (global.picY) {
         const STATUS_BAR_HEIGHT = ui.statusBarHeight;
         const BORDER_OFFSET = dpToPx2(12);
+        let y = 0;
+        try {
+            y = console.getPosition().y;
+        } catch (e) {}
+
         // h = a - STATUS_BAR_HEIGHT - y + BORDER_OFFSET;
         // 计算得到的h是像素单位，不是百分比
         // 535
-        h = (global.picY - cY(30)) - STATUS_BAR_HEIGHT - console.getPosition().y + BORDER_OFFSET;
+        h = (global.picY - cY(30)) - STATUS_BAR_HEIGHT - y + BORDER_OFFSET;
         // 转化百分百
         // 0.222
         if (h > 1) h = h / dheight;
