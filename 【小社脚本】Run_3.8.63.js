@@ -1530,7 +1530,7 @@ function getClipPic() {
             ycdj = textStartsWith("请在下图依次点击").findOne(2000);
 
 
-        if (!tida && !ycdj)
+        if (content('请点击此处重试').exists())
             ableClick(content('请点击此处重试').findOne(2000))
 
     } while ((!tida || !ycdj) && n--);
