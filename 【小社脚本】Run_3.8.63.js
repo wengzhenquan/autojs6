@@ -1151,7 +1151,7 @@ function openVChat(button) {
         if (wait(() => (textContains("选择").exists() || textContains("默认").exists()), 3, 600)) {
             log('发现微信分身');
             if (one.find().length > 1) {
-                console.info('选择第一个微信！');
+                console.error('选择第一个微信！');
                 ableClick(one);
                 sleep(1000);
                 if (clickCenter(one)) sleep(2000);
