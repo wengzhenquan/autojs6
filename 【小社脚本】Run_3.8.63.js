@@ -864,7 +864,7 @@ function 解锁() {
         sleep(600);
         let m = 3;
         while (m--) {
-            console.warn(`点击第 ${3-m} 个`);
+            console.warn(`[摸黑]点击第 ${3-m} 个`);
             for (let i = 0; i < 2; i++) {
                 click(dwidth * (0.8 - m * 0.3), dheight * 0.6);
                 sleep(500);
