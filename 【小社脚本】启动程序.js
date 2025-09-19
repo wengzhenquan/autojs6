@@ -1031,7 +1031,6 @@ var proxys = [
     "https://gh.catmak.name/", // 请求时间：1.03s
     "https://gh.bugdey.us.kg/", // 请求时间：0.77s
     "https://hub.gitmirror.com/", // 请求时间：0.75s
-    "https://gh.xxooo.cf/",
     "https://gh.noki.icu/", // 请求时间：2.64s
     "https://gh.monlor.com/",
     "https://g.blfrp.cn/", // 请求时间：1.05s
@@ -1053,6 +1052,7 @@ var proxys = [
 // 备用代理
 var proxys2 = [
 
+    "https://gh.xxooo.cf/",
     "https://ghp.keleyaa.com/", // 请求时间：4.65s
     "https://ghm.078465.xyz/", // 请求时间：5.03s
     "https://ghproxy.cfd/", // 请求时间：6.58s
