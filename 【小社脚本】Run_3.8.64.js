@@ -1511,9 +1511,9 @@ function getClipPic() {
         w: (cX(979) - x),
         h: (cY(1633) - y)
     };
-    sleep(1000);
+    // sleep(1000);
 
-    let n = 20;
+    let n = 10;
     let tida = null;
     let ycdj = null;
     do {
