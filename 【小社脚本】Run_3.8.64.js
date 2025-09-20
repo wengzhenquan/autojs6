@@ -1534,7 +1534,7 @@ function getClipPic() {
             sleep(1000);
             if (content('请点击此处重试').exists())
                 ableClick(content('请点击此处重试').findOne(2000))
-            
+
             continue;
         }
 
@@ -1772,6 +1772,8 @@ function localYOLOSign() {
             console.error("global.picY：" + global.picY)
             console.error("global.x_refer：" + global.x_refer)
             console.error("global.y_refer：" + global.y_refer)
+            console.error("截图参数clipParam:")
+            console.error(clipParam)
 
             console.error("刷新图片重试！");
 
@@ -1883,6 +1885,8 @@ function serverYOLOSign() {
                 console.error("global.picY：" + global.picY)
                 console.error("global.x_refer：" + global.x_refer)
                 console.error("global.y_refer：" + global.y_refer)
+                console.error("截图参数clipParam:")
+                console.error(clipParam)
 
                 console.error("错误：statusCode：" + res.statusCode);
                 let result = res.body.string();
