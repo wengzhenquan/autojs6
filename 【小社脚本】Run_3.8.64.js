@@ -1595,16 +1595,13 @@ function getClipPic() {
             // 上下图标分界y
             global.y_refer = ycdj.bottom() - param.y;
 
+            // 反馈截图最上方高度 
+            global.picY = param.y;
+
         }
 
     } while ((!tida || !ycdj || param.w < 1 || param.h < 1) && n--);
 
-
-
-
-
-    // 反馈截图最上方高度 
-    global.picY = param.y;
 
     // 修正控制台高度
     consoleMin();
