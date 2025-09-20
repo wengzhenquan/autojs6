@@ -1084,9 +1084,9 @@ function 小程序签到(pram) {
         sleep(1500)
         // 点击"我的"
         toastWarn("[不确定操作]摸黑→点击[我的]！")
-        click(dwidth * 0.90, dheight * 0.939);
-        click(dwidth * 0.90, dheight * 0.9415);
-        click(dwidth * 0.90, dheight * 0.944);
+        click(dwidth * 0.85, dheight * 0.939);
+        click(dwidth * 0.85, dheight * 0.9415);
+        click(dwidth * 0.85, dheight * 0.944);
 
         // 确保页面加载完成，多等会儿吧！
         // 不能识别，只能盲目等待了！
