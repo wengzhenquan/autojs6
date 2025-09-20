@@ -2514,14 +2514,26 @@ function levelResult() {
     log(outP2);
     log("------------------------------");
     log("详细记录：");
-
+    var xcxsuccess = 0;
     成长值记录.详细记录.forEach((record) => {
         const item = record.项目.length > 10 ?
             (record.项目.length > 15 ? record.项目.padEnd(20) : record.项目.padEnd(14)) :
             record.项目.padEnd(12, '\u3000');
+
+        if (item.startsWith('小程序')) {
+            xcxsuccess = 1;
+        }
         log(`${item}` + `${record.结果}`);
     });
     log("------------------------------");
+
+    if (config.小程序签到 && 成长值记录.详细记录.length > 0 && !xcxsuccess) {
+        toastError('小程序签到失败了！');
+        console.error('可能小程序未成功打开！');
+        console.error('或摸黑签到失败！');
+        if (config && config.通知提醒)
+            notice(String('出错了！'), String('小程序签到失败了！\n可以再执行一次试试！'));
+    }
 
     return outP1 + "\n" + outP2;
 
