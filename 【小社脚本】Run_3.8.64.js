@@ -1531,7 +1531,7 @@ function getClipPic() {
 
 
         if (!tida || !ycdj) {
-            sleep(1000);
+            sleep(500);
             if (content('请点击此处重试').exists())
                 ableClick(content('请点击此处重试').findOne(2000))
 
@@ -1567,7 +1567,7 @@ function getClipPic() {
                 ycdj.bottom() > tida.top() ||
                 ycdj.right() < tida.right() ||
                 ycdj.bounds().centerY() > bottomX) {
-                sleep(1000)
+                sleep(500)
                 tida = null;
                 ycdj = null;
                 continue;
