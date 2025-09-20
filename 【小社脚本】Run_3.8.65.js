@@ -271,9 +271,9 @@ function killAPP(packageN) {
         else app.openAppSetting(packageN);
         sleep(1000);
     }
-    clickCenter(text("结束运行").findOne(1000));
-    clickCenter(text("强行停止").findOne(1000));
-    sleep(500);
+    clickCenter(text("结束运行").findOne(1000)) ||
+        clickCenter(text("强行停止").findOne(1000));
+    sleep(1000);
     while (click("确定"));
     toastLog("关闭" + appName + "！！！", "forcible");
 
