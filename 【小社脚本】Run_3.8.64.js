@@ -612,7 +612,7 @@ function signEntrance(name, pram) {
     if (!button.exists()) button = content(pram);
 
 
-    if (!wait(() => nb.exists() && button.exists(), 5, 500)) {
+    if (!wait(() => nb.exists() && button.exists(), 3, 1000)) {
         toastError("未找到活动入口，重新进入", "forcible")
         back();
         // 小米社区重置首页
