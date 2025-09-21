@@ -752,6 +752,30 @@ function processArrays(arr1, arr2) {
 }
 
 
+// 点亮屏幕
+function screenOn() {
+    //屏幕点亮
+    let m = 20;
+    while (!device.isScreenOn() && m--) {
+        // 设备激活
+        device.wakeUpIfNeeded();
+        device.wakeUp();
+        wait(() => false, 500);
+    }
+    //亮屏
+    device.keepScreenDim(maxRuntime);
+}
+
+
+// 无障碍锁屏
+function autoLockScreen() {
+    // 无障碍服务调用系统锁屏
+    auto.service.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN);
+}
+
+
+
+
 
 //  ----------- 系统修改 ---------------------//
 function systemSetting() {
@@ -837,8 +861,8 @@ function systemSetting() {
                     wait(() => false, 1000);
                 }
                 // 无障碍服务调用系统锁屏
-                auto.service.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN);
-
+                // 锁屏
+                autoLockScreen();
             }
 
         }
@@ -1361,13 +1385,6 @@ var isLocked = KeyguardManager.isKeyguardLocked(); // 是否锁屏
 var isSecure = KeyguardManager.isKeyguardSecure(); // 是否安全锁屏（如密码、指纹）
 
 
-// 亮屏监控
-function screenOn() {
-    //屏幕点亮
-    setInterval(() => {
-        if (isLocked) device.wakeUp();
-    }, 1000); // 每秒检查一次
-}
 
 // 多次上滑
 function swipesUp(n1, n) {
@@ -1435,11 +1452,16 @@ function unLock() {
             // 有加密的情况下，才有解密页面
             if (!wait(() => (contentStartsWith('紧急').exists() || content('返回').exists()), 3)) {
                 console.error('上滑失败，重试！')
-                wait(() => false, 1000);
                 if (n < 2) {
                     console.error('可以尝试修改配置：')
                     console.error('{上滑起始位置: ' + config.上滑起始位置 + '}')
                 }
+                wait(() => false, 1000);
+                // 锁屏
+                autoLockScreen();
+                wait(() => false, 1500);
+                // 点亮屏幕
+                screenOn();
                 continue;
             }
 
@@ -2045,17 +2067,9 @@ function permissionv() {
 
 
 function main() {
+    // 点亮屏幕
+    screenOn();
 
-    //屏幕点亮
-    let m = 20;
-    while (!device.isScreenOn() && m--) {
-        // 设备激活
-        device.wakeUpIfNeeded();
-        device.wakeUp();
-        wait(() => false, 500);
-    }
-    //亮屏
-    device.keepScreenDim(maxRuntime);
 
     //权限验证
     permissionv();
