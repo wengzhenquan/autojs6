@@ -435,7 +435,8 @@ function consoleMin() {
         let dpi = context
             .getResources()
             .getDisplayMetrics()
-            .densityDpi;
+            .densityDpi ||
+            device.density;
         // 标准密度为160dpi，1dp = 1px，其他密度按比例计算
         return dp * (dpi / 160);
     }
