@@ -480,6 +480,24 @@ function consoleExitOnClose() {
 
 //------------ 工具函数 ----------//
 
+// 去桌面
+function toHome() {
+    try {
+        home();
+    } catch (e) {}
+}
+
+
+//  连续点击
+function whileClick(obj) {
+    try {
+        if (obj && typeof obj === 'string') {
+            while (click(obj));
+        }
+    } catch (e) {}
+}
+
+
 // 点击中心坐标
 function clickCenter(obj) {
     try {
@@ -1026,8 +1044,6 @@ var proxys = [
     "https://github.xxlab.tech/", // 请求时间：0.23s
     "https://ghfile.geekertao.top/",
     "https://github.chenc.dev/",
-    "http://gh.927223.xyz/",
-    "https://github.dpik.top/", // 请求时间：0.95s
     "https://gh.catmak.name/", // 请求时间：1.03s
     "https://gh.bugdey.us.kg/", // 请求时间：0.77s
     "https://hub.gitmirror.com/", // 请求时间：0.75s
@@ -1052,6 +1068,8 @@ var proxys = [
 // 备用代理
 var proxys2 = [
 
+    "http://gh.927223.xyz/",
+    "https://github.dpik.top/", // 请求时间：0.95s
     "https://gh.xxooo.cf/",
     "https://ghp.keleyaa.com/", // 请求时间：4.65s
     "https://ghm.078465.xyz/", // 请求时间：5.03s
@@ -1074,7 +1092,7 @@ var proxys2 = [
     "https://ghproxy.fangkuai.fun/", // 请求时间：12.18s
     "https://cf.ghproxy.cc/", // 请求时间：12.87s
     "https://gh.jasonzeng.dev/", // 请求时间：18.09s
-    
+
 ]
 
 
@@ -1351,15 +1369,40 @@ function unLock() {
     console.error('上滑一次需要4~6秒')
 
     //解锁
-    // while (!existsOne('电话', '拨号', '短信', '信息', '微信', '小米社区')) {
     let n = 4;
     while (isLocked && n--) {
-        //多次上滑
+        // 多次上滑
         for (let i = 0; i < 5; i++) {
-            swipe(dwidth * (4 + Math.pow(-1, i + n)) / 8, dheight * (0.97 - 0.15 * i),
-                dwidth * (4.5 + Math.pow(-1, i + n)) / 8, dheight * (0.65 - 0.15 * i),
-                (112 + 10 * Math.pow(-1, i + n)) + (3 - n) * 100);
-            wait(() => false, 500)
+            // 固定起点Y坐标
+            let startY = dheight * (0.97 - 0.15 * i);
+            // 基础终点Y坐标
+            let baseEndY = dheight * (0.65 - 0.15 * i);
+            // 基础滑动距离
+            let baseDistance = startY - baseEndY;
+            // 实际终点Y坐标（默认为基础值）
+            let endY = baseEndY;
+            // 从第二组开始修改（n < 3）
+            if (n < 3) {
+                // 计算距离倍数（随着n减小而增加）
+                let distanceMultiplier = 1 + 0.1 * (3 - n);
+                // 计算组内递减系数（随着i增加而减小）
+                let adaptiveMultiplier = distanceMultiplier * (1 - i * 0.02);
+                // 计算实际滑动距离
+                let actualDistance = baseDistance * adaptiveMultiplier;
+                // 计算实际终点Y坐标
+                endY = startY - actualDistance;
+                // 确保终点Y不小于0（防止超出屏幕顶部）
+                if (endY < 0) endY = 0;
+            }
+            // 保持其他参数不变
+            swipe(
+                dwidth * (4 + Math.pow(-1, i + n)) / 8,
+                startY,
+                dwidth * (4.5 + Math.pow(-1, i + n)) / 8,
+                endY,
+                (112 + 10 * Math.pow(-1, i + n)) + (3 - n) * 100
+            );
+            wait(() => false, 500);
         }
         log("上滑成功！");
 
@@ -1435,7 +1478,7 @@ function unLock() {
 
         //去桌面
         for (let i = 0; i < 3; i++) {
-            home();
+            toHome();
             wait(() => false, 300);
         }
 
@@ -1452,8 +1495,6 @@ function unLock() {
         }
 
     }
-    //let result = wait(() => existsOne('电话', '拨号', '短信', '信息', '微信', '小米社区'), 5, 1000);
-    // if (!result) {
     if (isLocked) {
         console.error("屏幕解锁失败！！！");
         if (config && config.通知提醒)
