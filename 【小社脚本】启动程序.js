@@ -1492,7 +1492,8 @@ function unLock() {
 
                 if (textContains('混合').exists()) {
                     log("→数字密码(混合密码)解锁");
-                    while (clickCenter('删除'));
+                    let b = 20;
+                    while (clickCenter('删除') && b--);
                 } else {
                     log("→数字密码解锁");
                 }
