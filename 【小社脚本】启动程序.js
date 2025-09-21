@@ -248,16 +248,19 @@ function startTimeoutMonitor() {
 
 // 小米社区空白维护
 function blankMaintain() {
-    let xmpl = packageName(xmPckageName).find(2000);
-    if (xmpl.isEmpty() || xmpl.length < 10) {
-        console.error("小米社区APP打开了空白页!")
-        console.error("可能社区在维护！")
-        console.error("请稍后再试")
-        abnormalInterrupt = 0;
+    threads.start(() => {
         wait(() => false, 2000);
-        exit();
-        wait(() => false, 2000);
-    }
+        let xmpl = packageName(xmPckageName).find(3000);
+        if (xmpl.isEmpty() || xmpl.length < 10) {
+            console.error("小米社区APP打开了空白页!")
+            console.error("可能社区在维护！")
+            console.error("请稍后再试")
+            abnormalInterrupt = 0;
+            wait(() => false, 2000);
+            exit();
+            wait(() => false, 2000);
+        }
+    });
 }
 
 
@@ -1350,13 +1353,64 @@ function updateScript() {
 
 
 //------------ 业务逻辑开始 ----------//
+
+// 调用 Android KeyguardManager 检查锁屏状态
+var KeyguardManager = context.getSystemService(context.KEYGUARD_SERVICE);
+var isLocked = KeyguardManager.isKeyguardLocked(); // 是否锁屏
+var isSecure = KeyguardManager.isKeyguardSecure(); // 是否安全锁屏（如密码、指纹）
+
+
+// 亮屏监控
+function screenOn() {
+    //屏幕点亮
+    setInterval(() => {
+        if (isLocked) device.wakeUp();
+    }, 1000); // 每秒检查一次
+}
+
+// 多次上滑
+function swipesUp(n1, n) {
+    let arr = getRandomNumbers(4);
+    // 多次上滑
+    for (let p = 0; p < 5; p++) {
+        let i = config.上滑起始位置 ? arr[p] : p;
+        // 固定起点Y坐标
+        let startY = dheight * (0.97 - 0.15 * i);
+        // 基础终点Y坐标
+        let baseEndY = dheight * (0.65 - 0.15 * i);
+        // 基础滑动距离
+        let baseDistance = startY - baseEndY;
+        // 实际终点Y坐标（默认为基础值）
+        let endY = baseEndY;
+        // 从第二组开始修改（n < 3）
+        if (n < 3) {
+            // 计算距离倍数（随着n减小而增加）
+            let distanceMultiplier = 1 + 0.1 * (n1 - n);
+            // 计算组内递减系数（随着i增加而减小）
+            let adaptiveMultiplier = distanceMultiplier * (1 - i * 0.02);
+            // 计算实际滑动距离
+            let actualDistance = baseDistance * adaptiveMultiplier;
+            // 计算实际终点Y坐标
+            endY = startY - actualDistance;
+            // 确保终点Y不小于0（防止超出屏幕顶部）
+            if (endY < 0) endY = 0;
+        }
+        // 保持其他参数不变
+        swipe(
+            dwidth * (4 + Math.pow(-1, i + n)) / 8,
+            startY,
+            dwidth * (4.5 + Math.pow(-1, i + n)) / 8,
+            endY,
+            (112 + 10 * Math.pow(-1, i + n)) + (n1 - n) * 100
+        );
+        wait(() => false, 200 + (n1 - n) * 50);
+        if (p < 1 && n > 2) wait(() => false, 1000);
+    }
+    log("上滑成功！");
+}
+
 //解锁
 function unLock() {
-    // 调用 Android KeyguardManager 检查锁屏状态
-    let KeyguardManager = context.getSystemService(context.KEYGUARD_SERVICE);
-    let isLocked = KeyguardManager.isKeyguardLocked(); // 是否锁屏
-    let isSecure = KeyguardManager.isKeyguardSecure(); // 是否安全锁屏（如密码、指纹）
-
     if (!isLocked) return;
 
     console.info("-----→");
@@ -1370,47 +1424,21 @@ function unLock() {
 
     //解锁
     let n = 4;
+    const n1 = n - 1;
     while (isLocked && n--) {
-        // 多次上滑
-        for (let i = 0; i < 5; i++) {
-            // 固定起点Y坐标
-            let startY = dheight * (0.97 - 0.15 * i);
-            // 基础终点Y坐标
-            let baseEndY = dheight * (0.65 - 0.15 * i);
-            // 基础滑动距离
-            let baseDistance = startY - baseEndY;
-            // 实际终点Y坐标（默认为基础值）
-            let endY = baseEndY;
-            // 从第二组开始修改（n < 3）
-            if (n < 3) {
-                // 计算距离倍数（随着n减小而增加）
-                let distanceMultiplier = 1 + 0.1 * (3 - n);
-                // 计算组内递减系数（随着i增加而减小）
-                let adaptiveMultiplier = distanceMultiplier * (1 - i * 0.02);
-                // 计算实际滑动距离
-                let actualDistance = baseDistance * adaptiveMultiplier;
-                // 计算实际终点Y坐标
-                endY = startY - actualDistance;
-                // 确保终点Y不小于0（防止超出屏幕顶部）
-                if (endY < 0) endY = 0;
-            }
-            // 保持其他参数不变
-            swipe(
-                dwidth * (4 + Math.pow(-1, i + n)) / 8,
-                startY,
-                dwidth * (4.5 + Math.pow(-1, i + n)) / 8,
-                endY,
-                (112 + 10 * Math.pow(-1, i + n)) + (3 - n) * 100
-            );
-            wait(() => false, 500);
-        }
-        log("上滑成功！");
+        // 上滑
+        swipesUp(n1, n);
 
         // 有安全加密
         if (isSecure) {
             // 有加密的情况下，才有解密页面
             if (!wait(() => (contentStartsWith('紧急').exists() || content('返回').exists()), 3)) {
                 console.error('上滑失败，重试！')
+                wait(() => false, 1000);
+                if (n < 2) {
+                    console.error('可以尝试修改配置：')
+                    console.error('{上滑起始位置: ' + config.上滑起始位置 + '}')
+                }
                 continue;
             }
 
