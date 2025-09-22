@@ -247,8 +247,13 @@ function startTimeoutMonitor() {
 // 小米社区空白维护
 function blankMaintain() {
     threads.start(() => {
-        wait(() => false, 1000);
-        let xmpl = packageName(xmPckageName).find(2000).length;
+        let n = 10;
+        let xmpl = 0;
+        do {
+            wait(() => false, 300);
+            xmpl = packageName(xmPckageName).find(2000).length;
+        } while (xmpl < 10 && n--);
+        
         if (xmpl > 0 && xmpl < 10) {
             console.error("小米社区APP打开了空白页!")
             console.error("可能社区在维护！")
