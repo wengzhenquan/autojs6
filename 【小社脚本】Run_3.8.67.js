@@ -1058,6 +1058,7 @@ function 小程序签到(pram) {
             click(cX(50), sbH + cY(60));
             sleep(1000);
         }
+        sleep(2000);
 
     }
     if (wait(() => me.exists(), 6, 600)) {
