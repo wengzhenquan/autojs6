@@ -1410,9 +1410,9 @@ var isSecure = KeyguardManager.isKeyguardSecure(); // 是否安全锁屏（如�
 
 // 多次上滑
 function swipesUp(n1, n) {
-    let arr = getRandomNumbers(4);
+    let arr = getRandomNumbers(n1);
     // 多次上滑
-    for (let p = 0; p < 5; p++) {
+    for (let p = 0; p < n1 + 1; p++) {
         let i = config.上滑起始位置 ? arr[p] : p;
         // 固定起点Y坐标
         let startY = dheight * (0.97 - 0.15 * i);
@@ -1425,7 +1425,7 @@ function swipesUp(n1, n) {
         // 从第二组开始修改（n < 3）
         if (n < 3) {
             // 计算距离倍数（随着n减小而增加）
-            let distanceMultiplier = 1 + 0.1 * (n1 - n);
+            let distanceMultiplier = 1 + 0.1 * (n1 - 1 - n);
             // 计算组内递减系数（随着i增加而减小）
             let adaptiveMultiplier = distanceMultiplier * (1 - i * 0.02);
             // 计算实际滑动距离
@@ -1441,9 +1441,9 @@ function swipesUp(n1, n) {
             startY,
             dwidth * (4.5 + Math.pow(-1, i + n)) / 8,
             endY,
-            (112 + 10 * Math.pow(-1, i + n)) + (n1 - n) * 100
+            (112 + 10 * Math.pow(-1, i + n)) + (n1 - 1 - n) * 100
         );
-        wait(() => false, 200 + (n1 - n) * 50);
+        wait(() => false, 200 + (n1 - 1 - n) * 50);
         if (p < 1 && n > 2) wait(() => false, 1000);
     }
     log("上滑成功！");
@@ -1464,7 +1464,7 @@ function unLock() {
 
     //解锁
     let n = 4;
-    const n1 = n - 1;
+    const n1 = n;
     while (isLocked && n--) {
         // 上滑
         swipesUp(n1, n);
