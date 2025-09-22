@@ -450,8 +450,8 @@ function consoleMax() {
         console.setTouchable(true);
         //透明度
         console.setContentBackgroundAlpha(1)
-        
-        console.setSize(0.96, 0.8);   
+
+        console.setSize(0.96, 0.8);
     }
 }
 
@@ -1170,7 +1170,7 @@ function checkVersion() {
                 // loadLocalVersion();
                 localVersion = {
                     version: "0.0.1",
-                    updateFile: []
+                    updateFile: {}
                 }
             }
             break;
