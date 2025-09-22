@@ -887,11 +887,11 @@ function loadLocalVersion() {
 
 function init() {
     console.info(">>>>→程序完整性校验←<<<<")
-
     if (!files.exists("./version")) {
         console.error("缺失[version]文件");
-        console.error("启动版本检查/下载version/全量更新");
-        checkVersion();
+        console.error("启动更新程序下载文件");
+        updateScript();
+        return;
     }
     //加载本地版本文件
     loadLocalVersion();
@@ -1170,7 +1170,7 @@ function checkVersion() {
                 //重新加载本地版本文件
                 // loadLocalVersion();
                 localVersion = {
-                    version:"0.0.0",
+                    version: "0.0.0",
                     updateFile: []
                 }
             }
@@ -1260,7 +1260,6 @@ function checkVersion() {
                     },
                     autoCancel: true
                 });
-
             }
 
         }
