@@ -1055,7 +1055,7 @@ function 小程序签到(pram) {
                 click(dwidth * 0.5, dheight * (0.54 + 0.03 * i));
             }
             sleep(1500);
-            click(cX(50), sbH + cY(65));
+            click(cX(50), sbH + cY(60));
             sleep(1000);
         }
 
