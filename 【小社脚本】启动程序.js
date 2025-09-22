@@ -1169,7 +1169,7 @@ function checkVersion() {
                 //重新加载本地版本文件
                 // loadLocalVersion();
                 localVersion = {
-                    version: "0.0.0",
+                    version: "0.0.1",
                     updateFile: []
                 }
             }
