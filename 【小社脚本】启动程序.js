@@ -70,8 +70,6 @@ const xmAtLeastVersionName = "5.3.2";
 const serviceId_file = "./tmp/service_id.txt";
 var serviceId = "org.autojs.autojs6/org.autojs.autojs.core.accessibility.AccessibilityServiceUsher";
 
-
-
 // 设备信息
 const dwidth = device.width;
 const dheight = device.height;
