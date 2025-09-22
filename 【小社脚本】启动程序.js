@@ -1166,9 +1166,13 @@ function checkVersion() {
             if (!files.exists("./version")) {
                 down_version = true;
                 // 缺失version文件，下载
-                files.write("./version", result, "utf-8");
+                // files.write("./version", result, "utf-8");
                 //重新加载本地版本文件
-                loadLocalVersion();
+                // loadLocalVersion();
+                localVersion = {
+                    version:"0.0.0",
+                    updateFile: []
+                }
             }
             break;
         }
@@ -1184,77 +1188,87 @@ function checkVersion() {
     let updateList = []; // 待更新文件清单
     let deleteList = []; // 待删除文件清单
 
-    //更新脚本
-    if (down_version || hasNewVersion &&
-        (config && config.检查更新 > 1)) {
-        if (config && config.检查更新 > 1) {
-            console.info("最新版本：" + serverVersion.version)
-            toastLog("配置[检查更新]：" + config.检查更新)
-        }
-        toastLog("开始更新脚本");
-        updateScript();
-        return;
-    }
 
-    if (hasNewVersion) {
+
+    if (hasNewVersion || down_version) {
         // 待更新文件清单
-        for (var key in serverVersion.updateFile) {
-            if (files.exists("./" + key) && localVersion.updateFile[key]) {
-                if (serverVersion.updateFile[key] > localVersion.updateFile[key] ||
-                    !files.exists("./" + key)) {
+        if (serverVersion && localVersion) {
+            for (var key in serverVersion.updateFile) {
+                if (files.exists("./" + key) && localVersion.updateFile[key]) {
+                    if (serverVersion.updateFile[key] > localVersion.updateFile[key] ||
+                        !files.exists("./" + key)) {
+                        updateList.push(key);
+                    }
+                } else {
                     updateList.push(key);
                 }
-            } else {
-                updateList.push(key);
             }
-        }
-        // 待删除文件清单
-        for (var key in localVersion.updateFile) {
-            if (!serverVersion.updateFile[key]) {
-                deleteList.push(key);
-            }
-        }
-    }
 
-    if (hasNewVersion && (config && config.检查更新 === 1)) {
-        notice({
-            title: '小社脚本有新的版本！！！🎊v' + serverVersion.version,
-            content: '脚本运行日志里有更新清单\n点击此处去更新🌐',
-            intent: {
-                action: "android.intent.action.VIEW",
-                data: github
-            },
-            autoCancel: true
-        });
-        console.error("发现新的版本！！！")
-        console.info("最新版本：" + serverVersion.version)
-        console.log("-----→");
-        console.error("增量更新列表：")
-        if (updateList.length > 0) {
-            log("----------------------------");
-            log("需要更新的文件清单:");
-            updateList.forEach((file) => {
-                let name = !file.includes('【') ? ''.padStart(1) + file : file;
-                console.error(name);
-                if (file.includes('config')) {
-                    log('更新前，建议重命名' + name)
-                    log('备份屏幕解锁坐标'.padStart(14))
+            // 待删除文件清单
+            for (var key in localVersion.updateFile) {
+                if (!serverVersion.updateFile[key]) {
+                    deleteList.push(key);
                 }
-            });
-            log("----------------------------");
+            }
         }
-        if (deleteList.length > 0) {
-            log("----------------------------");
-            log("需要删除的文件清单:");
-            deleteList.forEach((file) => {
-                let name = !file.includes('【') ? ''.padStart(1) + file : file;
-                console.error(name);
-            });
-            log("----------------------------");
+        if (config && config.检查更新) {
+            console.error("发现新的版本！！！")
+            console.info("最新版本：" + serverVersion.version)
+            console.log("-----→");
+            console.error("增量更新列表：")
+            if (updateList.length > 0) {
+                log("----------------------------");
+                log("需要更新的文件清单:");
+                updateList.forEach((file) => {
+                    let name = !file.includes('【') ? ''.padStart(1) + file : file;
+                    console.error(name);
+                    if (file.includes('config')) {
+                        log('更新前，建议重命名' + name)
+                        log('备份屏幕解锁坐标'.padStart(14))
+                    }
+                });
+                log("----------------------------");
+            }
+            if (deleteList.length > 0) {
+                log("----------------------------");
+                log("需要删除的文件清单:");
+                deleteList.forEach((file) => {
+                    let name = !file.includes('【') ? ''.padStart(1) + file : file;
+                    console.error(name);
+                });
+                log("----------------------------");
+            }
+
+
+            //更新脚本
+            if (config.检查更新 > 1) {
+                console.info("最新版本：" + serverVersion.version)
+                toastLog("配置[检查更新]：" + config.检查更新)
+
+                toastLog("开始更新脚本");
+                updateScript();
+                return;
+            }
+
+            if (config.检查更新 === 1) {
+                notice({
+                    title: '小社脚本有新的版本！！！🎊v' + serverVersion.version,
+                    content: '脚本运行日志里有更新清单\n点击此处去更新🌐',
+                    intent: {
+                        action: "android.intent.action.VIEW",
+                        data: github
+                    },
+                    autoCancel: true
+                });
+
+            }
+
         }
+
     } else {
         console.error("✅ 脚本已经是最新版！")
     }
+
 }
 
 
