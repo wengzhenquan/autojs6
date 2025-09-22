@@ -1038,10 +1038,29 @@ function 小程序签到(pram) {
     // 尝试刷新
     tryRefresh();
 
+
+
     //sleep(1000);
     console.info("-----→>→签到操作←<←-----");
     let me = content("我的");
-    if (wait(() => me.exists(), 10, 600)) {
+
+    if (!wait(() => me.exists(), 4, 600)) {
+        if (wait(() => textContains('版本较低').exists(), 2, 600)) {
+            console.error('当前小程序版本较低，需重启小程序以使用最新功能')
+            console.error('点击：我知道了')
+            ableClick(text('我知道了'))
+
+        } else {
+            for (let i = 0; i < 3; i++) {
+                click(dwidth * 0.5, dheight * (0.54 + 0.03 * i));
+            }
+            sleep(1500);
+            click(cX(50), sbH + cY(65));
+            sleep(1000);
+        }
+
+    }
+    if (wait(() => me.exists(), 6, 600)) {
         // 使用能点击的父控件
         let mep = me.findOne();
         //点我的

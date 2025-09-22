@@ -81,6 +81,8 @@ const brand = device.brand;
 //var jsversion = (engines.myEngine().getSource().getName()
 //   .match(/\d[\s\S]*/) || [""])[0];
 
+// 状态栏高度
+const sbH = ui.statusBarHeight;
 
 // 截图验证码最高y
 global.picY = null;
@@ -253,7 +255,7 @@ function blankMaintain() {
             wait(() => false, 300);
             xmpl = packageName(xmPckageName).find(2000).length;
         } while (xmpl < 10 && n--);
-        
+
         if (xmpl > 0 && xmpl < 10) {
             console.error("小米社区APP打开了空白页!")
             console.error("可能社区在维护！")
