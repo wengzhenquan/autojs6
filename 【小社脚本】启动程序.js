@@ -446,11 +446,12 @@ function consoleMin() {
 function consoleMax() {
     if (console.isShowing()) {
         console.setPosition(0.02, 0.02);
-        //透明度
-        console.setContentBackgroundAlpha(1)
-        console.setSize(0.96, 0.8);
         //可触碰
         console.setTouchable(true);
+        //透明度
+        console.setContentBackgroundAlpha(1)
+        
+        console.setSize(0.96, 0.8);   
     }
 }
 
