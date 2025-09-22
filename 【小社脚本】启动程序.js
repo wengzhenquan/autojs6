@@ -138,6 +138,27 @@ events.on("exit", function() {
     threads.shutDownAll();
     console.info('q群反馈：197511003');
 
+    if (config && config.结束息屏) {
+        if (config.强制无条件息屏 || ableScreenOff) {
+            let hours = new Date().getHours();
+            let dayu = (config && config.息屏时间范围_大于等于) || 0;
+            let xiaoyu = (config && config.息屏时间范围_小于等于) || 8;
+
+            if ((hours >= dayu && hours <= xiaoyu) ||
+                (xiaoyu < dayu && (hours >= dayu || hours <= xiaoyu))) {
+                console.error('5秒后息屏！');
+                wait(() => false, 2000);
+                let m = 4;
+                while (m--) {
+                    console.error(m);
+                    wait(() => false, 1000);
+                }
+                // 无障碍服务调用系统锁屏
+                // 锁屏
+                autoLockScreen();
+            }
+        }
+    }
     // verbose(nowDate());
 });
 
@@ -154,7 +175,8 @@ maintain();
 
 
 // 启动悬浮窗关闭按钮
-threads.start(() => stopButton());
+if (config && config.左下角停止按钮)
+    threads.start(() => stopButton());
 
 
 // 程序运行监控
@@ -409,7 +431,7 @@ function consoleMin() {
     let h = 0.18;
     // 自动适配
     if (global.picY) {
-        const STATUS_BAR_HEIGHT = ui.statusBarHeight; 
+        const STATUS_BAR_HEIGHT = ui.statusBarHeight;
         const BORDER_OFFSET = dpToPx2(12);
         let y = 0;
         try {
@@ -851,26 +873,6 @@ function systemSetting() {
         if (config && config.结束震动) {
             device.vibrate(config.结束震动);
             wait(() => false, config.结束震动 + 300);
-        }
-
-        if (config && config.结束息屏 && ableScreenOff) {
-            let hours = new Date().getHours();
-            let dayu = (config && config.息屏时间范围_大于等于) || 0;
-            let xiaoyu = (config && config.息屏时间范围_小于等于) || 8;
-            if ((hours >= dayu && hours <= xiaoyu) ||
-                (xiaoyu < dayu && (hours >= dayu || hours <= xiaoyu))) {
-                console.error('5秒后息屏！');
-                wait(() => false, 2000);
-                let m = 4;
-                while (m--) {
-                    console.error(m);
-                    wait(() => false, 1000);
-                }
-                // 无障碍服务调用系统锁屏
-                // 锁屏
-                autoLockScreen();
-            }
-
         }
 
     });
