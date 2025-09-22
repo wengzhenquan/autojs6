@@ -409,7 +409,7 @@ function consoleMin() {
     let h = 0.18;
     // 自动适配
     if (global.picY) {
-        const STATUS_BAR_HEIGHT = sbH;
+        const STATUS_BAR_HEIGHT = ui.statusBarHeight; 
         const BORDER_OFFSET = dpToPx2(12);
         let y = 0;
         try {
