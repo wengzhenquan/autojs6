@@ -253,11 +253,11 @@ function blankMaintain() {
         let n = 10;
         let xmpl = 0;
         do {
-            wait(() => false, 300);
-            xmpl = packageName(xmPckageName).find(2000).length;
-        } while (xmpl < 10 && n--);
+            //wait(() => false, 300);
+            xmpl = packageName(xmPckageName).find(1000).length;
+        } while (xmpl < 6 && n--);
 
-        if (xmpl > 0 && xmpl < 10) {
+        if (xmpl > 0 && xmpl < 6) {
             console.error("小米社区APP打开了空白页!")
             console.error("可能社区在维护！")
             console.error("请稍后再试")
