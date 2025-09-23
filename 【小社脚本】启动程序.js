@@ -1189,7 +1189,9 @@ function checkVersion() {
     }
 
     if (!serverVersion) {
-        console.error("连接github失败")
+        console.error("代理连接github失败")
+        console.error("放弃更新！！！")
+        console.error("可以手动执行更新程序尝试")
         return;
     }
 
