@@ -1145,7 +1145,7 @@ function checkVersion() {
 
     //远程version文件数据
     log("正在查询版本更新……")
-    for (let i = 0; i < proxys.length; i++) {
+    for (let i = 0; i < proxys.length * 0.33; i++) {
         let url = proxys[i] +
             github_download_url +
             'version' +
