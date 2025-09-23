@@ -253,7 +253,7 @@ function blankMaintain() {
         let n = 10;
         let xmpl = 0;
         do {
-            //wait(() => false, 300);
+            wait(() => false, 100);
             xmpl = packageName(xmPckageName).find(1000).length;
         } while (xmpl < 6 && n--);
 
