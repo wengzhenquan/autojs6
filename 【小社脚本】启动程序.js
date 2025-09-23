@@ -862,9 +862,9 @@ function systemSetting() {
 
                 if ((hours >= dayu && hours <= xiaoyu) ||
                     (xiaoyu < dayu && (hours >= dayu || hours <= xiaoyu))) {
-                    console.error('5秒后息屏！');
-                    wait(() => false, 2000);
-                    let m = 4;
+                    let delay = config.息屏延迟;
+                    console.error(delay + '秒后息屏！');
+                    let m = delay;
                     while (m--) {
                         console.error(m);
                         wait(() => false, 1000);
