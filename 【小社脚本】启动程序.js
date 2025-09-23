@@ -249,24 +249,27 @@ function startTimeoutMonitor() {
 
 // 小米社区空白维护
 function blankMaintain() {
-    threads.start(() => {
-        let n = 10;
-        let xmpl = 0;
-        do {
-            wait(() => false, 200);
-            xmpl = packageName(xmPckageName).find(1000).length;
-        } while (xmpl < 6 && n--);
+    if (config && config.空白页检查) {
+        threads.start(() => {
+            let n = 10;
+            let xmpl = 0;
+            do {
+                //wait(() => false, 200);
+                xmpl = packageName(xmPckageName).find(1000).length;
+                if (xmpl < 6) sleep(200);
+            } while (xmpl < 6 && n--);
 
-        if (xmpl > 0 && xmpl < 6) {
-            console.error("小米社区APP打开了空白页!")
-            console.error("可能社区在维护！")
-            console.error("请稍后再试")
-            abnormalInterrupt = 0;
-            wait(() => false, 2000);
-            exit();
-            wait(() => false, 2000);
-        }
-    });
+            if (xmpl > 0 && xmpl < 6) {
+                console.error("小米社区APP打开了空白页!")
+                console.error("可能社区在维护！")
+                console.error("请稍后再试")
+                abnormalInterrupt = 0;
+                wait(() => false, 2000);
+                exit();
+                wait(() => false, 2000);
+            }
+        });
+    }
 }
 
 
