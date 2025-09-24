@@ -1443,7 +1443,7 @@ function swipesUp(n1, n) {
             startY,
             dwidth * (4.5 + Math.pow(-1, i + n)) / 8,
             endY,
-            (112 + 10 * Math.pow(-1, i + n)) + (n1 - 1 - n) * 100
+            (115 + 10 * Math.pow(-1, i + n)) + (n1 - 1 - n) * 100
         );
         wait(() => false, 200 + (n1 - 1 - n) * 50);
         if (p < 1 && n > 2) wait(() => false, 1000);
