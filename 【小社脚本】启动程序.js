@@ -255,8 +255,8 @@ function blankMaintain() {
             let xmpl = 0;
             do {
                 //wait(() => false, 200);
-                xmpl = packageName(xmPckageName).find(1500).length;
-                if (xmpl < 6) sleep(500);
+                xmpl = packageName(xmPckageName).find(1000).length;
+                if (xmpl < 6) sleep(300);
             } while (xmpl < 6 && n--);
 
             if (xmpl > 0 && xmpl < 6) {
