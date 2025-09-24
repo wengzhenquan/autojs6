@@ -162,7 +162,7 @@ if (config && config.左下角停止按钮)
 startTimeoutMonitor();
 
 
-wait(() => false, 1500);
+wait(() => false, 2000);
 
 //AutoJS6版本检查
 function checkAutoJS6() {
