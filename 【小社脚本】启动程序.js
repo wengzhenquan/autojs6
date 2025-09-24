@@ -1155,7 +1155,6 @@ function checkVersion() {
             'version' +
             '?t=' + new Date().getTime();
 
-        let result = null;
         let thread = threads.start(() => {
             try {
                 let res = http.get(url, {
@@ -1168,18 +1167,15 @@ function checkVersion() {
                     }
                 });
                 if (res && res.statusCode === 200) {
-                    result = res.body.string();
-                    serverVersion = JSON.parse(result);
+                    serverVersion = res.body.json();
                 }
             } catch (e) {}
         });
         thread.join(5 * 1000);
         thread.interrupt();
-        if (result && result.length > 500 && serverVersion) {
+        if (serverVersion) {
             if (!files.exists("./version")) {
                 down_version = true;
-                // 缺失version文件，下载
-                // files.write("./version", result, "utf-8");
                 //重新加载本地版本文件
                 // loadLocalVersion();
                 localVersion = {
