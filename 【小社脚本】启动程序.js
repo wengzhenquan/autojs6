@@ -282,9 +282,9 @@ function tryRefresh() {
             content('refresh').exists())) {
         console.warn('页面未成功加载')
         console.warn('第 ' + (3 - n) + ' 次尝试刷新...')
-        ableClick('刷新');
-        ableClick('重新加载');
-        ableClick('refresh');
+        content('刷新').exists() && ableClick('刷新');
+        content('重新加载').exists() && ableClick('重新加载');
+        content('refresh').exists() && ableClick('refresh');
         // clickCenter('刷新');
         // clickCenter('重新加载');
         // clickCenter('refresh');
