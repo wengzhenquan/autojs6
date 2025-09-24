@@ -257,7 +257,8 @@ function blankMaintain() {
                 //wait(() => false, 200);
                 xmpl = packageName(xmPckageName).find(1000).length;
                 if (xmpl < 6) sleep(300);
-            } while (xmpl < 6 && n--);
+            } while (packageName(xmPckageName).exists() &&
+                xmpl < 6 && n--);
 
             if (xmpl > 0 && xmpl < 6) {
                 console.error("小米社区APP打开了空白页!")
