@@ -45,9 +45,7 @@ try {
 if (config && config.fast模式)
     auto.setMode("fast");
 
-//设置参考坐标，不能动，开发环境标准比例。
-setScaleBaseX(1080);
-setScaleBaseY(2400);
+date = nowDate();
 
 const github = "https://github.com/wengzhenquan/autojs6";
 const github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs6/refs/heads/main/"
@@ -57,8 +55,6 @@ var serverVersion = null;
 var localVersion = null;
 var run = null;
 var mainFile = null;
-
-date = nowDate();
 
 const xmPckageName = "com.xiaomi.vipaccount"; // 社区APP包名
 const wchatpn = "com.tencent.mm"; //微信包名，用来校验小程序是否打开
@@ -101,6 +97,10 @@ var ableScreenOff = 0;
 // 程序最大运行时间，超过该时间会强制停止(ms)。  3分钟
 var maxRuntime = (config && config.运行超时时间 || 3) * 60 * 1000;
 
+//设置参考坐标，不能动，开发环境标准比例。
+setScaleBaseX(1080);
+setScaleBaseY(2400);
+
 
 //打开悬浮窗控制台
 console.reset();
@@ -115,7 +115,9 @@ log(("小米社区 Ver：") + String(xmVersionName).padStart(14))
 log("制造商：" + manufacturer + "，品牌：" + brand);
 log("产品：" + device.product + "，型号：" + device.model);
 log(`设备分辨率：${dwidth}x${dheight}`);
+//date = nowDate();
 log(`现在是：${date}`);
+console.error(`启动延迟：${getDurTime(date)}`);
 console.error('QQ群：197511003');
 
 
@@ -233,6 +235,7 @@ function startTimeoutMonitor() {
                 console.error(`脚本运行 ${(maxRuntime)/60/1000} 分钟，强制退出`);
                 console.error('可能是兼容性问题，或布局分析问题，导致页面卡住');
                 console.error('如果刚刚升级过操作系统，或升级过AutoJS6，请重启一次无障碍服务');
+                console.error('若启动延迟过长，可增加运行超时时间！')
                 console.error('请截图保存最后卡住的页面，反馈问题。')
                 if (config && config.通知提醒)
                     notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("发生未知错误，脚本强制停止\n详细问题，请查看日志"));
@@ -240,7 +243,7 @@ function startTimeoutMonitor() {
             }
 
             // 尝试刷新
-            tryRefresh();
+            //tryRefresh();
         }, 5 * 1000); // 每 5 秒检查一次
     });
 }
