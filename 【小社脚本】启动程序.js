@@ -858,7 +858,7 @@ function systemSetting() {
         }
         if (config && config.结束震动) {
             device.vibrate(config.结束震动);
-            wait(() => false, config.结束震动 + 300);
+            wait(() => false, config.结束震动 * 2);
         }
 
         if (config && config.结束息屏) {
