@@ -1097,25 +1097,24 @@ var proxys = [
     "https://gh.monlor.com/",
     "https://g.blfrp.cn/", // 请求时间：1.05s
     "https://gh-proxy.net/", // 请求时间：0.78s
-    "https://proxy.atoposs.com/", // 请求时间：2.82s
     "https://gh-proxy.com/", // 请求时间：0.93s
     "https://gitproxy.click/", // 请求时间：1.20s
     "https://github-proxy.lixxing.top/", // 请求时间：1.55s
     "https://gh.qninq.cn/", // 请求时间：2.01s
-    "https://ghproxy.net/", // 请求时间：3.26s
     "https://gh.llkk.cc/", // 请求时间：0.97s
     "http://github-proxy.teach-english.tech/", // 请求时间：1.95s
     "https://gh.xxooo.cf/", // 请求时间：1.23s
     "https://github.cn86.dev/", // 请求时间：1.30s
     "https://gh.noki.icu/", // 请求时间：1.70s
-    
+
 ]
 
 
 
 // 备用代理
 var proxys2 = [
-
+    "https://proxy.atoposs.com/", // 请求时间：2.82s
+    "https://ghproxy.net/", // 请求时间：3.26s
     "https://ghp.keleyaa.com/", // 请求时间：4.65s
     "https://ghm.078465.xyz/", // 请求时间：5.03s
     "https://ghproxy.cfd/", // 请求时间：6.58s
