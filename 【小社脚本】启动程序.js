@@ -1095,7 +1095,6 @@ var proxys = [
     "https://gh.catmak.name/", // 请求时间：1.03s
     "https://hub.gitmirror.com/", // 请求时间：0.75s
     "https://gh.monlor.com/",
-    "https://g.blfrp.cn/", // 请求时间：1.05s
     "https://gh-proxy.net/", // 请求时间：0.78s
     "https://gh-proxy.com/", // 请求时间：0.93s
     "https://gitproxy.click/", // 请求时间：1.20s
@@ -1113,6 +1112,7 @@ var proxys = [
 
 // 备用代理
 var proxys2 = [
+    "https://g.blfrp.cn/", // 请求时间：1.05s
     "https://proxy.atoposs.com/", // 请求时间：2.82s
     "https://ghproxy.net/", // 请求时间：3.26s
     "https://ghp.keleyaa.com/", // 请求时间：4.65s
