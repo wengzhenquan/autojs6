@@ -1603,6 +1603,8 @@ function unLock() {
         wait(() => false, 2000);
     }
     log("屏幕解锁成功！！！(∗❛ั∀❛ั∗)✧*。");
+    console.warn('→计时器时间重新校准！')
+    date = nowDate();
     return;
 }
 
