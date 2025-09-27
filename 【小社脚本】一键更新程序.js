@@ -40,6 +40,9 @@ var ignoreList = [
     //"tmp/",
     //"yolov11/",   // yolov11 本地签到模块
 ]
+const g1 = Math.pow(1024, 3);//1G
+var aMem = device.getAvailMem();//空闲物理内存
+
 
 // 版本信息
 var localVersion = null;
@@ -294,7 +297,12 @@ function formatFileSize(size) {
     if (size < Math.pow(1024, 2)) {
         return (size / 1024).toFixed(1) + 'KB';
     }
-    return (size / Math.pow(1024, 2)).toFixed(1) + 'MB';
+    // 新增GB判断：大于等于1MB且小于1GB时，先转GB并保留1位小数
+    if (size < Math.pow(1024, 3)) {
+        return (size / Math.pow(1024, 2)).toFixed(1) + 'MB';
+    }
+    // 最后处理大于等于1GB的情况
+    return (size / Math.pow(1024, 3)).toFixed(1) + 'GB';
 }
 
 
@@ -356,6 +364,8 @@ function integrityCheck() {
 // 检查脚本更新。
 function checkVersion() {
     console.info("---→>★脚本检查更新★<←---")
+    log("可用运存：" + formatFileSize(aMem));
+
 
     for (proxy_index; proxy_index < proxys.length; proxy_index++) {
         let startTime = new Date().getTime();
@@ -501,6 +511,8 @@ function startUpdate() {
     log("请不要终止脚本")
 
     for (let j = 0; j < updateList.length; j++) {
+        runtime.gc;
+        java.lang.System.gc();
         let fileName = updateList[j];
         //忽略更新
         if (ignoreList.some(element => fileName.startsWith(element))) {
@@ -518,8 +530,15 @@ function startUpdate() {
         let isText = textArry.includes(ext);
         var fileInfo = null;
         if (!isText) {
+            aMem = device.getAvailMem();
             console.warn('该文件需要文件校验！')
-            fileInfo = getGitHubFileInfo(fileName, 'main')
+            fileInfo = getGitHubFileInfo(fileName, 'main');
+            if (aMem < g1) {
+                console.error("可用运存：" + formatFileSize(aMem));
+                console.error("运存过低，下载有失败风险！")
+                console.error("如果报OOM错误，需重启AutoJS6后重新下载")
+
+            }
         }
         //超时，文本文件5秒，非文本文件使用配置
         let timeoutTimes = isText ? 5 : download_timeout;

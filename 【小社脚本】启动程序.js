@@ -115,6 +115,7 @@ log(("小米社区 Ver：") + String(xmVersionName).padStart(14))
 log("制造商：" + manufacturer + "，品牌：" + brand);
 log("产品：" + device.product + "，型号：" + device.model);
 log(`设备分辨率：${dwidth}x${dheight}`);
+log("可用运存：" + formatFileSize(device.getAvailMem()));
 //date = nowDate();
 log(`现在是：${date}`);
 console.error(`启动延迟：${getDurTime(date)}`);
@@ -687,7 +688,12 @@ function formatFileSize(size) {
     if (size < Math.pow(1024, 2)) {
         return (size / 1024).toFixed(1) + 'KB';
     }
-    return (size / Math.pow(1024, 2)).toFixed(1) + 'MB';
+    // 新增GB判断：大于等于1MB且小于1GB时，先转GB并保留1位小数
+    if (size < Math.pow(1024, 3)) {
+        return (size / Math.pow(1024, 2)).toFixed(1) + 'MB';
+    }
+    // 最后处理大于等于1GB的情况
+    return (size / Math.pow(1024, 3)).toFixed(1) + 'GB';
 }
 
 
