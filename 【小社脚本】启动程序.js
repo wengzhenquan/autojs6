@@ -131,6 +131,8 @@ events.on("exit", function() {
     if (window) window.close();
     floaty.closeAll();
     try {
+        runtime.gc;
+        java.lang.System.gc();
         if (config && !config.fast模式)
             auto.clearCache();
     } catch (e) {}

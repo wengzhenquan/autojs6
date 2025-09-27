@@ -15,6 +15,8 @@ if (!files.exists(locked)) {
         exit();
     }
 }
+runtime.gc;
+java.lang.System.gc();
 //10分钟亮屏
 device.keepScreenDim(10 * 60 * 1000);
 events.on("exit", () => {
