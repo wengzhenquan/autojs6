@@ -541,6 +541,7 @@ function startUpdate() {
         while (n < proxys.length) {
             runtime.gc;
             java.lang.System.gc();
+            sleep(500);
             aMem = device.getAvailMem();
             if (aMem < g1) {
                 console.error("可用运存：" + formatFileSize(aMem));
