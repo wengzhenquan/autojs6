@@ -40,8 +40,8 @@ var ignoreList = [
     //"tmp/",
     //"yolov11/",   // yolov11 本地签到模块
 ]
-const g1 = Math.pow(1024, 3);//1G
-var aMem = device.getAvailMem();//空闲物理内存
+const g1 = Math.pow(1024, 3); //1G
+var aMem = device.getAvailMem(); //空闲物理内存
 
 
 // 版本信息
@@ -511,8 +511,6 @@ function startUpdate() {
     log("请不要终止脚本")
 
     for (let j = 0; j < updateList.length; j++) {
-        runtime.gc;
-        java.lang.System.gc();
         let fileName = updateList[j];
         //忽略更新
         if (ignoreList.some(element => fileName.startsWith(element))) {
@@ -530,15 +528,8 @@ function startUpdate() {
         let isText = textArry.includes(ext);
         var fileInfo = null;
         if (!isText) {
-            aMem = device.getAvailMem();
             console.warn('该文件需要文件校验！')
             fileInfo = getGitHubFileInfo(fileName, 'main');
-            if (aMem < g1) {
-                console.error("可用运存：" + formatFileSize(aMem));
-                console.error("运存过低，下载有失败风险！")
-                console.error("如果报OOM错误，需重启AutoJS6后重新下载")
-
-            }
         }
         //超时，文本文件5秒，非文本文件使用配置
         let timeoutTimes = isText ? 5 : download_timeout;
@@ -546,6 +537,14 @@ function startUpdate() {
         var filebytes = null;
         let n = 0; //次数
         while (n < proxys.length) {
+            runtime.gc;
+            java.lang.System.gc();
+            aMem = device.getAvailMem();
+            if (aMem < g1) {
+                console.error("可用运存：" + formatFileSize(aMem));
+                console.error("运存过低，下载有失败风险！")
+                console.error("如果报OOM错误，需重启AutoJS6后重新下载")
+            }
             let startTime = new Date().getTime();
             let proxy = proxys[proxy_index];
             log('下载加速器：' + proxy);
