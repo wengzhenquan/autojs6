@@ -114,9 +114,9 @@ log(("微信 Ver：") + String(wchatVersionName).padStart(20))
 log(("小米社区 Ver：") + String(xmVersionName).padStart(14))
 log("制造商：" + manufacturer + "，品牌：" + brand);
 log("产品：" + device.product + "，型号：" + device.model);
+log(`设备分辨率：${dwidth}x${dheight}`);
 log("运存：" + formatFileSize(device.getTotalMem()) + "（可用：" + formatFileSize(device.getAvailMem()) + "）");
 
-log(`设备分辨率：${dwidth}x${dheight}`);
 //date = nowDate();
 log(`现在是：${date}`);
 console.error(`启动延迟：${getDurTime(date)}`);
