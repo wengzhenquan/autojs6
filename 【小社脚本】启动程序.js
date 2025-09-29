@@ -1106,7 +1106,6 @@ var proxys = [
     "https://gh.monlor.com/",
     "https://gh-proxy.net/", // 请求时间：0.78s
     "https://gh-proxy.com/", // 请求时间：0.93s
-    "https://gitproxy.click/", // 请求时间：1.20s
     "https://github-proxy.lixxing.top/", // 请求时间：1.55s
     "https://gh.qninq.cn/", // 请求时间：2.01s
     "https://gh.llkk.cc/", // 请求时间：0.97s
@@ -1121,6 +1120,7 @@ var proxys = [
 
 // 备用代理
 var proxys2 = [
+    "https://gitproxy.click/", // 请求时间：1.20s
     "https://g.blfrp.cn/", // 请求时间：1.05s
     "https://proxy.atoposs.com/", // 请求时间：2.82s
     "https://ghproxy.net/", // 请求时间：3.26s
