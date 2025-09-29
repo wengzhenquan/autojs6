@@ -4,7 +4,12 @@ if (typeof config === 'undefined' || !config ||
     try {
         config = require("../config.js");
     } catch (e) {
-        config = {};
+        config = {
+            YOLO置信度阈值: 0.01,
+            YOLO重叠率阈值: 0.1,
+            YOLO尝试遮挡修复: 0,
+            YOLO启用GPU: 0
+        }
     }
 }
 // --- 常量定义 ---
