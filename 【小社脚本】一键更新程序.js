@@ -170,6 +170,7 @@ var api_proxys = [
     "https://99z.top/",
     "https://ghproxy.vansour.top/",
     "https://ghpxy.hwinzniej.top/",
+    "https://github.cn86.dev/",
 
 
     "https://j.1win.ggff.net/",
