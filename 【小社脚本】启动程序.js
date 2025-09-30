@@ -423,7 +423,7 @@ function consoleMin() {
     if (config && !config.悬浮窗控制台_签到高度 &&
         !config.悬浮窗控制台_签到时最小化 &&
         global.picY) {
-            
+
         const STATUS_BAR_HEIGHT = ui.statusBarHeight;
         const BORDER_OFFSET = dpToPx2(12);
         let y = 0;
@@ -446,9 +446,7 @@ function consoleMin() {
         // 阈值限制，防出错
         if (h > 0.3) h = 0.18;
 
-
     }
-
 
     if (config && config.悬浮窗控制台_签到高度)
         h = config.悬浮窗控制台_签到高度;
@@ -458,11 +456,10 @@ function consoleMin() {
     // 像素转换
     function dpToPx2(dp) {
         // 获取设备屏幕密度（dpi），AutoJS6中通过context获取
-        let dpi = context
-            .getResources()
+        let dpi = device.density ||
+            context.getResources()
             .getDisplayMetrics()
-            .densityDpi ||
-            device.density;
+            .densityDpi;
         // 标准密度为160dpi，1dp = 1px，其他密度按比例计算
         return dp * (dpi / 160);
     }
