@@ -446,12 +446,12 @@ function consoleMin() {
         // 0.222
         if (h > 1) h = h / dheight;
 
-        if (autoH) log('控制台高度：' + h.toFixed(2));
+        if (h && autoH) log('控制台高度：' + h.toFixed(2));
 
         // 阈值限制，防出错
         if (h > 0.3) {
             h = 0.18;
-            log('控制台高度超出阈值，调整失败')
+            console.error('控制台高度超出阈值，调整失败')
         }
     }
 
