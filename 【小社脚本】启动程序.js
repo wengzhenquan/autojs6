@@ -421,7 +421,8 @@ function consoleMin() {
     let h = 0.18;
     // 自动适配
     let autoH = false;
-    if (config && !config.悬浮窗控制台_签到高度 &&
+    if (config &&
+        !config.悬浮窗控制台_签到高度 &&
         !config.悬浮窗控制台_签到时最小化 &&
         global.picY) {
 
