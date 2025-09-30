@@ -420,7 +420,10 @@ function consoleMin() {
     wait(() => false, 300);
     let h = 0.18;
     // 自动适配
-    if (global.picY) {
+    if (config && !config.悬浮窗控制台_签到高度 &&
+        !config.悬浮窗控制台_签到时最小化 &&
+        global.picY) {
+            
         const STATUS_BAR_HEIGHT = ui.statusBarHeight;
         const BORDER_OFFSET = dpToPx2(12);
         let y = 0;
@@ -432,12 +435,18 @@ function consoleMin() {
         // 计算得到的h是像素单位，不是百分比
         // 535
         h = (global.picY - cY(30)) - STATUS_BAR_HEIGHT - y + BORDER_OFFSET;
+
+        if (Math.abs(console.getSize().height - h) > 5)
+            log('自动调整控制台高度……')
+
         // 转化百分百
         // 0.222
         if (h > 1) h = h / dheight;
 
         // 阈值限制，防出错
         if (h > 0.3) h = 0.18;
+
+
     }
 
 
