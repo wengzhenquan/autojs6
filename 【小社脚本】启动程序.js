@@ -435,7 +435,7 @@ function consoleMin() {
 
         // h = a - STATUS_BAR_HEIGHT - y + BORDER_OFFSET;
         // 计算得到的h是像素单位，不是百分比
-        // 535
+        // 535 // 0.222
         h = (global.picY - cY(30)) - STATUS_BAR_HEIGHT - y + BORDER_OFFSET;
 
     }
@@ -444,7 +444,6 @@ function consoleMin() {
         h = config.悬浮窗控制台_签到高度;
 
     // 转化百分百
-    // 0.222
     if (h > 1) h = h / dheight;
 
 
