@@ -447,17 +447,17 @@ function consoleMin() {
         // 0.222
         if (h > 1) h = h / dheight;
 
-        if (h && autoH) log('控制台高度：' + h.toFixed(2));
-
         // 阈值限制，防出错
         if (h > 0.3) {
             h = 0.18;
-            console.error('控制台高度超出阈值，调整失败')
+            console.error('控制台高度超出阈值0.3，调整失败')
         }
     }
 
     if (config && config.悬浮窗控制台_签到高度)
         h = config.悬浮窗控制台_签到高度;
+
+    log('控制台高度：' + h.toFixed(2));
 
     console.setSize(0.96, h);
 
