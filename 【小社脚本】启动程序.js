@@ -453,7 +453,7 @@ function consoleMin() {
     }
 
     // 阈值限制，防出错
-    if (h > 0.3 && dheight > dwidth) {
+    if (h > 0.3) {
         h = 0.18;
         console.error('控制台高度超出阈值0.3，调整失败')
     }
