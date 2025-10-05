@@ -1063,6 +1063,7 @@ function 小程序签到(pram) {
     }
 
     if (wait(() => me.exists(), 6, 600)) {
+        toastLog("正在进入[我的]页面……", "forcible")
         // 使用能点击的父控件
         let mep = me.findOne();
         //点我的
@@ -1076,7 +1077,7 @@ function 小程序签到(pram) {
         //再点“我的”
         ableClick(mep);
         //clickCenter(mep);
-        toastLog("正在进入[我的]页面……", "forcible")
+        
         // 等待页面加载
         wait(() => text('编辑资料').exists(), 10, 500);
         //sleep(1500);
