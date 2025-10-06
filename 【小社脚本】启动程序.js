@@ -50,6 +50,8 @@ date = nowDate();
 const github = "https://github.com/wengzhenquan/autojs6";
 const github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs6/refs/heads/main/"
 
+const autoJS6_update = "https://api.github.com/repos/SuperMonster003/AutoJs6/releases/latest";
+
 var update_script = "【小社脚本】一键更新程序.js";
 var serverVersion = null;
 var localVersion = null;
@@ -168,7 +170,7 @@ if (config && config.左下角停止按钮)
 startTimeoutMonitor();
 
 
-wait(() => false, 2000);
+wait(() => false, 4000);
 
 //AutoJS6版本检查
 function checkAutoJS6() {
@@ -907,6 +909,7 @@ function systemSetting() {
         }
 
     });
+    //wait(() => false, 2000);
 }
 
 
@@ -925,7 +928,7 @@ function loadLocalVersion() {
 
 
 function init() {
-    console.info(">>>>→程序完整性校验←<<<<")
+    console.info(">>>>→脚本完整性校验←<<<<")
     if (!files.exists("./version")) {
         console.error("缺失[version]文件");
         console.error("启动更新程序下载文件");
@@ -1102,30 +1105,28 @@ function checkConfig() {
 //加速代理
 var proxys = [
 
-    "https://y.whereisdoge.work/", // 请求时间：1.66s
-    "https://git.yylx.win/",
-    "https://ghfast.top/", // 请求时间：1.42s
-    "https://git.669966.xyz/", // 请求时间：2.80s
-    "https://ghproxy.monkeyray.net/",
-    "https://gh.halonice.com/",
-    "https://github.xxlab.tech/", // 请求时间：0.23s
-    "https://ghproxy.sakuramoe.dev/", // 请求时间：0.50s
-    "http://gh.927223.xyz/", // 请求时间：0.59s
-    "https://gh.bugdey.us.kg/", // 请求时间：0.90s
-    "https://github.dpik.top/", // 请求时间：0.94s
-    "https://ghfile.geekertao.top/",
-    "https://github.chenc.dev/",
-    "https://gh.catmak.name/", // 请求时间：1.03s
-    "https://hub.gitmirror.com/", // 请求时间：0.75s
-    "https://gh.monlor.com/",
-    "https://gh-proxy.net/", // 请求时间：0.78s
-    "https://gh-proxy.com/", // 请求时间：0.93s
-    "https://github-proxy.lixxing.top/", // 请求时间：1.55s
-    "https://gh.llkk.cc/", // 请求时间：0.97s
-    "http://github-proxy.teach-english.tech/", // 请求时间：1.95s
-    "https://gh.xxooo.cf/", // 请求时间：1.23s
-    "https://github.cn86.dev/", // 请求时间：1.30s
-    "https://gh.noki.icu/", // 请求时间：1.70s
+    "https://gh.halonice.com/", // 请求时间：0.33s
+    "https://github.xxlab.tech/", // 请求时间：0.34s
+    "https://ghproxy.sakuramoe.dev/", // 请求时间：0.52s
+    "http://gh.927223.xyz/", // 请求时间：0.54s
+    "https://github.chenc.dev/", // 请求时间：0.56s
+    "https://github.cnxiaobai.com/", // 请求时间：0.60s
+    "https://www.5555.cab/", // 请求时间：0.61s
+    "https://ghfile.geekertao.top/", // 请求时间：0.76s
+    "https://github.dpik.top/", // 请求时间：0.77s
+    "https://gh.bugdey.us.kg/", // 请求时间：0.77s
+    "https://gitproxy.click/", // 请求时间：0.80s
+    "https://gh.padao.fun/", // 请求时间：0.80s
+    "https://gh.catmak.name/", // 请求时间：0.82s
+    "https://github.cn86.dev/", // 请求时间：0.83s
+    "https://gh.llkk.cc/", // 请求时间：0.84s
+    "https://30006000.xyz/", // 请求时间：0.87s
+    "https://git.zeas.cc/", // 请求时间：0.91s
+    "https://gh.39.al/", // 请求时间：1.10s
+    "https://ghproxy.net/", // 请求时间：1.11s
+    "https://gh-proxy.com/", // 请求时间：0.97s
+    "https://gh.monlor.com/", // 请求时间：0.99s
+    "https://gh.xxooo.cf/", // 请求时间：1.07s
 
 ]
 
@@ -1133,47 +1134,30 @@ var proxys = [
 
 // 备用代理
 var proxys2 = [
-    "https://gh.qninq.cn/", // 请求时间：2.01s
-    "https://gitproxy.click/", // 请求时间：1.20s
-    "https://g.blfrp.cn/", // 请求时间：1.05s
-    "https://proxy.atoposs.com/", // 请求时间：2.82s
-    "https://ghproxy.net/", // 请求时间：3.26s
-    "https://ghp.keleyaa.com/", // 请求时间：4.65s
-    "https://ghm.078465.xyz/", // 请求时间：5.03s
-    "https://ghproxy.cfd/", // 请求时间：6.58s
-    "https://ghproxy.1888866.xyz/", // 请求时间：3.29s
-    "https://j.1lin.dpdns.org/", // 请求时间：3.79s
-    "https://j.1win.ggff.net/", // 请求时间：4.01s
-    "https://github.bullb.net/", // 请求时间：5.19s
-    "https://gitproxy.127731.xyz/", // 请求时间：5.25s
-    "https://jiashu.1win.eu.org/", // 请求时间：5.67s
-    "https://github-proxy.memory-echoes.cn/", // 请求时间：6.00s
-    "https://ghproxy.cc/", // 请求时间：6.48s
-    "https://ghproxy.cn/", // 请求时间：6.59s
-    "https://tvv.tw/", // 请求时间：6.73s
-    "https://fastgit.cc/", // 请求时间：9.79s
-    "https://gh.dpik.top/", // 请求时间：10.29s
-    "https://github.kkproxy.dpdns.org/", // 请求时间：11.86s
-    "https://ghproxy.fangkuai.fun/", // 请求时间：12.18s
-    "https://cf.ghproxy.cc/", // 请求时间：12.87s
-    "https://gh.jasonzeng.dev/", // 请求时间：18.09s
-    "https://ghproxy.net/", // 请求时间：1.5s
-    "https://hub.gitmirror.com/", // 请求时间：2.22s
-    "https://github.tbedu.top/", // 请求时间：3.14s
-    "https://github.tianrld.top/", // 请求时间：3.25s
-    "https://gh.qninq.cn/", // 请求时间：3.34s
-    "https://ghproxy.imciel.com/", // 请求时间：3.75s
-    "https://ghpxy.hwinzniej.top/", // 请求时间：4.88s
-    "https://github.ednovas.xyz/", // 请求时间：5.20s
-    "http://github-proxy.teach-english.tech/", // 请求时间：6.25s
-    "https://proxy.atoposs.com/", // 请求时间：6.47s
-    "https://ghproxy.cxkpro.top/", // 请求时间：8.31s
-    "https://ghf.无名氏.top/", // 请求时间：8.64s
-    "https://gh.chjina.com/", // 请求时间：8.94s
-    "https://gitproxy1.127731.xyz/", // 请求时间：9.44s
-    "https://g.blfrp.cn/", // 请求时间：9.52s
-    "https://gh.wsmdn.dpdns.org/", // 请求时间：11.12s
-    "https://gitproxy.mrhjx.cn/", // 请求时间：14.17s
+    "https://git.yylx.win/", // 请求时间：1.23s
+    "https://github-proxy.lixxing.top/", // 请求时间：1.24s
+    "https://ghproxy.mirror.skybyte.me/", // 请求时间：1.24s
+    "https://ghproxy.monkeyray.net/", // 请求时间：1.24s
+    "https://hub.gitmirror.com/", // 请求时间：1.29s
+    "http://github-proxy.teach-english.tech/", // 请求时间：1.30s
+    "https://gh.b52m.cn/", // 请求时间：1.30s
+    "https://code-hub-hk.freexy.top/", // 请求时间：1.30s
+    "https://gh-proxy.net/", // 请求时间：1.35s
+    "https://gh.noki.icu/", // 请求时间：1.64s
+    "https://proxy.atoposs.com/", // 请求时间：1.64s
+    "https://g.blfrp.cn/", // 请求时间：1.71s
+    "https://ghproxy.053000.xyz/", // 请求时间：1.71s
+    "https://gh.aaa.team/", // 请求时间：1.78s
+    "https://git.669966.xyz/", // 请求时间：1.96s
+    "https://git.951959483.xyz/", // 请求时间：2.34s
+    "https://ghfast.top/", // 请求时间：2.44s
+    "https://gitproxy.127731.xyz/", // 请求时间：2.52s
+    "https://ggg.clwap.dpdns.org/", // 请求时间：3.40s
+    "https://github.ihnic.com/", // 请求时间：3.42s
+    "https://gitproxy1.127731.xyz/", // 请求时间：3.85s
+    "https://github.boringhex.top/", // 请求时间：4.27s
+    "https://ghproxy.mf-dust.dpdns.org/", // 请求时间：4.66s
+    "https://ghproxy.cfd/", // 请求时间：7.04s
 
 
 
@@ -1183,6 +1167,42 @@ var proxys2 = [
 // 打乱并整合两个数组
 processArrays(proxys, proxys2);
 
+var api_proxys = [
+
+    "https://github.dpik.top/",
+    "https://gh.dpik.top/",
+    "https://gh.catmak.name/",
+    "https://ghproxy.monkeyray.net/",
+    "https://ghfile.geekertao.top/",
+    "https://git.yylx.win/",
+    "https://hub.mwm.moe/",
+    "https://gh.bugdey.us.kg/",
+    "https://tvv.tw/",
+    "https://ghm.078465.xyz/",
+    "http://gh.927223.xyz/",
+    "https://gh.noki.icu/",
+    "https://gh.qninq.cn/",
+    "https://gh.llkk.cc/",
+    "https://gh-proxy.com/",
+    "https://xiazai.de/",
+    "https://99z.top/",
+    "https://ghproxy.vansour.top/",
+    "https://ghpxy.hwinzniej.top/",
+    "https://github.cn86.dev/",
+
+
+    "https://j.1win.ggff.net/",
+    "https://j.n1win.dpdns.org/",
+    "https://j.1lin.dpdns.org/",
+    "https://jiashu.1win.eu.org/",
+    "https://j.1win.ip-ddns.com/",
+    "https://j.1win.ddns-ip.net/",
+
+]
+
+
+// 打乱数组
+shuffleArray(api_proxys);
 
 // 检查脚本更新，version文件存在才检查更新。
 function checkVersion() {
@@ -1265,7 +1285,7 @@ function checkVersion() {
                 }
             }
         }
-        if (config && config.检查更新) {
+        if (config && config.检查脚本更新) {
             console.error("发现新的版本！！！")
             console.info("最新版本：" + serverVersion.version)
             console.log("-----→");
@@ -1295,16 +1315,16 @@ function checkVersion() {
 
 
             //更新脚本
-            if (config.检查更新 > 1) {
+            if (config.检查脚本更新 > 1) {
                 console.info("最新版本：" + serverVersion.version)
-                toastLog("配置[检查更新]：" + config.检查更新)
+                toastLog("配置[检查更新]：" + config.检查脚本更新)
 
                 toastLog("开始更新脚本");
                 updateScript();
                 return;
             }
 
-            if (config.检查更新 === 1) {
+            if (config.检查脚本更新 === 1) {
                 notice({
                     title: '小社脚本有新的版本！！！🎊v' + serverVersion.version,
                     content: '脚本运行日志里有更新清单\n点击此处去更新🌐',
@@ -1442,6 +1462,61 @@ function updateScript() {
 
 }
 
+
+function checkAutoJS6Version() {
+    console.info("--->→AutoJS6 检查更新←<---")
+
+    log("正在查询版本更新……")
+
+    let autojs6_serverVersion = null;
+    for (let i = 0; i < api_proxys.length * 0.33; i++) {
+        let result = null;
+
+        let url = api_proxys[i] +
+            autoJS6_update +
+            '?t=' + new Date().getTime();
+
+        let thread = threads.start(() => {
+            try {
+                let res = http.get(url, {
+                    timeout: 8 * 1000,
+                    headers: {
+                        'Cache-Control': 'no-cache',
+                        'Pragma': 'no-cache',
+                        'Expires': '0',
+                        'Connection': 'Keep-Alive'
+                    }
+                });
+                if (res && res.statusCode === 200) {
+                    result = res.body.json();
+                    autojs6_serverVersion = result.tag_name.slice(1);
+                }
+            } catch (e) {}
+        });
+        thread.join(8 * 1000);
+        thread.interrupt();
+
+        if (result && autojs6_serverVersion)
+            break;
+    }
+
+    if (!autojs6_serverVersion) {
+        console.error("代理连接github api失败")
+        console.error("检查AutoJS6版本失败！")
+        return;
+    }
+    let hasNewVersion = compareVersions(autojs6_serverVersion, autojs.versionName) > 0;
+
+    if (hasNewVersion) {
+        console.error("AutoJS6最新版：" + autojs6_serverVersion)
+        console.error("当前版本：" + autojs.versionName)
+        console.error("建议更新版本！！！")
+        console.error("旧版可能有部分方法找不到、未定义")
+    } else {
+        console.error("✅ AutoJS6已经是最新版！")
+    }
+
+}
 
 
 //------------ 业务逻辑开始 ----------//
@@ -1875,6 +1950,7 @@ function permissionv() {
     } else {
         console.error("忽略电池优化，[未启用]!");
         console.error("可能导致定时任务无法执行");
+        console.error("请将省电策略改成[无限制]");
         console.error("若有墓碑、杀后台程序，请加入白名单");
         wait(() => false, 3000);
     }
@@ -1958,6 +2034,7 @@ function permissionv() {
     } else {
         console.error("修改系统设置权限，[未启用]!");
         console.error("涉及功能：媒体静音、修改亮度等！");
+        wait(() => false, 3000);
     }
 
 
@@ -2012,7 +2089,7 @@ function permissionv() {
         wait(() => false, 3000);
     }
 
-
+    wait(() => false, 2000);
     log("------ 不必要高级权限 ------");
     let canRestarAuto = 0;
 
@@ -2131,6 +2208,7 @@ function permissionv() {
     }
 
     // exit();
+    wait(() => false, 3000);
 }
 
 
@@ -2150,16 +2228,26 @@ function main() {
     // 系统修改
     systemSetting();
 
+    // 检查AutoJS6更新
+    if (config && config.检查AutoJS6更新 && ableUpdate) {
+        checkAutoJS6Version();
+        wait(() => false, 1000);
+    }
+
     // 初始化，文件检查
     init();
 
-    //脚本检查更新
-    if (config && config.检查更新 && ableUpdate) {
+    //检查脚本更新
+    if (config && config.检查脚本更新 && ableUpdate) {
         checkVersion();
+        wait(() => false, 1000);
     }
+
+
 
     //屏幕解锁
     unLock();
+
 
     try {
         // 再次加载悬浮窗控制台配置，以便纠正悬浮窗控制台错误
@@ -2187,6 +2275,17 @@ function main() {
             // 通常有不到 10 
             //exit(e);
         }
+        if (e.message.includes('找不到') || e.message.includes('未定义')) {
+
+            console.error('尝试以下方案后重试！')
+            console.error(' 1、更新AutoJS6到最新版')
+            console.error(' 2、AutoJS6设置→稳定模式')
+            console.error(' 3、重新授权无障碍服务')
+            console.error(' 4、删除[启动程序.js文件]，重新执行更新程序下载')
+
+        }
+
+
     } finally {
         if (true) {
             if (config && config.运行亮度)
