@@ -1587,6 +1587,7 @@ function unLock() {
     let n = 4;
     const n1 = n;
     while (isLocked && n--) {
+        screenOn();
         // 上滑
         swipesUp(n1, n);
 
