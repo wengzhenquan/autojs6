@@ -376,7 +376,7 @@ function consoleShow() {
                 contentTextSize: 15,
                 contentBackgroundAlpha: 0.7,
                 contentBackgroundColor: colors.BLACK,
-                touchable: false,
+                touchable: true,
                 exitOnClose: false,
             });
 
@@ -401,7 +401,10 @@ function consoleShow() {
 
             if (!console.isShowing()) {
                 console.show();
+                return;
             }
+            
+            console.setTouchable(false);
         }
     });
 }
