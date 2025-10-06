@@ -380,9 +380,8 @@ function consoleShow() {
                 exitOnClose: false,
             });
 
-            if (config && !config.未完成任务不关闭悬浮窗控制台) {
-                consoleExitOnClose();
-            }
+
+            consoleExitOnClose();
 
             console.setContentTextColor({
                 verbose: 'white',
@@ -403,7 +402,7 @@ function consoleShow() {
                 console.show();
                 return;
             }
-            
+
             console.setTouchable(false);
         }
     });
@@ -513,9 +512,11 @@ function consoleExpand() {
 
 // 关闭悬浮窗控制台
 function consoleExitOnClose() {
-    if (config && typeof config.悬浮窗控制台_关闭延迟 !== 'undefined') {
-        let times = config.悬浮窗控制台_关闭延迟 * 1000 || false;
-        console.setExitOnClose(times);
+    if (config && !config.未完成任务不关闭悬浮窗控制台) {
+        if (config && typeof config.悬浮窗控制台_关闭延迟 !== 'undefined') {
+            let times = config.悬浮窗控制台_关闭延迟 * 1000 || false;
+            console.setExitOnClose(times);
+        }
     }
 }
 
