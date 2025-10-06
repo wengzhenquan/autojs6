@@ -1571,6 +1571,7 @@ function swipesUp(n1, n) {
 
 //解锁
 function unLock() {
+    screenOn();
     if (!isLocked) return;
 
     console.info("-----→");
