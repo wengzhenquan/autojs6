@@ -1130,7 +1130,7 @@ var proxys = [
     "https://gh-proxy.com/", // 请求时间：0.97s
     "https://gh.monlor.com/", // 请求时间：0.99s
     "https://gh.xxooo.cf/", // 请求时间：1.07s
-
+    "http://github-proxy.teach-english.tech/", // 请求时间：1.30s
 ]
 
 
@@ -1142,7 +1142,6 @@ var proxys2 = [
     "https://ghproxy.mirror.skybyte.me/", // 请求时间：1.24s
     "https://ghproxy.monkeyray.net/", // 请求时间：1.24s
     "https://hub.gitmirror.com/", // 请求时间：1.29s
-    "http://github-proxy.teach-english.tech/", // 请求时间：1.30s
     "https://gh.b52m.cn/", // 请求时间：1.30s
     "https://code-hub-hk.freexy.top/", // 请求时间：1.30s
     "https://gh-proxy.net/", // 请求时间：1.35s
