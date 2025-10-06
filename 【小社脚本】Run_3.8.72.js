@@ -2555,6 +2555,7 @@ function levelResult() {
         toastError('小程序签到失败了！');
         console.error('可能小程序未成功打开！');
         console.error('或摸黑签到失败！');
+        console.error('或社区APP与小程序账号未绑定！');
         if (config && config.通知提醒)
             notice(String('出错了！'), String('小程序签到失败了！\n可以再执行一次试试！'));
     }
