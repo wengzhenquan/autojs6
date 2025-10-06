@@ -1131,6 +1131,7 @@ var proxys = [
     "https://gh.monlor.com/", // 请求时间：0.99s
     "https://gh.xxooo.cf/", // 请求时间：1.07s
     "http://github-proxy.teach-english.tech/", // 请求时间：1.30s
+    "https://github-proxy.memory-echoes.cn/",
 ]
 
 
