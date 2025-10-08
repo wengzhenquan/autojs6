@@ -110,12 +110,11 @@ console.reset();
 consoleShow();
 
 console.warn("—----->--- Start ---<-----—");
-
-log(("Android 版本：").padStart(20) + device.release)
-log(("Android  sdk：").padStart(22) + device.sdkInt)
 log(("AutoJS6 版本：").padStart(20) + autojs.versionName)
 log(("微信 Ver：") + String(wchatVersionName).padStart(20))
 log(("小米社区 Ver：") + String(xmVersionName).padStart(14))
+log(("Android 版本：").padStart(0) + device.release +
+    ("（sdk：").padStart(0) + device.sdkInt + "）")
 log("制造商：" + manufacturer + "，品牌：" + brand);
 log("产品：" + device.product + "，型号：" + device.model);
 log(`设备分辨率：${dwidth}x${dheight}`);
@@ -125,7 +124,6 @@ log("运存：" + formatFileSize(device.getTotalMem()) + "（可用：" + format
 log(`现在是：${date}`);
 console.error(`启动延迟：${getDurTime(date)}`);
 console.error('QQ群：197511003');
-
 
 
 
@@ -172,7 +170,7 @@ if (config && config.左下角停止按钮)
 startTimeoutMonitor();
 
 
-wait(() => false, 4000);
+wait(() => false, 3000);
 
 //AutoJS6版本检查
 function checkAutoJS6() {
@@ -1619,7 +1617,7 @@ function unLock() {
                 autoLockScreen();
                 wait(() => false, 1500);
                 // 点亮屏幕
-                screenOn();
+               // screenOn();
                 continue;
             }
 
