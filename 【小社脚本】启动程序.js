@@ -112,7 +112,7 @@ consoleShow();
 console.warn("—----->--- Start ---<-----—");
 
 log(("Android 版本：").padStart(20) + device.release)
-log(("Android  sdk：").padStart(24) + device.sdkInt)
+log(("Android  sdk：").padStart(22) + device.sdkInt)
 log(("AutoJS6 版本：").padStart(20) + autojs.versionName)
 log(("微信 Ver：") + String(wchatVersionName).padStart(20))
 log(("小米社区 Ver：") + String(xmVersionName).padStart(14))
@@ -814,12 +814,15 @@ function screenOn() {
 // 无障碍锁屏
 function autoLockScreen() {
     // 无障碍服务调用系统锁屏
-    if (device.release >= 8 || device.sdkInt >= 26) {
-        // 安卓8开始
-        auto.service.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN);
-    } else {
-        // 小于安卓8
-        auto.service.performGlobalAction(8);
+    try {
+        // 尝试标准方式（Android 8.0+）
+        auto.service.performGlobalAction(
+            android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN
+        );
+    } catch (e) {
+        // 反射调用（兼容低版本）
+        const ACTION_LOCK_SCREEN = 8; // GLOBAL_ACTION_LOCK_SCREEN 的常量值 = 8
+        auto.service.performGlobalAction(ACTION_LOCK_SCREEN);
     }
 }
 
