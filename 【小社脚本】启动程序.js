@@ -1135,10 +1135,6 @@ var proxys = [
     "https://30006000.xyz/", // 请求时间：0.87s
     "https://git.zeas.cc/", // 请求时间：0.91s
     "https://gh.39.al/", // 请求时间：1.10s
-    "https://ghproxy.net/", // 请求时间：1.11s
-    "https://gh-proxy.com/", // 请求时间：0.97s
-    "https://gh.monlor.com/", // 请求时间：0.99s
-    "https://gh.xxooo.cf/", // 请求时间：1.07s
     "http://github-proxy.teach-english.tech/", // 请求时间：1.30s
     "https://github-proxy.memory-echoes.cn/",
 ]
@@ -1147,6 +1143,10 @@ var proxys = [
 
 // 备用代理
 var proxys2 = [
+    "https://ghproxy.net/", // 请求时间：1.11s
+    "https://gh-proxy.com/", // 请求时间：0.97s
+    "https://gh.monlor.com/", // 请求时间：0.99s
+    "https://gh.xxooo.cf/", // 请求时间：1.07s
     "https://git.yylx.win/", // 请求时间：1.23s
     "https://github-proxy.lixxing.top/", // 请求时间：1.24s
     "https://ghproxy.mirror.skybyte.me/", // 请求时间：1.24s
@@ -1224,7 +1224,7 @@ function checkVersion() {
 
     //远程version文件数据
     log("正在查询版本更新……")
-    for (let i = 0; i < proxys.length * 0.33; i++) {
+    for (let i = 0; i < proxys.length * 0.5; i++) {
         let url = proxys[i] +
             github_download_url +
             'version' +
@@ -1617,7 +1617,7 @@ function unLock() {
                 autoLockScreen();
                 wait(() => false, 1500);
                 // 点亮屏幕
-               // screenOn();
+                // screenOn();
                 continue;
             }
 
