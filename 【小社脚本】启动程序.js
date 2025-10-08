@@ -812,7 +812,13 @@ function screenOn() {
 // 无障碍锁屏
 function autoLockScreen() {
     // 无障碍服务调用系统锁屏
-    auto.service.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN);
+    if (device.release >= 8 || device.sdkInt >= 26) {
+        // 安卓8开始
+        auto.service.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN);
+    } else {
+        // 小于安卓8
+        auto.service.performGlobalAction(8);
+    }
 }
 
 
