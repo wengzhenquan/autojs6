@@ -43,6 +43,7 @@ var ignoreList = [
     //"yolov11/",   // yolov11 本地签到模块
 ]
 const g1 = Math.pow(1024, 3); //1G
+const m1 = Math.pow(1024, 2); //1M
 var aMem = device.getAvailMem(); //空闲物理内存
 
 
@@ -526,7 +527,7 @@ function startUpdate() {
             java.lang.System.gc();
             sleep(500);
             aMem = device.getAvailMem();
-            if (!isText && aMem < g1) {
+            if (!isText && aMem < g1 && fileInfo.size > m1) {
                 console.error("可用运存：" + formatFileSize(aMem));
                 console.error("运存过低，下载有失败风险！")
                 console.error("如果报OOM错误，需重启AutoJS6后重新下载")
