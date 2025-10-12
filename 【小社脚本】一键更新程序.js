@@ -526,7 +526,7 @@ function startUpdate() {
             java.lang.System.gc();
             sleep(500);
             aMem = device.getAvailMem();
-            if (aMem < g1) {
+            if (!isText && aMem < g1) {
                 console.error("可用运存：" + formatFileSize(aMem));
                 console.error("运存过低，下载有失败风险！")
                 console.error("如果报OOM错误，需重启AutoJS6后重新下载")
