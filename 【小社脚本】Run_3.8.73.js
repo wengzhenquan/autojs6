@@ -1034,6 +1034,7 @@ function 小程序签到(pram) {
             }
             ableClick(xlxcx.findOne(1000));
         }
+        sleep(1500);
     }
 
     // 因为小程序布局分析可能失效，无法使用小程序的控件来判断，只能尽量等待
