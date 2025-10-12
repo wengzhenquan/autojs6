@@ -974,6 +974,7 @@ function 小程序签到(pram) {
         } else {
             desktopRun();
         }
+        sleep(1500);
     }
 
     if (config.小程序等待延迟)
