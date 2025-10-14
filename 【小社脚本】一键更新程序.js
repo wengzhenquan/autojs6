@@ -68,60 +68,52 @@ var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs
 //加速代理
 var proxys = [
 
-    "https://gh.halonice.com/", // 请求时间：0.33s
-    "https://github.xxlab.tech/", // 请求时间：0.34s
-    "https://ghproxy.sakuramoe.dev/", // 请求时间：0.52s
-    "http://gh.927223.xyz/", // 请求时间：0.54s
-    "https://github.chenc.dev/", // 请求时间：0.56s
+    "https://github.xxlab.tech/", // 请求时间：0.44s
+    "https://gh.halonice.com/", // 请求时间：0.45s
+    "https://ghproxy.sakuramoe.dev/", // 请求时间：0.47s
     "https://github.cnxiaobai.com/", // 请求时间：0.60s
-    "https://www.5555.cab/", // 请求时间：0.61s
-    "https://ghfile.geekertao.top/", // 请求时间：0.76s
-    "https://github.dpik.top/", // 请求时间：0.77s
-    "https://gh.bugdey.us.kg/", // 请求时间：0.77s
-    "https://gitproxy.click/", // 请求时间：0.80s
-    "https://gh.padao.fun/", // 请求时间：0.80s
-    "https://gh.catmak.name/", // 请求时间：0.82s
-    "https://github.cn86.dev/", // 请求时间：0.83s
-    "https://gh.llkk.cc/", // 请求时间：0.84s
-    "https://30006000.xyz/", // 请求时间：0.87s
-    "https://git.zeas.cc/", // 请求时间：0.91s
-    "https://gh.39.al/", // 请求时间：1.10s
-    "http://github-proxy.teach-english.tech/", // 请求时间：1.30s
-    "https://github-proxy.memory-echoes.cn/",
+    "http://gh.927223.xyz/", // 请求时间：0.60s
+    "https://ghproxy.053000.xyz/", // 请求时间：0.62s
+    "https://ghfile.geekertao.top/", // 请求时间：0.77s
+    "https://gh.39.al/", // 请求时间：0.78s
+    "https://github.cn86.dev/", // 请求时间：0.80s
+    "https://gh.padao.fun/", // 请求时间：0.81s
+    "https://30006000.xyz/", // 请求时间：0.82s
+    "https://git.zeas.cc/", // 请求时间：0.82s
+    "https://github.chenc.dev/", // 请求时间：0.83s
+
 
 ]
 
 // 备用代理
 var proxys2 = [
-    "https://ghproxy.net/", // 请求时间：1.11s
-    "https://gh-proxy.com/", // 请求时间：0.97s
-    "https://gh.monlor.com/", // 请求时间：0.99s
-    "https://gh.xxooo.cf/", // 请求时间：1.07s
-    "https://git.yylx.win/", // 请求时间：1.23s
-    "https://github-proxy.lixxing.top/", // 请求时间：1.24s
-    "https://ghproxy.mirror.skybyte.me/", // 请求时间：1.24s
-    "https://ghproxy.monkeyray.net/", // 请求时间：1.24s
-    "https://hub.gitmirror.com/", // 请求时间：1.29s
-    "https://gh.b52m.cn/", // 请求时间：1.30s
-    "https://code-hub-hk.freexy.top/", // 请求时间：1.30s
-    "https://gh-proxy.net/", // 请求时间：1.35s
-    "https://gh.noki.icu/", // 请求时间：1.64s
-    "https://proxy.atoposs.com/", // 请求时间：1.64s
-    "https://g.blfrp.cn/", // 请求时间：1.71s
-    "https://ghproxy.053000.xyz/", // 请求时间：1.71s
-    "https://gh.aaa.team/", // 请求时间：1.78s
-    "https://git.669966.xyz/", // 请求时间：1.96s
-    "https://git.951959483.xyz/", // 请求时间：2.34s
-    "https://ghfast.top/", // 请求时间：2.44s
-    "https://gitproxy.127731.xyz/", // 请求时间：2.52s
-    "https://ggg.clwap.dpdns.org/", // 请求时间：3.40s
-    "https://github.ihnic.com/", // 请求时间：3.42s
-    "https://gitproxy1.127731.xyz/", // 请求时间：3.85s
-    "https://github.boringhex.top/", // 请求时间：4.27s
-    "https://ghproxy.mf-dust.dpdns.org/", // 请求时间：4.66s
-    "https://ghproxy.cfd/", // 请求时间：7.04s
-
-
+    "https://gh-proxy.com/", // 请求时间：0.87s
+    "https://ghb.nilive.top/", // 请求时间：0.87s
+    "https://github.dpik.top/", // 请求时间：0.87s
+    "https://gh.catmak.name/", // 请求时间：0.91s
+    "https://gh.llkk.cc/", // 请求时间：0.94s
+    "https://gh.bugdey.us.kg/", // 请求时间：0.95s
+    "https://gh.b52m.cn/", // 请求时间：0.96s
+    "https://gh.xxooo.cf/", // 请求时间：1.02s
+    "https://gh.monlor.com/", // 请求时间：1.02s
+    "https://ghfast.top/", // 请求时间：1.10s
+    "https://git.yylx.win/", // 请求时间：1.15s
+    "https://ghproxy.net/", // 请求时间：1.17s
+    "https://y.whereisdoge.work/", // 请求时间：1.17s
+    "https://ghproxy.mirror.skybyte.me/", // 请求时间：1.20s
+    "https://hub.gitmirror.com/", // 请求时间：1.27s
+    "https://gh-proxy.net/", // 请求时间：1.27s
+    "https://ghproxy.monkeyray.net/", // 请求时间：1.29s
+    "https://code-hub-hk.freexy.top/", // 请求时间：1.35s
+    "https://gh.jdck.fun/", // 请求时间：1.41s
+    "https://proxy.atoposs.com/", // 请求时间：1.45s
+    "https://github-proxy.lixxing.top/", // 请求时间：1.57s
+    "https://gh.aaa.team/", // 请求时间：1.72s
+    "https://gh.noki.icu/", // 请求时间：1.73s
+    "http://github-proxy.teach-english.tech/", // 请求时间：1.88s
+    "https://gh.nilive.top/", // 请求时间：1.90s
+    "https://git.669966.xyz/", // 请求时间：2.08s
+    "https://www.5555.cab/", // 请求时间：2.57s
 
 ]
 
@@ -353,7 +345,7 @@ function checkVersion() {
     log("可用运存：" + formatFileSize(aMem));
 
 
-    for (proxy_index; proxy_index < proxys.length; proxy_index++) {
+    for (proxy_index; proxy_index < proxys.length * 0.5; proxy_index++) {
         let startTime = new Date().getTime();
         let proxy = proxys[proxy_index];
         log('使用加速器：' + proxy);
