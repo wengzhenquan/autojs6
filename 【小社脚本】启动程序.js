@@ -109,6 +109,10 @@ console.reset();
 //consoleShow();
 consoleShow();
 
+runtime.gc;
+java.lang.System.gc();
+wait(() => false, 500);
+
 console.warn("—----->--- Start ---<-----—");
 log(("AutoJS6 版本：").padStart(20) + autojs.versionName)
 log(("微信 Ver：") + String(wchatVersionName).padStart(20))
@@ -119,7 +123,7 @@ log("制造商：" + manufacturer + "，品牌：" + brand);
 log("产品：" + device.product + "，型号：" + device.model);
 log(`设备分辨率：${dwidth}x${dheight}`);
 log("运存：" + formatFileSize(device.getTotalMem()) + "（可用：" + formatFileSize(device.getAvailMem()) + "）");
-
+checkMem();
 //date = nowDate();
 log(`现在是：${date}`);
 console.error(`启动延迟：${getDurTime(date)}`);
@@ -171,6 +175,19 @@ startTimeoutMonitor();
 
 
 wait(() => false, 3000);
+
+// 检查运存
+function checkMem() {
+    const g1 = Math.pow(1024, 3); //1G
+
+    if (device.getAvailMem() < g1) {
+        console.error('可用运存低！');
+        abnormalInterrupt = 0;
+        wait(() => false, 2000);
+        exit();
+        wait(() => false, 2000);
+    }
+}
 
 //AutoJS6版本检查
 function checkAutoJS6() {
