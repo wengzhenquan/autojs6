@@ -826,7 +826,7 @@ function screenOn() {
         wait(() => false, 500);
     }
     //亮屏
-    device.keepScreenDim(maxRuntime);
+    device.keepScreenOn(maxRuntime);
 }
 
 
