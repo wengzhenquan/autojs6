@@ -549,8 +549,12 @@ function toHome() {
 //  连续点击
 function whileClick(obj) {
     try {
-        if (obj && typeof obj === 'string') {
-            while (click(obj));
+        if (obj) {
+            if (typeof obj === 'string' ||
+                obj instanceof UiSelector ||
+                obj instanceof UiObject) {
+                while (click(obj));
+            }
         }
     } catch (e) {}
 }
@@ -1378,7 +1382,7 @@ function updateScript() {
 
         // 下载更新脚本
         var file = null;
-        for (let i = 0; i < proxys.length; i++) {
+        for (let i = 0; i < proxys.length * 0.5; i++) {
             let url = proxys[i] +
                 github_download_url +
                 update_script +
@@ -1490,7 +1494,7 @@ function checkAutoJS6Version() {
     log("正在查询版本更新……")
 
     let autojs6_serverVersion = null;
-    for (let i = 0; i < api_proxys.length * 0.33; i++) {
+    for (let i = 0; i < api_proxys.length * 0.5; i++) {
         let result = null;
 
         let url = api_proxys[i] +
