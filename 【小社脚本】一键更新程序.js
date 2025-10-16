@@ -487,7 +487,7 @@ function startUpdate() {
     log(">>>>>★开始更新★<<<<<")
     log("开始下载文件……")
     log("请不要终止脚本")
-
+    // 文件循环
     for (let j = 0; j < updateList.length; j++) {
         let fileName = updateList[j];
         //忽略更新
@@ -504,7 +504,7 @@ function startUpdate() {
         let ext = files.getExtension(fileName);
         //文本类型
         let isText = textArry.includes(ext);
-        var fileInfo = null;
+        let fileInfo = null;
         if (!isText) {
             console.warn('该文件需要文件校验！')
             fileInfo = getGitHubFileInfo(fileName, 'main');
@@ -512,14 +512,15 @@ function startUpdate() {
         //超时，文本文件5秒，非文本文件使用配置
         let timeoutTimes = isText ? 5 : download_timeout;
 
-        var filebytes = null;
-        let n = 0; //次数
-        while (n < proxys.length * 0.33) {
+        let filebytes = null;
+        // 代理循环
+        for (let n = 0; n < proxys.length * 0.33; n++) {
             runtime.gc;
             java.lang.System.gc();
             sleep(500);
             aMem = device.getAvailMem();
-            if (!isText && aMem < g1 && fileInfo.size > m1) {
+            if (!isText && aMem < g1 &&
+                fileInfo && fileInfo.size > m1) {
                 console.error("可用运存：" + formatFileSize(aMem));
                 console.error("运存过低，下载有失败风险！")
                 console.error("如果报OOM错误，需重启AutoJS6后重新下载")
@@ -571,7 +572,6 @@ function startUpdate() {
                     proxy_index++;
                     //重置
                     if (proxy_index > proxys.length - 1) proxy_index = 0;
-                    n++;
                     continue;
                 }
                 break;
@@ -581,7 +581,6 @@ function startUpdate() {
             proxy_index++;
             //重置
             if (proxy_index > proxys.length - 1) proxy_index = 0;
-            n++;
         }
 
         if (!filebytes || filebytes.length < filemin) {
