@@ -514,7 +514,7 @@ function startUpdate() {
 
         var filebytes = null;
         let n = 0; //次数
-        while (n < proxys.length * 0.5) {
+        while (n < proxys.length * 0.33) {
             runtime.gc;
             java.lang.System.gc();
             sleep(500);
@@ -570,7 +570,7 @@ function startUpdate() {
                     console.error('校验失败，重新下载')
                     proxy_index++;
                     //重置
-                    //if (proxy_index > proxys.length * 0.5) proxy_index = 0;
+                    if (proxy_index > proxys.length - 1) proxy_index = 0;
                     n++;
                     continue;
                 }
@@ -580,7 +580,7 @@ function startUpdate() {
             console.error('下载失败，更换加速器重试');
             proxy_index++;
             //重置
-            // if (proxy_index > proxys.length * 0.5) proxy_index = 0;
+            if (proxy_index > proxys.length - 1) proxy_index = 0;
             n++;
         }
 
