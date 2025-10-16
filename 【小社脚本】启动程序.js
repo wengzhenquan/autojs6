@@ -575,7 +575,10 @@ function clickCenter(obj) {
                 let y = obj.bounds().centerY();
                 //log(x,y)
                 if (x > 0 && y > 0) {
-                    return click(x, y);
+                    let result = click(x, y);
+                    wait(() => false, 500);
+
+                    return result;
                 }
             }
         }
