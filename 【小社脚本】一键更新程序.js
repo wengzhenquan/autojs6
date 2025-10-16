@@ -775,7 +775,7 @@ function getGitHubFileInfo(filePath, branch) {
         thread.interrupt();
         //  let time = (new Date().getTime() - startTime);
         // log("请求时间：" + toSeconds(time));
-        if (result) break;
+        if (result && result.size) break;
     }
     if (result) {
         log('期望文件大小：' + result.size)
