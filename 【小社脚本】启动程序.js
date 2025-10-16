@@ -182,10 +182,6 @@ function checkMem() {
 
     if (device.getAvailMem() < g1) {
         console.error('可用运存低！');
-        abnormalInterrupt = 0;
-        wait(() => false, 2000);
-        exit();
-        wait(() => false, 2000);
     }
 }
 
