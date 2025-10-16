@@ -533,7 +533,6 @@ function startUpdate() {
                 fileName +
                 '?t=' + startTime;
 
-            // github + "/blob/main/" + fileName;
             // log(url);
 
             let thread = threads.start(() => {
