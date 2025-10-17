@@ -1688,7 +1688,7 @@ function unLock() {
                         }
 
                     };
-                    wait(() => false, 500);
+                    wait(() => false, 300);
                 }
                 if (textContains('混合').exists()) {
                     clickCenter(desc('回车').findOne(1000));
