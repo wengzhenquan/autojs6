@@ -576,7 +576,7 @@ function clickCenter(obj) {
                 //log(x,y)
                 if (x > 0 && y > 0) {
                     let result = click(x, y);
-                    wait(() => false, 500);
+                    wait(() => false, 300);
 
                     return result;
                 }
@@ -616,7 +616,7 @@ function ableClick(obj) {
                     // 父控件click
                     result = obj.click();
                 }
-                wait(() => false, 500);
+                wait(() => false, 300);
 
                 return result;
             }
