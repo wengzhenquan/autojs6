@@ -527,7 +527,7 @@ function xcxRegEvent() {
     // 社区APP
     if (!hasRegEvent &&
         wait(() => packageName(xmPckageName).exists(), 2)) {
-        if (descEndsWith("发布会报名").exists)
+        if (descEndsWith("发布会报名").exists())
             hasRegEvent = 1;
 
         if ((text('今天').exists() &&
