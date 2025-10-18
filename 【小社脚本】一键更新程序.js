@@ -68,19 +68,15 @@ var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs
 //加速代理
 var proxys = [
 
-    "https://github.xxlab.tech/", // 请求时间：0.44s
-    "https://gh.halonice.com/", // 请求时间：0.45s
-    "https://ghproxy.sakuramoe.dev/", // 请求时间：0.47s
-    "https://github.cnxiaobai.com/", // 请求时间：0.60s
-    "http://gh.927223.xyz/", // 请求时间：0.60s
-    "https://ghproxy.053000.xyz/", // 请求时间：0.62s
-    "https://ghfile.geekertao.top/", // 请求时间：0.77s
-    "https://gh.39.al/", // 请求时间：0.78s
-    "https://github.cn86.dev/", // 请求时间：0.80s
-    "https://gh.padao.fun/", // 请求时间：0.81s
-    "https://30006000.xyz/", // 请求时间：0.82s
-    "https://git.zeas.cc/", // 请求时间：0.82s
-    "https://github.chenc.dev/", // 请求时间：0.83s
+    "https://ghproxy.sakuramoe.dev/", // 请求时间：0.44s
+    "https://www.5555.cab/", // 请求时间：0.49s
+    "https://github.xxlab.tech/", // 请求时间：0.50s
+    "https://gh.halonice.com/", // 请求时间：0.53s
+    "http://gh.927223.xyz/", // 请求时间：0.64s
+    "https://github.chenc.dev/", // 请求时间：0.98s
+    "http://github-proxy.teach-english.tech/", // 请求时间：0.65s
+    "https://github.cnxiaobai.com/", // 请求时间：0.79s
+
 
 
 ]
@@ -117,7 +113,7 @@ var proxys2 = [
 
 ]
 
-
+const proxys_use = 0.33;
 
 // 打乱并整合两个数组
 processArrays(proxys, proxys2);
@@ -345,7 +341,7 @@ function checkVersion() {
     log("可用运存：" + formatFileSize(aMem));
 
 
-    for (proxy_index; proxy_index < proxys.length * 0.5; proxy_index++) {
+    for (proxy_index; proxy_index < proxys.length * proxys_use; proxy_index++) {
         let startTime = new Date().getTime();
         let proxy = proxys[proxy_index];
         log('使用加速器：' + proxy);
@@ -514,7 +510,7 @@ function startUpdate() {
 
         let filebytes = null;
         // 代理循环
-        for (let n = 0; n < proxys.length * 0.33; n++) {
+        for (let n = 0; n < proxys.length * proxys_use; n++) {
             runtime.gc;
             java.lang.System.gc();
             sleep(500);

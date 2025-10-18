@@ -1137,19 +1137,15 @@ function checkConfig() {
 //加速代理
 var proxys = [
 
-    "https://github.xxlab.tech/", // 请求时间：0.44s
-    "https://gh.halonice.com/", // 请求时间：0.45s
-    "https://ghproxy.sakuramoe.dev/", // 请求时间：0.47s
-    "https://github.cnxiaobai.com/", // 请求时间：0.60s
-    "http://gh.927223.xyz/", // 请求时间：0.60s
-    "https://ghproxy.053000.xyz/", // 请求时间：0.62s
-    "https://ghfile.geekertao.top/", // 请求时间：0.77s
-    "https://gh.39.al/", // 请求时间：0.78s
-    "https://github.cn86.dev/", // 请求时间：0.80s
-    "https://gh.padao.fun/", // 请求时间：0.81s
-    "https://30006000.xyz/", // 请求时间：0.82s
-    "https://git.zeas.cc/", // 请求时间：0.82s
-    "https://github.chenc.dev/", // 请求时间：0.83s
+    "https://ghproxy.sakuramoe.dev/", // 请求时间：0.44s
+    "https://www.5555.cab/", // 请求时间：0.49s
+    "https://github.xxlab.tech/", // 请求时间：0.50s
+    "https://gh.halonice.com/", // 请求时间：0.53s
+    "http://gh.927223.xyz/", // 请求时间：0.64s
+    "https://github.chenc.dev/", // 请求时间：0.98s
+    "http://github-proxy.teach-english.tech/", // 请求时间：0.65s
+    "https://github.cnxiaobai.com/", // 请求时间：0.79s
+
 
 ]
 
@@ -1187,7 +1183,8 @@ var proxys2 = [
 
 ]
 
-
+const proxys_use = 0.33;
+var proxy_index = 0;
 // 打乱并整合两个数组
 processArrays(proxys, proxys2);
 
@@ -1236,8 +1233,8 @@ function checkVersion() {
 
     //远程version文件数据
     log("正在查询版本更新……")
-    for (let i = 0; i < proxys.length * 0.5; i++) {
-        let url = proxys[i] +
+    for (proxy_index; proxy_index < proxys.length * proxys_use; proxy_index++) {
+        let url = proxys[proxy_index] +
             github_download_url +
             'version' +
             '?t=' + new Date().getTime();
@@ -1381,8 +1378,8 @@ function updateScript() {
 
         // 下载更新脚本
         var file = null;
-        for (let i = 0; i < proxys.length * 0.5; i++) {
-            let url = proxys[i] +
+        for (proxy_index; proxy_index < proxys.length * proxys_use; proxy_index++) {
+            let url = proxys[proxy_index] +
                 github_download_url +
                 update_script +
                 '?t=' + new Date().getTime();
