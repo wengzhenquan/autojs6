@@ -207,14 +207,16 @@ var api_proxys = [
     "https://ghm.078465.xyz/",
     "http://gh.927223.xyz/",
     "https://gh.noki.icu/",
-    "https://gh.qninq.cn/",
     "https://gh.llkk.cc/",
-    "https://gh-proxy.com/",
     "https://xiazai.de/",
     "https://99z.top/",
-    "https://ghproxy.vansour.top/",
     "https://ghpxy.hwinzniej.top/",
     "https://github.cn86.dev/",
+    "https://githubproxy.cc/",
+    "https://gh-proxy.com/",
+    "https://hk.gh-proxy.com/",
+    "https://cdn.gh-proxy.com/",
+
 
 
     "https://j.1win.ggff.net/",
@@ -223,6 +225,7 @@ var api_proxys = [
     "https://jiashu.1win.eu.org/",
     "https://j.1win.ip-ddns.com/",
     "https://j.1win.ddns-ip.net/",
+
 
 ]
 
