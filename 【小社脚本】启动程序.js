@@ -373,7 +373,7 @@ function isGestureMode() {
     // 将高度转换为dp
     const navBarHeightDp = navBarHeight * 160 / device.density;
     // 手势模式下导航栏高度通常小于48
-    return navBarHeightDp < 40;
+    return navBarHeightDp < 35;
 }
 
 // 使用示例
