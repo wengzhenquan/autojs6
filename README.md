@@ -187,7 +187,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
        程序有两种识别方式，1本地YOLO签到识图，2服务器签到识图。  
        原理都是先截图，让ai去识别图片(截图会保存在tmp目录下）。  
    ``` 
-   * 本地YOLO识图: 1 $\color{red}{(推荐，识别成功率90%)}$：
+   * 本地YOLO识图: 1， $\color{red}{(推荐，识别成功率95%)}$：
      * 需 $\color{red}{安装Yolo-plugin.apk}$插件，文件在yolov11目录下。($\color{red}{若没看到文件，可下滑刷新}$) 
     
    * 本地YOLO识图: 0(不推荐)：
