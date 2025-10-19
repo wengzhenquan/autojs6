@@ -817,6 +817,10 @@ function processArrays(arr1, arr2) {
 // 点亮屏幕
 function screenOn() {
     //屏幕点亮
+    
+    device.wakeUpIfNeeded();
+    device.wakeUp();
+    
     let m = 20;
     while (!device.isScreenOn() && m--) {
         // 设备激活
@@ -1257,7 +1261,7 @@ var proxys2 = [
 
 ]
 
-const proxys_use = 0.2;// 使用代理的数量
+const proxys_use = 0.2; // 使用代理的数量
 var proxy_index = 0;
 // 打乱并整合两个数组
 processArrays(proxys, proxys2);
