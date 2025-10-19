@@ -287,6 +287,8 @@ function blankMaintain() {
                 console.error("小米社区APP打开了空白页!")
                 console.error("可能社区在维护！")
                 console.error("请稍后再试")
+                console.error("——————")
+                console.error("若是误报，可以从配置关闭[空白页检查]")
                 abnormalInterrupt = 0;
                 wait(() => false, 2000);
                 exit();
