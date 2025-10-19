@@ -85,7 +85,7 @@ const statusBarHeight = ui.statusBarHeight;
 // 导航栏高度
 const navBarHeight = getNavigationBarHeight();
 
-// 底部可用高度
+// 底部可用起始位置(就是虚拟按键上方，或者(隐藏)手势提示线位置）
 const windowHeight = getWindowHeight();
 
 // 判断当前是否为全面屏手势模式
@@ -358,7 +358,7 @@ function getNavigationBarHeight() {
     return 0;
 }
 
-// 计算底部可用高度（核心实现）
+// 计算底部可用高度(就是虚拟按键上方，或者(隐藏)手势提示线位置）
 function getWindowHeight() {
     // 方法1：通过系统资源计算
     // let navBarHeight = getNavigationBarHeight();
