@@ -206,6 +206,8 @@ var api_proxys = [
     "https://tvv.tw/",
     "https://ghm.078465.xyz/",
     "http://gh.927223.xyz/",
+    "https://github.cnxiaobai.com/", // 请求时间：0.73s
+    "https://gh.qninq.cn/", // 请求时间：0.97s
     "https://gh.noki.icu/",
     "https://gh.llkk.cc/",
     "https://xiazai.de/",
