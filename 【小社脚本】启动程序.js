@@ -282,8 +282,8 @@ function blankMaintain() {
                 if (xmpl < 6) sleep(300);
             }
 
-            if (xmpl > 0 && xmpl < 6 &&
-                packageName(xmPckageName).exists()) {
+            if (packageName(xmPckageName).exists() &&
+                xmpl > 0 && xmpl < 6) {
                 console.error("小米社区APP打开了空白页!")
                 console.error("可能社区在维护！")
                 console.error("请稍后再试")
