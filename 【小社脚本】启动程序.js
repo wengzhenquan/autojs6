@@ -86,7 +86,7 @@ const statusBarHeight = ui.statusBarHeight;
 const navBarHeight = getNavigationBarHeight();
 
 // 底部可用最低位置(就是导航栏上方，(隐藏)手势提示线位置，或者虚拟按键上方）
-const navBarY = getNavBarY();
+const navBarY = dheight - navBarHeight;
 
 // 判断当前是否为全面屏手势模式
 const gestureMode = isGestureMode();
@@ -358,14 +358,6 @@ function getNavigationBarHeight() {
     return 0;
 }
 
-// 计算底部可用最低位置(就是导航栏上方，(隐藏)手势提示线位置，或者虚拟按键上方）
-function getNavBarY() {
-    // 方法1：通过系统资源计算
-    //   let navBarHeight = getNavigationBarHeight();
-    let calculatedHeight = dheight - navBarHeight;
-
-    return calculatedHeight;
-}
 
 // 判断当前是否为全面屏手势模式
 function isGestureMode() {
