@@ -273,7 +273,7 @@ function startTimeoutMonitor() {
 function blankMaintain() {
     if (config && config.空白页检查) {
         threads.start(() => {
-            let n = 10;
+            let n = 20;
             let xmpl = 0;
             while (packageName(xmPckageName).exists() &&
                 xmpl < 6 && n--) {
