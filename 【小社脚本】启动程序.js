@@ -282,7 +282,8 @@ function blankMaintain() {
                 if (xmpl < 6) sleep(300);
             }
 
-            if (xmpl > 0 && xmpl < 6) {
+            if (xmpl > 0 && xmpl < 6 &&
+                packageName(xmPckageName).exists()) {
                 console.error("小米社区APP打开了空白页!")
                 console.error("可能社区在维护！")
                 console.error("请稍后再试")
@@ -290,6 +291,7 @@ function blankMaintain() {
                 wait(() => false, 2000);
                 exit();
                 wait(() => false, 2000);
+
             }
         });
     }
@@ -817,10 +819,10 @@ function processArrays(arr1, arr2) {
 // 点亮屏幕
 function screenOn() {
     //屏幕点亮
-    
+
     device.wakeUpIfNeeded();
     device.wakeUp();
-    
+
     let m = 20;
     while (!device.isScreenOn() && m--) {
         // 设备激活
