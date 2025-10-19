@@ -86,7 +86,7 @@ const statusBarHeight = ui.statusBarHeight;
 const navBarHeight = getNavigationBarHeight();
 
 // 底部可用最低位置(就是导航栏上方，(隐藏)手势提示线位置，或者虚拟按键上方）
-const windowHeight = getWindowHeight();
+const navBarY = getNavBarY();
 
 // 判断当前是否为全面屏手势模式
 const gestureMode = isGestureMode();
@@ -131,7 +131,7 @@ log(("Android 版本：").padStart(0) + device.release +
 log("制造商：" + manufacturer + "，品牌：" + brand);
 log("产品：" + device.product + "，型号：" + device.model);
 log(`设备分辨率：${dwidth}x${dheight}`);
-log(`导航模式：${gestureMode ? "全面手势" : "虚拟按键"}（H：${windowHeight}`);
+log(`导航模式：${gestureMode ? "全面手势" : "虚拟按键"}（H：${navBarY}`);
 log("运存：" + formatFileSize(device.getTotalMem()) + "（可用：" + formatFileSize(device.getAvailMem()) + "）");
 checkMem();
 //date = nowDate();
@@ -359,7 +359,7 @@ function getNavigationBarHeight() {
 }
 
 // 计算底部可用最低位置(就是导航栏上方，(隐藏)手势提示线位置，或者虚拟按键上方）
-function getWindowHeight() {
+function getNavBarY() {
     // 方法1：通过系统资源计算
     //   let navBarHeight = getNavigationBarHeight();
     let calculatedHeight = dheight - navBarHeight;
@@ -377,13 +377,13 @@ function isGestureMode() {
 }
 
 // 使用示例
-// let windowHeight = getWindowHeight();
+// let navBarY = getWindowHeight();
 // let mode = isGestureMode() ? "全面屏手势" : "虚拟按键";
 
 // console.log("屏幕高度: " + dheight + "px");
 // console.log("状态栏高度: " + statusBarHeight + "px");
 // console.log("导航栏高度: " + getNavigationBarHeight() + "px");
-// console.log("底部可用高度: " + windowHeight + "px");
+// console.log("底部可用高度: " + navBarY + "px");
 // console.log("当前模式: " + mode);
 
 

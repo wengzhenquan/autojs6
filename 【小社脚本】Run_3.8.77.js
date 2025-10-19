@@ -847,7 +847,7 @@ function 解锁() {
                 //     click(dwidth * 0.734, dheight * (0.895 + 0.008 * i));
                 // }
 
-                click(dwidth * 0.734, windowHeight - cY(80));
+                click(dwidth * 0.734, navBarY - cY(80));
             }
             sleep(1500);
         }
@@ -1126,11 +1126,11 @@ function 小程序签到(pram) {
         sleep(1500)
         toastWarn("只能摸黑操作，点击坐标试试看……")
         // 先点击"论坛"，以防页面卡顿
-        click(dwidth * 0.15, windowHeight - cY(30));
+        click(dwidth * 0.15, navBarY - cY(30));
         sleep(1500)
         // 点击"我的"
         toastWarn("[不确定操作]摸黑→点击[我的]！")
-        click(dwidth * 0.85, windowHeight - cY(30));
+        click(dwidth * 0.85, navBarY - cY(30));
 
         // 确保页面加载完成，多等会儿吧！
         // 不能识别，只能盲目等待了！
