@@ -80,7 +80,16 @@ const brand = device.brand;
 //   .match(/\d[\s\S]*/) || [""])[0];
 
 // 状态栏高度
-const sbH = ui.statusBarHeight;
+const statusBarHeight = ui.statusBarHeight;
+
+// 导航栏高度
+const navBarHeight = getNavigationBarHeight();
+
+// 底部可用高度
+const windowHeight = getWindowHeight();
+
+// 判断当前是否为全面屏手势模式
+const gestureMode = isGestureMode();
 
 // 截图验证码最高y
 global.picY = null;
@@ -122,6 +131,7 @@ log(("Android 版本：").padStart(0) + device.release +
 log("制造商：" + manufacturer + "，品牌：" + brand);
 log("产品：" + device.product + "，型号：" + device.model);
 log(`设备分辨率：${dwidth}x${dheight}`);
+log(`导航模式：${gestureMode ? "全面手势" : "虚拟按键"}（H：${windowHeight}`);
 log("运存：" + formatFileSize(device.getTotalMem()) + "（可用：" + formatFileSize(device.getAvailMem()) + "）");
 checkMem();
 //date = nowDate();
@@ -333,6 +343,51 @@ function tryRefresh() {
 }
 
 
+//------------ 屏幕高度 ----------//
+
+// 获取导航栏高度（虚拟按键/手势条高度）
+function getNavigationBarHeight() {
+    try {
+        // 方法1：通过系统资源获取
+        let resources = context.getResources();
+        let resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            return resources.getDimensionPixelSize(resourceId);
+        }
+    } catch (e) {}
+    return 0;
+}
+
+// 计算底部可用高度（核心实现）
+function getWindowHeight() {
+    // 方法1：通过系统资源计算
+    // let navBarHeight = getNavigationBarHeight();
+    let calculatedHeight = dheight - navBarHeight;
+
+    return calculatedHeight;
+}
+
+// 判断当前是否为全面屏手势模式
+function isGestureMode() {
+    //  let navBarHeight = getNavigationBarHeight();
+    // 将高度转换为dp
+    const navBarHeightDp = navBarHeight * 160 / device.density;
+    // 手势模式下导航栏高度通常小于48
+    return navBarHeightDp < 40;
+}
+
+// 使用示例
+// let windowHeight = getWindowHeight();
+// let mode = isGestureMode() ? "全面屏手势" : "虚拟按键";
+
+// console.log("屏幕高度: " + dheight + "px");
+// console.log("状态栏高度: " + statusBarHeight + "px");
+// console.log("导航栏高度: " + getNavigationBarHeight() + "px");
+// console.log("底部可用高度: " + windowHeight + "px");
+// console.log("当前模式: " + mode);
+
+
+
 //------------ 左下角“停止脚本”按钮 ----------//
 //悬浮窗停止按钮
 function stopButton() {
@@ -447,7 +502,7 @@ function consoleMin() {
         !config.悬浮窗控制台_签到时最小化 &&
         global.picY) {
 
-        const STATUS_BAR_HEIGHT = ui.statusBarHeight;
+        const STATUS_BAR_HEIGHT = statusBarHeight;
         const BORDER_OFFSET = dpToPx2(12);
         let y = 0;
         try {
