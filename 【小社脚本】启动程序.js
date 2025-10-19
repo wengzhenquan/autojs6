@@ -1467,7 +1467,7 @@ function updateScript() {
                 update_script +
                 '?t=' + new Date().getTime();
 
-            log('使用加速器：' + proxys[i]);
+            log('使用加速器：' + proxys[proxy_index]);
             //log(url);
 
             let thread = threads.start(() => {
