@@ -29,8 +29,8 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
     4、文烨[优质]{由Marisa_kristi转发}：
         订阅地址：https://mar.haxtop.ggff.net/?sub=sub.keaeye.icu
         
-           
-    5、天诚[优质]：
+    /**       
+    5、天诚[优质](节点不行了，作者太烂不维护了，等着吧)：
         个人专属订阅器：https://getsub.classelivre.eu.org/sub
         使用方法：浏览器打开地址，点击[复制订阅链接]按钮，获得个人专属订阅地址（24小时有效)。
         
@@ -42,7 +42,7 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
         https://mar.haxtop.ggff.net/?sub=baidu.sosorg.nyc.mn
         https://mar.haxtop.ggff.net/?sub=google.sosorg.nyc.mn
         
-        
+     **/   
         
     注：节点名称上带有百分比%表示欺诈度。
         百分比值越低，IP越纯净。
@@ -106,7 +106,9 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
     5、部分软件官网地址：
         1)、Karing(无墙）：https://karing.app/
         
-        2)、Hiddify(无墙)：https://hiddify.com/
+        2)、Hiddify(无墙)：
+            https://hiddifycn.org/
+            https://hiddify.com/
             github：https://github.com/hiddify/hiddify-app/releases
  
         3)、v2ray系列（广告页面底部，跳转github）：
