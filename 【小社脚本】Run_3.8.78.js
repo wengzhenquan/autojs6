@@ -1557,7 +1557,7 @@ function getClipPic() {
     };
     // sleep(1000);
 
-    let n = 10;
+    let n = 5;
     let tida = null;
     let ycdj = null;
     do {
