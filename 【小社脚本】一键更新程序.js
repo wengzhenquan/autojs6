@@ -33,7 +33,7 @@ console.launch();
 var download_timeout = 30;
 
 // 是否更新代理池(0=不更新(使用内置代理)，1=可用代理数量少时更新)
-const update_proxy = 1;
+const update_proxy = 0;
 
 // 最小文件大小(B)，小于这个值都认为错误，将重试
 var filemin = 500;
@@ -1440,8 +1440,8 @@ function hasProperComma(line) {
 }
 
 // 更新代理池
-if (update_proxy)
-    updateProxys();
+//if (update_proxy)
+updateProxys();
 
 //检查更新
 checkVersion();
