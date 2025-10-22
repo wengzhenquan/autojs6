@@ -370,7 +370,7 @@ function skipAd() {
         if (n > 1 && wait(() => textStartsWith("跳过").exists(), 5, 200)) {
             ableClick(textStartsWith("跳过"));
             log("跳过了开屏广告!");
-            sleep(2000);
+            sleep(2500);
         }
 
         let adClose = className("android.widget.ImageView")
@@ -384,8 +384,7 @@ function skipAd() {
             ableClick('以后再说');
             log("关闭了升级提示!");
         }
-
-        sleep(500);
+        if (n > 0) sleep(500);
     }
 }
 
@@ -1163,7 +1162,7 @@ function getXcXButton() {
         return false;
 
     try {
-        
+
         let button = JSON.parse(files.read(xcx_bt_center));
 
         if (button.button_name) {
@@ -1251,7 +1250,7 @@ function mhqdClick() {
                 click(dwidth * 0.90, dheight * (0.47 + 0.01 * i));
             }
         }
-        
+
     }
 
     //  sleep(1000);
