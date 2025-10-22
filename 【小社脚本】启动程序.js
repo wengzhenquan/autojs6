@@ -94,6 +94,23 @@ const navBarY = dheight - navBarHeight;
 // 判断当前是否为全面屏手势模式
 const gestureMode = isGestureMode();
 
+// 代理存储桶
+const sto_gh_proxys = storages.create('gh_proxys');
+// 代理来源
+const proxySources = [
+    "https://api.akams.cn/github",
+    "https://git.mxg.pub/api/github/list"
+];
+
+// 测试地址
+const testUrls = [
+    //访问、下载文件地址
+    "https://raw.githubusercontent.com/wengzhenquan/autojs6/refs/heads/main/version",
+    // GitHub api 查询地址
+    "https://api.github.com/repos/wengzhenquan/autojs6/contents/version?ref=main"
+];
+
+
 // 截图验证码最高y
 global.picY = null;
 
@@ -170,6 +187,8 @@ events.on("exit", function() {
 
 //------------ 前置任务 ----------//
 
+if (!config || !config.更新代理池)
+    storages.remove("gh_proxys")
 
 //AutoJS6版本检查
 checkAutoJS6();
@@ -1364,6 +1383,205 @@ var api_proxys = [
 // 打乱数组
 shuffleArray(api_proxys);
 
+//--------------- 更新代理池 ---------
+
+// 更新代理池
+function updateProxys() {
+    console.info(">>>>>→ 代理池详情 ←<<<<<")
+
+    log("--→内置代理池数量：")
+
+    log("proxys：" + proxys.length)
+    log("api_proxys：" + api_proxys.length)
+
+    var gh_p = sto_gh_proxys.get("gh_p");
+    var gh_api_p = sto_gh_proxys.get("gh_api_p");
+
+    if (config.更新代理池) {
+        if (config.更新代理池 > 1 || !gh_p || !gh_api_p ||
+            gh_p.length < 30 || gh_api_p < 5) {
+            console.info("---→>→ 更新代理池 ←<←---")
+
+            // 存在正在更新的程序，放弃更新
+            if (sto_gh_proxys.get("update")) {
+                console.error("已经存在正在执行的更新");
+                console.error("跳过本次更新");
+                return;
+            }
+            try {
+                sto_gh_proxys.put("update", true);
+                // 1. 获取代理列表
+                var proxyData = fetchProxyList();
+                if (!proxyData || proxyData.length < 1) {
+                    console.error("代理获取失败！");
+                    console.error("将使用内置代理！");
+                    return;
+                }
+                console.info("---->→ 测试代理：")
+
+                // 2. 测试代理（使用多线程加速测试）
+                log("开始测试代理有效性……");
+                let results = testProxies(proxyData, testUrls);
+                log("测试完成！");
+                // 存储代理
+                gh_p = results[0].map(item => item.url);
+                gh_api_p = results[1].map(item => item.url);
+
+                sto_gh_proxys.put("gh_p", gh_p)
+                sto_gh_proxys.put("gh_api_p", gh_api_p)
+
+                log("✅ 代理池更新成功");
+            } catch (e) {} finally {
+                sto_gh_proxys.put("update", false);
+            }
+        }
+
+        if (gh_p && gh_p.length > 10)
+            proxys = gh_p;
+
+        if (gh_api_p && gh_api_p.length > 5)
+            api_proxys = gh_api_p;
+
+        console.info("--→新代理池数量：")
+        log("proxys：" + proxys.length)
+        log("api_proxys：" + api_proxys.length)
+        return;
+
+    }
+
+    storages.remove("gh_proxys")
+
+    // 获取代理列表函数（支持多源请求与去重）
+    function fetchProxyList() {
+        var allUrls = [];
+
+        for (let i = 0; i < proxySources.length; i++) {
+            let url = proxySources[i];
+            try {
+                console.warn("→" + (i + 1) + " 号代理源：");
+                // log('url：' + url)
+                let res = http.get(url, {
+                    timeout: 10 * 1000
+                });
+                if (res.statusCode === 200) {
+                    // log('请求成功！')
+                    let json = res.body.json();
+                    let proxyData = json.data || json;
+                    if (Array.isArray(proxyData)) {
+                        log('成功获取代理数量：' + proxyData.length)
+                        proxyData.forEach(proxy => {
+                            if (proxy.url) allUrls.push(proxy.url);
+                        });
+
+                    }
+                }
+            } catch (e) {
+                console.error(`获取失败！`);
+            }
+        }
+
+        // 使用Set去重 + Array.from转换
+        var uniqueUrls = Array.from(new Set(allUrls));
+
+        return uniqueUrls;
+    }
+
+    // 测试代理函数（多线程版）
+    function testProxies(proxies, testUrls) {
+        var results = [
+            [],
+            []
+        ]; // 存储两个测试地址的结果
+
+        // 创建线程锁
+        var lock = threads.lock();
+
+        // 创建线程池
+        let threadsss = [];
+        proxies.forEach(proxyUrl => {
+            testUrls.forEach((testUrl, index) => {
+                let thread = threads.start(() => {
+                    proxyUrl = proxyUrl.endsWith("/") ? proxyUrl : proxyUrl + "/";
+
+                    let fullUrl = proxyUrl + testUrl;
+                    let result = testSingleProxy(fullUrl);
+                    if (result) {
+                        // 使用锁保护结果数组
+                        lock.lock();
+                        try {
+                            results[index].push({
+                                url: proxyUrl,
+                                time: result.time
+                            });
+                        } finally {
+                            lock.unlock();
+                        }
+                    }
+                });
+                threadsss.push(thread);
+            });
+        });
+
+        // 等待所有线程完成（每个线程最多等待5秒）
+        threadsss.forEach(thread => {
+            thread.join(5000);
+            thread.interrupt();
+        });
+
+        // 按响应时间排序（升序）
+        results[0].sort((a, b) => a.time - b.time);
+        results[1].sort((a, b) => a.time - b.time);
+
+        return results;
+    }
+
+    // 测试单个代理（保持不变）
+    function testSingleProxy(url) {
+        try {
+            let start = new Date().getTime();
+            let separator = url.includes('?') ? '&' : '?';
+            let res = http.get(url + separator + "t=" + start, {
+                timeout: 5000,
+                headers: {
+                    'Cache-Control': 'no-cache',
+                    'Pragma': 'no-cache',
+                    'Expires': '0',
+                    "Connection": "Keep-Alive"
+                },
+            });
+
+            if (res && res.statusCode === 200) {
+                let success = false;
+                let results = res.body.json();
+
+                if (url.includes('api')) {
+                    success = !!(results.size && results.size > 0);
+                } else {
+                    success = !!results.version;
+                }
+
+                if (success) {
+                    return {
+                        time: (new Date().getTime() - start) / 1000
+                    };
+                }
+            }
+        } catch (e) {
+            // 请求失败
+        }
+        return null;
+    }
+
+}
+
+// 同步代理池
+function synProxys() {
+    if (config.更新代理池) {
+        sto_gh_proxys.put("gh_p", proxys)
+        sto_gh_proxys.put("gh_api_p", api_proxys)
+    }
+}
+
 // 检查脚本更新，version文件存在才检查更新。
 function checkVersion() {
     console.info("---→>→脚本检查更新←<←---")
@@ -1372,7 +1590,9 @@ function checkVersion() {
 
     //远程version文件数据
     log("正在查询版本更新……")
-    for (proxy_index; proxy_index < proxys.length * proxys_use; proxy_index++) {
+    let lun = proxys.length * proxys_use;
+    while (lun--) {
+        //  for (proxy_index; proxy_index < lun; proxy_index++) {
         let url = proxys[proxy_index] +
             github_download_url +
             'version' +
@@ -1408,6 +1628,9 @@ function checkVersion() {
             }
             break;
         }
+        // 删除代理
+        proxys.splice(proxy_index, 1);
+        // proxy_index--;
 
     }
 
@@ -1516,8 +1739,10 @@ function updateScript() {
         log("开始下载更新程序：" + update_script)
 
         // 下载更新脚本
+        let lun = proxys.length * proxys_use;
         var file = null;
-        for (proxy_index; proxy_index < proxys.length * proxys_use; proxy_index++) {
+        while (lun--) {
+            //  for (proxy_index; proxy_index < lun; proxy_index++) {
             let url = proxys[proxy_index] +
                 github_download_url +
                 update_script +
@@ -1548,6 +1773,9 @@ function updateScript() {
                 break;
             }
             console.error('下载失败，更换加速器重试');
+            // 删除代理
+            proxys.splice(proxy_index, 1);
+            //  proxy_index--;
 
         }
 
@@ -1629,10 +1857,12 @@ function checkAutoJS6Version() {
     log("正在查询版本更新……")
 
     let autojs6_serverVersion = null;
-    for (let i = 0; i < api_proxys.length * 0.5; i++) {
+    let lun = api_proxys.length * 0.5;
+    while (lun--) {
+        // for (let i = 0; i < api_proxys.length * 0.5; i++) {
         let result = null;
 
-        let url = api_proxys[i] +
+        let url = api_proxys[0] +
             autoJS6_update +
             '?t=' + new Date().getTime();
 
@@ -1658,6 +1888,10 @@ function checkAutoJS6Version() {
 
         if (result && autojs6_serverVersion)
             break;
+
+        // 删除代理
+        api_proxys.splice(0, 1);
+        // i--;
     }
 
     if (!autojs6_serverVersion) {
@@ -2390,6 +2624,11 @@ function main() {
     // 系统修改
     systemSetting();
 
+
+    // 更新代理池
+    if (ableUpdate)
+        updateProxys();
+
     // 检查AutoJS6更新
     if (config && config.检查AutoJS6更新 && ableUpdate) {
         checkAutoJS6Version();
@@ -2410,6 +2649,9 @@ function main() {
     //屏幕解锁
     unLock();
 
+    // 同步代理
+    if (ableUpdate)
+        synProxys();
 
     try {
         // 再次加载悬浮窗控制台配置，以便纠正悬浮窗控制台错误
