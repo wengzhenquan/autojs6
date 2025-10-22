@@ -332,6 +332,22 @@ function processArrays(arr1, arr2) {
     arr2.forEach(item => arr1.push(item));
 }
 
+// 分割打乱组合
+function sliceShuffleArrays(arr, splitIndex) {
+    if (splitIndex > arr.length) {
+        splitIndex = arr.length * 0.5;
+    }
+    // 第一段：从开头到 splitIndex（不包含 splitIndex）
+    let part1 = arr.slice(0, splitIndex);
+    // log(part1)
+    // 第二段：从 splitIndex 到数组末尾
+    let part2 = arr.slice(splitIndex);
+
+    processArrays(part1, part2);
+
+    return part1;
+}
+
 
 
 //对比版本大小，前面的大，返回1，相等0，后面大-1
@@ -454,11 +470,13 @@ function updateProxys() {
             }
         }
 
-        if (gh_p && gh_p.length > 10)
-            proxys = gh_p;
+        if (gh_p && gh_p.length > 10) {
+            proxys = sliceShuffleArrays(gh_p, 10);
+        }
 
-        if (gh_api_p && gh_api_p.length > 5)
-            api_proxys = gh_api_p;
+        if (gh_api_p && gh_api_p.length > 5) {
+            api_proxys = sliceShuffleArrays(gh_api_p, 5);
+        }
 
         console.info("--→新代理池数量：")
         log("proxys：" + proxys.length)
