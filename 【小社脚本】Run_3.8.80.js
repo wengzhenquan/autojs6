@@ -385,7 +385,7 @@ function skipAd() {
             log("关闭了升级提示!");
         }
 
-        //sleep(1000);
+        sleep(1000);
     }
 }
 
