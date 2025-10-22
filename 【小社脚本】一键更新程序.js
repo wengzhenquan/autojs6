@@ -33,7 +33,7 @@ console.launch();
 var download_timeout = 30;
 
 // 是否更新代理池(0=不更新(使用内置代理)，1=可用代理数量少时更新)
-const update_proxy = 0;
+const update_proxy = 1;
 
 // 最小文件大小(B)，小于这个值都认为错误，将重试
 var filemin = 500;
@@ -594,10 +594,10 @@ function updateProxys() {
 
 // 同步代理池
 function synProxys() {
-    // if (config.更新代理池) {
-    sto_gh_proxys.put("gh_p", proxys)
-    sto_gh_proxys.put("gh_api_p", api_proxys)
-    // }
+    if (update_proxy) {
+        sto_gh_proxys.put("gh_p", proxys)
+        sto_gh_proxys.put("gh_api_p", api_proxys)
+    }
 }
 
 
@@ -1450,8 +1450,8 @@ checkVersion();
 startUpdate()
 
 // 同步代理
-if (update_proxy)
-    synProxys();
+//if (update_proxy)
+synProxys();
 
 //自动下滑更新列表
 
