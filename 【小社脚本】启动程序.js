@@ -1413,7 +1413,7 @@ function updateProxys() {
     var gh_p = sto_gh_proxys.get("gh_p");
     var gh_api_p = sto_gh_proxys.get("gh_api_p");
 
-    if (config.更新代理池) {
+    if (config && config.更新代理池) {
         if (config.更新代理池 > 1 || !gh_p || !gh_api_p ||
             gh_p.length < 30 || gh_api_p < 5) {
             console.info("---→>→ 更新代理池 ←<←---")
@@ -1595,7 +1595,7 @@ function updateProxys() {
 
 // 同步代理池
 function synProxys() {
-    if (config.更新代理池) {
+    if (config && config.更新代理池) {
         sto_gh_proxys.put("gh_p", proxys)
         sto_gh_proxys.put("gh_api_p", api_proxys)
     }
@@ -2663,14 +2663,12 @@ function main() {
         wait(() => false, 1000);
     }
 
-
-
-    //屏幕解锁
-    unLock();
-
     // 同步代理
     if (ableUpdate)
         synProxys();
+
+    //屏幕解锁
+    unLock();
 
     try {
         // 再次加载悬浮窗控制台配置，以便纠正悬浮窗控制台错误
