@@ -32,7 +32,7 @@ console.launch();
 //      不建议改成小于5
 var download_timeout = 30;
 
-// 是否更新代理池
+// 是否更新代理池(0=不更新(使用内置代理)，1=可用代理数量少时更新)
 const update_proxy = 1;
 
 // 最小文件大小(B)，小于这个值都认为错误，将重试
