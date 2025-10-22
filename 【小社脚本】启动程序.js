@@ -17,6 +17,9 @@ https://github.com/wengzhenquan/autojs6
 
 //auto.waitFor();
 
+device.wakeUpIfNeeded();
+device.wakeUp();
+
 //程序运行文件标志
 const launch_locked = "./tmp/launch_main_locked";
 files.ensureDir(launch_locked)
