@@ -74,6 +74,12 @@ const sto_gh_proxys = storages.create('gh_proxys');
 if (!update_proxy)
     storages.remove("gh_proxys")
 
+if (update_proxy) {
+    events.on("exit", () => {
+        sto_gh_proxys.put("update", false);
+    });
+}
+
 // 代理来源
 const proxySources = [
     "https://api.akams.cn/github",
@@ -537,7 +543,7 @@ function updateProxys() {
         proxies.forEach(proxyUrl => {
             testUrls.forEach((testUrl, index) => {
                 let thread = threads.start(() => {
-                  //  proxyUrl = proxyUrl.endsWith("/") ? proxyUrl : proxyUrl + "/";
+                    //  proxyUrl = proxyUrl.endsWith("/") ? proxyUrl : proxyUrl + "/";
                     proxyUrl = proxyUrl.replace(/\/+$/, '') + '/';
 
                     let fullUrl = proxyUrl + testUrl;
