@@ -1519,7 +1519,8 @@ function updateProxys() {
         proxies.forEach(proxyUrl => {
             testUrls.forEach((testUrl, index) => {
                 let thread = threads.start(() => {
-                    proxyUrl = proxyUrl.endsWith("/") ? proxyUrl : proxyUrl + "/";
+                    //  proxyUrl = proxyUrl.endsWith("/") ? proxyUrl : proxyUrl + "/";
+                    proxyUrl = proxyUrl.replace(/\/+$/, '') + '/';
 
                     let fullUrl = proxyUrl + testUrl;
                     let result = testSingleProxy(fullUrl);
