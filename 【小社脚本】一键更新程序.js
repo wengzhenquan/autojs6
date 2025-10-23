@@ -918,51 +918,50 @@ function startUpdate() {
                 continue;
 
             }
+        }
+
+        if (!files.exists(savePath)) {
+            console.error("下载失败");
+            errorList.push(fileName);
+            //continue;
+        } else successList.push(fileName);
+
+        if (fileName.includes('config') && needMergeConfigs) {
+            log("需更新配置文件");
+
+            // 备份旧文件
+            let oldName = name + ".old." + ext;
+            fixConfigFile('./' + fileName, './' + oldName)
+            wait(() => false, 500);
+            console.error("旧" + fileName + " 已重命名为 " + oldName);
+            files.remove('./' + fileName)
+            wait(() => false, 300);
 
 
-            if (!files.exists(savePath)) {
-                console.error("下载失败");
-                errorList.push(fileName);
-                //continue;
-            } else successList.push(fileName);
-
-            if (fileName.includes('config') && needMergeConfigs) {
-                log("需更新配置文件");
-
-                // 备份旧文件
-                let oldName = name + ".old." + ext;
-                fixConfigFile('./' + fileName, './' + oldName)
-                wait(() => false, 500);
-                console.error("旧" + fileName + " 已重命名为 " + oldName);
-                files.remove('./' + fileName)
-                wait(() => false, 300);
+            //新文件名
+            let newName = "tmp/" + name + ".new." + ext;
 
 
-                //新文件名
-                let newName = "tmp/" + name + ".new." + ext;
+            console.info("开始尝试自动搬运配置");
+            console.info("[" + oldName + "] + [" + newName + "]");
+            console.info("===>>> [" + fileName + "]");
 
-
-                console.info("开始尝试自动搬运配置");
-                console.info("[" + oldName + "] + [" + newName + "]");
-                console.info("===>>> [" + fileName + "]");
-
-                let merge = false;
-                try {
-                    // 将旧配置里的值，同步到新配置
-                    // 以新配置作为模板，按照新配置文件的排版
-                    // 两个文件合并生成新���件
-                    merge = mergeConfigs('./' + oldName,
-                        './' + newName, './' + fileName);
-                } catch (e) {
-                    console.error("自动搬运旧配置失败！");
-                    console.error("请自行搬运 锁屏密码 等配置");
-                }
-                if (merge) {
-                    console.error("配置已自动更新成最新版！");
-                    console.error("锁屏密码等配置已自动更新");
-                }
-
+            let merge = false;
+            try {
+                // 将旧配置里的值，同步到新配置
+                // 以新配置作为模板，按照新配置文件的排版
+                // 两个文件合并生成新���件
+                merge = mergeConfigs('./' + oldName,
+                    './' + newName, './' + fileName);
+            } catch (e) {
+                console.error("自动搬运旧配置失败！");
+                console.error("请自行搬运 锁屏密码 等配置");
             }
+            if (merge) {
+                console.error("配置已自动更新成最新版！");
+                console.error("锁屏密码等配置已自动更新");
+            }
+
         }
     }
     log("----------------------------");
@@ -1078,7 +1077,7 @@ function getGitHubFileInfo(filePath, branch) {
             result = response.json;
 
             //  let time = (new Date().getTime() - startTime);
-            // log("请求时间：" + toSeconds(time));
+            // log("请求时间��" + toSeconds(time));
             if (result && result.size) break;
 
         } catch (e) {
