@@ -1041,7 +1041,7 @@ const HttpUtils = {
 
             let jsons = null;
             try {
-                jsons = JSON.parse(strings)
+                jsons = JSON.parse(string)
             } catch (e) {}
 
             // 返回响应对象
