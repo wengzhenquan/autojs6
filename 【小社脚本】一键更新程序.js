@@ -831,7 +831,7 @@ function startUpdate() {
         let ext = files.getExtension(fileName);
         let savePath = files.cwd() + "/" + fileName;
 
-        let needMergeConfigs = false;//需要合并配置
+        let needMergeConfigs = false; //需要合并配置
         if (fileName.includes('config') && files.exists('./' + fileName)) {
             savePath = files.cwd() + "/" + name + ".new." + ext;
             needMergeConfigs = true;
@@ -848,6 +848,7 @@ function startUpdate() {
 
         let filebytes = null;
         // 代理循环
+        let r404 = 0;
         let lun = proxys.length * proxys_use;
         while (lun--) {
             //  for (let n = 0; n < lun; n++) {
@@ -884,7 +885,18 @@ function startUpdate() {
                 var response = client.newCall(request).execute();
 
                 // 检查响应状态
-                if (!response.isSuccessful()) throw new Error("HTTP错误: " + response.code());
+                if (!response.isSuccessful()) {
+                    if (response.code() === 404) {
+                        if (r404 > 2) {
+                            console.error("GitHub上找不到该文件")
+                            console.error("可能被作者删除")
+                            console.error("请等5分钟后再试")
+                            break;
+                        }
+                        r404++;
+                    }
+                    throw new Error("HTTP错误: " + response.code());
+                }
 
                 var responseBody = response.body();
                 if (responseBody === null) throw new Error("响应体为空");
@@ -980,6 +992,8 @@ function startUpdate() {
                 console.error("下载失败: " + e);
                 if (files.exists(savePath))
                     files.remove(savePath);
+
+
 
                 // 删除请求失败的代理
                 proxys.splice(proxy_index, 1);
