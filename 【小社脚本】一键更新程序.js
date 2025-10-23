@@ -828,7 +828,7 @@ function startUpdate() {
 
         let needMergeConfigs = false; //需要合并配置
         if (fileName.includes('config') && files.exists('./' + fileName)) {
-            savePath = files.cwd() + "/" + name + ".new." + ext;
+            savePath = files.cwd() + "/tmp/" + name + ".new." + ext;
             needMergeConfigs = true;
         }
         //文本类型
