@@ -2933,7 +2933,7 @@ function main() {
         // throw e;
         //逻辑程序
         run();
-        log("      ���— 耗时[ " + getDurTime(date) + " ] ——");
+        log("      —— 耗时[ " + getDurTime(date) + " ] ——");
         console.warn("—----->--- End ---<-----—");
         device.cancelKeepingAwake();
         //允许息屏信号
