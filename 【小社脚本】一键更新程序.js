@@ -875,7 +875,7 @@ function startUpdate() {
                         ignoreSSL: true,
                         isTextFile: isText,
                         onProgress: (progress) => {
-                            console.log(progress.progressBar + (" " + progress.percent + "%").padStart(5));
+                            console.log(progress.progressBar + (" " + progress.percent + "%").padStart(5,"\u3000"));
                         }
                     }
                 )
@@ -1574,6 +1574,7 @@ const HttpUtils = {
         let startTime = new Date().getTime();
 
         let lastProgressTime = startTime; // 记录上次打印进度的时间
+        let lastPercent = 0; // 记录上一次打印的进度
         let nextPrintPercent = 0; // 记录进度
 
         try {
@@ -1633,21 +1634,26 @@ const HttpUtils = {
                 downloaded += bytesRead;
 
                 if (onProgress && typeof onProgress === 'function' &&
-                    hasContentLength || (currentTime - lastProgressTime >= 5000)) {
+                    hasContentLength) {
                     let percent = Math.floor((downloaded / contentLength) * 100);
                     if (percent === 0 || percent === 100) continue;
-                    if (percent >= nextPrintPercent ||
-                        (currentTime - lastProgressTime >= 5000)) {
-                        let progressBar = this.generateProgressBar(percent);
-                        onProgress({
-                            downloaded: downloaded,
-                            total: contentLength,
-                            percent: percent,
-                            progressBar: progressBar
-                        });
-                        nextPrintPercent = percent + random(20, 30);
-                        lastProgressTime = currentTime; // 更新上次打印时间
 
+                    if (currentTime - lastProgressTime >= 2000) {
+
+                        if (percent >= nextPrintPercent) {
+                            let progressBar = this.generateProgressBar(percent);
+                            onProgress({
+                                downloaded: downloaded,
+                                total: contentLength,
+                                percent: percent,
+                                progressBar: progressBar
+                            });
+                            lastProgressTime = currentTime; // 更新上次打印时间
+                            let p = 2 * percent - lastPercent;
+                            nextPrintPercent = p < 10 ? 10 : p;
+                            //    nextPrintPercent = p;
+                            lastPercent = percent;
+                        }
                     }
                 }
             }
@@ -1705,7 +1711,7 @@ const HttpUtils = {
         } else {
             bar += ">";
         }
-        bar += "-".repeat(remaining);
+        bar += "..".repeat(remaining);
         bar += "]";
 
         return bar;
