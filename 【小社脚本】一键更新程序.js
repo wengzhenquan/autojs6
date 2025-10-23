@@ -1645,7 +1645,7 @@ const HttpUtils = {
                             percent: percent,
                             progressBar: progressBar
                         });
-                        nextPrintPercent += 25;
+                        nextPrintPercent = percent + random(20, 30);
                         lastProgressTime = currentTime; // 更新上次打印时间
 
                     }
