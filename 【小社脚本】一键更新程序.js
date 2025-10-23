@@ -824,11 +824,18 @@ function startUpdate() {
         }
 
         log("---------------------------→");
-        console.info("开始下载文件：" + fileName)
+        console.info("==>文件：" + fileName)
         //无后缀文件名
         let name = files.getNameWithoutExtension(fileName);
         //后缀
         let ext = files.getExtension(fileName);
+        let savePath = files.cwd() + "/" + fileName;
+
+        let needMergeConfigs = false;//需要合并配置
+        if (fileName.includes('config') && files.exists('./' + fileName)) {
+            savePath = files.cwd() + "/" + name + ".new." + ext;
+            needMergeConfigs = true;
+        }
         //文本类型
         let isText = textArry.includes(ext);
         let fileInfo = null;
@@ -864,66 +871,138 @@ function startUpdate() {
 
             // log(url);
 
-            let thread = threads.start(() => {
-                try {
-                    let res = http.get(url, {
-                        timeout: timeoutTimes * 1000,
-                        headers: {
-                            'Cache-Control': 'no-cache',
-                            'Pragma': 'no-cache',
-                            'Expires': '0',
-                            'Connection': 'Keep-Alive'
+            try {
+                let nextPrintPercent = 0;
+                // 创建HTTP客户端
+                var client = new okhttp3.OkHttpClient.Builder()
+                    .connectTimeout(timeoutTimes, java.util.concurrent.TimeUnit.SECONDS)
+                    .readTimeout(timeoutTimes, java.util.concurrent.TimeUnit.SECONDS)
+                    .build();
+
+                // 构建并执行请求
+                var request = new okhttp3.Request.Builder().url(url).build();
+                var response = client.newCall(request).execute();
+
+                // 检查响应状态
+                if (!response.isSuccessful()) throw new Error("HTTP错误: " + response.code());
+
+                var responseBody = response.body();
+                if (responseBody === null) throw new Error("响应体为空");
+
+                // 准备下载参数
+                var contentLength = responseBody.contentLength();
+                var downloaded = 0;
+                var inputStream = responseBody.byteStream();
+
+                // 创建保存目录
+                files.createWithDirs(savePath);
+
+                // 根据文件类型选择输出流
+                var outputStream;
+                if (isText) {
+                    // 文本文件使用UTF-8编码
+                    outputStream = new java.io.OutputStreamWriter(
+                        new java.io.FileOutputStream(savePath),
+                        java.nio.charset.StandardCharsets.UTF_8
+                    );
+                } else {
+                    // 二进制文件直接使用字节流
+                    outputStream = new java.io.FileOutputStream(savePath);
+                }
+
+                var buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 8192);
+                var bytesRead;
+
+                console.log("开始下载...");
+
+                // 初始进度条
+                // var progressText = generateProgressBar(0) + " 0%";
+                // console.print(progressText);
+
+                // 下载主循环
+                while ((bytesRead = inputStream.read(buffer)) !== -1) {
+                    // 检查超时
+                    let currentTime = new Date().getTime();
+                    if (currentTime - startTime > timeoutTimes * 1000) {
+                        throw new Error("下载超时 (" + timeoutTimes + "秒)");
+                    }
+
+                    if (isText) {
+                        // 文本文件：将字节转换为字符串写入
+                        var text = new java.lang.String(buffer, 0, bytesRead, "UTF-8");
+                        outputStream.write(text);
+                    } else {
+                        // 二进制文件：直接写入字节
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+
+                    downloaded += bytesRead;
+
+                    if (contentLength > 0) {
+                        var percent = Math.floor((downloaded / contentLength) * 100);
+                        if (percent === 0 || percent === 100) continue;
+                        // 每10%更新进度条
+                        if (percent >= nextPrintPercent) {
+                            progressText = generateProgressBar(percent) + " " + percent + "%";
+                            console.print("\r" + progressText);
+                            nextPrintPercent = Math.floor(percent / 10) * 10 + 10;
                         }
-                    });
-                    if (res && res.statusCode === 200) {
-                        filebytes = res.body.bytes();
                     }
-                    if (res && res.statusCode === 404 &&
-                        n > 3) {
-                        console.error('文件不存在，可能作者正在维护')
-                        console.error('请过5分钟以后再试！')
-                        exit();
+                }
+
+                // 确保显示100%
+                if (downloaded >= contentLength) {
+                    progressText = generateProgressBar(100) + " 100%";
+                    console.print("\r" + progressText);
+                }
+
+                // 关闭资源
+                outputStream.close();
+                inputStream.close();
+
+                // 显示完成信息
+                console.info("下载完成! ");
+                let time = (new Date().getTime() - startTime);
+                log("耗时：" + toSeconds(time));
+                console.log("文件大小: " + formatFileSize(downloaded));
+
+                //成功，跳出
+                if (!isText) {
+                    let filebytes = files.readBytes(savePath);
+                    console.warn("-->开始文件校验！")
+                    if (fileInfo &&
+                        !fileVerify(fileInfo, filebytes)) {
+                        throw new Error("校验失败");
                     }
-                } catch (e) {}
-            });
-            thread.join(timeoutTimes * 1000);
-            thread.interrupt();
-
-            let time = (new Date().getTime() - startTime);
-            log("请求时间：" + toSeconds(time));
-
-            //成功，跳出
-            if (filebytes && filebytes.length > filemin) {
-                if (!isText && fileInfo &&
-                    !fileVerify(fileInfo, filebytes)) {
-                    console.error('校验失败，重新下载')
-                    // 删除请求失败的代理
-                    proxys.splice(proxy_index, 1);
-                    //  proxy_index--;
-                    //  proxy_index++;
-                    //重置
-                    if (proxy_index > proxys.length - 1) proxy_index = 0;
-                    continue;
                 }
                 break;
+            } catch (e) {
+                console.error("下载失败: " + e);
+                if (files.exists(savePath))
+                    files.remove(savePath);
+
+                // 删除请求失败的代理
+                proxys.splice(proxy_index, 1);
+                console.error("更换加速器，重试！")
+                continue;
+
+            } finally {
+                try {
+                    if (inputStream) inputStream.close();
+                } catch (e) {}
+                try {
+                    if (outputStream) outputStream.close();
+                } catch (e) {}
             }
 
-            console.error('下载失败，更换加速器重试');
-            // 删除请求失败的代理
-            proxys.splice(proxy_index, 1);
-            // proxy_index--;
-            // proxy_index++;
-            //重置
-            if (proxy_index > proxys.length - 1) proxy_index = 0;
-        }
 
-        if (!filebytes || filebytes.length < filemin) {
-            console.error("下载失败");
-            errorList.push(fileName);
-            //continue;
-        } else {
+            if (!files.exists(savePath)) {
+                console.error("下载失败");
+                errorList.push(fileName);
+                //continue;
+            } else successList.push(fileName);
 
-            if (fileName.includes('config') && files.exists('./' + fileName)) {
+            if (fileName.includes('config') && needMergeConfigs) {
                 log("需更新配置文件");
 
                 // 备份旧文件
@@ -934,26 +1013,20 @@ function startUpdate() {
                 files.remove('./' + fileName)
                 wait(() => false, 300);
 
-                // 下载的新文件
-                files.write('./' + fileName, new java.lang.String(filebytes, "utf-8"), "utf-8");
-                wait(() => false, 500);
-                console.info("下载成功")
 
                 //备份一份新文件
                 let newName = "tmp/" + name + ".new." + ext;
-                fixConfigFile('./' + fileName, './' + newName)
-                wait(() => false, 500);
-                files.remove('./' + fileName)
-                wait(() => false, 300);
+
 
                 console.info("开始尝试自动搬运配置");
-                console.info(oldName + "→" + fileName);
+                console.info("[" + oldName + "] + [" + newName + "]");
+                console.info("===>>> [" + fileName + "]");
 
                 let merge = false;
                 try {
                     // 将旧配置里的值，同步到新配置
                     // 以新配置作为模板，按照新配置文件的排版
-                    // 两个文件合并生成新文件
+                    // 两个文件合并生成新���件
                     merge = mergeConfigs('./' + oldName,
                         './' + newName, './' + fileName);
                 } catch (e) {
@@ -965,29 +1038,8 @@ function startUpdate() {
                     console.error("锁屏密码等配置已自动更新");
                 }
 
-            } else {
-                files.ensureDir('./' + fileName);
-                // 先删除
-                files.remove('./' + fileName);
-                wait(() => false, 300);
-
-                if (isText) {
-                    try {
-                        files.write('./' + fileName, new java.lang.String(filebytes, "utf-8"), "utf-8");
-                    } catch (e) {
-                        files.writeBytes('./' + fileName, filebytes); // 回退到二进制
-                    }
-                } else {
-                    files.writeBytes('./' + fileName, filebytes);
-                }
-                //files.writeBytes(files.cwd()+'/' + fileName, filebytes);
-                successList.push(fileName);
-                console.info("下载成功")
-                console.info('文件大小：' + formatFileSize(filebytes.length))
             }
-
         }
-        // log("←----------------------------");
     }
     log("----------------------------");
     if (successList.length > 0) {
@@ -1054,6 +1106,17 @@ function startUpdate() {
         }
     } while (l--);
 
+}
+// 生成Linux控制台风格进度条
+function generateProgressBar(percent) {
+    var barLength = 20;
+    var completed = Math.floor(percent / (100 / barLength));
+    var remaining = barLength - completed;
+
+    var bar = "[";
+    if (completed > 0) bar += "=".repeat(completed - 1) + ">";
+    bar += "-".repeat(remaining) + "]";
+    return bar;
 }
 
 
