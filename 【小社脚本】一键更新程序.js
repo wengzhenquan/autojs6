@@ -871,7 +871,7 @@ function startUpdate() {
             try {
                 let resResult = HttpUtils.download(
                     url, savePath, {
-                        timeout: 30,
+                        timeout: timeoutTimes,
                         ignoreSSL: true,
                         isTextFile: isText,
                         onProgress: (progress) => {
