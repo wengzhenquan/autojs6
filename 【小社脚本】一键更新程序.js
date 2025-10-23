@@ -851,7 +851,7 @@ function startUpdate() {
         let r404 = 0;
         let lun = proxys.length * proxys_use;
         while (lun--) {
-            //  for (let n = 0; n < lun; n++) {
+
             runtime.gc;
             java.lang.System.gc();
             sleep(500);
@@ -862,6 +862,8 @@ function startUpdate() {
                 console.error("运存过低，下载有失败风险！")
                 console.error("如果报OOM错误，需重启AutoJS6后重新下载")
             }
+
+
             let startTime = new Date().getTime();
             let proxy = proxys[proxy_index];
             log('下载加速器：' + proxy);
@@ -881,7 +883,10 @@ function startUpdate() {
                     .build();
 
                 // 构建并执行请求
-                var request = new okhttp3.Request.Builder().url(url).build();
+                var request = new okhttp3.Request.Builder()
+                    .url(url)
+                    .build();
+
                 var response = client.newCall(request).execute();
 
                 // 检查响应状态
@@ -907,7 +912,8 @@ function startUpdate() {
                 var inputStream = responseBody.byteStream();
 
                 // 创建保存目录
-                files.createWithDirs(savePath);
+                //  files.createWithDirs(savePath);
+                files.ensureDir(savePath);
 
                 // 根据文件类型选择输出流
                 var outputStream;
@@ -941,7 +947,7 @@ function startUpdate() {
 
                     if (isText) {
                         // 文本文件：将字节转换为字符串写入
-                        var text = new java.lang.String(buffer, 0, bytesRead, "UTF-8");
+                        let text = new java.lang.String(buffer, 0, bytesRead, "UTF-8");
                         outputStream.write(text);
                     } else {
                         // 二进制文件：直接写入字节
@@ -951,11 +957,11 @@ function startUpdate() {
                     downloaded += bytesRead;
 
                     if (contentLength > 0) {
-                        var percent = Math.floor((downloaded / contentLength) * 100);
+                        let percent = Math.floor((downloaded / contentLength) * 100);
                         if (percent === 0 || percent === 100) continue;
                         // 每10%更新进度条
                         if (percent >= nextPrintPercent) {
-                            progressText = generateProgressBar(percent) + " " + percent + "%";
+                            progressText = generateProgressBar(percent) + (" " + percent + "%").padStart(5);
                             console.print("\r" + progressText);
                             nextPrintPercent = Math.floor(percent / 10) * 10 + 10;
                         }
@@ -980,8 +986,10 @@ function startUpdate() {
 
                 //成功，跳出
                 if (!isText) {
+
                     let filebytes = files.readBytes(savePath);
                     console.warn("-->开始文件校验！")
+
                     if (fileInfo &&
                         !fileVerify(fileInfo, filebytes)) {
                         throw new Error("校验失败");
@@ -992,8 +1000,6 @@ function startUpdate() {
                 console.error("下载失败: " + e);
                 if (files.exists(savePath))
                     files.remove(savePath);
-
-
 
                 // 删除请求失败的代理
                 proxys.splice(proxy_index, 1);
@@ -1028,7 +1034,7 @@ function startUpdate() {
                 wait(() => false, 300);
 
 
-                //备份一份新文件
+                //新文件名
                 let newName = "tmp/" + name + ".new." + ext;
 
 
@@ -1091,34 +1097,39 @@ function startUpdate() {
     console.error("在文件列表下滑刷新，可查看更新结果！");
     wait(() => false, 1000);
 
-    let l = 3;
-    do {
-        try {
-            back();
-            //sleep(3000)
-            if (packageName('org.autojs.autojs6').exists()) {
-                //  ---------------- 下面是刷新列表 --------//
-                // 设备信息
-                var dwidth = device.width;
-                var dheight = device.height;
-                let a6 = className("android.widget.TextView")
-                    .packageName('org.autojs.autojs6')
-                    .text("AutoJs6");
-                click(text('文件'));
-                if (a6.exists() && textContains('小社脚本').exists()) {
-                    wait(() => false, 1000);
-                    let n = 3;
-                    while (n--) {
-                        swipe(dwidth * 0.4, dheight * 0.4, dwidth * 0.6, dheight * 0.8, 100);
-                        sleep(500);
-                    }
-                }
-            }
-            break;
-        } catch (e) {
+
+
+
+    try {
+        if (!auto.isRunning()) {
             auto(true);
         }
-    } while (l--);
+        
+        //sleep(3000)
+        if (packageName('org.autojs.autojs6').exists()) {
+            //  ---------------- 下面是刷新列表 --------//
+            back();
+            // 设备信息
+            var dwidth = device.width;
+            var dheight = device.height;
+            let a6 = className("android.widget.TextView")
+                .packageName('org.autojs.autojs6')
+                .text("AutoJs6");
+                
+            click(text('文件'));
+            if (a6.exists() && textContains('小社脚本').exists()) {
+                wait(() => false, 1000);
+                let n = 3;
+                while (n--) {
+                    swipe(dwidth * 0.4, dheight * 0.4, dwidth * 0.6, dheight * 0.8, 100);
+                    sleep(500);
+                }
+            }
+        }
+    } catch (e) {
+
+    }
+
 
 }
 // 生成Linux控制台风格进度条
