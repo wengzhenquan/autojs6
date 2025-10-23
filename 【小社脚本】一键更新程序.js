@@ -875,7 +875,7 @@ function startUpdate() {
                         ignoreSSL: true,
                         isTextFile: isText,
                         onProgress: (progress) => {
-                            console.log(progress.progressBar + (" " + progress.percent + "%").padStart(5,"\u3000"));
+                            console.log(progress.progressBar + (" " + progress.percent + "%").padStart(5, "\u3000"));
                         }
                     }
                 )
@@ -1534,13 +1534,18 @@ const HttpUtils = {
 
             let string = response.body().string()
 
+            let jsons = null;
+            try {
+                jsons = JSON.parse(string);
+            } catch (e) {}
+
             // 返回响应对象
             return {
                 success: true,
                 statusCode: response.code(),
                 headers: response.headers().toMultimap(),
                 body: string,
-                json: JSON.parse(string),
+                json: jsons,
                 timeTaken: (new Date().getTime() - startTime),
             };
 

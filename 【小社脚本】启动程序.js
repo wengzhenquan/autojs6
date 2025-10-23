@@ -1037,7 +1037,12 @@ const HttpUtils = {
             // 使用统一的请求执行函数
             let response = this.executeRequest(url, options);
 
-            let string = response.body().string()
+            let string = response.body().string();
+
+            let jsons = null;
+            try {
+                jsons = JSON.parse(strings)
+            } catch (e) {}
 
             // 返回响应对象
             return {
@@ -1045,7 +1050,7 @@ const HttpUtils = {
                 statusCode: response.code(),
                 headers: response.headers().toMultimap(),
                 body: string,
-                json: JSON.parse(string),
+                json: jsons,
                 timeTaken: (new Date().getTime() - startTime),
             };
 
@@ -1077,7 +1082,10 @@ const HttpUtils = {
         let downloaded = 0;
         let contentLength = -1;
         let startTime = new Date().getTime();
-        let nextPrintPercent = 0;
+
+        let lastProgressTime = startTime; // 记录上次打印进度的时间
+        let lastPercent = 0; // 记录上一次打印的进度
+        let nextPrintPercent = 0; // 记录进度
 
         try {
             savePath = files.path(savePath);
@@ -1138,15 +1146,22 @@ const HttpUtils = {
                 if (onProgress && typeof onProgress === 'function' && hasContentLength) {
                     let percent = Math.floor((downloaded / contentLength) * 100);
                     if (percent === 0 || percent === 100) continue;
-                    if (percent >= nextPrintPercent) {
-                        let progressBar = this.generateProgressBar(percent);
-                        onProgress({
-                            downloaded: downloaded,
-                            total: contentLength,
-                            percent: percent,
-                            progressBar: progressBar
-                        });
-                        nextPrintPercent += 10;
+                    if (currentTime - lastProgressTime >= 2000) {
+
+                        if (percent >= nextPrintPercent) {
+                            let progressBar = this.generateProgressBar(percent);
+                            onProgress({
+                                downloaded: downloaded,
+                                total: contentLength,
+                                percent: percent,
+                                progressBar: progressBar
+                            });
+                            lastProgressTime = currentTime; // 更新上次打印时间
+                            let p = 2 * percent - lastPercent;
+                            nextPrintPercent = p < 10 ? 10 : p;
+                            //    nextPrintPercent = p;
+                            lastPercent = percent;
+                        }
                     }
                 }
             }
@@ -2041,7 +2056,9 @@ function updateScript() {
                 if (res && res.statusCode === 200) {
                     file = res.body;
                 }
-            } catch (e) {}
+            } catch (e) {
+              //  console.error(e.message)
+            }
 
 
             if (file && file.length > 10 * 1024) {
