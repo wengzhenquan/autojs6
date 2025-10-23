@@ -857,7 +857,7 @@ function shuffleArray(array) {
     while (length) {
         randomIndex = Math.floor(Math.random() * length); // 生成[0, length-1]的随机索引
         length--;
-        // 交换当前元素与随机位置的元素
+        // 交换当前元素与随机位置的���素
         temp = array[length];
         array[length] = array[randomIndex];
         array[randomIndex] = temp;
@@ -1582,7 +1582,7 @@ var proxys2 = [
     "https://g.blfrp.cn/", // 请求时间：1.80s
     "https://gh.xx9527.cn/", // 请求时间：1.83s
     "https://github.tianrld.top/", // 请求时间：1.84s
-    "https://ghproxy.xzhouqd.com/", // 请求时间：1.87s
+    "https://ghproxy.xzhouqd.com/", // 请求时间���1.87s
     "https://gh.nilive.top/", // 请求时间：1.92s
     "https://ghpxy.hwinzniej.top/", // 请求时间：2.00s
     "https://github.ruojian.space/", // 请求时间：2.01s
@@ -2216,7 +2216,7 @@ function swipesUp(n1, n) {
             // 确保终点Y不小于0（防止超出屏幕顶部）
             if (endY < 0) endY = 0;
         }
-        // 保持其他参数不变
+        // 保持其他参数���变
         swipe(
             dwidth * (4 + Math.pow(-1, i + n)) / 8,
             startY,
