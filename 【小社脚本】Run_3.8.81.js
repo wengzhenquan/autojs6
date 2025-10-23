@@ -653,7 +653,7 @@ function signEntrance(name, pram) {
         sleep(config.社区页面等待延迟 * 1000);
 
     // 再点击一次，
-    // 如果前面点击成功，页面跳转，新页面肯定找不到按钮
+    // ���果前面点击成功，页面跳转，新页面肯定找不到按钮
     if (pram !== '立即签到') {
 
         content(pram).exists() &&
@@ -1871,7 +1871,7 @@ function localYOLOSign() {
     let result = false;
     for (let i = 0; i < 5; i++) {
         log(`开始第 ${i + 1} 次签到尝试`);
-        if (text("已签到").exists()) {
+        if (text("已���到").exists()) {
             toastLog("识图签到成功！！！(๑´∀`๑)");
             return true;
         }
