@@ -941,6 +941,278 @@ function autoLockScreen() {
 
 
 
+/**
+ * HTTP工具类
+ * 提供HTTP请求和文件下载功能
+ */
+const HttpUtils = {
+    /**
+     * 执行HTTP请求（包含客户端创建逻辑）
+     * @param {string} url - 请求URL
+     * @param {object} [options] - 配置选项
+     * @param {string} [options.method='GET'] - 请求方法 (GET/POST)
+     * @param {object} [options.headers] - 请求头
+     * @param {object} [options.body] - 请求体 (仅POST)
+     * @param {number} [options.timeout=30] - 超时时间(秒)
+     * @param {boolean} [options.ignoreSSL=false] - 是否忽略SSL验证
+     * @returns {okhttp3.Response} HTTP响应对象
+     */
+    executeRequest: function(url, options = {}) {
+        let {
+            method = 'GET',
+                headers = {},
+                body = null,
+                timeout = 30,
+                ignoreSSL = false
+        } = options;
+
+        try {
+            // 直接创建HTTP客户端（合并了createHttpClient的逻辑）
+            let clientBuilder = new okhttp3.OkHttpClient.Builder()
+                .connectTimeout(timeout, java.util.concurrent.TimeUnit.SECONDS)
+                .readTimeout(timeout, java.util.concurrent.TimeUnit.SECONDS);
+
+            if (ignoreSSL) {
+                let trustAllCerts = [
+                    new javax.net.ssl.X509TrustManager({
+                        checkClientTrusted: function(chain, authType) {},
+                        checkServerTrusted: function(chain, authType) {},
+                        getAcceptedIssuers: function() {
+                            return [];
+                        }
+                    })
+                ];
+
+                let sslContext = javax.net.ssl.SSLContext.getInstance("SSL");
+                sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+
+                clientBuilder = clientBuilder
+                    .sslSocketFactory(sslContext.getSocketFactory(), trustAllCerts[0])
+                    .hostnameVerifier(new javax.net.ssl.HostnameVerifier({
+                        verify: function(hostname, session) {
+                            return true;
+                        }
+                    }));
+            }
+
+            let client = clientBuilder.build();
+
+            // 构建请求
+            let requestBuilder = new okhttp3.Request.Builder()
+                .url(url)
+                .headers(okhttp3.Headers.of(headers));
+
+            // 添加请求体（仅POST）
+            if (method.toUpperCase() === 'POST' && body) {
+                let contentType = headers['Content-Type'] || 'application/json';
+                let requestBody = okhttp3.RequestBody.create(
+                    okhttp3.MediaType.parse(contentType),
+                    JSON.stringify(body)
+                );
+                requestBuilder = requestBuilder.post(requestBody);
+            }
+
+            // 执行请求并返回响应
+            return client.newCall(requestBuilder.build()).execute();
+
+        } catch (e) {
+            throw new Error("HTTP请求失败: " + e.message);
+        }
+    },
+
+    /**
+     * 普通HTTP请求
+     * @param {string} url - 请求URL
+     * @param {object} [options] - 配置选项
+     * @param {string} [options.method='GET'] - 请求方法 (GET/POST)
+     * @param {object} [options.headers] - 请求头
+     * @param {object} [options.body] - 请求体 (仅POST)
+     * @param {number} [options.timeout=30] - 超时时间(秒)
+     * @param {boolean} [options.ignoreSSL=false] - 是否忽略SSL验证
+     * @returns {object} 响应对象
+     */
+    request: function(url, options = {}) {
+        let startTime = new Date().getTime();
+        try {
+            // 使用统一的请求执行函数
+            let response = this.executeRequest(url, options);
+
+            let string = response.body().string()
+
+            // 返回响应对象
+            return {
+                success: true,
+                statusCode: response.code(),
+                headers: response.headers().toMultimap(),
+                body: string,
+                json: JSON.parse(string),
+                timeTaken: (new Date().getTime() - startTime),
+            };
+
+        } catch (e) {
+            throw new Error("HTTP请求失败: " + e.message);
+        }
+    },
+
+    /**
+     * 流式下载文件函数
+     * @param {string} url - 下载链接
+     * @param {string} savePath - 保存路径
+     * @param {object} [options] - 配置选项
+     * @param {number} [options.timeout=300] - 超时时间(秒)
+     * @param {boolean} [options.ignoreSSL=false] - 是否忽略SSL验证
+     * @param {boolean} [options.isTextFile=false] - 是否为文本文件
+     * @param {function} [options.onProgress] - 进度回调函数
+     * @returns {object} 下载结果对象
+     */
+    download: function(url, savePath, options = {}) {
+        let {
+            timeout = 300,
+                ignoreSSL = false,
+                isTextFile = false,
+                onProgress = null
+        } = options;
+
+        let inputStream, outputStream;
+        let downloaded = 0;
+        let contentLength = -1;
+        let startTime = new Date().getTime();
+        let nextPrintPercent = 0;
+
+        try {
+            savePath = files.path(savePath);
+            // 使用统一的请求执行函数
+            let response = this.executeRequest(url, {
+                method: 'GET',
+                headers: {},
+                timeout,
+                ignoreSSL
+            });
+
+            if (!response.isSuccessful()) {
+                throw new Error("HTTP错误: " + response.code());
+            }
+
+            let responseBody = response.body();
+            if (responseBody === null) {
+                throw new Error("响应体为空");
+            }
+
+            // 获取文件大小
+            contentLength = responseBody.contentLength();
+            let hasContentLength = contentLength > 0;
+
+            // 创建输出流
+            files.createWithDirs(savePath);
+
+            if (isTextFile) {
+                outputStream = new java.io.OutputStreamWriter(
+                    new java.io.FileOutputStream(savePath),
+                    java.nio.charset.StandardCharsets.UTF_8
+                );
+            } else {
+                outputStream = new java.io.FileOutputStream(savePath);
+            }
+
+            inputStream = responseBody.byteStream();
+            let buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 8192);
+            let bytesRead;
+
+            console.log("开始下载...");
+
+            while ((bytesRead = inputStream.read(buffer)) !== -1) {
+                let currentTime = new Date().getTime();
+                if (currentTime - startTime > timeout * 1000) {
+                    throw new Error("下载超时 (" + timeout + "秒)");
+                }
+
+                if (isTextFile) {
+                    let text = new java.lang.String(buffer, 0, bytesRead, "UTF-8");
+                    outputStream.write(text);
+                } else {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+
+                downloaded += bytesRead;
+
+                if (onProgress && typeof onProgress === 'function' && hasContentLength) {
+                    let percent = Math.floor((downloaded / contentLength) * 100);
+                    if (percent === 0 || percent === 100) continue;
+                    if (percent >= nextPrintPercent) {
+                        let progressBar = this.generateProgressBar(percent);
+                        onProgress({
+                            downloaded: downloaded,
+                            total: contentLength,
+                            percent: percent,
+                            progressBar: progressBar
+                        });
+                        nextPrintPercent += 10;
+                    }
+                }
+            }
+
+            // 确保100%被调用
+            if (onProgress && typeof onProgress === 'function') {
+                let progressBar = this.generateProgressBar(100);
+                onProgress({
+                    downloaded: contentLength,
+                    total: contentLength,
+                    percent: 100,
+                    progressBar: progressBar
+                });
+            }
+
+            outputStream.close();
+            inputStream.close();
+
+            return {
+                success: true,
+                statusCode: response.code(),
+                fileSize: downloaded,
+                filePath: savePath,
+                timeTaken: (new Date().getTime() - startTime),
+                isTextFile: isTextFile
+            };
+
+        } catch (e) {
+            if (files.exists(savePath)) files.remove(savePath);
+            throw e;
+        } finally {
+            try {
+                if (inputStream) inputStream.close();
+            } catch (e) {}
+            try {
+                if (outputStream) outputStream.close();
+            } catch (e) {}
+        }
+    },
+
+    /**
+     * 生成Linux控制台风格进度条
+     * @param {number} percent - 完成百分比
+     * @returns {string} 进度条字符串
+     */
+    generateProgressBar: function(percent) {
+        let barLength = 20;
+        let completed = Math.floor(percent / (100 / barLength));
+        let remaining = barLength - completed;
+
+        let bar = "[";
+        if (completed > 0) {
+            bar += "=".repeat(completed - 1);
+            bar += ">";
+        } else {
+            bar += ">";
+        }
+        bar += "-".repeat(remaining);
+        bar += "]";
+
+        return bar;
+    }
+
+};
+
+
 
 
 //  ----------- 系统修改 ---------------------//
@@ -1478,12 +1750,14 @@ function updateProxys() {
             try {
                 console.warn("→" + (i + 1) + " 号代理源：");
                 // log('url：' + url)
-                let res = http.get(url, {
-                    timeout: 10 * 1000
+                let res = HttpUtils.request(url, {
+                    method: "GET",
+                    timeout: 10,
+                    ignoreSSL: true
                 });
                 if (res.statusCode === 200) {
                     // log('请求成功！')
-                    let json = res.body.json();
+                    let json = res.json;
                     let proxyData = json.data || json;
                     if (Array.isArray(proxyData)) {
                         log('成功获取代理数量：' + proxyData.length)
@@ -1559,19 +1833,15 @@ function updateProxys() {
         try {
             let start = new Date().getTime();
             let separator = url.includes('?') ? '&' : '?';
-            let res = http.get(url + separator + "t=" + start, {
-                timeout: 5000,
-                headers: {
-                    'Cache-Control': 'no-cache',
-                    'Pragma': 'no-cache',
-                    'Expires': '0',
-                    "Connection": "Keep-Alive"
-                },
+            let res = HttpUtils.request(url + separator + "t=" + start, {
+                method: "GET",
+                timeout: 5,
+                ignoreSSL: true
             });
 
             if (res && res.statusCode === 200) {
                 let success = false;
-                let results = res.body.json();
+                let results = res.json;
 
                 if (url.includes('api')) {
                     success = !!(results.size && results.size > 0);
@@ -1617,24 +1887,17 @@ function checkVersion() {
             'version' +
             '?t=' + new Date().getTime();
 
-        let thread = threads.start(() => {
-            try {
-                let res = http.get(url, {
-                    timeout: 5 * 1000,
-                    headers: {
-                        'Cache-Control': 'no-cache',
-                        'Pragma': 'no-cache',
-                        'Expires': '0',
-                        'Connection': 'Keep-Alive'
-                    }
-                });
-                if (res && res.statusCode === 200) {
-                    serverVersion = res.body.json();
-                }
-            } catch (e) {}
-        });
-        thread.join(5 * 1000);
-        thread.interrupt();
+        try {
+            let res = HttpUtils.request(url, {
+                method: "GET",
+                timeout: 5,
+                ignoreSSL: true
+            });
+            if (res && res.statusCode === 200) {
+                serverVersion = res.json;
+            }
+        } catch (e) {}
+
         if (serverVersion) {
             if (!files.exists("./version")) {
                 down_version = true;
@@ -1769,25 +2032,18 @@ function updateScript() {
 
             log('使用加速器：' + proxys[proxy_index]);
             //log(url);
+            try {
+                let res = HttpUtils.request(url, {
+                    method: "GET",
+                    timeout: 5,
+                    ignoreSSL: true
+                });
+                if (res && res.statusCode === 200) {
+                    file = res.body;
+                }
+            } catch (e) {}
 
-            let thread = threads.start(() => {
-                try {
-                    let res = http.get(url, {
-                        timeout: 5 * 1000,
-                        headers: {
-                            'Cache-Control': 'no-cache',
-                            'Pragma': 'no-cache',
-                            'Expires': '0',
-                            'Connection': 'Keep-Alive'
-                        }
-                    });
-                    if (res && res.statusCode === 200) {
-                        file = res.body.string();
-                    }
-                } catch (e) {}
-            });
-            thread.join(5 * 1000);
-            thread.interrupt();
+
             if (file && file.length > 10 * 1024) {
                 break;
             }
@@ -1878,32 +2134,24 @@ function checkAutoJS6Version() {
     let autojs6_serverVersion = null;
     let lun = api_proxys.length * 0.5;
     while (lun--) {
-        // for (let i = 0; i < api_proxys.length * 0.5; i++) {
         let result = null;
 
         let url = api_proxys[0] +
             autoJS6_update +
             '?t=' + new Date().getTime();
 
-        let thread = threads.start(() => {
-            try {
-                let res = http.get(url, {
-                    timeout: 8 * 1000,
-                    headers: {
-                        'Cache-Control': 'no-cache',
-                        'Pragma': 'no-cache',
-                        'Expires': '0',
-                        'Connection': 'Keep-Alive'
-                    }
-                });
-                if (res && res.statusCode === 200) {
-                    result = res.body.json();
-                    autojs6_serverVersion = result.tag_name.slice(1);
-                }
-            } catch (e) {}
-        });
-        thread.join(8 * 1000);
-        thread.interrupt();
+        try {
+            let res = HttpUtils.request(url, {
+                method: "GET",
+                timeout: 8,
+                ignoreSSL: true
+            });
+            if (res && res.statusCode === 200) {
+                result = res.json;
+                autojs6_serverVersion = result.tag_name.slice(1);
+            }
+        } catch (e) {}
+
 
         if (result && autojs6_serverVersion)
             break;

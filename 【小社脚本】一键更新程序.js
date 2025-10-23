@@ -502,12 +502,14 @@ function updateProxys() {
             try {
                 console.warn("→" + (i + 1) + " 号代理源：");
                 // log('url：' + url)
-                let res = http.get(url, {
-                    timeout: 10 * 1000
+                let res = HttpUtils.request(url, {
+                    method: "GET",
+                    timeout: 10,
+                    ignoreSSL: true
                 });
                 if (res.statusCode === 200) {
                     // log('请求成功！')
-                    let json = res.body.json();
+                    let json = res.json;
                     let proxyData = json.data || json;
                     if (Array.isArray(proxyData)) {
                         log('成功获取代理数量：' + proxyData.length)
@@ -583,19 +585,15 @@ function updateProxys() {
         try {
             let start = new Date().getTime();
             let separator = url.includes('?') ? '&' : '?';
-            let res = http.get(url + separator + "t=" + start, {
-                timeout: 5000,
-                headers: {
-                    'Cache-Control': 'no-cache',
-                    'Pragma': 'no-cache',
-                    'Expires': '0',
-                    "Connection": "Keep-Alive"
-                },
+            let res = HttpUtils.request(url + separator + "t=" + start, {
+                method: "GET",
+                timeout: 5,
+                ignoreSSL: true
             });
 
             if (res && res.statusCode === 200) {
                 let success = false;
-                let results = res.body.json();
+                let results = res.json;
 
                 if (url.includes('api')) {
                     success = !!(results.size && results.size > 0);
@@ -679,24 +677,21 @@ function checkVersion() {
             '?t=' + new Date().getTime();
 
         let result = null;
-        let thread = threads.start(() => {
-            try {
-                let res = http.get(url, {
-                    timeout: 5 * 1000,
-                    headers: {
-                        'Cache-Control': 'no-cache',
-                        'Pragma': 'no-cache',
-                        'Expires': '0',
-                        'Connection': 'Keep-Alive'
-                    }
-                });
-                if (res && res.statusCode === 200) {
-                    result = res.body.json();
-                }
-            } catch (e) {}
-        });
-        thread.join(5 * 1000);
-        thread.interrupt();
+        try {
+            let res = HttpUtils.request(url, {
+                method: "GET",
+                timeout: 5,
+                ignoreSSL: true
+            });
+
+            //  console.log("HTTP请求成功!");
+            //   log("请求时间：", response.timeTaken);
+            //  log("状态码:", response.statusCode);
+            //  log("响应体:", response.json);
+            result = res.json;
+        } catch (e) {
+            //   console.error("HTTP请求失败:", e);
+        }
 
         let time = (new Date().getTime() - startTime);
         log("请求时间：" + toSeconds(time));
@@ -873,120 +868,26 @@ function startUpdate() {
                 '?t=' + startTime;
 
             // log(url);
-
             try {
-                let nextPrintPercent = 0;
-                // 创建HTTP客户端
-                var client = new okhttp3.OkHttpClient.Builder()
-                    .connectTimeout(timeoutTimes, java.util.concurrent.TimeUnit.SECONDS)
-                    .readTimeout(timeoutTimes, java.util.concurrent.TimeUnit.SECONDS)
-                    .build();
-
-                // 构建并执行请求
-                var request = new okhttp3.Request.Builder()
-                    .url(url)
-                    .build();
-
-                var response = client.newCall(request).execute();
-
-                // 检查响应状态
-                if (!response.isSuccessful()) {
-                    if (response.code() === 404) {
-                        if (r404 > 2) {
-                            console.error("GitHub上找不到该文件")
-                            console.error("可能被作者删除")
-                            console.error("请等5分钟后再试")
-                            break;
-                        }
-                        r404++;
-                    }
-                    throw new Error("HTTP错误: " + response.code());
-                }
-
-                var responseBody = response.body();
-                if (responseBody === null) throw new Error("响应体为空");
-
-                // 准备下载参数
-                var contentLength = responseBody.contentLength();
-                var downloaded = 0;
-                var inputStream = responseBody.byteStream();
-
-                // 创建保存目录
-                //  files.createWithDirs(savePath);
-                files.ensureDir(savePath);
-
-                // 根据文件类型选择输出流
-                var outputStream;
-                if (isText) {
-                    // 文本文件使用UTF-8编码
-                    outputStream = new java.io.OutputStreamWriter(
-                        new java.io.FileOutputStream(savePath),
-                        java.nio.charset.StandardCharsets.UTF_8
-                    );
-                } else {
-                    // 二进制文件直接使用字节流
-                    outputStream = new java.io.FileOutputStream(savePath);
-                }
-
-                var buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 8192);
-                var bytesRead;
-
-                console.log("开始下载...");
-
-                // 初始进度条
-                // var progressText = generateProgressBar(0) + " 0%";
-                // console.print(progressText);
-
-                // 下载主循环
-                while ((bytesRead = inputStream.read(buffer)) !== -1) {
-                    // 检查超时
-                    let currentTime = new Date().getTime();
-                    if (currentTime - startTime > timeoutTimes * 1000) {
-                        throw new Error("下载超时 (" + timeoutTimes + "秒)");
-                    }
-
-                    if (isText) {
-                        // 文本文件：将字节转换为字符串写入
-                        let text = new java.lang.String(buffer, 0, bytesRead, "UTF-8");
-                        outputStream.write(text);
-                    } else {
-                        // 二进制文件：直接写入字节
-                        outputStream.write(buffer, 0, bytesRead);
-                    }
-
-                    downloaded += bytesRead;
-
-                    if (contentLength > 0) {
-                        let percent = Math.floor((downloaded / contentLength) * 100);
-                        if (percent === 0 || percent === 100) continue;
-                        // 每10%更新进度条
-                        if (percent >= nextPrintPercent) {
-                            progressText = generateProgressBar(percent) + (" " + percent + "%").padStart(5);
-                            console.print("\r" + progressText);
-                            nextPrintPercent = Math.floor(percent / 10) * 10 + 10;
+                let resResult = HttpUtils.download(
+                    url, savePath, {
+                        timeout: 30,
+                        ignoreSSL: true,
+                        isTextFile: isText,
+                        onProgress: (progress) => {
+                            console.log(progress.progressBar + (" " + progress.percent + "%").padStart(5));
                         }
                     }
-                }
-
-                // 确保显示100%
-                if (downloaded >= contentLength) {
-                    progressText = generateProgressBar(100) + " 100%";
-                    console.print("\r" + progressText);
-                }
-
-                // 关闭资源
-                outputStream.close();
-                inputStream.close();
+                )
 
                 // 显示完成信息
                 console.info("下载完成! ");
                 let time = (new Date().getTime() - startTime);
                 log("耗时：" + toSeconds(time));
-                console.log("文件大小: " + formatFileSize(downloaded));
+                console.log("文件大小: " + formatFileSize(resResult.fileSize));
 
                 //成功，跳出
                 if (!isText) {
-
                     let filebytes = files.readBytes(savePath);
                     console.warn("-->开始文件校验！")
 
@@ -1001,18 +902,21 @@ function startUpdate() {
                 if (files.exists(savePath))
                     files.remove(savePath);
 
+                if (e.message.includes("404")) {
+                    if (r404 > 2) {
+                        console.error("GitHub上找不到该文件")
+                        console.error("可能被作者删除")
+                        console.error("请等5分钟后再试")
+                        break;
+                    }
+                    r404++;
+                }
+
                 // 删除请求失败的代理
                 proxys.splice(proxy_index, 1);
                 console.error("更换加速器，重试！")
                 continue;
 
-            } finally {
-                try {
-                    if (inputStream) inputStream.close();
-                } catch (e) {}
-                try {
-                    if (outputStream) outputStream.close();
-                } catch (e) {}
             }
 
 
@@ -1104,7 +1008,7 @@ function startUpdate() {
         if (!auto.isRunning()) {
             auto(true);
         }
-        
+
         //sleep(3000)
         if (packageName('org.autojs.autojs6').exists()) {
             //  ---------------- 下面是刷新列表 --------//
@@ -1115,7 +1019,7 @@ function startUpdate() {
             let a6 = className("android.widget.TextView")
                 .packageName('org.autojs.autojs6')
                 .text("AutoJs6");
-                
+
             click(text('文件'));
             if (a6.exists() && textContains('小社脚本').exists()) {
                 wait(() => false, 1000);
@@ -1131,17 +1035,6 @@ function startUpdate() {
     }
 
 
-}
-// 生成Linux控制台风格进度条
-function generateProgressBar(percent) {
-    var barLength = 20;
-    var completed = Math.floor(percent / (100 / barLength));
-    var remaining = barLength - completed;
-
-    var bar = "[";
-    if (completed > 0) bar += "=".repeat(completed - 1) + ">";
-    bar += "-".repeat(remaining) + "]";
-    return bar;
 }
 
 
@@ -1176,32 +1069,24 @@ function getGitHubFileInfo(filePath, branch) {
             new Date().getTime();
         //  log(url)
 
-        let res = null;
-        let thread = threads.start(() => {
-            try {
-                res = http.get(url, {
-                    timeout: 10 * 1000,
-                    headers: {
-                        'Cache-Control': 'no-cache',
-                        'Pragma': 'no-cache',
-                        'Expires': '0',
-                        'Connection': 'Keep-Alive'
-                    }
-                });
-                if (res.statusCode === 200) {
-                    result = res.body.json();
-                }
-            } catch (e) {}
-        });
-        thread.join(10 * 1000);
-        thread.interrupt();
-        //  let time = (new Date().getTime() - startTime);
-        // log("请求时间：" + toSeconds(time));
-        if (result && result.size) break;
+        try {
+            let response = HttpUtils.request(url, {
+                method: "GET",
+                timeout: 10,
+                ignoreSSL: true
+            });
+            result = response.json;
 
-        // 删除请求失败的代理
-        api_proxys(api_proxy_index, 1);
-        api_proxy_index--;
+            //  let time = (new Date().getTime() - startTime);
+            // log("请求时间：" + toSeconds(time));
+            if (result && result.size) break;
+
+        } catch (e) {
+            // 删除请求失败的代理
+            api_proxys(api_proxy_index, 1);
+            api_proxy_index--;
+            continue;
+        }
     }
     if (result) {
         log('期望文件大小：' + result.size)
@@ -1551,6 +1436,279 @@ function isPropertyLine(line) {
 function hasProperComma(line) {
     return /,\s*(\/\/.*)?$/.test(line);
 }
+
+/**
+ * HTTP工具类
+ * 提供HTTP请求和文件下载功能
+ */
+const HttpUtils = {
+    /**
+     * 执行HTTP请求（包含客户端创建逻辑）
+     * @param {string} url - 请求URL
+     * @param {object} [options] - 配置选项
+     * @param {string} [options.method='GET'] - 请求方法 (GET/POST)
+     * @param {object} [options.headers] - 请求头
+     * @param {object} [options.body] - 请求体 (仅POST)
+     * @param {number} [options.timeout=30] - 超时时间(秒)
+     * @param {boolean} [options.ignoreSSL=false] - 是否忽略SSL验证
+     * @returns {okhttp3.Response} HTTP响应对象
+     */
+    executeRequest: function(url, options = {}) {
+        let {
+            method = 'GET',
+                headers = {},
+                body = null,
+                timeout = 30,
+                ignoreSSL = false
+        } = options;
+
+        try {
+            // 直接创建HTTP客户端（合并了createHttpClient的逻辑）
+            let clientBuilder = new okhttp3.OkHttpClient.Builder()
+                .connectTimeout(timeout, java.util.concurrent.TimeUnit.SECONDS)
+                .readTimeout(timeout, java.util.concurrent.TimeUnit.SECONDS);
+
+            if (ignoreSSL) {
+                let trustAllCerts = [
+                    new javax.net.ssl.X509TrustManager({
+                        checkClientTrusted: function(chain, authType) {},
+                        checkServerTrusted: function(chain, authType) {},
+                        getAcceptedIssuers: function() {
+                            return [];
+                        }
+                    })
+                ];
+
+                let sslContext = javax.net.ssl.SSLContext.getInstance("SSL");
+                sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+
+                clientBuilder = clientBuilder
+                    .sslSocketFactory(sslContext.getSocketFactory(), trustAllCerts[0])
+                    .hostnameVerifier(new javax.net.ssl.HostnameVerifier({
+                        verify: function(hostname, session) {
+                            return true;
+                        }
+                    }));
+            }
+
+            let client = clientBuilder.build();
+
+            // 构建请求
+            let requestBuilder = new okhttp3.Request.Builder()
+                .url(url)
+                .headers(okhttp3.Headers.of(headers));
+
+            // 添加请求体（仅POST）
+            if (method.toUpperCase() === 'POST' && body) {
+                let contentType = headers['Content-Type'] || 'application/json';
+                let requestBody = okhttp3.RequestBody.create(
+                    okhttp3.MediaType.parse(contentType),
+                    JSON.stringify(body)
+                );
+                requestBuilder = requestBuilder.post(requestBody);
+            }
+
+            // 执行请求并返回响应
+            return client.newCall(requestBuilder.build()).execute();
+
+        } catch (e) {
+            throw new Error("HTTP请求失败: " + e.message);
+        }
+    },
+
+    /**
+     * 普通HTTP请求
+     * @param {string} url - 请求URL
+     * @param {object} [options] - 配置选项
+     * @param {string} [options.method='GET'] - 请求方法 (GET/POST)
+     * @param {object} [options.headers] - 请求头
+     * @param {object} [options.body] - 请求体 (仅POST)
+     * @param {number} [options.timeout=30] - 超时时间(秒)
+     * @param {boolean} [options.ignoreSSL=false] - 是否忽略SSL验证
+     * @returns {object} 响应对象
+     */
+    request: function(url, options = {}) {
+        let startTime = new Date().getTime();
+        try {
+            // 使用统一的请求执行函数
+            let response = this.executeRequest(url, options);
+
+            let string = response.body().string()
+
+            // 返回响应对象
+            return {
+                success: true,
+                statusCode: response.code(),
+                headers: response.headers().toMultimap(),
+                body: string,
+                json: JSON.parse(string),
+                timeTaken: (new Date().getTime() - startTime),
+            };
+
+        } catch (e) {
+            throw new Error("HTTP请求失败: " + e.message);
+        }
+    },
+
+    /**
+     * 流式下载文件函数
+     * @param {string} url - 下载链接
+     * @param {string} savePath - 保存路径
+     * @param {object} [options] - 配置选项
+     * @param {number} [options.timeout=300] - 超时时间(秒)
+     * @param {boolean} [options.ignoreSSL=false] - 是否忽略SSL验证
+     * @param {boolean} [options.isTextFile=false] - 是否为文本文件
+     * @param {function} [options.onProgress] - 进度回调函数
+     * @returns {object} 下载结果对象
+     */
+    download: function(url, savePath, options = {}) {
+        let {
+            timeout = 300,
+                ignoreSSL = false,
+                isTextFile = false,
+                onProgress = null
+        } = options;
+
+        let inputStream, outputStream;
+        let downloaded = 0;
+        let contentLength = -1;
+        let startTime = new Date().getTime();
+        let nextPrintPercent = 0;
+
+        try {
+            savePath = files.path(savePath);
+            // 使用统一的请求执行函数
+            let response = this.executeRequest(url, {
+                method: 'GET',
+                headers: {},
+                timeout,
+                ignoreSSL
+            });
+
+            if (!response.isSuccessful()) {
+                throw new Error("HTTP错误: " + response.code());
+            }
+
+            let responseBody = response.body();
+            if (responseBody === null) {
+                throw new Error("响应体为空");
+            }
+
+            // 获取文件大小
+            contentLength = responseBody.contentLength();
+            let hasContentLength = contentLength > 0;
+
+            // 创建输出流
+            files.createWithDirs(savePath);
+
+            if (isTextFile) {
+                outputStream = new java.io.OutputStreamWriter(
+                    new java.io.FileOutputStream(savePath),
+                    java.nio.charset.StandardCharsets.UTF_8
+                );
+            } else {
+                outputStream = new java.io.FileOutputStream(savePath);
+            }
+
+            inputStream = responseBody.byteStream();
+            let buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 8192);
+            let bytesRead;
+
+            console.log("开始下载...");
+
+            while ((bytesRead = inputStream.read(buffer)) !== -1) {
+                let currentTime = new Date().getTime();
+                if (currentTime - startTime > timeout * 1000) {
+                    throw new Error("下载超时 (" + timeout + "秒)");
+                }
+
+                if (isTextFile) {
+                    let text = new java.lang.String(buffer, 0, bytesRead, "UTF-8");
+                    outputStream.write(text);
+                } else {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+
+                downloaded += bytesRead;
+
+                if (onProgress && typeof onProgress === 'function' && hasContentLength) {
+                    let percent = Math.floor((downloaded / contentLength) * 100);
+                    if (percent === 0 || percent === 100) continue;
+                    if (percent >= nextPrintPercent) {
+                        let progressBar = this.generateProgressBar(percent);
+                        onProgress({
+                            downloaded: downloaded,
+                            total: contentLength,
+                            percent: percent,
+                            progressBar: progressBar
+                        });
+                        nextPrintPercent += 10;
+                    }
+                }
+            }
+
+            // 确保100%被调用
+            if (onProgress && typeof onProgress === 'function') {
+                let progressBar = this.generateProgressBar(100);
+                onProgress({
+                    downloaded: contentLength,
+                    total: contentLength,
+                    percent: 100,
+                    progressBar: progressBar
+                });
+            }
+
+            outputStream.close();
+            inputStream.close();
+
+            return {
+                success: true,
+                statusCode: response.code(),
+                fileSize: downloaded,
+                filePath: savePath,
+                timeTaken: (new Date().getTime() - startTime),
+                isTextFile: isTextFile
+            };
+
+        } catch (e) {
+            if (files.exists(savePath)) files.remove(savePath);
+            throw e;
+        } finally {
+            try {
+                if (inputStream) inputStream.close();
+            } catch (e) {}
+            try {
+                if (outputStream) outputStream.close();
+            } catch (e) {}
+        }
+    },
+
+    /**
+     * 生成Linux控制台风格进度条
+     * @param {number} percent - 完成百分比
+     * @returns {string} 进度条字符串
+     */
+    generateProgressBar: function(percent) {
+        let barLength = 20;
+        let completed = Math.floor(percent / (100 / barLength));
+        let remaining = barLength - completed;
+
+        let bar = "[";
+        if (completed > 0) {
+            bar += "=".repeat(completed - 1);
+            bar += ">";
+        } else {
+            bar += ">";
+        }
+        bar += "-".repeat(remaining);
+        bar += "]";
+
+        return bar;
+    }
+
+
+
+};
 
 // 更新代理池
 //if (update_proxy)
