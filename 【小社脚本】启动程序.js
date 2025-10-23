@@ -857,7 +857,7 @@ function shuffleArray(array) {
     while (length) {
         randomIndex = Math.floor(Math.random() * length); // 生成[0, length-1]的随机索引
         length--;
-        // 交换当前元素与随机位置的���素
+        // 交换当前元素与随机位置�����素
         temp = array[length];
         array[length] = array[randomIndex];
         array[randomIndex] = temp;
@@ -1350,7 +1350,7 @@ function init() {
 
     if (!files.exists("./config.js")) {
         console.error("缺失[config.js]文件");
-        console.error("启动更新程序下载文件");
+        console.error("启动更新程序下载文��");
         updateScript();
         return;
     }
@@ -1582,7 +1582,7 @@ var proxys2 = [
     "https://g.blfrp.cn/", // 请求时间：1.80s
     "https://gh.xx9527.cn/", // 请求时间：1.83s
     "https://github.tianrld.top/", // 请求时间：1.84s
-    "https://ghproxy.xzhouqd.com/", // 请求时间���1.87s
+    "https://ghproxy.xzhouqd.com/", // 请��时间���1.87s
     "https://gh.nilive.top/", // 请求时间：1.92s
     "https://ghpxy.hwinzniej.top/", // 请求时间：2.00s
     "https://github.ruojian.space/", // 请求时间：2.01s
@@ -2611,7 +2611,7 @@ function permissionv() {
     if (powerManager.isIgnoringBatteryOptimizations(autojs.packageName)) {
         log("忽略电池优化，[已启用]");
     } else {
-        console.error("忽略电池优化，[未启用]!");
+        console.error("忽略电池优化，[未���用]!");
         console.error("可能导致定时任务无法执行");
         console.error("请将省电策略改成[无限制]");
         console.error("若有墓碑、杀后台程序，请加入白名单");
@@ -2924,7 +2924,7 @@ function main() {
         // throw e;
         //逻辑程序
         run();
-        log("      —— 耗时[ " + getDurTime(date) + " ] ——");
+        log("      ���— 耗时[ " + getDurTime(date) + " ] ——");
         console.warn("—----->--- End ---<-----—");
         device.cancelKeepingAwake();
         //允许息屏信号
