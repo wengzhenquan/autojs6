@@ -1572,7 +1572,9 @@ const HttpUtils = {
         let downloaded = 0;
         let contentLength = -1;
         let startTime = new Date().getTime();
-        let nextPrintPercent = 0;
+        
+        let lastProgressTime = startTime; // 记录上次打印进度的时间
+        let nextPrintPercent = 0; // 记录进度
 
         try {
             savePath = files.path(savePath);
@@ -1630,10 +1632,12 @@ const HttpUtils = {
 
                 downloaded += bytesRead;
 
-                if (onProgress && typeof onProgress === 'function' && hasContentLength) {
+                if (onProgress && typeof onProgress === 'function' &&
+                 hasContentLength||(currentTime - lastProgressTime >= 5000)) {
                     let percent = Math.floor((downloaded / contentLength) * 100);
                     if (percent === 0 || percent === 100) continue;
-                    if (percent >= nextPrintPercent) {
+                    if (percent >= nextPrintPercent||
+                     (currentTime - lastProgressTime >= 5000)) {
                         let progressBar = this.generateProgressBar(percent);
                         onProgress({
                             downloaded: downloaded,
@@ -1641,7 +1645,9 @@ const HttpUtils = {
                             percent: percent,
                             progressBar: progressBar
                         });
-                        nextPrintPercent += 10;
+                        nextPrintPercent += 25;
+                        lastProgressTime = currentTime; // 更新上次打印时间
+                    
                     }
                 }
             }
