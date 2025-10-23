@@ -49,7 +49,6 @@ const g1 = Math.pow(1024, 3); //1G
 const m1 = Math.pow(1024, 2); //1M
 var aMem = device.getAvailMem(); //空闲物理内存
 
-
 // 版本信息
 var localVersion = null;
 var serverVersion = null;
@@ -106,8 +105,6 @@ var proxys = [
     "http://github-proxy.teach-english.tech/", // 请求时间：0.65s
     "https://github.cnxiaobai.com/", // 请求时间：0.79s
 
-
-
 ]
 
 // 备用代理
@@ -123,9 +120,6 @@ var proxys2 = [
     "https://gh.bugdey.us.kg/", // 请求时间：0.89s
     "https://gh.catmak.name/", // 请求时间：1.04s
     "https://github-proxy.lixxing.top/", // 请求时间：1.8
-
-
-
 
     "https://gitproxy.click/", // 请求时间：0.94s
     "https://ghb.nilive.top/", // 请求时间：0.87s
@@ -144,8 +138,6 @@ var proxys2 = [
     "https://hk.gh-proxy.com/",
     "https://cdn.gh-proxy.com/",
     "https://ghfast.top/", // 请求时间：2.71s
-
-
 
     "https://ghproxy.mf-dust.dpdns.org/", // 请求时间：2.14s
     "https://gitproxy.mrhjx.cn/", // 请求时间：0.89s
@@ -248,8 +240,6 @@ var api_proxys = [
     "https://hk.gh-proxy.com/",
     "https://cdn.gh-proxy.com/",
 
-
-
     "https://j.1win.ggff.net/",
     "https://j.n1win.dpdns.org/",
     "https://j.1lin.dpdns.org/",
@@ -257,10 +247,7 @@ var api_proxys = [
     "https://j.1win.ip-ddns.com/",
     "https://j.1win.ddns-ip.net/",
 
-
 ]
-
-
 
 // 打乱数组
 shuffleArray(api_proxys);
@@ -270,7 +257,6 @@ shuffleArray(api_proxys);
 var proxy_index = 0;
 //var api_proxy_arr = getRandomNumbers(api_proxys.length - 1);
 var api_proxy_index = 0;
-
 
 // 数组去重
 function deduplicateInPlace(arr) {
@@ -282,8 +268,6 @@ function deduplicateInPlace(arr) {
     set.forEach(item => arr.push(item));
 }
 
-
-
 // 非高峰期乱序
 function timesShuffleArray(array) {
     let hours = new Date().getHours();
@@ -291,8 +275,6 @@ function timesShuffleArray(array) {
         shuffleArray(array);
     }
 }
-
-
 
 /**
  * Fisher-Yates洗牌算法（原地打乱，ES5兼容）
@@ -313,8 +295,6 @@ function shuffleArray(array) {
         array[randomIndex] = temp;
     }
 }
-
-
 
 /**
  * 处理函数：打乱数组1和数组2，并将数组2添加到数组1末尾
@@ -354,8 +334,6 @@ function sliceShuffleArrays(arr, splitIndex) {
     return part1;
 }
 
-
-
 //对比版本大小，前面的大，返回1，相等0，后面大-1
 function compareVersions(version1, version2) {
     let arr1 = version1.split('.').map(Number);
@@ -369,8 +347,6 @@ function compareVersions(version1, version2) {
     }
     return 0;
 }
-
-
 
 // [0-n]，不重复随机排列，返回数组，包含n
 function getRandomNumbers(n) {
@@ -386,7 +362,6 @@ function getRandomNumbers(n) {
     return result;
 }
 
-
 function formatFileSize(size) {
     if (size < 1024) {
         return size + 'B';
@@ -401,9 +376,6 @@ function formatFileSize(size) {
     // 最后处理大于等于1GB的情况
     return (size / Math.pow(1024, 3)).toFixed(2) + 'G';
 }
-
-
-
 
 /**
  * 将毫秒转换为带单位的字符串（ms 或 s）
@@ -623,9 +595,6 @@ function synProxys() {
     }
 }
 
-
-
-
 // -----------程序完整性检查---------------------//
 function integrityCheck() {
     log(">>>>→程序完整性校验←<<<<")
@@ -659,8 +628,6 @@ function integrityCheck() {
     }
 }
 
-
-
 // 检查脚本更新。
 function checkVersion() {
     console.info("---→>★脚本检查更新★<←---")
@@ -684,11 +651,9 @@ function checkVersion() {
                 ignoreSSL: true
             });
 
-            //  console.log("HTTP请求成功!");
-            //   log("请求时间：", response.timeTaken);
-            //  log("状态码:", response.statusCode);
-            //  log("响应体:", response.json);
-            result = res.json;
+            if (res && res.statusCode === 200) {
+                result = res.json;
+            }
         } catch (e) {
             //   console.error("HTTP请求失败:", e);
         }
@@ -799,8 +764,6 @@ function checkVersion() {
     }
 }
 
-
-
 //开始更新
 function startUpdate() {
     if (!hasNewVersion && !updateAll && updateList < 1)
@@ -857,7 +820,6 @@ function startUpdate() {
                 console.error("运存过低，下载有失败风险！")
                 console.error("如果报OOM错误，需重启AutoJS6后重新下载")
             }
-
 
             let startTime = new Date().getTime();
             let proxy = proxys[proxy_index];
@@ -937,10 +899,8 @@ function startUpdate() {
             files.remove('./' + fileName)
             wait(() => false, 300);
 
-
             //新文件名
             let newName = "tmp/" + name + ".new." + ext;
-
 
             console.info("开始尝试自动搬运配置");
             console.info("[" + oldName + "] + [" + newName + "]");
@@ -1000,9 +960,6 @@ function startUpdate() {
     console.error("在文件列表下滑刷新，可查看更新结果！");
     wait(() => false, 1000);
 
-
-
-
     try {
         if (!auto.isRunning()) {
             auto(true);
@@ -1033,9 +990,7 @@ function startUpdate() {
 
     }
 
-
 }
-
 
 // ==================== 文件校验系列 ====================
 
@@ -1098,7 +1053,6 @@ function getGitHubFileInfo(filePath, branch) {
 
     return result;
 }
-
 
 // 获取sha
 function getGitFileSha(fileBytes) {
@@ -1192,7 +1146,6 @@ function mergeConfigs(oldConfigPath, newConfigPath, outputPath) {
             // }
             return oldValue;
         }
-
 
         // 其它类型使用newValue的值，确保不出错
         return newValue;
@@ -1366,7 +1319,6 @@ function mergeConfigs(oldConfigPath, newConfigPath, outputPath) {
     }
 }
 
-
 // 使用示例：
 //mergeConfigs('./config.old.js', './config.new.js', './config.merged.js');
 
@@ -1382,8 +1334,6 @@ function fixConfigFile(sourcePath, backupPath) {
     files.write(backupPath, content, "utf-8");
     return true;
 }
-
-
 
 function fixWithContext(content) {
     let lines = content.split('\n');
@@ -1721,8 +1671,6 @@ const HttpUtils = {
 
         return bar;
     }
-
-
 
 };
 

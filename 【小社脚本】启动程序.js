@@ -2037,7 +2037,6 @@ function updateScript() {
 
         // 下载更新脚本
         let lun = proxys.length * proxys_use;
-        var file = null;
         while (lun--) {
             //  for (proxy_index; proxy_index < lun; proxy_index++) {
             let url = proxys[proxy_index] +
@@ -2048,34 +2047,27 @@ function updateScript() {
             log('使用加速器：' + proxys[proxy_index]);
             //log(url);
             try {
-                let res = HttpUtils.request(url, {
-                    method: "GET",
-                    timeout: 5,
-                    ignoreSSL: true
-                });
-                if (res && res.statusCode === 200) {
-                    file = res.body;
-                }
+                let res = HttpUtils.download(
+                    url,
+                    "./" + update_script, {
+                        timeout: 5,
+                        ignoreSSL: true,
+                        isTextFile: true,
+                        onProgress: (progress) => {
+                            console.log(progress.progressBar + (" " + progress.percent + "%").padStart(5, "\u3000"));
+                        }
+                    }
+                )
+                if (res && res.statusCode === 200)
+                    break;
             } catch (e) {
-              //  console.error(e.message)
+                //  console.error(e.message)
+                console.error('下载失败，更换加速器重试');
+                // 删除代理
+                proxys.splice(proxy_index, 1);
+                //  proxy_index--;
+                continue;
             }
-
-
-            if (file && file.length > 10 * 1024) {
-                break;
-            }
-            console.error('下载失败，更换加速器重试');
-            // 删除代理
-            proxys.splice(proxy_index, 1);
-            //  proxy_index--;
-
-        }
-
-        if (file && file.length > 10 * 1024) {
-            files.write("./" + update_script, file, "utf-8");
-            console.info("下载成功")
-            console.info('文件大小：' + formatFileSize(file.length))
-
         }
 
     }
