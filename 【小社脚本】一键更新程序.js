@@ -447,7 +447,6 @@ function updateProxys() {
                 sto_gh_proxys.put("update", false);
             }
 
-
         }
         if (gh_p && gh_p.length > 10) {
             proxys = sliceShuffleArrays(gh_p, 10);
