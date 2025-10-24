@@ -162,6 +162,9 @@ console.error('QQ群：197511003');
 
 
 events.on("exit", function() {
+    // 同步代理
+    if (ableUpdate) synProxys();
+        
     console.setTouchable(true);
     device.cancelKeepingAwake();
     if (window) window.close();
@@ -2931,10 +2934,6 @@ function main() {
         checkVersion();
         wait(() => false, 1000);
     }
-
-    // 同步代理
-    if (ableUpdate)
-        synProxys();
 
     //屏幕解锁
     unLock();

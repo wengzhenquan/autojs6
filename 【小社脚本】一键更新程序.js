@@ -71,12 +71,11 @@ var github_download_url = "https://raw.githubusercontent.com/wengzhenquan/autojs
 // 代理存储桶
 const sto_gh_proxys = storages.create('gh_proxys');
 
-if (!update_proxy)
-    storages.remove("gh_proxys")
-
 if (update_proxy) {
     events.on("exit", () => {
         sto_gh_proxys.put("update", false);
+        // 同步代理
+        synProxys();
     });
 }
 
@@ -447,8 +446,9 @@ function updateProxys() {
             } catch (e) {} finally {
                 sto_gh_proxys.put("update", false);
             }
-        }
 
+
+        }
         if (gh_p && gh_p.length > 10) {
             proxys = sliceShuffleArrays(gh_p, 10);
         }
@@ -460,11 +460,12 @@ function updateProxys() {
         console.info("--→新代理池数量：")
         log("proxys：" + proxys.length)
         log("api_proxys：" + api_proxys.length)
+        
         return;
-
+        
     }
-
-    storages.remove("gh_proxys")
+    
+   // storages.remove("gh_proxys")
 
     // 获取代理列表函数（支持多源请求与去重）
     function fetchProxyList() {
@@ -1697,9 +1698,7 @@ checkVersion();
 //开始更新
 startUpdate()
 
-// 同步代理
-//if (update_proxy)
-synProxys();
+
 
 //自动下滑更新列表
 
