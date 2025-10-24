@@ -74,8 +74,7 @@ const sto_gh_proxys = storages.create('gh_proxys');
 if (update_proxy) {
     events.on("exit", () => {
         sto_gh_proxys.put("update", false);
-        // 同步代理
-        synProxys();
+
     });
 }
 
@@ -1055,7 +1054,7 @@ function getGitHubFileInfo(filePath, branch) {
 
         // 删除请求失败的代理
         api_proxys.splice(api_proxy_index, 1);
-       // api_proxy_index--;
+        // api_proxy_index--;
         continue;
     }
     if (result) {
@@ -1703,7 +1702,8 @@ checkVersion();
 //开始更新
 startUpdate()
 
-
+// 同步代理
+synProxys();
 
 //自动下滑更新列表
 

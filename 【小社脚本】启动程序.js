@@ -1908,7 +1908,7 @@ function checkVersion() {
             github_download_url +
             'version' +
             '?t=' + new Date().getTime();
-            
+
         let thread = threads.start(() => {
             try {
                 let res = HttpUtils.request(url, {
@@ -2938,8 +2938,8 @@ function main() {
         checkVersion();
         wait(() => false, 1000);
     }
-    
-     // 同步代理
+
+    // 同步代理
     if (ableUpdate) synProxys();
 
     //屏幕解锁
