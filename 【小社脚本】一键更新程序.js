@@ -543,7 +543,10 @@ function updateProxys() {
         // 等待所有线程完成（每个线程最多等待5秒）
         threadsss.forEach(thread => {
             thread.join(5000);
-            thread.interrupt();
+            if (thread.isAlive()) {
+                thread.interrupt();
+            }
+            //  thread.interrupt();
         });
 
         // 按响应时间排序（升序）
@@ -645,18 +648,24 @@ function checkVersion() {
             '?t=' + new Date().getTime();
 
         let result = null;
-        try {
-            let res = HttpUtils.request(url, {
-                method: "GET",
-                timeout: 5,
-                ignoreSSL: true
-            });
+        let thread = threads.start(() => {
+            try {
+                let res = HttpUtils.request(url, {
+                    method: "GET",
+                    timeout: 5,
+                    ignoreSSL: true
+                });
 
-            if (res && res.statusCode === 200) {
-                result = res.json;
+                if (res && res.statusCode === 200) {
+                    result = res.json;
+                }
+            } catch (e) {
+                //   console.error("HTTP请求失败:", e);
             }
-        } catch (e) {
-            //   console.error("HTTP请求失败:", e);
+        });
+        thread.join(5 * 1000);
+        if (thread.isAlive()) {
+            thread.interrupt();
         }
 
         let time = (new Date().getTime() - startTime);
@@ -1458,21 +1467,9 @@ const HttpUtils = {
                 requestBuilder = requestBuilder.post(requestBody);
             }
 
-            let response = null;
-            log("发送HTTP请求……")
-            let thread = threads.start(() => {
-                // 执行请求并返回响应
-                response = client.newCall(requestBuilder.build()).execute();
 
-            });
-
-            thread.join(timeout * 1000);
-            thread.interrupt();
-
-            if (response === null) {
-                throw new Error("连接超时 (" + timeout + "秒)");
-            }
-            return response;
+            // 执行请求并返回响应
+            return client.newCall(requestBuilder.build()).execute();
 
         } catch (e) {
             throw new Error("HTTP请求失败: " + e.message);

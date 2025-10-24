@@ -1012,21 +1012,8 @@ const HttpUtils = {
                 requestBuilder = requestBuilder.post(requestBody);
             }
 
-            let response = null;
-            log("发送HTTP请求……")
-            let thread = threads.start(() => {
-                // 执行请求并返回响应
-                response = client.newCall(requestBuilder.build()).execute();
-
-            });
-
-            thread.join(timeout * 1000);
-            thread.interrupt();
-
-            if (response === null) {
-                throw new Error("连接超时 (" + timeout + "秒)");
-            }
-            return response;
+            // 执行请求并返回响应
+            return client.newCall(requestBuilder.build()).execute();
 
         } catch (e) {
             throw new Error("HTTP请求失败: " + e.message);
@@ -1846,10 +1833,13 @@ function updateProxys() {
             });
         });
 
-        // 等待所有线程完成��每个线程最多等待5秒）
+        // 等待所有线程完成(每个线程最多等待5秒）
         threadsss.forEach(thread => {
             thread.join(5000);
-            thread.interrupt();
+            if (thread.isAlive()) {
+                thread.interrupt();
+            }
+            // thread.interrupt();
         });
 
         // 按响应时间排序（升序）
@@ -1917,17 +1907,23 @@ function checkVersion() {
             github_download_url +
             'version' +
             '?t=' + new Date().getTime();
+        let thread = threads.start(() => {
+            try {
+                let res = HttpUtils.request(url, {
+                    method: "GET",
+                    timeout: 5,
+                    ignoreSSL: true
+                });
+                if (res && res.statusCode === 200) {
+                    serverVersion = res.json;
+                }
+            } catch (e) {}
 
-        try {
-            let res = HttpUtils.request(url, {
-                method: "GET",
-                timeout: 5,
-                ignoreSSL: true
-            });
-            if (res && res.statusCode === 200) {
-                serverVersion = res.json;
-            }
-        } catch (e) {}
+        });
+        thread.join(5 * 1000);
+        if (thread.isAlive()) {
+            thread.interrupt();
+        }
 
         if (serverVersion) {
             if (!files.exists("./version")) {
