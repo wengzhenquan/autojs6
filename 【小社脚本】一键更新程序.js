@@ -1477,7 +1477,11 @@ const HttpUtils = {
             return client.newCall(requestBuilder.build()).execute();
 
         } catch (e) {
-            throw new Error("HTTP请求失败: " + e.message);
+            if (e instanceof java.net.SocketTimeoutException) {
+                throw new Error("HTTP请求超时 (" + timeout + "秒)");
+                return null; // 返回null表示超时
+
+            } else throw new Error("HTTP请求失败: " + e.message);
         }
     },
 
