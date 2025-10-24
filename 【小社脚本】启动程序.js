@@ -164,7 +164,7 @@ console.error('QQ群：197511003');
 events.on("exit", function() {
     // 同步代理
     if (ableUpdate) synProxys();
-        
+
     console.setTouchable(true);
     device.cancelKeepingAwake();
     if (window) window.close();
@@ -1225,7 +1225,7 @@ const HttpUtils = {
         } else {
             bar += ">";
         }
-        bar += "-".repeat(remaining);
+        bar += "..".repeat(remaining);
         bar += "]";
 
         return bar;
@@ -2093,7 +2093,7 @@ function updateScript() {
         update_script = localVersion.updateScript;
         if (!files.exists("./" + update_script)) {
             console.error(update_script + ' 不存在');
-            console.error('找��到更新程序，无法更新');
+            console.error('找不到更新程序，无法更新');
             return;
         }
     }
@@ -2164,18 +2164,23 @@ function checkAutoJS6Version() {
             autoJS6_update +
             '?t=' + new Date().getTime();
 
-        try {
-            let res = HttpUtils.request(url, {
-                method: "GET",
-                timeout: 8,
-                ignoreSSL: true
-            });
-            if (res && res.statusCode === 200) {
-                result = res.json;
-                autojs6_serverVersion = result.tag_name.slice(1);
-            }
-        } catch (e) {}
-
+        let thread = threads.start(() => {
+            try {
+                let res = HttpUtils.request(url, {
+                    method: "GET",
+                    timeout: 8,
+                    ignoreSSL: true
+                });
+                if (res && res.statusCode === 200) {
+                    result = res.json;
+                    autojs6_serverVersion = result.tag_name.slice(1);
+                }
+            } catch (e) {}
+        });
+        thread.join(8 * 1000);
+        if (thread.isAlive()) {
+            thread.interrupt();
+        }
 
         if (result && autojs6_serverVersion)
             break;
@@ -2635,7 +2640,7 @@ function permissionv() {
     if (powerManager.isIgnoringBatteryOptimizations(autojs.packageName)) {
         log("忽略电池优化，[已启用]");
     } else {
-        console.error("忽略电池优化，[未���用]!");
+        console.error("忽略电池优化，[未启用]!");
         console.error("可能导致定时任务无法执行");
         console.error("请将省电策略改成[无限制]");
         console.error("若有墓碑、杀后台程序，请加入白名单");

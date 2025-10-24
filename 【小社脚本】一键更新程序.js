@@ -459,12 +459,12 @@ function updateProxys() {
         console.info("--→新代理池数量：")
         log("proxys：" + proxys.length)
         log("api_proxys：" + api_proxys.length)
-        
+
         return;
-        
+
     }
-    
-   // storages.remove("gh_proxys")
+
+    // storages.remove("gh_proxys")
 
     // 获取代理列表函数（支持多源请求与去重）
     function fetchProxyList() {
@@ -841,7 +841,7 @@ function startUpdate() {
 
             // log(url);
             try {
-                let resResult = HttpUtils.download(
+                let res = HttpUtils.download(
                     url, savePath, {
                         timeout: timeoutTimes,
                         ignoreSSL: true,
@@ -856,7 +856,7 @@ function startUpdate() {
                 console.info("下载完成! ");
                 let time = (new Date().getTime() - startTime);
                 log("耗时：" + toSeconds(time));
-                console.log("文件大小: " + formatFileSize(resResult.fileSize));
+                console.log("文件大小: " + formatFileSize(res.fileSize));
 
                 //成功，跳出
                 if (!isText) {
@@ -1020,10 +1020,11 @@ function getGitHubFileInfo(filePath, branch) {
     console.info('正在获取Github API版本信息')
     let result = null;
 
-    for (api_proxy_index; api_proxy_index < api_proxys.length; api_proxy_index++) {
+    let lun = api_proxys.length * 0.5;
+    while (lun--) {
         //let startTime = new Date().getTime();
         let proxy = api_proxys[api_proxy_index];
-        console.warn('api加速器：' + proxy)
+        console.warn('API加速器：' + proxy)
         let url = proxy +
             api_github +
             filePath +
@@ -1032,25 +1033,30 @@ function getGitHubFileInfo(filePath, branch) {
             '&t=' +
             new Date().getTime();
         //  log(url)
+        let thread = threads.start(() => {
+            try {
+                let res = HttpUtils.request(url, {
+                    method: "GET",
+                    timeout: 10,
+                    ignoreSSL: true
+                });
 
-        try {
-            let response = HttpUtils.request(url, {
-                method: "GET",
-                timeout: 10,
-                ignoreSSL: true
-            });
-            result = response.json;
-
-            //  let time = (new Date().getTime() - startTime);
-            // log("请求时间��" + toSeconds(time));
-            if (result && result.size) break;
-
-        } catch (e) {
-            // 删除请求失败的代理
-            api_proxys.splice(api_proxy_index, 1);
-            api_proxy_index--;
-            continue;
+                result = res.json;
+            } catch (e) {}
+        });
+        thread.join(10 * 1000);
+        if (thread.isAlive()) {
+            thread.interrupt();
         }
+        //  let time = (new Date().getTime() - startTime);
+        // log("请求时间：" + toSeconds(time));
+
+        if (result && result.size) break;
+
+        // 删除请求失败的代理
+        api_proxys.splice(api_proxy_index, 1);
+        api_proxy_index--;
+        continue;
     }
     if (result) {
         log('期望文件大小：' + result.size)
