@@ -1055,7 +1055,7 @@ function getGitHubFileInfo(filePath, branch) {
 
         // 删除请求失败的代理
         api_proxys.splice(api_proxy_index, 1);
-        api_proxy_index--;
+       // api_proxy_index--;
         continue;
     }
     if (result) {

@@ -1908,6 +1908,7 @@ function checkVersion() {
             github_download_url +
             'version' +
             '?t=' + new Date().getTime();
+            
         let thread = threads.start(() => {
             try {
                 let res = HttpUtils.request(url, {
