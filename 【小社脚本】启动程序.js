@@ -1012,8 +1012,21 @@ const HttpUtils = {
                 requestBuilder = requestBuilder.post(requestBody);
             }
 
-            // 执行请求并返回响应
-            return client.newCall(requestBuilder.build()).execute();
+            let response = null;
+            log("发送HTTP请求……")
+            let thread = threads.start(() => {
+                // 执行请求并返回响应
+                response = client.newCall(requestBuilder.build()).execute();
+
+            });
+
+            thread.join(timeout * 1000);
+            thread.interrupt();
+
+            if (response === null) {
+                throw new Error("连接超时 (" + timeout + "秒)");
+            }
+            return response;
 
         } catch (e) {
             throw new Error("HTTP请求失败: " + e.message);
