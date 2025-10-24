@@ -1146,9 +1146,12 @@ const HttpUtils = {
                 if (onProgress && typeof onProgress === 'function' && hasContentLength) {
                     let percent = Math.floor((downloaded / contentLength) * 100);
                     if (percent === 0 || percent === 100) continue;
+
                     if (currentTime - lastProgressTime >= 2000) {
 
-                        if (percent >= nextPrintPercent) {
+                        if (percent >= nextPrintPercent ||
+                            currentTime - lastProgressTime >= 7000) {
+
                             let progressBar = this.generateProgressBar(percent);
                             onProgress({
                                 downloaded: downloaded,
@@ -1830,7 +1833,7 @@ function updateProxys() {
             });
         });
 
-        // 等待所有线程完成（每个线程最多等待5秒）
+        // 等待所有线程完成��每个线程最多等待5秒）
         threadsss.forEach(thread => {
             thread.join(5000);
             thread.interrupt();
@@ -2078,7 +2081,7 @@ function updateScript() {
         update_script = localVersion.updateScript;
         if (!files.exists("./" + update_script)) {
             console.error(update_script + ' 不存在');
-            console.error('找不到更新程序，无法更新');
+            console.error('找��到更新程序，无法更新');
             return;
         }
     }
@@ -2324,7 +2327,7 @@ function unLock() {
                             console.warn(' 3.重启无障碍服务');
                             console.warn(' 4.重启手机')
 
-                            console.warn('如果经常发生，建议改成图案解锁！')
+                            console.warn('如果经常发生，建议改成图��解锁！')
 
                             abnormalInterrupt = 0;
                             wait(() => false, 2000);
@@ -2605,7 +2608,7 @@ function permissionv() {
     } else {
         toast("发送通知权限，[未启用]!");
         console.error("发送通知权限，[未启用]!");
-        //去设置
+        //去��置
         notice.launchSettings();
 
         abnormalInterrupt = 0;

@@ -199,7 +199,7 @@ var proxys2 = [
     "https://gh.996986.xyz/", // 请求时间：4.53s
     "https://github.oterea.top/", // 请求时间：4.95s
     "https://gh.jasonzeng.dev/", // 请求时间：5.12s
-    "https://gitproxy1.127731.xyz/", // 请求时间：5.64s
+    "https://gitproxy1.127731.xyz/", // 请求时��：5.64s
     "https://getgit.love8yun.eu.org/", // 请求时间：5.71s
     "https://github.zjzzy.cloudns.org/", // 请求时间：5.79s
     "https://gp.871201.xyz/", // 请求时间：7.01s
@@ -1595,7 +1595,9 @@ const HttpUtils = {
 
                     if (currentTime - lastProgressTime >= 2000) {
 
-                        if (percent >= nextPrintPercent) {
+                        if (percent >= nextPrintPercent ||
+                            currentTime - lastProgressTime >= 7000) {
+
                             let progressBar = this.generateProgressBar(percent);
                             onProgress({
                                 downloaded: downloaded,
