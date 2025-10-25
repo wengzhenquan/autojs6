@@ -859,7 +859,7 @@ function shuffleArray(array) {
     var length = array.length;
     var temp, randomIndex;
     while (length) {
-        randomIndex = Math.floor(Math.random() * length); // 生成[0, length-1]的随机索引
+        randomIndex = Math.floor(Math.random() * length); // 生成[0, length-1]的随机��引
         length--;
         // 交换当前元素与随机位置�����素
         temp = array[length];

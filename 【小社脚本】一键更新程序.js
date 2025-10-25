@@ -199,7 +199,7 @@ var proxys2 = [
     "https://github.oterea.top/", // 请求时间：4.95s
     "https://gh.jasonzeng.dev/", // 请求时间：5.12s
     "https://gitproxy1.127731.xyz/", // 请求时��：5.64s
-    "https://getgit.love8yun.eu.org/", // 请求时间：5.71s
+    "https://getgit.love8yun.eu.org/", // 请求��间：5.71s
     "https://github.zjzzy.cloudns.org/", // 请求时间：5.79s
     "https://gp.871201.xyz/", // 请求时间：7.01s
     "https://gp.zkitefly.eu.org/", // 请求时间：7.88s
@@ -1070,7 +1070,7 @@ function getGitHubFileInfo(filePath, branch) {
 }
 
 // 获取sha
-function getGitFileSha(fileBytes) {
+function getGitFileSha2(fileBytes) {
     // 构造 Blob 头部
     var headerStr = "blob " + fileBytes.length + "\u0000"; // 注意 Unicode 空字符
     var headerBytes = new java.lang.String(headerStr).getBytes("UTF-8"); // 转换为 UTF-8 字节
@@ -1093,6 +1093,41 @@ function getGitFileSha(fileBytes) {
     }
     return hexChars.join('');
 }
+
+
+// 避免大内存分配
+function getGitFileSha(fileBytes) {
+    // 构造 Blob 头部
+    var headerStr = "blob " + fileBytes.length + "\u0000";
+    var headerBytes = new java.lang.String(headerStr).getBytes("UTF-8");
+
+    // 使用 MessageDigest 的分块更新功能，避免创建大数组
+    var md = java.security.MessageDigest.getInstance("SHA-1");
+
+    // 更新头部数据
+    md.update(headerBytes);
+
+    // 分块更新文件内容（避免一次性加载）
+    const CHUNK_SIZE = 8192; // 8KB 块大小
+    for (let offset = 0; offset < fileBytes.length; offset += CHUNK_SIZE) {
+        let end = Math.min(offset + CHUNK_SIZE, fileBytes.length);
+        let chunk = java.util.Arrays.copyOfRange(fileBytes, offset, end);
+        md.update(chunk);
+        chunk = null; // 及时释放
+    }
+
+    // 获取最终哈希值
+    var digestBytes = md.digest();
+
+    // 转换为十六进制
+    var hexChars = [];
+    for (let i = 0; i < digestBytes.length; i++) {
+        let b = digestBytes[i];
+        hexChars.push(((b & 0xFF) < 0x10 ? '0' : '') + (b & 0xFF).toString(16));
+    }
+    return hexChars.join('');
+}
+
 
 // ==================== 同步和备份配置文件系列 ====================
 
