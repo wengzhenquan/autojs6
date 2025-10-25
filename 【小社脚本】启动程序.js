@@ -2234,7 +2234,7 @@ function swipesUp(n1, n) {
     for (let p = 0; p < n1 + 1; p++) {
         let i = config.上滑起始位置 ? arr[p] : p;
         // 固定起点Y坐标
-        let startY = dheight * (0.97 - 0.15 * i);
+        let startY = dheight * (0.96- 0.15 * i);
         // 基础终点Y坐标
         let baseEndY = dheight * (0.65 - 0.15 * i);
         // 基础滑动距离
