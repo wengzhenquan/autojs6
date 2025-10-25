@@ -859,7 +859,7 @@ function shuffleArray(array) {
     var length = array.length;
     var temp, randomIndex;
     while (length) {
-        randomIndex = Math.floor(Math.random() * length); // 生成[0, length-1]的随机��引
+        randomIndex = Math.floor(Math.random() * length); // 生成[0, length-1]的随机���引
         length--;
         // 交换当前元素与随机位置�����素
         temp = array[length];
@@ -1680,6 +1680,9 @@ var api_proxys = [
     "https://gh-proxy.com/",
     "https://hk.gh-proxy.com/",
     "https://cdn.gh-proxy.com/",
+    "https://gh.inkchills.cn/",
+    "https://cdn.akaere.online/",
+
 
 
 
@@ -2248,7 +2251,7 @@ function swipesUp(n1, n) {
             let actualDistance = baseDistance * adaptiveMultiplier;
             // 计算实际终点Y坐标
             endY = startY - actualDistance;
-            // 确保终点Y不小于0（防止超出屏幕顶部）
+            // 确��终点Y不小于0（防止超出屏幕顶部）
             if (endY < 0) endY = 0;
         }
         // 保持其他参数���变
@@ -2843,7 +2846,7 @@ function permissionv() {
     if (config && config.自动重启无障碍服务 && !autoRun &&
         (canRestarAuto || shizukuAuto || secureSettingAuto || rootAuto)) {
         console.error('无障碍服务未启用或发生故障！')
-        console.warn('发现已启用高级权限')
+        console.warn('发��已启用高级权限')
         console.warn('可尝试重启无障碍服务')
         console.error('正在重启无障碍服务......')
         console.info('-----------------')

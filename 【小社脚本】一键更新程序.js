@@ -238,6 +238,9 @@ var api_proxys = [
     "https://gh-proxy.com/",
     "https://hk.gh-proxy.com/",
     "https://cdn.gh-proxy.com/",
+    "https://gh.inkchills.cn/",
+    "https://cdn.akaere.online/",
+
 
     "https://j.1win.ggff.net/",
     "https://j.n1win.dpdns.org/",
