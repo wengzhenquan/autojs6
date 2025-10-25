@@ -1512,7 +1512,8 @@ const HttpUtils = {
             return client.newCall(requestBuilder.build()).execute();
 
         } catch (e) {
-            if (e.javaException instanceof java.net.SocketTimeoutException) {
+            if (e.javaException instanceof java.net.SocketTimeoutException ||
+                e instanceof java.net.SocketTimeoutException) {
                 throw new Error("HTTP请求超时 (" + timeout + "秒)");
                 return null; // 返回null表示超时
 
