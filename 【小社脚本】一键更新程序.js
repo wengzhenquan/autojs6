@@ -862,11 +862,11 @@ function startUpdate() {
 
                 //成功，跳出
                 if (!isText) {
-                    let filebytes = files.readBytes(savePath);
+                    //   let filebytes = files.readBytes(savePath);
                     console.warn("-->开始文件校验！")
 
                     if (fileInfo &&
-                        !fileVerify(fileInfo, filebytes)) {
+                        !fileVerify(fileInfo, savePath)) {
                         throw new Error("校验失败");
                     }
                 }
@@ -1007,14 +1007,22 @@ function startUpdate() {
 // ==================== 文件校验系列 ====================
 
 // 校验文件
-function fileVerify(fileInfo, fileBytes) {
-    console.info('已下载文件大小：' + fileBytes.length);
+function fileVerify(fileInfo, filePath) {
+    filePath = files.path(filePath);
+    let file = new File(filePath);
+    let fileSize = file.length();
+    console.info('已下载文件大小：' + fileSize);
     console.info('已下载文件SHA-1：');
-    let sha1 = getGitFileSha(fileBytes);
+    let sha1 = getGitFileSha(filePath);
     console.error(sha1);
 
-    return fileInfo.size === fileBytes.length &&
+    let result = fileInfo.size === fileSize &&
         sha1 === fileInfo.sha
+        
+    if (result)
+        console.warn('已通过校验！');
+
+    return result;
 }
 
 // 获取GitHub文件信息
@@ -1099,7 +1107,7 @@ function getGitFileSha2(fileBytes) {
 
 
 // 避免大内存分配
-function getGitFileSha(fileBytes) {
+function getGitFileSha3(fileBytes) {
     // 构造 Blob 头部
     var headerStr = "blob " + fileBytes.length + "\u0000";
     var headerBytes = new java.lang.String(headerStr).getBytes("UTF-8");
@@ -1128,6 +1136,53 @@ function getGitFileSha(fileBytes) {
         let b = digestBytes[i];
         hexChars.push(((b & 0xFF) < 0x10 ? '0' : '') + (b & 0xFF).toString(16));
     }
+    return hexChars.join('');
+}
+
+//  分流处理，入参是路径
+function getGitFileSha(filePath) {
+    filePath = files.path(filePath);
+    // 导入必要的Java类
+    var File = java.io.File;
+    var FileInputStream = java.io.FileInputStream;
+    var MessageDigest = java.security.MessageDigest;
+
+    // 获取文件对象
+    var file = new File(filePath);
+    var fileSize = file.length();
+
+    // 构造Blob头部
+    var headerStr = "blob " + fileSize + "\u0000";
+    var headerBytes = new java.lang.String(headerStr).getBytes("UTF-8");
+
+    // 初始化SHA-1消息摘要
+    var md = MessageDigest.getInstance("SHA-1");
+    md.update(headerBytes);
+
+    // 使用文件输入流分块读取文件
+    var fis = new FileInputStream(file);
+    var bufferSize = 8192; // 8KB缓冲区
+    var buffer = util.java.array('byte', bufferSize);
+    var bytesRead;
+
+    while ((bytesRead = fis.read(buffer)) !== -1) {
+        // 更新哈希计算（只处理实际读取的字节）
+        md.update(buffer, 0, bytesRead);
+    }
+
+    // 关闭文件流
+    fis.close();
+
+    // 获取最终哈希值
+    var digestBytes = md.digest();
+
+    // 转换为十六进制字符串
+    var hexChars = [];
+    for (var i = 0; i < digestBytes.length; i++) {
+        var hex = (digestBytes[i] & 0xFF).toString(16);
+        hexChars.push(hex.length === 1 ? '0' + hex : hex);
+    }
+
     return hexChars.join('');
 }
 
