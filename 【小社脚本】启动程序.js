@@ -861,7 +861,7 @@ function deduplicateInPlace(arr) {
 
 
 /**
- * Fisher-Yates洗牌算法（原数组打乱，ES5兼容）
+ * Fisher-Yates洗牌算法（原数组���乱，ES5兼容）
  * @param {Array} array 需要打乱的原数组（直接修改此数组）
  */
 function shuffleArray(array) {
@@ -1109,7 +1109,7 @@ const HttpUtils = {
 
         try {
             savePath = files.path(savePath);
-            // 使用统一的请求执行函数
+            // 使用统一的请求执行��数
             let response = this.executeRequest(url, {
                 method: 'GET',
                 headers: {},
@@ -2330,7 +2330,7 @@ function unLock() {
                 let password = config.锁屏数字密码;
                 if (typeof password !== 'string') {
                     console.error('密码格式错误！');
-                    console.error('密码开始和结束，必须有英文双引号！');
+                    console.error('密码开始和结束，必须有英文双引���！');
                     abnormalInterrupt = 0;
                     wait(() => false, 2000);
                     exit();

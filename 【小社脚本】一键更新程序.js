@@ -1685,14 +1685,7 @@ const HttpUtils = {
             // 创建输出流
             files.createWithDirs(savePath);
 
-            if (isTextFile) {
-                outputStream = new java.io.OutputStreamWriter(
-                    new java.io.FileOutputStream(savePath),
-                    java.nio.charset.StandardCharsets.UTF_8
-                );
-            } else {
-                outputStream = new java.io.FileOutputStream(savePath);
-            }
+            outputStream = new java.io.FileOutputStream(savePath);
 
             inputStream = responseBody.byteStream();
             let buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 8192);
@@ -1700,43 +1693,61 @@ const HttpUtils = {
 
             console.log("开始下载...");
 
-            while ((bytesRead = inputStream.read(buffer)) !== -1) {
-                let currentTime = new Date().getTime();
-                if (currentTime - startTime > timeout * 1000) {
-                    throw new Error("下载超时 (" + timeout + "秒)");
+            // 使用字符流处理文本文件
+            if (isTextFile) {
+                let reader = new java.io.InputStreamReader(
+                    responseBody.byteStream(),
+                    "UTF-8"
+                );
+
+                let writer = new java.io.OutputStreamWriter(
+                    new java.io.FileOutputStream(savePath),
+                    "UTF-8"
+                );
+
+                let charBuffer = util.java.array('char', 8192);
+                let charsRead;
+
+                while ((charsRead = reader.read(charBuffer)) !== -1) {
+                    writer.write(charBuffer, 0, charsRead);
                 }
 
-                if (isTextFile) {
-                    let text = new java.lang.String(buffer, 0, bytesRead, "UTF-8");
-                    outputStream.write(text);
-                } else {
+                writer.close();
+                reader.close();
+            } else {
+                // 二进制文件处理
+                while ((bytesRead = inputStream.read(buffer)) !== -1) {
+                    let currentTime = new Date().getTime();
+                    if (currentTime - startTime > timeout * 1000) {
+                        throw new Error("下载超时 (" + timeout + "秒)");
+                    }
+
                     outputStream.write(buffer, 0, bytesRead);
-                }
+                    downloaded += bytesRead;
 
-                downloaded += bytesRead;
+                    if (onProgress && typeof onProgress === 'function' &&
+                        hasContentLength) {
+                        let percent = Math.floor((downloaded / contentLength) * 100);
+                        if (percent === 0 || percent === 100) continue;
 
-                if (onProgress && typeof onProgress === 'function' &&
-                    hasContentLength) {
-                    let percent = Math.floor((downloaded / contentLength) * 100);
-                    if (percent === 0 || percent === 100) continue;
+                        if (currentTime - lastProgressTime >= 2000) {
 
-                    if (currentTime - lastProgressTime >= 2000) {
+                            if (percent >= nextPrintPercent ||
+                                currentTime - lastProgressTime >= 7000) {
 
-                        if (percent >= nextPrintPercent ||
-                            currentTime - lastProgressTime >= 7000) {
+                                let progressBar = this.generateProgressBar(percent);
+                                onProgress({
+                                    downloaded: downloaded,
+                                    total: contentLength,
+                                    percent: percent,
+                                    progressBar: progressBar
+                                });
 
-                            let progressBar = this.generateProgressBar(percent);
-                            onProgress({
-                                downloaded: downloaded,
-                                total: contentLength,
-                                percent: percent,
-                                progressBar: progressBar
-                            });
-                            lastProgressTime = currentTime; // 更新上次打印时间
-                            let p = 2 * percent - lastPercent;
-                            nextPrintPercent = p < 10 ? 10 : p;
-                            //    nextPrintPercent = p;
-                            lastPercent = percent;
+                                lastProgressTime = currentTime;
+                                let p = 2 * percent - lastPercent;
+                                nextPrintPercent = p < 10 ? 10 : p;
+                                lastPercent = percent;
+                            }
                         }
                     }
                 }
