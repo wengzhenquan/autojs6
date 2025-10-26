@@ -1701,7 +1701,7 @@ const HttpUtils = {
                 );
 
                 let writer = new java.io.OutputStreamWriter(
-                    new java.io.FileOutputStream(savePath),
+                    outputStream,
                     "UTF-8"
                 );
 
