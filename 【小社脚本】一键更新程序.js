@@ -199,7 +199,7 @@ var proxys2 = [
     "https://github.oterea.top/", // 请求时间：4.95s
     "https://gh.jasonzeng.dev/", // 请求时间：5.12s
     "https://gitproxy1.127731.xyz/", // 请求时间：5.64s
-    "https://getgit.love8yun.eu.org/", // 请求时间：5.71s
+    "https://getgit.love8yun.eu.org/", // 请求时��：5.71s
     "https://github.zjzzy.cloudns.org/", // 请求时间：5.79s
     "https://gp.871201.xyz/", // 请求时间：7.01s
     "https://gp.zkitefly.eu.org/", // 请求时间：7.88s
@@ -468,7 +468,7 @@ function updateProxys() {
             api_proxys = sliceShuffleArrays(gh_api_p, 5);
         }
 
-        console.info("--→新代理池数量：")
+        console.info("--→新代理池池数量：")
         log("proxys：" + proxys.length)
         log("api_proxys：" + api_proxys.length)
 
