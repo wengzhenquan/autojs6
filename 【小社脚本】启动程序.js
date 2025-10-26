@@ -1716,7 +1716,7 @@ function updateProxys() {
 
     if (config && config.更新代理池) {
         if (config.更新代理池 > 1 || !gh_p || !gh_api_p ||
-            gh_p.length < 30 || gh_api_p < 5) {
+            gh_p.length < 20 || gh_api_p < 5) {
             console.info("---→>→ 更新代理池 ←<←---")
 
             // 存在正在更新的程序，放弃更新
