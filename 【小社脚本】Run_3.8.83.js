@@ -1450,7 +1450,7 @@ function findCenter(pram) {
 
 
     if (config.社区APP签到方式 === 1) {
-        // 识图签到都挂了
+        // 识图签到都不行了
         if ((!enlocalYOLO || !yoloProcessor) &&
             serverInitSum === 0) {
             global.unfinished_mark = 1;
