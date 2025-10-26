@@ -260,6 +260,16 @@ var proxy_index = 0;
 //var api_proxy_arr = getRandomNumbers(api_proxys.length - 1);
 var api_proxy_index = 0;
 
+// 获取一个跟数组相关的长度值。
+// 按百分比获取，若值小于value则返回value，
+//  但如果超出数组长度则返回数组长度
+function getLun(arr, percent, value) {
+    return Math.min(
+        Math.max(Math.ceil(arr.length * percent),
+            value),
+        arr.length)
+}
+
 // 数组去重
 function deduplicateInPlace(arr) {
     const set = new Set(arr);
@@ -639,7 +649,8 @@ function checkVersion() {
     console.info("---→>★脚本检查更新★<←---")
     log("可用运存：" + formatFileSize(aMem));
 
-    let lun = Math.ceil(proxys.length * proxys_use);
+    //  let lun = Math.ceil(proxys.length * proxys_use);
+    let lun = getLun(proxys, proxys.length * proxys_use, 10);
     while (lun--) {
         let startTime = new Date().getTime();
         let proxy = proxys[proxy_index];
@@ -819,7 +830,8 @@ function startUpdate() {
         let filebytes = null;
         // 代理循环
         let r404 = 0;
-        let lun = Math.ceil(proxys.length * proxys_use);
+        //  let lun = Math.ceil(proxys.length * proxys_use);
+        let lun = getLun(proxys, proxys.length * proxys_use, 10);
         while (lun--) {
 
             runtime.gc;
@@ -1018,7 +1030,7 @@ function fileVerify(fileInfo, filePath) {
 
     let result = fileInfo.size === fileSize &&
         sha1 === fileInfo.sha
-        
+
     if (result)
         console.warn('已通过校验！');
 
@@ -1030,7 +1042,8 @@ function getGitHubFileInfo(filePath, branch) {
     console.info('正在获取Github API版本信息')
     let result = null;
 
-    let lun = Math.ceil(api_proxys.length * 0.5);
+    // let lun = Math.ceil(api_proxys.length * 0.5);
+    let lun = getLun(api_proxys, api_proxys.length * 0.5, 5);
     while (lun--) {
         //let startTime = new Date().getTime();
         let proxy = api_proxys[api_proxy_index];

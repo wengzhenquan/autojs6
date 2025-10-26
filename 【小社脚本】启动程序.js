@@ -836,6 +836,18 @@ function toSeconds(milliseconds) {
 
 }
 
+// 获取一个跟数组相关的长度值。
+// 按百分比获取，若值小于value则返回value，
+//  但如果超出数组长度则返回数组长度
+function getLun(arr, percent, value) {
+    return Math.min(
+        Math.max(Math.ceil(arr.length * percent),
+            value),
+        arr.length)
+}
+
+
+
 
 // 数组去重
 function deduplicateInPlace(arr) {
@@ -1911,9 +1923,9 @@ function checkVersion() {
 
     //远程version文件数据
     log("正在查询版本更新……")
-    let lun = Math.ceil(proxys.length * proxys_use);
+  //  let lun = Math.ceil(proxys.length * proxys_use);
+    let lun = getLun(proxys, proxys.length * proxys_use, 10);
     while (lun--) {
-        //  for (proxy_index; proxy_index < lun; proxy_index++) {
         let url = proxys[proxy_index] +
             github_download_url +
             'version' +
@@ -2060,7 +2072,8 @@ function updateScript() {
         log("开始下载更新程序：" + update_script)
 
         // 下载更新脚本
-        let lun = Math.ceil(proxys.length * proxys_use);
+      //  let lun = Math.ceil(proxys.length * proxys_use);
+        let lun = getLun(proxys, proxys.length * proxys_use, 10);
         while (lun--) {
             //  for (proxy_index; proxy_index < lun; proxy_index++) {
             let url = proxys[proxy_index] +
@@ -2165,7 +2178,8 @@ function checkAutoJS6Version() {
     log("正在查询版本更新……")
 
     let autojs6_serverVersion = null;
-    let lun = Math.ceil(api_proxys.length * 0.5);
+   // let lun = Math.ceil(api_proxys.length * 0.5);
+    let lun = getLun(api_proxys, api_proxys.length * 0.5, 5);
     while (lun--) {
         let result = null;
 
@@ -2234,7 +2248,7 @@ function swipesUp(n1, n) {
     for (let p = 0; p < n1 + 1; p++) {
         let i = config.上滑起始位置 ? arr[p] : p;
         // 固定起点Y坐标
-        let startY = dheight * (0.96- 0.15 * i);
+        let startY = dheight * (0.96 - 0.15 * i);
         // 基础终点Y坐标
         let baseEndY = dheight * (0.65 - 0.15 * i);
         // 基础滑动距离
