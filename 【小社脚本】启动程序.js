@@ -1911,7 +1911,7 @@ function checkVersion() {
 
     //远程version文件数据
     log("正在查询版本更新……")
-    let lun = proxys.length * proxys_use;
+    let lun = Math.ceil(proxys.length * proxys_use);
     while (lun--) {
         //  for (proxy_index; proxy_index < lun; proxy_index++) {
         let url = proxys[proxy_index] +
@@ -2060,7 +2060,7 @@ function updateScript() {
         log("开始下载更新程序：" + update_script)
 
         // 下载更新脚本
-        let lun = proxys.length * proxys_use;
+        let lun = Math.ceil(proxys.length * proxys_use);
         while (lun--) {
             //  for (proxy_index; proxy_index < lun; proxy_index++) {
             let url = proxys[proxy_index] +
@@ -2165,7 +2165,7 @@ function checkAutoJS6Version() {
     log("正在查询版本更新……")
 
     let autojs6_serverVersion = null;
-    let lun = api_proxys.length * 0.5;
+    let lun = Math.ceil(api_proxys.length * 0.5);
     while (lun--) {
         let result = null;
 

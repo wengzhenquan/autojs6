@@ -639,7 +639,7 @@ function checkVersion() {
     console.info("---→>★脚本检查更新★<←---")
     log("可用运存：" + formatFileSize(aMem));
 
-    let lun = proxys.length * proxys_use;
+    let lun = Math.ceil(proxys.length * proxys_use);
     while (lun--) {
         let startTime = new Date().getTime();
         let proxy = proxys[proxy_index];
@@ -819,7 +819,7 @@ function startUpdate() {
         let filebytes = null;
         // 代理循环
         let r404 = 0;
-        let lun = proxys.length * proxys_use;
+        let lun = Math.ceil(proxys.length * proxys_use);
         while (lun--) {
 
             runtime.gc;
@@ -1030,7 +1030,7 @@ function getGitHubFileInfo(filePath, branch) {
     console.info('正在获取Github API版本信息')
     let result = null;
 
-    let lun = api_proxys.length * 0.5;
+    let lun = Math.ceil(api_proxys.length * 0.5);
     while (lun--) {
         //let startTime = new Date().getTime();
         let proxy = api_proxys[api_proxy_index];
