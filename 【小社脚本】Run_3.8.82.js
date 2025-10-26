@@ -653,7 +653,7 @@ function signEntrance(name, pram) {
         sleep(config.社区页面等待延迟 * 1000);
 
     // 再点击一次，
-    // ���果前面点击成功，页面跳转，新页面肯定找不到按钮
+    // 如果前面点击成功，页面跳转，新页面肯定找不到按钮
     if (pram !== '立即签到') {
 
         content(pram).exists() &&
@@ -1352,7 +1352,7 @@ function desktopRun() {
             }
         } else {
             toastError("也许你对我的爱藏的太深，让我无法发现……", "forcible")
-            toastError("也许你根本就是在骗我……（▼へ▼メ）", "forcible")
+            toastError("也许你根本就在骗我……（▼へ▼メ）", "forcible")
             console.error("请把小程序图标放在桌面上，无论放第几屏都好。")
             console.error("但不要藏在文件夹里，那样真找不到。")
             if (config && config.通知提醒)
@@ -1877,7 +1877,7 @@ function localYOLOSign() {
     let result = false;
     for (let i = 0; i < 5; i++) {
         log(`开始第 ${i + 1} 次签到尝试`);
-        if (text("已���到").exists()) {
+        if (text("已签到").exists()) {
             toastLog("识图签到成功！！！(๑´∀`๑)");
             return true;
         }

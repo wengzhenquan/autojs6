@@ -198,8 +198,8 @@ var proxys2 = [
     "https://gh.996986.xyz/", // 请求时间：4.53s
     "https://github.oterea.top/", // 请求时间：4.95s
     "https://gh.jasonzeng.dev/", // 请求时间：5.12s
-    "https://gitproxy1.127731.xyz/", // 请求时��：5.64s
-    "https://getgit.love8yun.eu.org/", // 请求��间：5.71s
+    "https://gitproxy1.127731.xyz/", // 请求时间：5.64s
+    "https://getgit.love8yun.eu.org/", // 请求时间：5.71s
     "https://github.zjzzy.cloudns.org/", // 请求时间：5.79s
     "https://gp.871201.xyz/", // 请求时间：7.01s
     "https://gp.zkitefly.eu.org/", // 请求时间：7.88s
@@ -934,7 +934,7 @@ function startUpdate() {
             try {
                 // 将旧配置里的值，同步到新配置
                 // 以新配置作为模板，按照新配置文件的排版
-                // 两个文件合并生成新���件
+                // 两个文件合并生成新文件
                 merge = mergeConfigs('./' + oldName,
                     './' + newName, './' + fileName);
             } catch (e) {

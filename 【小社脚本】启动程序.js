@@ -871,9 +871,9 @@ function shuffleArray(array) {
     var length = array.length;
     var temp, randomIndex;
     while (length) {
-        randomIndex = Math.floor(Math.random() * length); // 生成[0, length-1]的随机���引
+        randomIndex = Math.floor(Math.random() * length); // 生成[0, length-1]的随机索引
         length--;
-        // 交换当前元素与随机位置�����素
+        // 交换当前元素与随机位置元素
         temp = array[length];
         array[length] = array[randomIndex];
         array[randomIndex] = temp;
@@ -1388,7 +1388,7 @@ function init() {
 
     if (!files.exists("./config.js")) {
         console.error("缺失[config.js]文件");
-        console.error("启动更新程序下载文��");
+        console.error("启动更新程序下载文件");
         updateScript();
         return;
     }
@@ -1620,7 +1620,7 @@ var proxys2 = [
     "https://g.blfrp.cn/", // 请求时间：1.80s
     "https://gh.xx9527.cn/", // 请求时间：1.83s
     "https://github.tianrld.top/", // 请求时间：1.84s
-    "https://ghproxy.xzhouqd.com/", // 请��时间���1.87s
+    "https://ghproxy.xzhouqd.com/", // 请求时间：1.87s
     "https://gh.nilive.top/", // 请求时间：1.92s
     "https://ghpxy.hwinzniej.top/", // 请求时间：2.00s
     "https://github.ruojian.space/", // 请求时间：2.01s
@@ -2265,10 +2265,10 @@ function swipesUp(n1, n) {
             let actualDistance = baseDistance * adaptiveMultiplier;
             // 计算实际终点Y坐标
             endY = startY - actualDistance;
-            // 确��终点Y不小于0（防止超出屏幕顶部）
+            // 确定终点Y不小于0（防止超出屏幕顶部）
             if (endY < 0) endY = 0;
         }
-        // 保持其他参数���变
+        // 保持其他参数不变
         swipe(
             dwidth * (4 + Math.pow(-1, i + n)) / 8,
             startY,
@@ -2367,7 +2367,7 @@ function unLock() {
                             console.warn(' 3.重启无障碍服务');
                             console.warn(' 4.重启手机')
 
-                            console.warn('如果经常发生，建议改成图��解锁！')
+                            console.warn('如果经常发生，建议改成图案解锁！')
 
                             abnormalInterrupt = 0;
                             wait(() => false, 2000);
@@ -2648,7 +2648,7 @@ function permissionv() {
     } else {
         toast("发送通知权限，[未启用]!");
         console.error("发送通知权限，[未启用]!");
-        //去��置
+        //去设置
         notice.launchSettings();
 
         abnormalInterrupt = 0;
@@ -2860,7 +2860,7 @@ function permissionv() {
     if (config && config.自动重启无障碍服务 && !autoRun &&
         (canRestarAuto || shizukuAuto || secureSettingAuto || rootAuto)) {
         console.error('无障碍服务未启用或发生故障！')
-        console.warn('发��已启用高级权限')
+        console.warn('发现已启用高级权限')
         console.warn('可尝试重启无障碍服务')
         console.error('正在重启无障碍服务......')
         console.info('-----------------')
