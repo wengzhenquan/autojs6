@@ -861,7 +861,7 @@ function deduplicateInPlace(arr) {
 
 
 /**
- * Fisher-Yates洗牌算法（原地打乱，ES5兼容）
+ * Fisher-Yates洗牌算法（原数组打乱，ES5兼容）
  * @param {Array} array 需要打乱的原数组（直接修改此数组）
  */
 function shuffleArray(array) {
