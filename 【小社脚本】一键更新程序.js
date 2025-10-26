@@ -1706,7 +1706,7 @@ const HttpUtils = {
                 );
 
                 let charBuffer = util.java.array('char', 8192);
-                let charsRead;
+                let charsRead = bytesRead;
 
                 while ((charsRead = reader.read(charBuffer)) !== -1) {
                     writer.write(charBuffer, 0, charsRead);
@@ -1767,10 +1767,13 @@ const HttpUtils = {
             outputStream.close();
             inputStream.close();
 
+            // 获取实际文件大小
+            let fileSize = new java.io.File(savePath).length();
+
             return {
                 success: true,
                 statusCode: response.code(),
-                fileSize: downloaded,
+                fileSize: fileSize,
                 filePath: savePath,
                 timeTaken: (new Date().getTime() - startTime),
                 isTextFile: isTextFile
