@@ -468,7 +468,7 @@ function updateProxys() {
             api_proxys = sliceShuffleArrays(gh_api_p, 5);
         }
 
-        console.info("--→新代理池池数量：")
+        console.info("--→新代理池数量：")
         log("proxys：" + proxys.length)
         log("api_proxys：" + api_proxys.length)
 
