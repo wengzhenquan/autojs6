@@ -50,7 +50,7 @@
 （最低支持6.6.2，额外兼容6.5.0）   
 （不支持6.6.0、6.6.1）   
 
-[点击去下载](https://github.com/SuperMonster003/AutoJs6/releases)  
+[官网下载](https://github.com/SuperMonster003/AutoJs6/releases)  
 
 [123云盘渠道下载(推荐)](https://www.123912.com/s/RYmDVv-X3Sch)  
 
@@ -90,7 +90,7 @@
 
 [在线加速下载版（推荐）](https://github.com/wengzhenquan/autojs6/releases/main)  
 
-123云盘渠道下载(推荐)：前面AutoJS6 123云盘链接里有[小社脚本.zip]   
+[123云盘渠道下载(小社脚本.zip)](https://www.123912.com/s/RYmDVv-X3Sch) 
 
 [完整包下载](https://github.com/wengzhenquan/autojs6/archive/refs/heads/main.zip)   
 
@@ -214,7 +214,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
   
    坐标点击: 0,：（推荐）程序自动判断，若社区APP＞=5.3.2版本，使用社区跳转，否则使用桌面寻找图标。  
 
-   坐标点击: 1,：（不推荐）从第3屏指定坐标点击启动小程序，坐标获取方法与上面一样。
+   坐标点击: 1,：（不推荐）从第3屏指定坐标点击启动小程序，坐标获取方法与上面一���。
               （如果你确定这样做了，那么图标必须放在第3屏！）  
               
    坐标点击: 2,：（推荐）强制使用桌面自动搜索所有屏。 
