@@ -24,6 +24,9 @@ events.on("exit", () => {
 });
 // 打开日志页面
 console.launch();
+// 设备信息
+const dwidth = device.width;
+const dheight = device.height;
 
 // 下载大文件超时，单位：秒。 
 // 网速快，可以改成10~30，网速慢改成30~60
@@ -38,6 +41,9 @@ const update_proxy = 1;
 
 // 最小文件大小(B)，小于这个值都认为错误，将重试
 var filemin = 500;
+
+// 更新结束后下滑刷新列表。0=不刷新，1=刷新。
+const refreshDir = 1;
 
 // 忽略的更新列表
 var ignoreList = [
@@ -61,6 +67,8 @@ var deleteList = []; // 待删除列表
 
 var successList = []; // 更新成功列表
 var errorList = []; // 更新失败列表
+
+var updateDir = new Set(); // 需要刷新的目录
 
 // 文本格式
 var textArry = ["", "md", "css", "js", "txt", "json", "html"];
@@ -404,6 +412,75 @@ function toSeconds(milliseconds) {
     return `${milliseconds} ms`;
 
 }
+
+/**
+ * 获取路径的根路径
+ * @param {string} path - 输入的路径
+ * @returns {string|null} 根路径或null
+ */
+function getRootPath(path) {
+    // 检查路径是否包含斜杠
+    if (!path.includes('/')) {
+        return null;
+    }
+
+    // 处理以斜杠开头的路径
+    if (path.startsWith('/')) {
+        const parts = path.split('/');
+        // 根路径是第一个非空部分
+        for (let i = 1; i < parts.length; i++) {
+            if (parts[i]) {
+                return parts[i];
+            }
+        }
+        return null;
+    }
+
+    // 处理不以斜杠开头的路径
+    const firstSlashIndex = path.indexOf('/');
+    return path.substring(0, firstSlashIndex);
+}
+
+// 有效控件点击，若本控件无法点击，一路寻找到能点击的父控件
+function ableClick(obj) {
+    try {
+        if (obj) {
+            if (typeof obj === 'string') {
+                obj = content(obj);
+            }
+
+            if (obj instanceof UiSelector) {
+                obj = obj.findOne(2000);
+            }
+
+            if (obj && (obj instanceof UiObject)) {
+                if (obj.show())
+                    wait(() => false, 500);
+                // click
+                let result = obj.click();
+                // 最多向上爬2层
+                let n = 2;
+                while (n-- && !result &&
+                    obj.parent() &&
+                    obj.parent().depth() > 0
+                ) {
+
+                    obj = obj.parent();
+                    // 父控件click
+                    result = obj.click();
+                }
+                wait(() => false, 300);
+
+                return result;
+            }
+        }
+    } catch (e) {}
+
+    return false;
+}
+
+
+
 
 // ----------- 脚本更新 ---------------------//
 
@@ -952,8 +1029,13 @@ function startUpdate() {
     if (successList.length > 0) {
         console.log("更新成功清单:");
         successList.forEach((file) => {
+            let rDir = getRootPath(file);
+            if (rDir) {
+                updateDir.add(rDir);
+            }
             let name = !file.includes('【') ? ''.padStart(1) + file : file;
             console.info(name);
+
         });
         log("----------------------------");
     }
@@ -985,34 +1067,93 @@ function startUpdate() {
     wait(() => false, 1000);
 
     try {
-        if (!auto.isRunning()) {
-            auto(true);
-        }
+        if (refreshDir) {
+            if (!auto.isRunning()) {
+                auto(true);
+            }
 
-        //sleep(3000)
-        if (packageName('org.autojs.autojs6').exists()) {
-            //  ---------------- 下面是刷新列表 --------//
-            back();
-            // 设备信息
-            var dwidth = device.width;
-            var dheight = device.height;
-            let a6 = className("android.widget.TextView")
-                .packageName('org.autojs.autojs6')
-                .text("AutoJs6");
+            //sleep(3000)
+            if (packageName('org.autojs.autojs6').exists()) {
+                log("即将自动下滑刷新")
+                sleep(1000)
+                //  ---------------- 下面是刷新列表 --------//
 
-            click(text('文件'));
-            if (a6.exists() && textContains('小社脚本').exists()) {
-                wait(() => false, 1000);
-                let n = 3;
-                while (n--) {
-                    swipe(dwidth * 0.4, dheight * 0.4, dwidth * 0.6, dheight * 0.8, 100);
-                    sleep(500);
+                back();
+                if (ableClick('文件')) {
+                    refreshDirList();
                 }
+
             }
         }
     } catch (e) {
 
     }
+
+}
+
+// 刷新目录列表
+function refreshDirList() {
+
+    // 目标路径
+    var targetPath = files.cwd() + "/" + engines.myEngine().getSource().getName();
+    var pathParts = targetPath.split("/").filter(Boolean);
+    let i = pathParts.length;
+
+    // 从最后一级开始向上查找
+    while (i--) {
+        //  for (; i >= 0; i--) {
+        let currentPart = pathParts[i];
+
+        // 检查当前部分是否存在
+        if (textStartsWith(currentPart).exists()) {
+            // 构建当前目录路径
+            let currentDir = "";
+            for (let j = 0; j < i; j++) {
+                currentDir += "/" + pathParts[j];
+            }
+            //  toastLog("✓ 找到路径项：" + currentPart + "，当前目录是：" + currentDir);
+            break;
+        }
+        // log(i)
+    }
+    //  log(i)
+
+    for (; i < pathParts.length - 1; i++) {
+        let currentPart = pathParts[i];
+        if (!content(currentPart).exists())
+            ableClick("文件夹")
+        // log(currentPart)
+        // 检查当前部分是否存在
+        if (text(currentPart).exists()) {
+            log("--→进入目录：" + currentPart)
+            ableClick(currentPart);
+            sleep(500);
+            //return;
+        }
+    }
+    log("下滑刷新！！！")
+    let r = 2;
+    while (r--) {
+        swipe(dwidth * 0.4, dheight * 0.4, dwidth * 0.6, dheight * 0.8, 100);
+        sleep(500);
+    }
+
+    updateDir.forEach((dir) => {
+        if (!content(dir).exists())
+            ableClick("文件夹")
+
+        log("--→进入目录：" + dir)
+        if (ableClick(dir)) {
+            log("下滑刷新！！！")
+            let r2 = 2;
+            while (r2--) {
+                swipe(dwidth * 0.4, dheight * 0.4, dwidth * 0.6, dheight * 0.8, 100);
+                sleep(500);
+            }
+            back();
+            sleep(500);
+        }
+    });
 
 }
 
@@ -1661,7 +1802,7 @@ const HttpUtils = {
 
         try {
             savePath = files.path(savePath);
-            
+
             log("发送请求……")
             // 使用统一的请求执行函数
             let response = this.executeRequest(url, {
