@@ -1135,8 +1135,9 @@ function refreshDirList() {
     let r = 2;
     while (r--) {
         swipe(dwidth * 0.4, dheight * 0.4, dwidth * 0.6, dheight * 0.8, 100);
-        sleep(500);
+        sleep(1000);
     }
+    sleep(1500)
 
     updateDir.forEach((dir) => {
         if (!content(dir).exists())
@@ -1148,10 +1149,10 @@ function refreshDirList() {
             let r2 = 2;
             while (r2--) {
                 swipe(dwidth * 0.4, dheight * 0.4, dwidth * 0.6, dheight * 0.8, 100);
-                sleep(500);
+                sleep(1000);
             }
             back();
-            sleep(500);
+            sleep(1000);
         }
     });
 
