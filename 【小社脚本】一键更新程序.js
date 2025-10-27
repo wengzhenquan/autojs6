@@ -1661,6 +1661,8 @@ const HttpUtils = {
 
         try {
             savePath = files.path(savePath);
+            
+            log("发送请求……")
             // 使用统一的请求执行函数
             let response = this.executeRequest(url, {
                 method: 'GET',
