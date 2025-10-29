@@ -1216,7 +1216,8 @@ function saveXcXButton(obj) {
 
             // 1. 创建 Map 并添加数据
             let auto_button = new Map();
-            auto_button.set("button_name", obj.text() + obj.desc())
+            auto_button.set("button_name",
+                obj.text() ?? "" + obj.desc() ?? "")
             auto_button.set("auto_button_x", x);
             auto_button.set("auto_button_y", y);
             // log(Object.fromEntries(auto_button));
@@ -1271,7 +1272,7 @@ function mhqdClick() {
 // 跳转打开微信小程序
 function openVChat(button) {
     if (button)
-        log("点击：" + button.text() + button.desc())
+        log("点击：" + button.text() ?? "" + button.desc() ?? "")
 
     ableClick(button);
     //sleep(2000);
