@@ -1217,7 +1217,7 @@ function saveXcXButton(obj) {
             // 1. 创建 Map 并添加数据
             let auto_button = new Map();
             auto_button.set("button_name",
-                obj.text() ?? "" + obj.desc() ?? "")
+                (obj.text() ?? "") + (obj.desc() ?? ""))
             auto_button.set("auto_button_x", x);
             auto_button.set("auto_button_y", y);
             // log(Object.fromEntries(auto_button));
@@ -1246,7 +1246,7 @@ function mhqdClick() {
         log("三击：" + click(x, y));
     } else {
         toastWarn("[不确定操作]摸黑→点击[签到]！")
-        let xcXButton = getXcXButton();
+        let xcXButeton = getXcXButton();
         if (xcXButton) {
             log("发现自动识别的签到坐标：" + xcXButton)
             click(xcXButton[0], xcXButton[1]);
@@ -1272,7 +1272,7 @@ function mhqdClick() {
 // 跳转打开微信小程序
 function openVChat(button) {
     if (button)
-        log("点击：" + button.text() ?? "" + button.desc() ?? "")
+        log("点击：" + (button.text() ?? "") + (button.desc() ?? ""))
 
     ableClick(button);
     //sleep(2000);
