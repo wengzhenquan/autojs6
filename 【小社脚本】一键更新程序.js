@@ -546,7 +546,7 @@ function updateProxys() {
         }
 
         console.info("--→新代理池数量：")
-        console.error("(每次更新，会淘汰掉速度慢的代理)")
+        console.error("(每次更新，会淘汰速度慢的代理)")
         log("proxys：" + proxys.length)
         log("api_proxys：" + api_proxys.length)
 
