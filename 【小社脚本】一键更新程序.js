@@ -1114,7 +1114,8 @@ function refreshDirList() {
             }
             currentDir += "/";
             try {
-                toastLog("✓ 找到路径项：" + currentPart + "，当前目录是：" + currentDir);
+                log("✓ 找到路径项：" + currentPart);
+                toastLog("当前目录是：" + currentDir);
             } catch (e) {}
 
             break;
