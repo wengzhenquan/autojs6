@@ -1080,9 +1080,9 @@ function startUpdate() {
                 //  ---------------- 下面是刷新列表 --------//
 
                 back();
-                if (ableClick('文件')) {
-                    refreshDirList();
-                }
+                ableClick('文件')
+                sleep(1000);
+                refreshDirList();
 
             }
         }
@@ -1114,8 +1114,8 @@ function refreshDirList() {
             }
             currentDir += "/";
             try {
-                log("✓ 找到路径项：" + currentPart);
-                toastLog("当前目录是：" + currentDir);
+                // log("✓ 找到路径项：" + currentPart);
+                toastLog("识别当前目录：" + currentDir);
             } catch (e) {}
 
             break;
