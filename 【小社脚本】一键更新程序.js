@@ -1128,12 +1128,12 @@ function refreshDirList() {
         if (text(currentPart).exists()) {
             log("--→进入目录：" + currentPart)
             ableClick(currentPart);
-            sleep(500);
+            sleep(1000);
             //return;
         }
     }
     log("下滑刷新！！！")
-    let r = 2;
+    let r = 3;
     while (r--) {
         swipe(dwidth * 0.4, dheight * 0.4, dwidth * 0.6, dheight * 0.8, 100);
         sleep(1000);
@@ -1147,8 +1147,8 @@ function refreshDirList() {
         log("--→进入目录：" + dir)
         if (ableClick(dir)) {
             log("--→下滑刷新！！！")
-            let r2 = 2;
-            while (r2--) {
+            r = 2;
+            while (r--) {
                 swipe(dwidth * 0.4, dheight * 0.4, dwidth * 0.6, dheight * 0.8, 100);
                 sleep(1000);
             }
