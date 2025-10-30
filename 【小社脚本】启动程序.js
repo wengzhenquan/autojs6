@@ -460,10 +460,10 @@ function consoleShow() {
                 titleTextSize: 18,
                 titleTextColor: 'green',
                 titleIconsTint: 'yellow',
-                titleBackgroundAlpha: 0.8,
+                //  titleBackgroundAlpha: 0.8,
                 titleBackgroundColor: 'dark-blue',
                 contentTextSize: 15,
-                contentBackgroundAlpha: 0.7,
+                //  contentBackgroundAlpha: 0.7,
                 contentBackgroundColor: colors.BLACK,
                 touchable: true,
                 exitOnClose: false,
@@ -480,6 +480,17 @@ function consoleShow() {
                 error: 'magenta'
             });
 
+
+            if (config && config.悬浮窗控制台_标题 && config.悬浮窗控制台_标题.length > 0) {
+                console.setTitle(config.悬浮窗控制台_标题);
+            }
+            
+            if (config && config.悬浮窗控制台_透明度) {
+                console.setTitleBackgroundAlpha(config.悬浮窗控制台_透明度);
+                console.setContentBackgroundAlpha(config.悬浮窗控制台_透明度 * 0.9);
+            }
+
+
             if (config && config.悬浮窗控制台_字体大小) {
                 console.setContentTextSize(config.悬浮窗控制台_字体大小);
                 console.setTitleTextSize(config.悬浮窗控制台_字体大小 + 3);
@@ -491,6 +502,8 @@ function consoleShow() {
                 console.show();
                 return;
             }
+
+            
 
             console.setTouchable(false);
         }
@@ -575,6 +588,7 @@ function consoleMax() {
         //可触碰
         console.setTouchable(true);
         //透明度
+        console.setTitleBackgroundAlpha(1);
         console.setContentBackgroundAlpha(1)
 
         console.setSize(0.96, 0.8);
