@@ -1145,7 +1145,7 @@ function refreshDirList() {
 
         log("--→进入目录：" + dir)
         if (ableClick(dir)) {
-            log("下滑刷新！！！")
+            log("--→下滑刷新！！！")
             let r2 = 2;
             while (r2--) {
                 swipe(dwidth * 0.4, dheight * 0.4, dwidth * 0.6, dheight * 0.8, 100);
