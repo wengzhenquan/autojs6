@@ -1075,7 +1075,7 @@ function startUpdate() {
 
             //sleep(3000)
             if (packageName('org.autojs.autojs6').exists()) {
-                log("即将自动下滑刷新")
+                console.info(">>>→即将自动下滑刷新←<<<")
                 sleep(1000)
                 //  ---------------- 下面是刷新列表 --------//
 
@@ -1112,7 +1112,11 @@ function refreshDirList() {
             for (let j = 0; j < i; j++) {
                 currentDir += "/" + pathParts[j];
             }
-            //  toastLog("✓ 找到路径项：" + currentPart + "，当前目录是：" + currentDir);
+            currentDir += "/";
+            try {
+                toastLog("✓ 找到路径项：" + currentPart + "，当前目录是：" + currentDir);
+            } catch (e) {}
+
             break;
         }
         // log(i)
@@ -1152,6 +1156,7 @@ function refreshDirList() {
                 swipe(dwidth * 0.4, dheight * 0.4, dwidth * 0.6, dheight * 0.8, 100);
                 sleep(1000);
             }
+            log("--→返回！！！")
             back();
             sleep(1000);
         }
