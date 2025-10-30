@@ -372,14 +372,71 @@ function tryRefresh() {
 
 // 获取导航栏高度（虚拟按键/手势条高度）
 function getNavigationBarHeight() {
+
     try {
-        // 方法1：通过系统资源获取
-        let resources = context.getResources();
-        let resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            return resources.getDimensionPixelSize(resourceId);
+        // 方法一：通过UI获取
+        //      准确获取导航栏高度，如果是全面手势模式，并隐藏手势条，能获取到0
+        
+        // 获取屏幕总高度
+        let screenHeight = device.height;
+
+        // 获取应用可用高度（不包括系统UI）
+        var windowManager = context.getSystemService(context.WINDOW_SERVICE);
+        var display = windowManager.getDefaultDisplay();
+        var usableSize = new android.graphics.Point();
+        display.getSize(usableSize);
+        var usableHeight = usableSize.y;
+
+        // 获取状态栏高度
+        let statusBarHeight = ui.statusBarHeight
+
+
+        // 计算底部系统UI高度
+        // 底部系统UI高度 = 屏幕总高度 - 应用可用高度 - 状态栏高度
+        var bottomUIHeight = screenHeight - usableHeight - statusBarHeight;
+
+        // 确保高度不为负数
+        if (bottomUIHeight < 0) {
+            bottomUIHeight = 0;
         }
-    } catch (e) {}
+
+        // 打印结果
+        //  log("底部系统UI高度: " + bottomUIHeight + "px");
+
+        return bottomUIHeight;
+    } catch (e) {
+        try {
+            // 方法二：通过id获取
+            //        即便隐藏手势条，依旧能获取手势条高度
+            
+            var resources = context.getResources();
+
+            // 按优先级尝试传统导航栏ID
+            var idsToTry = [
+                "navigation_bar_height",
+                "navigation_bar_frame_height",
+                "navigation_bar_height_landscape",
+                "config_navBarInteractionFrame"
+            ];
+
+            for (var i = 0; i < idsToTry.length; i++) {
+                var id = idsToTry[i];
+                var resourceId = resources.getIdentifier(id, "dimen", "android");
+                if (resourceId <= 0 && id === "config_navBarInteractionFrame") {
+                    resourceId = resources.getIdentifier(id, "config", "android");
+                }
+
+                if (resourceId > 0) {
+                    let height = resources.getDimensionPixelSize(resourceId);
+                    if (height > 0) {
+                        //  log("使用 " + id + " 作为导航栏高度: " + height + "px");
+                        return height;
+                    }
+                }
+            }
+        } catch (e) {}
+    }
+
     return 0;
 }
 
@@ -389,7 +446,7 @@ function isGestureMode() {
     //  let navBarHeight = getNavigationBarHeight();
     // 将高度转换为dp
     const navBarHeightDp = navBarHeight * 160 / device.density;
-    // 手势模式下导航栏高度通常小于48
+    // 手势模式下导航栏高度通常小于36
     return navBarHeightDp < 35;
 }
 
@@ -484,7 +541,7 @@ function consoleShow() {
             if (config && config.悬浮窗控制台_标题 && config.悬浮窗控制台_标题.length > 0) {
                 console.setTitle(config.悬浮窗控制台_标题);
             }
-            
+
             if (config && config.悬浮窗控制台_透明度) {
                 console.setTitleBackgroundAlpha(config.悬浮窗控制台_透明度);
                 console.setContentBackgroundAlpha(config.悬浮窗控制台_透明度 * 0.9);
@@ -503,7 +560,7 @@ function consoleShow() {
                 return;
             }
 
-            
+
 
             console.setTouchable(false);
         }
