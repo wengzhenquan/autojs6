@@ -1025,8 +1025,8 @@ function sliceShuffleArrays(arr, splitIndex) {
 function screenOn() {
     //屏幕点亮
 
-    device.wakeUpIfNeeded();
-    device.wakeUp();
+    // device.wakeUpIfNeeded();
+    // device.wakeUp();
 
     let m = 20;
     while (!device.isScreenOn() && m--) {
@@ -2356,51 +2356,54 @@ var isLocked = KeyguardManager.isKeyguardLocked(); // 是否锁屏
 var isSecure = KeyguardManager.isKeyguardSecure(); // 是否安全锁屏（如密码、指纹）
 
 
-
 // 多次上滑
-function swipesUp(n1, n) {
-    let arr = getRandomNumbers(n1);
-    // 多次上滑
-    for (let p = 0; p < n1 + 1; p++) {
+function swipesUp(swipeCount, n) {
+    swipeCount = Math.min(swipeCount, 5);
+    let arr = getRandomNumbers(4);
+    //log(arr)
+
+    for (let p = 0; p < swipeCount; p++) {
         let i = config.上滑起始位置 ? arr[p] : p;
-        // 固定起点Y坐标
         let startY = dheight * (0.96 - 0.15 * i);
-        // 基础终点Y坐标
         let baseEndY = dheight * (0.65 - 0.15 * i);
-        // 基础滑动距离
         let baseDistance = startY - baseEndY;
-        // 实际终点Y坐标（默认为基础值）
         let endY = baseEndY;
-        // 从第二组开始修改（n < 3）
-        if (n < 3) {
-            // 计算距离倍数（随着n减小而增加）
-            let distanceMultiplier = 1 + 0.1 * (n1 - 1 - n);
-            // 计算组内递减系数（随着i增加而减小）
+
+        if (n < swipeCount - 1) {
+            let distanceMultiplier = 1 + 0.1 * (swipeCount - 1 - n);
             let adaptiveMultiplier = distanceMultiplier * (1 - i * 0.02);
-            // 计算实际滑动距离
             let actualDistance = baseDistance * adaptiveMultiplier;
-            // 计算实际终点Y坐标
             endY = startY - actualDistance;
-            // 确定终点Y不小于0（防止超出屏幕顶部）
-            if (endY < 0) endY = 0;
         }
-        // 保持其他参数不变
+        if (endY < 0) endY = 0;
+
+
+        let duration = (115 + 10 * Math.pow(-1, p)) + p * 50 + (4 - n) * 50;
+        duration = Math.max(duration, 115);
+
+        console.warn(`--→ 第 ${p+1} 次上滑`)
+        log(`位置： ${i}:${(0.96 - 0.15 * i).toFixed(2)}:${Math.round(startY)}:${Math.round(endY)}`)
+        log(`滑动时长： ${duration}`)
+
         swipe(
             dwidth * (4 + Math.pow(-1, i + n)) / 8,
             startY,
             dwidth * (4.5 + Math.pow(-1, i + n)) / 8,
             endY,
-            (115 + 10 * Math.pow(-1, i + n)) + (n1 - 1 - n) * 100
+            duration
         );
-        wait(() => false, 200 + (n1 - 1 - n) * 50);
-        if (p < 1 && n > 2) wait(() => false, 1000);
+        wait(() => false, 300 + (3 - n) * 50);
+        if (p < 1) wait(() => false, 1000);
     }
-    log("上滑成功！");
+    wait(() => false, 1000);
+    console.warn(`——————————→ `)
+    log("上滑结束！");
 }
+
 
 //解锁
 function unLock() {
-    screenOn();
+  //  screenOn();
     if (!isLocked) return;
 
     console.info("-----→");
@@ -2410,15 +2413,18 @@ function unLock() {
     console.info(">>>>>>>→设备解锁←<<<<<<<")
 
     log("开始解锁设备……");
-    console.error('上滑一次需要4~6秒')
+
+    let swipeCount = 5;
+    if (config && config.上滑次数)
+        swipeCount = config.上滑次数;
 
     //解锁
     let n = 4;
-    const n1 = n;
     while (isLocked && n--) {
         screenOn();
+        wait(() => false, 1000);
         // 上滑
-        swipesUp(n1, n);
+        swipesUp(swipeCount, n);
 
         // 有安全加密
         if (isSecure) {
