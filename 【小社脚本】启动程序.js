@@ -294,7 +294,7 @@ function startTimeoutMonitor() {
     threads.start(() => {
         setInterval(function() {
             device.wakeUpIfNeeded();
-            device.wakeUp();
+          //  device.wakeUp();
 
             const startTime = new Date(date.replace(/-/g, '/')).getTime();
             let currentTime = new Date().getTime();
