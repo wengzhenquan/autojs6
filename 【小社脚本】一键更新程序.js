@@ -479,7 +479,35 @@ function ableClick(obj) {
     return false;
 }
 
+// JVM内存信息
+function getMemoryInfo() {
+    let runtime = java.lang.Runtime.getRuntime();
+    let maxMemory = runtime.maxMemory(); // 最大内存
+    let totalMemory = runtime.totalMemory(); //总内存
+    let freeMemory = runtime.freeMemory(); // 空闲内存
+    let usedMemory = totalMemory - freeMemory; //已使用
 
+    return {
+        maxMemory: maxMemory,
+        totalMemory: totalMemory,
+        freeMemory: freeMemory,
+        usedMemory: usedMemory,
+        maxMemoryMB: (maxMemory / (1024 * 1024)).toFixed(0),
+        totalMemoryMB: (totalMemory / (1024 * 1024)).toFixed(2),
+        freeMemoryMB: (freeMemory / (1024 * 1024)).toFixed(2),
+        usedMemoryMB: ((usedMemory) / (1024 * 1024)).toFixed(2),
+        usagePercentage: ((usedMemory / maxMemory) * 100).toFixed(2)
+    };
+}
+
+// 打印jvm内存信息
+function printJVMMemory() {
+    let info = getMemoryInfo();
+    console.error("JVM：" +
+        info.usedMemoryMB + "/" +
+        info.maxMemoryMB +
+        " MB (" + info.usagePercentage + "%)");
+}
 
 
 // ----------- 脚本更新 ---------------------//
@@ -726,6 +754,7 @@ function integrityCheck() {
 function checkVersion() {
     console.info("---→>★脚本检查更新★<←---")
     log("可用运存：" + formatFileSize(aMem));
+    printJVMMemory();
 
     //  let lun = Math.ceil(proxys.length * proxys_use);
     let lun = getLun(proxys, proxys.length * proxys_use, 10);
@@ -922,6 +951,7 @@ function startUpdate() {
                 console.error("运存过低，下载有失败风险！")
                 console.error("如果报OOM错误，需重启AutoJS6后重新下载")
             }
+            printJVMMemory();
 
             let startTime = new Date().getTime();
             let proxy = proxys[proxy_index];

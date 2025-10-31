@@ -154,6 +154,7 @@ log(`设备分辨率：${dwidth}x${dheight}`);
 log(`导航模式：${gestureMode ? "全面手势" : "虚拟按键"}（H：${navBarY}`);
 log("运存：" + formatFileSize(device.getTotalMem()) + "（可用：" + formatFileSize(device.getAvailMem()) + "）");
 checkMem();
+printJVMMemory();
 //date = nowDate();
 log(`现在是：${date}`);
 console.error(`启动延迟：${getDurTime(date)}`);
@@ -255,7 +256,35 @@ function maintain() {
     }
 }
 
+// JVM内存信息
+function getMemoryInfo() {
+    let runtime = java.lang.Runtime.getRuntime();
+    let maxMemory = runtime.maxMemory(); // 最大内存
+    let totalMemory = runtime.totalMemory(); //总内存
+    let freeMemory = runtime.freeMemory(); // 空闲内存
+    let usedMemory = totalMemory - freeMemory; //已使用
 
+    return {
+        maxMemory: maxMemory,
+        totalMemory: totalMemory,
+        freeMemory: freeMemory,
+        usedMemory: usedMemory,
+        maxMemoryMB: (maxMemory / (1024 * 1024)).toFixed(0),
+        totalMemoryMB: (totalMemory / (1024 * 1024)).toFixed(2),
+        freeMemoryMB: (freeMemory / (1024 * 1024)).toFixed(2),
+        usedMemoryMB: ((usedMemory) / (1024 * 1024)).toFixed(2),
+        usagePercentage: ((usedMemory / maxMemory) * 100).toFixed(2)
+    };
+}
+
+// 打印jvm内存信息
+function printJVMMemory() {
+    let info = getMemoryInfo();
+    console.error("JVM：" +
+        info.usedMemoryMB + "/" +
+        info.maxMemoryMB +
+        " MB (" + info.usagePercentage + "%)");
+}
 
 /**
  * 启动脚本总运行时间监控
