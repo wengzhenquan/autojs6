@@ -20,6 +20,8 @@ java.lang.System.gc();
 //10分钟亮屏
 device.keepScreenDim(10 * 60 * 1000);
 events.on("exit", () => {
+    runtime.gc;
+    java.lang.System.gc();
     device.cancelKeepingAwake();
 });
 // 打开日志页面
