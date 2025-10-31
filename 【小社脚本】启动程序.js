@@ -2397,7 +2397,7 @@ function swipesUp(swipeCount, n) {
         if (p < 1) wait(() => false, 1000);
     }
     wait(() => false, 1000);
-    console.warn(`——————————→ `)
+    console.warn(`————————————→ `)
     log("上滑结束！");
 }
 
