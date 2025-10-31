@@ -405,7 +405,7 @@ function getNavigationBarHeight() {
     try {
         // 方法一：通过UI获取
         //      准确获取导航栏高度，如果是全面手势模式，并隐藏手势条，能获取到0
-        
+
         // 获取屏幕总高度
         let screenHeight = device.height;
 
@@ -430,14 +430,14 @@ function getNavigationBarHeight() {
         }
 
         // 打印结果
-        //  log("底部系统UI高度: " + bottomUIHeight + "px");
+        // log("底部系统UI高度: " + bottomUIHeight + "px");
 
         return bottomUIHeight;
     } catch (e) {
         try {
             // 方法二：通过id获取
             //        即便隐藏手势条，依旧能获取手势条高度
-            
+
             var resources = context.getResources();
 
             // 按优先级尝试传统导航栏ID
@@ -2791,13 +2791,42 @@ function permissionv() {
     function checkProjectionPermission() {
         try {
             let appOps = context.getSystemService(context.APP_OPS_SERVICE);
-            // 尝试使用 "android:project_media"（部分设备可能不支持）
-            let mode = appOps.checkOpNoThrow("android:project_media", android.os.Process.myUid(), context.getPackageName());
-            // 如果 "android:project_media" 不可用，尝试回退到其他方式（如 OPSTR_MEDIA_PROJECTION）
-            if (mode === undefined || mode === null) {
-                mode = appOps.checkOpNoThrow(android.app.AppOpsManager.OPSTR_MEDIA_PROJECTION, android.os.Process.myUid(), context.getPackageName());
+            let MODE_ALLOWED = appOps.MODE_ALLOWED || 0;
+
+            // 定义所有可能的投影媒体权限检查方法
+            let methods = [
+                // 方法1: 使用字符串
+                () => appOps.checkOpNoThrow("android:project_media",
+                    android.os.Process.myUid(), context.getPackageName()),
+
+                // 方法2: 使用常量
+                () => appOps.checkOpNoThrow(
+                    android.app.AppOpsManager.OPSTR_MEDIA_PROJECTION,
+                    android.os.Process.myUid(), context.getPackageName()),
+
+                // 方法3: 使用操作码
+                () => appOps.checkOpNoThrow(1001,
+                    android.os.Process.myUid(), context.getPackageName()),
+
+                // 方法4: 使用其他可能操作码
+                () => appOps.checkOpNoThrow(1002,
+                    android.os.Process.myUid(), context.getPackageName())
+            ];
+
+            // 遍历所有方法
+            for (let i = 0; i < methods.length; i++) {
+                try {
+                    let mode = methods[i]();
+                    if (mode !== undefined && mode !== null) {
+                        return mode === MODE_ALLOWED;
+                    }
+                } catch (e) {
+                    // 继续尝试下一个方法
+                }
             }
-            return mode === appOps.MODE_ALLOWED;
+
+            return false;
+
         } catch (e) {
             console.warn("投影媒体权限检查失败，可能设备不支持");
             return false;
