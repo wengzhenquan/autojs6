@@ -2383,7 +2383,7 @@ function swipesUp(swipeCount, n) {
         duration = Math.max(duration, 115);
 
         console.warn(`--→ 第 ${p+1} 次上滑`)
-        log(`位置： ${i}:${(0.96 - 0.15 * i).toFixed(2)}:${Math.round(startY)}:${Math.round(endY)}`)
+        log(`位置： ${i}:${(0.96 - 0.15 * i).toFixed(2)}:(${Math.round(startY)}→${Math.round(endY)})`)
         log(`滑动时长： ${duration}`)
 
         swipe(
