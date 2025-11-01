@@ -448,9 +448,9 @@ function getNavigationBarHeight() {
                 "config_navBarInteractionFrame"
             ];
 
-            for (var i = 0; i < idsToTry.length; i++) {
-                var id = idsToTry[i];
-                var resourceId = resources.getIdentifier(id, "dimen", "android");
+            for (let i = 0; i < idsToTry.length; i++) {
+                let id = idsToTry[i];
+                let resourceId = resources.getIdentifier(id, "dimen", "android");
                 if (resourceId <= 0 && id === "config_navBarInteractionFrame") {
                     resourceId = resources.getIdentifier(id, "config", "android");
                 }
