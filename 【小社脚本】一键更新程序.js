@@ -1101,8 +1101,11 @@ function startUpdate() {
 
     try {
         if (refreshDir) {
-            if (!auto.isRunning()) {
+            if (!auto.isRunning() ||
+                !auto.service ||
+                !auto.root) {
                 auto(true);
+                sleep(500)
             }
 
             //sleep(3000)
