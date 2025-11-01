@@ -1163,7 +1163,7 @@ function refreshDirList() {
         // log(currentPart)
         // 检查当前部分是否存在
         if (text(currentPart).exists()) {
-            log("--→进入目录：" + currentPart)
+            toastLog("--→进入目录：" + currentPart)
             ableClick(currentPart);
             sleep(1000);
             //return;
@@ -1181,7 +1181,7 @@ function refreshDirList() {
         if (!content(dir).exists())
             ableClick("文件夹")
 
-        log("--→进入目录：" + dir)
+        toastLog("--→进入目录：" + dir)
         if (ableClick(dir)) {
             log("--→下滑刷新！！！")
             r = 2;
