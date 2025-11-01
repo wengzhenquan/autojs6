@@ -1104,6 +1104,21 @@ function startUpdate() {
             if (!auto.isRunning() ||
                 !auto.service ||
                 !auto.root) {
+                console.error("无障碍服务故障")
+
+                if (!((Pref.shouldStartA11yServiceWithSecureSettings() &&
+                            autojs.canWriteSecureSettings()) ||
+                        (Pref.shouldStartA11yServiceWithRoot() &&
+                            autojs.isRootAvailable()))) {
+
+                    console.error("没有在设置里开启自动重启，无法重启无障碍服务")
+                    console.error("需要配合以下权限才能生效（2选1即可）")
+                    console.error("  1、修改安全设置(推荐，可借Shizuku或Root启用)")
+                    console.error("  2、Root权限")
+
+                    return;
+                }
+                console.log("自动重启无障碍服务")
                 auto(true);
                 sleep(500)
             }
