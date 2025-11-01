@@ -294,7 +294,7 @@ function startTimeoutMonitor() {
     threads.start(() => {
         setInterval(function() {
             device.wakeUpIfNeeded();
-          //  device.wakeUp();
+            //  device.wakeUp();
 
             const startTime = new Date(date.replace(/-/g, '/')).getTime();
             let currentTime = new Date().getTime();
@@ -2404,7 +2404,7 @@ function swipesUp(swipeCount, n) {
 
 //解锁
 function unLock() {
-  //  screenOn();
+    //  screenOn();
     if (!isLocked) return;
 
     console.info("-----→");
@@ -2444,10 +2444,16 @@ function unLock() {
                 // screenOn();
                 continue;
             }
-
             if (config.解锁方式 === 1) {
                 log("→图案解锁");
-                gesture(600, config.锁屏图案坐标);
+                let password = config.锁屏图案坐标;
+                if (config.输出密码) {
+                    log("坐标：");
+                    password.forEach((coord, index) => {
+                        console.error(`第${index+1}个坐标：[${coord[0]}, ${coord[1]}]`);
+                    });
+                }
+                gesture(password.length * 200, config.锁屏图案坐标);
             }
             if (config.解锁方式 === 2) {
                 let password = config.锁屏数字密码;
@@ -2479,26 +2485,12 @@ function unLock() {
                 }
 
                 for (let i = 0; i < password.length; i++) {
+                    if (config.输出密码) {
+                        console.error(`第${i+1}个密码字符：[${password[i]}]`);
+                    }
                     let num = content(password[i]).findOne(1000);
                     if (!clickCenter(num)) {
                         console.error('[' + password[i] + '] 点击失败!')
-                        if (!num && i === 0) {
-                            console.error('布局分析失效了！')
-                            console.warn('如果是偶发现象，可尝试：')
-                            console.warn(' 1.开启[修改安全设置]权限')
-                            console.warn(' 2.可将{fast模式}改成1，开启缓存');
-                            console.warn(' 3.重启无障碍服务');
-                            console.warn(' 4.重启手机')
-
-                            console.warn('如果经常发生，建议改成图案解锁！')
-
-                            abnormalInterrupt = 0;
-                            wait(() => false, 2000);
-                            exit();
-                            wait(() => false, 2000);
-
-                        }
-
                     };
                     wait(() => false, 300);
                 }
