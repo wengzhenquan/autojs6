@@ -2592,6 +2592,7 @@ function swipeBezierzier(sx, sy, ex, ey) {
 function level2() {
     console.info(">>>>→开始记录成长值←<<<<")
     toastLog("[小程序]：记录成长值……", "forcible")
+    sleep(1500);
     var num = text("成长值").findOne(2000);
     if (!num) {
         toastWarn("布局分析失效，未找到成长值！", "forcible");
@@ -2616,7 +2617,7 @@ function level2() {
         //点击查看明细
         ableClick(num)
     }
-    sleep(1500);
+    sleep(2000);
     var newdate = date.replace(/-/g, "/").substr(0, 10);
     let jilu = text(newdate).find();
     if (jilu.length < 1) {
