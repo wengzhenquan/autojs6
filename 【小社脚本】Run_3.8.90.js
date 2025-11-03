@@ -2625,6 +2625,8 @@ function level2() {
         back();
         return;
     }
+    log('开始记录……')
+    sleep(1000)
     // 成长值明细记录
     for (i = 0; i < jilu.length; i++) {
         let demo = jilu.get(i);
