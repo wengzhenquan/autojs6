@@ -171,8 +171,8 @@ events.on("exit", function() {
     try {
         runtime.gc;
         java.lang.System.gc();
-        if (config && !config.fast模式)
-            auto.clearCache();
+
+        clearCache();
     } catch (e) {}
 
     if (abnormalInterrupt && config && config.通知提醒)
@@ -367,6 +367,7 @@ function blankMaintain() {
 
 // 尝试刷新
 function tryRefresh() {
+    clearCache();
     let n = 3;
     while (n-- && (content('刷新').exists() ||
             content('重新加载').exists() ||
@@ -709,6 +710,15 @@ function consoleExitOnClose() {
 }
 
 //------------ 工具函数 ----------//
+
+// 清除缓存
+function clearCache() {
+    try {
+        if (!config || !config.fast模式)
+            auto.clearCache();
+    } catch (e) {}
+}
+
 
 // 去桌面
 function toHome() {

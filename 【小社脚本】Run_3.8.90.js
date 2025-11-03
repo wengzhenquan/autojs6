@@ -1024,6 +1024,7 @@ function 小程序签到(pram) {
         sleep(600);
         desktopRun();
     }
+    clearCache();
     sleep(1500);
 
     if (config.小程序等待延迟)
@@ -1055,6 +1056,7 @@ function 小程序签到(pram) {
         } else {
             desktopRun();
         }
+        clearCache();
         sleep(1500);
     }
 
@@ -1073,6 +1075,7 @@ function 小程序签到(pram) {
         back();
         return;
     }
+    clearCache();
 
     let xxcx = className("android.widget.ImageButton")
         .desc("更多").packageName(wchatpn);
@@ -1115,6 +1118,7 @@ function 小程序签到(pram) {
             }
             ableClick(xlxcx.findOne(1000));
         }
+        clearCache();
         sleep(1500);
     }
 
@@ -1513,9 +1517,7 @@ function findCenter(pram) {
 
     toastLog("开始签到……", "forcible");
 
-    try {
-        auto.clearCache();
-    } catch (e) {}
+    clearCache();
 
 
     if (config.社区APP签到方式 === 1) {
@@ -2617,6 +2619,7 @@ function level2() {
         //点击查看明细
         ableClick(num)
     }
+    clearCache();
     sleep(2000);
     var newdate = date.replace(/-/g, "/").substr(0, 10);
     let jilu = text(newdate).find();
@@ -2631,13 +2634,23 @@ function level2() {
     // 成长值明细记录
     for (i = 0; i < jilu.length; i++) {
         let demo = jilu.get(i);
-        if (demo.isSingleton()) continue;
+        if (demo.isSingleton()) {
+            demo = demo.parent()
+        }
+
         //结果 值
-        let result = demo.parent().nextSibling();
-        if (!result) continue;
         let record = new 记录();
-        record.结果 = result.text();
         record.项目 = demo.previousSibling().text();
+
+        let result = demo.nextSibling();
+        if (!result ||
+            !result.text() ||
+            !result.text().includes("+"))
+            result = demo.parent().nextSibling();
+
+        record.结果 = result.text();
+
+
         成长值记录.add(record);
     }
     log("记录完成")
@@ -2664,6 +2677,7 @@ function level1() {
     sleep(1000);
     // swipe(dwidth * 0.5, dheight * 0.6, dwidth * 0.5, dheight * 0.8, 100); // 向上滚动查找
     log('进入成长值页面')
+    clearCache();
     sleep(1500);
     let n = 10;
     while (n-- && !(text('我的成长值').exists() &&
