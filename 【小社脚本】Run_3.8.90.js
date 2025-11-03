@@ -1305,7 +1305,7 @@ function mhqdClick() {
         log("三击：" + click(x, y));
     } else {
         toastWarn("[不确定操作]摸黑→点击[签到]！")
-        let xcXButeton = getXcXButton();
+        let xcXButton = getXcXButton();
         if (xcXButton) {
             log("发现自动识别的签到坐标：" + xcXButton)
             click(xcXButton[0], xcXButton[1]);
