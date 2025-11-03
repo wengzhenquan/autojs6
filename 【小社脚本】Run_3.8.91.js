@@ -440,8 +440,6 @@ function posts(n) {
         // 尝试刷新
         tryRefresh();
 
-
-
         if (k > 3 && k < 6) {
             ableClick("OS")
             // 空白页
@@ -463,6 +461,7 @@ function posts(n) {
     }
     pkly = pkly.parent();
     ableClick(pkly);
+    clearCache();
     sleep(1500);
 
 
