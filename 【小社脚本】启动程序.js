@@ -714,8 +714,10 @@ function consoleExitOnClose() {
 // 清除缓存
 function clearCache() {
     try {
-        if (!config || !config.fast模式)
+        if (!config || !config.fast模式) {
             auto.clearCache();
+            sleep(500)
+        }
     } catch (e) {}
 }
 
