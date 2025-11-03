@@ -2035,4 +2035,4 @@ synProxys();
 
 console.info("------→>★更新完成★<←------")
 
-exit();
+//exit();
