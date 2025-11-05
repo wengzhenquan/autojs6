@@ -698,8 +698,11 @@ function updateProxys() {
                 }
 
                 if (success) {
+                    let t = new Date().getTime() - start;
+                    if (t > 5000) return null;
+
                     return {
-                        time: (new Date().getTime() - start) / 1000
+                        time: (t) / 1000
                     };
                 }
             }
