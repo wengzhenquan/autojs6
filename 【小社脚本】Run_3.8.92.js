@@ -431,8 +431,9 @@ function posts(n) {
     sleep(500)
     // 小米社区重置首页
     //backAppIndex();
-    let pkly = descEndsWith("评论").findOne(2000);
-    for (let k = 0; k < 10; k++) {
+    let k = 0;
+    let pkly = descEndsWith("评论").findOne(3000);
+    while (!pkly) {
         console.error("找不到控件，下滑刷新")
         log(`第 ${k+1} 次重试`)
 
@@ -454,7 +455,8 @@ function posts(n) {
         sleep(1000)
         swipe(dwidth * 0.5, dheight * 0.4, dwidth * 0.5, dheight * 0.8, 200);
         wait(() => false, 2000);
-        pkly = descEndsWith("评论").findOne(2000);
+        pkly = descEndsWith("评论").findOne(3000);
+        k++;
 
     }
     pkly = pkly.parent();
