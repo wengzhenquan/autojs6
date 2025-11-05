@@ -2373,7 +2373,9 @@ var isSecure = KeyguardManager.isKeyguardSecure(); // 是否安全锁屏（如�
 function swipesUp(swipeCount, n) {
     swipeCount = Math.min(swipeCount, 5);
     let arr = getRandomNumbers(4);
-    //log(arr)
+
+    let durationBase = (config && config.上滑时长基数) || 115;
+    log("上滑时长基数：" + durationBase)
 
     for (let p = 0; p < swipeCount; p++) {
         let i = config.上滑起始位置 ? arr[p] : p;
@@ -2392,7 +2394,7 @@ function swipesUp(swipeCount, n) {
 
 
         let duration = (115 + 10 * Math.pow(-1, p)) + p * 50 + (4 - n) * 50;
-        duration = Math.max(duration, 115);
+        duration = Math.max(duration, durationBase);
 
         console.warn(`--→ 第 ${p+1} 次上滑`)
         log(`位置： ${i}:${(0.96 - 0.15 * i).toFixed(2)}:(${Math.round(startY)}→${Math.round(endY)})`)
@@ -2405,12 +2407,12 @@ function swipesUp(swipeCount, n) {
             endY,
             duration
         );
-        wait(() => false, 300 + (3 - n) * 50);
-        if (p < 1) wait(() => false, 1000);
+        wait(() => false, 500 + (3 - n) * 50);
+        if (p < 1) wait(() => false, 500);
     }
-    wait(() => false, 1000);
     console.warn(`————————————→ `)
     log("上滑结束！");
+    wait(() => false, 1000);
 }
 
 
@@ -2427,9 +2429,7 @@ function unLock() {
 
     log("开始解锁设备……");
 
-    let swipeCount = 5;
-    if (config && config.上滑次数)
-        swipeCount = config.上滑次数;
+    let swipeCount = (config && config.上滑次数) || 5;
 
     //解锁
     let n = 4;
@@ -2546,7 +2546,7 @@ function unLock() {
 
     let startTime = new Date(date.replace(/-/g, '/')).getTime();
     let currentTime = new Date().getTime();
-    let tm = 2 * 60 * 1000;//2分钟
+    let tm = 2 * 60 * 1000; //2分钟
     if (currentTime - startTime > maxRuntime - tm) {
         // 剩余2分钟时重置计时器，留2分钟确保能完成后续任务
         console.warn(`耗时超过 ${maxRuntime-tm} 分钟`)
