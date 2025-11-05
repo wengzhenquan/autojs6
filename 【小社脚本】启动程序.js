@@ -59,6 +59,7 @@ var update_script = "【小社脚本】一键更新程序.js";
 var serverVersion = null;
 var localVersion = null;
 var run = null;
+var run_version = null;
 var mainFile = null;
 
 const xmPckageName = "com.xiaomi.vipaccount"; // 社区APP包名
@@ -1481,14 +1482,62 @@ function systemSetting() {
 
 
 // -----------程序完整性检查---------------------//
+
+// 获得Run版本号
+function getRunVersion(run) {
+    return run.match(/【小社脚本】(.+)\.js/)[1];
+}
+
+// 获得上一个版本Run文件名
+function getPreviousRunVersion(currentRunFile) {
+    let fileList = localVersion.updateFile;
+
+    // 提取所有Run文件并按版本号排序
+    let runFiles = [];
+    for (let fileName in fileList) {
+        if (fileName.startsWith("【小社脚本】Run_") &&
+            fileName.endsWith(".js") &&
+            files.exists("./" + fileName)) {
+
+            runFiles.push(fileName);
+        }
+    }
+
+    // 按版本号降序排列（从高到低）
+    runFiles.sort(function(a, b) {
+        var versionA = a.match(/Run_([\d.]+)\.js/)[1];
+        var versionB = b.match(/Run_([\d.]+)\.js/)[1];
+        return versionB.localeCompare(versionA, undefined, {
+            numeric: true
+        });
+    });
+
+    //log(runFiles)
+
+    // 查找当前文件在数组中的位置
+    let currentIndex = runFiles.indexOf(currentRunFile);
+
+    //log(currentIndex)
+
+    // 如果找到是最后一个文件，下一个文件返回null
+    if (currentIndex === runFiles.length - 1 ||
+        runFiles.length < 2) {
+        return null;
+    }
+
+    // 返回上个版本
+    return runFiles[currentIndex + 1];
+
+}
+
 // 加载本地version文件
 function loadLocalVersion() {
     localVersion = JSON.parse(files.read("./version"));
     mainFile = localVersion.main;
     update_script = localVersion.updateScript;
-    if (files.exists("./" + localVersion.run)) {
-        run = require("./" + localVersion.run);
-    }
+    // if (files.exists("./" + localVersion.run)) {
+    //     run = require("./" + localVersion.run);
+    // }
 }
 
 
@@ -1511,9 +1560,27 @@ function init() {
         updateScript();
         return;
     }
-    // 加载run函数
-    console.info('加载run版本：' + localVersion.run.match(/【小社脚本】(.+)\.js/)[1]);
-    run = require("./" + localVersion.run);
+    run_version = localVersion.run;
+    for (let r = 0; r < 3; r++) {
+        try {
+            // 加载run函数
+            console.info('加载run版本：' + getRunVersion(run_version));
+            run = require("./" + run_version);
+            break;
+        } catch (e) {
+            console.error(getRunVersion(run_version) + "：" + e);
+            console.error("尝试加载上一个版本Run");
+
+            let previousRunVersion = getPreviousRunVersion(run_version);
+
+            if (!previousRunVersion) {
+                exit();
+            }
+            
+            run_version = previousRunVersion;
+            maxRuntime += 2 * 60 * 1000;
+        }
+    }
 
     if (!files.exists("./config.js")) {
         console.error("缺失[config.js]文件");
@@ -2552,9 +2619,10 @@ function unLock() {
     let tm = 2 * 60 * 1000; //2分钟
     if (currentTime - startTime > maxRuntime - tm) {
         // 剩余2分钟时重置计时器，留2分钟确保能完成后续任务
-        console.warn(`耗时超过 ${maxRuntime-tm} 分钟`)
-        console.warn('→计时器时间重新校准！')
-        date = nowDate();
+        //  console.warn(`耗时超过 ${maxRuntime-tm} 分钟`)
+        //  console.warn('→计时器时间重新校准！')
+        // date = nowDate();
+        maxRuntime += 2 * 60 * 1000;
     }
 
 
@@ -3142,8 +3210,26 @@ function main() {
         // 再次加载悬浮窗控制台配置，以便纠正悬浮窗控制台错误
         consoleShow();
         // throw e;
-        //逻辑程序
-        run();
+        for (let r = 0; r < 3; r++) {
+            try {
+                //逻辑程序
+                run();
+                break;
+            } catch (e) {
+                console.error(getRunVersion(run_version) + "：" + e);
+                console.error("尝试加载上一个版本Run");
+
+                let previousRunVersion = getPreviousRunVersion(run_version);
+
+                if (!previousRunVersion) {
+                    throw e;
+                }
+                log("加载Run文件：" + previousRunVersion);
+                run = require("./" + previousRunVersion);
+                run_version = previousRunVersion;
+                maxRuntime += 2 * 60 * 1000;
+            }
+        }
         log("      —— 耗时[ " + getDurTime(date) + " ] ——");
         console.warn("—----->--- End ---<-----—");
         device.cancelKeepingAwake();
