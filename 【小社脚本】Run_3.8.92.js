@@ -432,7 +432,7 @@ function posts(n) {
     // 小米社区重置首页
     //backAppIndex();
     let pkly = descEndsWith("评论").findOne(2000);
-    for (let = 0; k < 10; k++) {
+    for (let k = 0; k < 10; k++) {
         console.error("找不到控件，下滑刷新")
         log(`第 ${k+1} 次重试`)
 
