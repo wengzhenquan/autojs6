@@ -1576,7 +1576,7 @@ function init() {
             if (!previousRunVersion) {
                 exit();
             }
-            
+
             run_version = previousRunVersion;
             maxRuntime += 2 * 60 * 1000;
         }
