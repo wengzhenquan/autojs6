@@ -2027,7 +2027,7 @@ function updateProxys() {
                     if (t > 5000) return null;
 
                     return {
-                        time: (t) / 1000
+                        time: t / 1000
                     };
                 }
             }
