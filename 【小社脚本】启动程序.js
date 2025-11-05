@@ -2548,6 +2548,7 @@ function unLock() {
     let currentTime = new Date().getTime();
     let tm = 2 * 60 * 1000;//2分钟
     if (currentTime - startTime > maxRuntime - tm) {
+        // 剩余2分钟时重置计时器，留2分钟确保能完成后续任务
         console.warn(`耗时超过 ${maxRuntime-tm} 分钟`)
         console.warn('→计时器时间重新校准！')
         date = nowDate();
