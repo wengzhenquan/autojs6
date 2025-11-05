@@ -455,7 +455,7 @@ function posts(n) {
         sleep(1000)
         swipe(dwidth * 0.5, dheight * 0.4, dwidth * 0.5, dheight * 0.8, 200);
         wait(() => false, 2000);
-        pkly = descEndsWith("评论").findOne(3000);
+        pkly = descEndsWith("评论").findOne(2000);
         k++;
 
     }
