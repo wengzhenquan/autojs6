@@ -97,8 +97,9 @@ const 成长值记录 = {
         } else storages.remove("xmsq_active");
 
         if (prizePoints > 0) {
-            // 除以1.7，随便写的，因为17分能开一次盒
-            total += prizePoints / 1.7;
+            // 
+            total = total / (1 - prizePoints / 17);
+            //  total += prizePoints / 1.7;
             if (xmsq_act)
                 xmsq_active.put("prizePoints", prizePoints)
         }
@@ -2726,6 +2727,11 @@ function level1() {
         //成长值记录.addAndUpdate(record);
         成长值记录.add(record);
     }
+
+    // let record = new 记录();
+    //     record.结果 = "+3";
+    //     record.项目 = '秋冬新品感恩季活动奖励';
+    //     成长值记录.add(record);
 
     log("记录完成")
 
