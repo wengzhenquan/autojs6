@@ -735,9 +735,7 @@ function toHome() {
 function whileClick(obj) {
     try {
         if (obj) {
-            if (typeof obj === 'string' ||
-                obj instanceof UiSelector ||
-                obj instanceof UiObject) {
+            if (typeof obj === 'string') {
                 while (click(obj));
             }
         }
