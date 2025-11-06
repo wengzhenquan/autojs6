@@ -2461,7 +2461,7 @@ function swipesUp(swipeCount, n) {
         if (endY < 0) endY = 0;
 
 
-        let duration = (115 + 10 * Math.pow(-1, p)) + p * 50 + (4 - n) * 50;
+        let duration = (durationBase + 10 * Math.pow(-1, p)) + p * 50 + (4 - n) * 50;
         duration = Math.max(duration, durationBase);
 
         console.warn(`--→ 第 ${p+1} 次上滑`)
