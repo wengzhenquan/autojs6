@@ -870,7 +870,7 @@ function ganenji(pram) {
         }
     }
 
-    解锁();
+    开盒();
     back();
 
 }
@@ -887,14 +887,14 @@ function dualFlagships(pram) {
     if (!signEntrance('双旗舰', pram))
         return;
 
-    解锁();
+    开盒();
     back();
 
 }
 
 
 
-function 解锁() {
+function 开盒() {
     // 有活动标志
     xmsq_act = true;
     // -------------- 报名页面(第一次才有)  ------------/
