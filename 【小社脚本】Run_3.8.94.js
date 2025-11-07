@@ -900,7 +900,8 @@ function 解锁() {
     // -------------- 报名页面(第一次才有)  ------------/
     let register = className("android.widget.Button")
         .content("立即报名");
-    if (wait(() => register.exists(), 4, 600)) {
+    if (wait(() => register.exists(), 3, 600)) {
+        log("开始自动报名")
         register = register.findOne();
         // sleep(500)
         // 勾选 “我已阅读并同意”
@@ -910,18 +911,17 @@ function 解锁() {
 
         sleep(500);
         if (ableClick(checkBox)) {
+            log("勾选√我已阅读并同意")
             //立即报名
             ableClick(register);
+            log("点击→立即报名")
             sleep(1000)
             let qd = className("android.widget.Button")
                 .contentStartsWith("确定").findOne(1500);
+            log("点击→确定")
             if (!ableClick(qd)) {
                 //机型确认，识别不到组件，也无法识别到（“确定”）文字，
                 //位置在右下角
-                // for (i = 0; i < 5; i++) {
-                //     click(dwidth * 0.734, dheight * (0.895 + 0.008 * i));
-                // }
-
                 click(dwidth * 0.74, navBarY - cY(120));
             }
             sleep(1500);
@@ -934,6 +934,7 @@ function 解锁() {
     if (!wait(() => qts.exists(), 3, 800)) {
         // 尝试刷新
         tryRefresh();
+        sleep(2000);
         // back();
         // return;
     }
@@ -1001,6 +1002,14 @@ function 解锁() {
     } else {
         toastLog("本次无解锁次数！", "forcible");
     }
+    if (ddjs || jpso) {
+        let up = textStartsWith('再提升').findOne(2000);
+        if (up) {
+            console.warn(up.text());
+            console.warn("可再次开盒")
+        }
+    }
+
     sleep(1000);
 }
 
