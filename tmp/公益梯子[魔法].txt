@@ -115,24 +115,24 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
     
      
 二、支持的代理软件列表：
-    1、Windows：
-            Karing(跨平台)、
-            Hiddify(跨平台)、
-            v2rayN、
-            Clash Verge Rev、
-            NekoRay等等
-    2、Mac/IOS：
-            Karing(跨平台)、
-            Hiddify(跨平台)、
-            v2rayN/v2rayU、
-            Clash Verge Rev、
-            Shadowrocket(小火箭)
-    3、Android/Harmony：
+    1、Android/Harmony：
             Karing(跨平台)、
             Hiddify(跨平台)、
             v2rayN、
             Clash Meta for Android、
             NekoBox for Android。
+    2、IOS/Mac：
+            Karing(跨平台)、
+            Hiddify(跨平台)、
+            v2rayN/v2rayU、
+            Clash Verge Rev、
+            Shadowrocket(小火箭)
+    3、Windows：
+            Karing(跨平台)、
+            Hiddify(跨平台)、
+            v2rayN、
+            Clash Verge Rev、
+            NekoRay等等
     4、Linux：
             Karing(跨平台)、
             Hiddify(跨平台)、
@@ -165,8 +165,8 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
         
 三、使用方法：
     不同的代理软件，ui界面不同，但是基本功能都差不多。
-    1、在代理软件里，添加订阅(分组)，选择订阅分类，将上方订阅地址添加进去。
-    2、选择添加的订阅（分组）/选择要连接的节点。
+    1、在代理软件里，添加订阅(分组/链接)，将上方订阅地址添加进去，输入备注。
+    2、选择添加的订阅（分组/备注）/选择要连接的节点。
     3、点击连接。
     
     具体情况，视不同代理软件而定，有的需要手动测试延迟→选择节点，有的会自动测延迟，自动选择延迟低的节点。
