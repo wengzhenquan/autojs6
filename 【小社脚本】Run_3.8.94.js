@@ -128,7 +128,7 @@ const 成长值记录 = {
 };
 
 function 记录() {
-    this.项目 = "每日签到";
+    this.项目 = "浏览帖子";
     this.结果 = "+1";
     this.值 = function() {
         return parseInt(this.结果.replace("+", ""));
