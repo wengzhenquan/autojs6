@@ -26,9 +26,6 @@ events.on("exit", () => {
 });
 // 打开日志页面
 console.launch();
-// 设备信息
-const dwidth = device.width;
-const dheight = device.height;
 
 // 下载大文件超时，单位：秒。 
 // 网速快，可以改成10~30，网速慢改成30~60
@@ -41,11 +38,12 @@ var download_timeout = 30;
 // 是否更新代理池(0=不更新(使用内置代理)，1=可用代理数量少时更新)
 const update_proxy = 1;
 
+// 更新结束后下滑刷新列表。0=不刷新，1=刷新。
+const refreshDir = 1;
+
 // 最小文件大小(B)，小于这个值都认为错误，将重试
 var filemin = 500;
 
-// 更新结束后下滑刷新列表。0=不刷新，1=刷新。
-const refreshDir = 1;
 
 // 忽略的更新列表
 var ignoreList = [
@@ -54,6 +52,11 @@ var ignoreList = [
     //"tmp/",
     //"yolov11/",   // yolov11 本地签到模块
 ]
+
+// 设备信息
+const dwidth = device.width;
+const dheight = device.height;
+
 const g1 = Math.pow(1024, 3); //1G
 const m1 = Math.pow(1024, 2); //1M
 var aMem = device.getAvailMem(); //空闲物理内存
@@ -995,7 +998,8 @@ function startUpdate() {
                         throw new Error("校验失败");
                     }
                 }
-                break;
+                if (res.fileSize > filemin && res.success)
+                    break;
             } catch (e) {
                 console.error("下载失败: " + e);
                 if (files.exists(savePath))
