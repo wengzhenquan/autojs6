@@ -155,7 +155,7 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
             https://www.clashverge.dev/install.html
             
         5)、Clash Meta for Android(github)：
-            https://github.com/MetaCubeX/ClashMetaForAndroid
+            https://github.com/MetaCubeX/ClashMetaForAndroid/releases
         
         6)、Neko系列(跳转github下载）：
             https://matsuridayo.github.io/download/
