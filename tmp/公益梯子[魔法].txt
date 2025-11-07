@@ -14,11 +14,11 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
     ————————————————— 首推 —————————————————
     
     1、天诚[优质](墙裂推荐)：
-      - 个人专属订阅器：https://getsub.classelivre.eu.org/sub
+      * 个人专属订阅器：https://getsub.classelivre.eu.org/sub
         使用方法：浏览器打开地址，点击[复制订阅链接]按钮，获得个人专属订阅地址（24小时有效)。
         
         
-        固定订阅地址：
+      * 固定订阅地址：
         
         * 官方： 
           - Snippets 专属快速订阅链接：
@@ -39,39 +39,42 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
         
         
     2、DanFeng[优质](推荐)：
-      - 个人订阅器：https://snippet.danfeng.site
+      * 个人订阅器：https://snippet.danfeng.site
         使用方法：浏览器打开地址，点击[复制订阅链接]按钮，获得个人专属订阅地址（24小时有效)。
         
         
-        固定订阅地址：
+      * 固定订阅地址：
         
-        * 官方：https://sub.danfeng.eu.org/snippet
+        - 官方：https://sub.danfeng.eu.org/snippet
        
-        * 由Marisa_kristi转发：
+        - 由Marisa_kristi转发：
            https://mar.haxtop.ggff.net/?sub=sub.danfeng.eu.org{
 
     ————————————————— 次推 —————————————————
     
-    1、CMLiussss：
+    1、Marisa_kristi：
+      - 订阅地址：https://mar.haxtop.ggff.net/?sub  
+    
+    2、CMLiussss：
       - 订阅地址：https://cmliussss.net
         防失联SOS：https://SOS.CMLiussss.net/auto
         
       - 由Marisa_kristi转发：
-           https://mar.haxtop.ggff.net/?sub=sub.cmliussss.net
+        https://mar.haxtop.ggff.net/?sub=sub.cmliussss.net
         
-    2、Marisa_kristi：
-      - 订阅地址：https://mar.haxtop.ggff.net/?sub        
-      
-    3、mianfeicf欢乐时光{由Marisa_kristi转发}：
-      - 订阅地址：https://mar.haxtop.ggff.net/?sub=owo.o00o.ooo
+    3、mianfeicf欢乐时光：
+       由Marisa_kristi转发：
+       - 订阅地址：https://mar.haxtop.ggff.net/?sub=owo.o00o.ooo
         
     
-    4、文烨{由Marisa_kristi转发}：
-      - 订阅地址：https://mar.haxtop.ggff.net/?sub=sub.keaeye.icu
+    4、文烨：
+       由Marisa_kristi转发：
+       - 订阅地址：https://mar.haxtop.ggff.net/?sub=sub.keaeye.icu
     
         
-    5、青云志{由Marisa_kristi转发}：
-      - 订阅地址：https://mar.haxtop.ggff.net/?sub=cfsub.cfcdn.xx.kg
+    5、青云志：
+       由Marisa_kristi转发：
+       - 订阅地址：https://mar.haxtop.ggff.net/?sub=cfsub.cfcdn.xx.kg
         
    
         
