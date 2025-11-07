@@ -1005,8 +1005,7 @@ function 开盒() {
     if (ddjs || jpso) {
         let up = textStartsWith('再提升').findOne(2000);
         if (up) {
-            console.warn(up.text());
-            console.warn("可再次开盒")
+            console.warn(up.text() + "，可再次开盒！");
         }
     }
 
@@ -1221,13 +1220,20 @@ function 小程序签到(pram) {
         toastWarn("不好了！布局分析失效了！Σ(ŎдŎ|||)ﾉﾉ", "forcible")
         sleep(1500)
         toastWarn("只能摸黑操作，点击坐标试试看……")
-        // 先点击"论坛"，以防页面卡顿
-        click(dwidth * 0.15, navBarY - cY(30));
-        sleep(1500)
-        // 点击"我的"
-        toastWarn("[不确定操作]摸黑→点击[我的]！")
-        click(dwidth * 0.85, navBarY - cY(30));
 
+        // 先点击"论坛"，以防页面卡顿
+        let d = 2;
+        while (d--) {
+            click(dwidth * 0.15, navBarY - cY(35));
+        }
+        sleep(1500)
+
+        // 点击"我的"
+        d = 2;
+        toastWarn("[不确定操作]摸黑→点击[我的]！")
+        while (d--) {
+            click(dwidth * 0.85, navBarY - cY(35));
+        }
         // 确保页面加载完成，多等会儿吧！
         // 不能识别，只能盲目等待了！
         log('等待5秒后继续操作，确保页面加载')
@@ -1334,8 +1340,9 @@ function mhqdClick() {
         if (xcXButton) {
             log("发现自动识别的签到坐标：[" + xcXButton[0] + ", " + xcXButton[1] + "]")
             click(xcXButton[0], xcXButton[1]);
-            sleep(1000)
+            sleep(500)
             click(xcXButton[0], xcXButton[1]);
+            sleep(500)
         } else {
             for (i = 0; i < 5; i++) {
                 click(dwidth * 0.73, navBarY * (0.48 + 0.01 * i));
