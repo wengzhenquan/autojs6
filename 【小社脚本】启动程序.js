@@ -1960,7 +1960,7 @@ function updateProxys() {
         }
 
         if (gh_p && gh_p.length > 10) {
-            proxys = sliceShuffleArrays(gh_p, 20);
+            proxys = sliceShuffleArrays(gh_p, 10);
         }
 
         if (gh_api_p && gh_api_p.length > 5) {
