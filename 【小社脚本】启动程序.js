@@ -1010,7 +1010,7 @@ function processArrays(arr1, arr2) {
     // 原地打乱数组1
     shuffleArray(arr1);
     // 原地打乱数组2
-    shuffleArray(arr2);
+    //  shuffleArray(arr2);
     // 追加到数组1
     arr2.forEach(item => arr1.push(item));
 }
