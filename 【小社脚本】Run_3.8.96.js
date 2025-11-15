@@ -356,11 +356,14 @@ function launchAPP(packageN) {
             if (two.length > 1) {
                 log("选择第一个")
                 ableClick(two[0]);
+                break;
             } else {
                 log('点击：取消')
                 whileClick('取消');
             }
         }
+
+        if (packageName(packageN).exists()) break;
 
         // 两种启动写法
         if (n % 2 === 0) app.launchPackage(packageN)
@@ -438,6 +441,9 @@ function skipAd() {
 //浏览帖子
 function posts(n) {
     while (!packageName(xmPckageName).exists()) sleep(500);
+
+    // 尝试刷新
+    tryRefresh();
 
     console.info(">>>>>>>→浏览帖子←<<<<<<<")
     toastLog("准备浏览帖子10s……", "long", "forcible")
@@ -860,6 +866,10 @@ function ganenji(pram) {
         backAppIndex();
         log('→我的')
         ableClick(text("我的"));
+        
+        // 尝试刷新
+        tryRefresh();
+        
         swipe(dwidth * 0.5, dheight * 0.8, dwidth * 0.5, dheight * 0.6, 100); // 向下滚动查找
         //while (scrollDown());
         sleep(1000)
@@ -1379,10 +1389,10 @@ function openVChat(button) {
 
         if (wait(() => (textContains("选择").exists() && text("取消").exists()), 3, 600)) {
             // 存在微信分身，选择第1个
-            let one = contentContains("微信");
+            let one = contentContains("微信").find(2000);
 
             log('发现微信分身');
-            if (one.find(2000).length > 1) {
+            if (one.length > 1) {
                 sleep(1000);
                 console.error('选择第一个微信！');
                 ableClick(one[0]);
@@ -2703,6 +2713,10 @@ function level1() {
     if (!ableClick('社区成长等级') && desc("签到").exists()) {
         log('→我的')
         ableClick(text("我的"));
+        
+        // 尝试刷新
+        tryRefresh();
+        
         sleep(1000)
         if (!ableClick(contentStartsWith("成长值").findOne(5000))) {
             console.error('找不到入口')
