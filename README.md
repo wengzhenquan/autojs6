@@ -284,7 +284,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
    * 分身：  
      $\color{red}{设备必须要有 社区APP分身，}$
      社区APP分身要是登录不上账号，就没必要折腾了
-     1. config.js中“启用分身"改成1
+     1. config.js中"启用分身"改成1
      2. 复制config.js文件，重命名为 config_分身_x.js(x是序号，可以不要）  
      3. config_分身_x.js只保留【业务功能】、【小程序设置】区域的配置，其它全删除。
      4. 可参考GitHub文件列表中的 config_分身.js
