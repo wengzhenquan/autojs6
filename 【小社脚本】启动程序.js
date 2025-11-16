@@ -3207,27 +3207,10 @@ function main() {
     try {
         // 再次加载悬浮窗控制台配置，以便纠正悬浮窗控制台错误
         consoleShow();
-        // throw e;
-        for (let r = 0; r < 3; r++) {
-            try {
-                //逻辑程序
-                run();
-                break;
-            } catch (e) {
-                console.error(getRunVersion(run_version) + "：" + e);
-                console.error("尝试加载上一个版本Run");
 
-                let previousRunVersion = getPreviousRunVersion(run_version);
+        //逻辑程序
+        run();
 
-                if (!previousRunVersion) {
-                    throw e;
-                }
-                log("加载Run文件：" + previousRunVersion);
-                run = require("./" + previousRunVersion);
-                run_version = previousRunVersion;
-                maxRuntime += 2 * 60 * 1000;
-            }
-        }
         log("      —— 耗时[ " + getDurTime(date) + " ] ——");
         console.warn("—----->--- End ---<-----—");
         device.cancelKeepingAwake();
