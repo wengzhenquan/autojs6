@@ -52,6 +52,8 @@ global.y_refer = null;
 // 小图标x起始分界
 global.x_refer = 200;
 
+const wtimes = config.社区页面等待延迟 || 0;
+
 // 活动桶
 const xmsq_active = storages.create('xmsq_active');
 var xmsq_act = false;
@@ -694,8 +696,7 @@ function toSign() {
 
     sleep(2000);
 
-    if (config.社区页面等待延迟)
-        sleep(config.社区页面等待延迟 * 1000);
+    sleep(wtimes * 1000);
 
     // 尝试刷新
     tryRefresh();
@@ -761,8 +762,7 @@ function signEntrance(name, pram) {
 
     sleep(2000);
 
-    if (config.社区页面等待延迟)
-        sleep(config.社区页面等待延迟 * 1000);
+    sleep(wtimes * 1000);
 
     // 再点击一次，
     // 如果前面点击成功，页面跳转，新页面肯定找不到按钮
@@ -1955,8 +1955,7 @@ function clickPic(list, clipParam) {
         console.info(' →点击提交按钮：' + ableClick(tida));
         sleep(2000);
 
-        if (config.社区页面等待延迟)
-            sleep(config.社区页面等待延迟 * 500);
+        sleep(wtimes * 1000);
 
         if (wait(() => text("已签到").findOne(2000), 3)) {
             toastLog("识图签到成功！！！(๑´∀`๑)");
