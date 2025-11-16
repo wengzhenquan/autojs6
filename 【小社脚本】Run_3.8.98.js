@@ -140,6 +140,7 @@ const 成长值记录 = {
     },
     // 清除数据
     clearData() {
+        this.昵称 = null;
         this.当前成长值 = 0;
         this.升级目标 = 0;
         this.详细记录 = [];
