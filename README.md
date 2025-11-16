@@ -291,6 +291,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
      1. config.js中"启用分身"改成1
      2. 复制config_多账号.js文件，重命名为 config_分身_x.js(x是序号，可以不要）  
      3. 可参考GitHub文件列表中的 config_分身.js
+     4. 修改 config_分身_x.js
 
 --- 
 ### **11. 你还在等什么？哪来的9？赶快启动试试啊！成功了就定时任务甩起！**   
