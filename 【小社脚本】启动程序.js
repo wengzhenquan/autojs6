@@ -127,7 +127,7 @@ var abnormalInterrupt = 1;
 // 允许息屏信号
 var ableScreenOff = 0;
 // 程序最大运行时间，超过该时间会强制停止(ms)。  3分钟
-var maxRuntime = (config && config.运行超时时间 || 3) * 60 * 1000;
+global.maxRuntime = (config && config.运行超时时间 || 3) * 60 * 1000;
 
 //设置参考坐标，不能动，开发环境标准比例。
 setScaleBaseX(1080);
@@ -289,7 +289,7 @@ function printJVMMemory() {
 
 /**
  * 启动脚本总运行时间监控
- * @param {number} maxRuntimeMs - 最大允许运行时间 (毫秒)
+ * @param {number} global.maxRuntimeMs - 最大允许运行时间 (毫秒)
  */
 function startTimeoutMonitor() {
     threads.start(() => {
@@ -312,11 +312,11 @@ function startTimeoutMonitor() {
             }
 
             // 停止脚本
-            if (currentTime - startTime > (maxRuntime - 10 * 1000)) {
+            if (currentTime - startTime > (global.maxRuntime - 10 * 1000)) {
                 ableScreenOff = 1;
                 abnormalInterrupt = 0;
                 console.error('配置：运行超时时间：' + config.运行超时时间 + ' 分钟')
-                console.error(`脚本运行 ${(maxRuntime)/60/1000} 分钟，强制退出`);
+                console.error(`脚本运行 ${(global.maxRuntime)/60/1000} 分钟，强制退出`);
                 console.error('可能是兼容性问题，或布局分析问题，导致页面卡住');
                 console.error('如果刚刚升级过操作系统，或升级过AutoJS6，请重启一次无障碍服务');
                 console.error('若启动延迟过长，可增加运行超时时间！')
@@ -1047,7 +1047,7 @@ function screenOn() {
         wait(() => false, 500);
     }
     //亮屏
-    device.keepScreenDim(maxRuntime);
+    device.keepScreenDim(global.maxRuntime);
     wait(() => false, 500);
 }
 
@@ -1576,7 +1576,7 @@ function init() {
             }
 
             run_version = previousRunVersion;
-            maxRuntime += 2 * 60 * 1000;
+            global.maxRuntime += 2 * 60 * 1000;
         }
     }
 
@@ -2321,7 +2321,7 @@ function updateScript() {
 
     // 续上5分钟时间
     //device.keepScreenDim(5 * 60 * 1000);
-    maxRuntime = maxRuntime + 5 * 60 * 1000;
+    global.maxRuntime = global.maxRuntime + 5 * 60 * 1000;
 
     console.error("提示：启动→" + update_script)
     let update_locked = './tmp/update_locked';
@@ -2615,12 +2615,12 @@ function unLock() {
     let startTime = new Date(date.replace(/-/g, '/')).getTime();
     let currentTime = new Date().getTime();
     let tm = 2 * 60 * 1000; //2分钟
-    if (currentTime - startTime > maxRuntime - tm) {
+    if (currentTime - startTime > global.maxRuntime - tm) {
         // 剩余2分钟时重置计时器，留2分钟确保能完成后续任务
-        //  console.warn(`耗时超过 ${maxRuntime-tm} 分钟`)
+        //  console.warn(`耗时超过 ${global.maxRuntime-tm} 分钟`)
         //  console.warn('→计时器时间重新校准！')
         // date = nowDate();
-        maxRuntime += 2 * 60 * 1000;
+        global.maxRuntime += 2 * 60 * 1000;
     }
 
 
