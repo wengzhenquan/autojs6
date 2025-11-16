@@ -37,9 +37,9 @@ var config = {
     // 最后一行末尾没有逗号，多行末尾需要英文逗号结尾，格式跟图形解锁坐标一样
     // 这些账号都遵从上方配置【业务功能开关】、【小程序设置】执行
     更换账号密码: [
-      ["wengsfzhenquan@gmail.com","wzq18103"],
-      ["wengzhenquansf@gmail.com","wzq126481"],
-      ["wengzhenquanfm@gmail.com","wzq126103"]
+      ["wengsfzhenquan@gmail.com","p18103"],
+      ["wengzhenquansf@gmail.com","p126481"],
+      ["wengzhenquanfm@gmail.com","p126103"]
     ],
     
     // 默认账号遵从config.js中的配置执行，与本配置上方配置无关
