@@ -771,6 +771,9 @@ function signEntrance(name, pram) {
     sleep(2000);
 
     sleep(wtimes * 1000);
+    
+     // 空白页
+    blankMaintain();
 
     // 再点击一次，
     // 如果前面点击成功，页面跳转，新页面肯定找不到按钮
@@ -3087,7 +3090,8 @@ function run() {
                 //back();
 
             } else {
-                toastError("进不了签到页", "forcible");
+                toastError("可能打开了空白页", "forcible");
+                console.error("可能社区在维护，请稍后再试");
                 if (config && config.通知提醒)
                     notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String("进不了签到页，可能打开了空白页"));
 
