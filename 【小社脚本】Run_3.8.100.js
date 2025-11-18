@@ -573,9 +573,9 @@ function posts(n) {
 
         if (i < 3) toast("正在浏览帖子……", "forcible")
         else toastLog("浏览10s完成！Ｏ(≧▽≦)Ｏ ", "forcible");
-
-        sleep(800);
+        sleep(1000);
     }
+    
 
     // 返回
     back();
@@ -704,7 +704,7 @@ function toSign() {
         qd = context('连续签到');
     }
 
-    log("进入签到页……")
+    console.info("进入签到页……")
     ableClick(qd);
     clickCenter(qd);
 
