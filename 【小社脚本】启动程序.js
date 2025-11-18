@@ -211,6 +211,8 @@ startTimeoutMonitor();
 
 wait(() => false, 3000);
 
+
+
 // 检查运存
 function checkMem() {
     const g1 = Math.pow(1024, 3); //1G
@@ -333,36 +335,16 @@ function startTimeoutMonitor() {
 }
 
 
-
-// 小米社区空白维护
-function blankMaintain() {
-    if (config && config.空白页检查) {
-        threads.start(() => {
-            let n = 20;
-            let xmpl = 0;
-            while (packageName(xmPckageName).exists() &&
-                xmpl < 6 && n--) {
-                //wait(() => false, 200);
-                xmpl = packageName(xmPckageName).find(1000).length;
-                if (xmpl < 6) sleep(300);
-            }
-
-            if (packageName(xmPckageName).exists() &&
-                xmpl > 0 && xmpl < 6) {
-                console.error("小米社区APP打开了空白页!")
-                console.error("可能社区在维护！")
-                console.error("请稍后再试")
-                console.error("——————")
-                console.error("若是误报，可以从配置关闭[空白页检查]")
-                abnormalInterrupt = 0;
-                wait(() => false, 2000);
-                exit();
-                wait(() => false, 2000);
-
-            }
-        });
-    }
+// 清除缓存
+function clearCache() {
+    try {
+        if (!config || !config.fast模式) {
+            auto.clearCache();
+            sleep(500)
+        }
+    } catch (e) {}
 }
+
 
 
 
@@ -395,6 +377,36 @@ function tryRefresh() {
         exit();
         wait(() => false, 2000);
 
+    }
+}
+
+// 小米社区空白维护
+function blankMaintain() {
+    if (config && config.空白页检查) {
+        threads.start(() => {
+            let n = 20;
+            let xmpl = 0;
+            while (packageName(xmPckageName).exists() &&
+                xmpl < 6 && n--) {
+                //wait(() => false, 200);
+                xmpl = packageName(xmPckageName).find(1000).length;
+                if (xmpl < 6) sleep(300);
+            }
+
+            if (packageName(xmPckageName).exists() &&
+                xmpl > 0 && xmpl < 6) {
+                console.error("小米社区APP打开了空白页!")
+                console.error("可能社区在维护！")
+                console.error("请稍后再试")
+                console.error("——————")
+                console.error("若是误报，可以从配置关闭[空白页检查]")
+                abnormalInterrupt = 0;
+                wait(() => false, 2000);
+                exit();
+                wait(() => false, 2000);
+
+            }
+        });
     }
 }
 
@@ -712,15 +724,6 @@ function consoleExitOnClose() {
 
 //------------ 工具函数 ----------//
 
-// 清除缓存
-function clearCache() {
-    try {
-        if (!config || !config.fast模式) {
-            auto.clearCache();
-            sleep(500)
-        }
-    } catch (e) {}
-}
 
 
 // 去桌面
