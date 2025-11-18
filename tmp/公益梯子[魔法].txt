@@ -42,8 +42,7 @@ wengzhenquan不提供梯子，只是推荐收集好用的节点订阅地址。
         
     2、【DanFeng】[优质](推荐)：
       * 订阅器：https://snippet.danfeng.eu.org
-        备用地址：  
-                https://snippet.danfeng.de5.net
+        备用地址：https://snippet.danfeng.de5.net
                 https://snippet.danfeng.eu.org
                 https://snippet.danfeng.netlib.re
                 https://snippet.danfeng.site
