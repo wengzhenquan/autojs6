@@ -302,7 +302,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
      3. 可参考GitHub文件列表中的 config_分身.js
      4. 修改 config_分身_x.js
      
-   * 多账号+双小程序签到(有微信分身)：   
+   * 双账号+双小程序签到(有微信分身，无社区APP分身)：   
    
      $\color{red}{只有两个账号，}$
      $\color{red}{但是无法社区APP分身，}$
