@@ -1041,7 +1041,7 @@ function 开盒() {
 
             if (result) {
                 let prize = result.text() ?? '';
-                let pp = result.sibling(1).text()
+                let pp = prize.sibling(1).text()
                     .replace(/[\n\r]/g, ' ')
                 console.warn(pp)
 
