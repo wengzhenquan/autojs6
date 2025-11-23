@@ -1050,7 +1050,9 @@ function 开盒() {
                 let idx = prize.indexOf('，');
                 let part1 = prize.slice(0, idx);
                 let part2 = prize.slice(idx + 1);
+                
                 console.error(part1)
+                
                 if (prize.includes('实物')) {
                     console.error(part2)
                     if (config && config.通知提醒)
