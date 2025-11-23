@@ -1050,11 +1050,10 @@ function 开盒() {
                 let prize = result.text() ?? '';
                 let idx = prize.indexOf('，');
                 let part1 = prize.slice(0, idx);
-                let part2 = prize.slice(idx + 1);
-
                 console.error(part1)
 
                 if (prize.includes('实物')) {
+                    let part2 = prize.slice(idx + 1);
                     console.error(part2)
                     if (config && config.通知提醒)
                         notice(String('小米社区中大奖啦！！！'),
