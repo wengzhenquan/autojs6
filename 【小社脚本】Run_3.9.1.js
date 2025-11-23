@@ -1037,7 +1037,7 @@ function 开盒() {
 
             let result = textStartsWith('恭喜获得')
                 .textContains('奖品')
-                .findOne(1000)
+                .findOne(1500)
 
             if (result) {
                 let prize = result.text() ?? '';
