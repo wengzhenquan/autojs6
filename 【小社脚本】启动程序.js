@@ -31,8 +31,9 @@ if (!files.exists(launch_locked)) {
         // 防止锁残留
         events.on("exit", () => files.remove(launch_locked));
     } else {
-        console.info('若无法启动，可删除tmp目录下的下面文件')
-        console.error('launch_main_locked')
+        console.error('已经存在正在运行的程序，请勿重复运行')
+        console.info('若是误报，可重启AutoJs，或删除下的下面文件，再运行')
+        console.error('tmp/launch_main_locked')
         //确保只运行一个程序
         exit();
     }
