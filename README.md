@@ -192,6 +192,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
        $\color{red}{点击.…(更多)（最后一个}$  
        ![image](说明/获取坐标工具.jpg)    
        ![image](说明/指针位置.jpg)    
+       ![image](说明/图案解锁坐标.jpg)    
        
    * 解锁流程说明：  
      * $\color{red}{屏幕亮屏至少2次}$  
