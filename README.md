@@ -270,7 +270,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
    布局分析：  
    ![image](说明/布局分析.jpg)    
    控件信息：  
-   ![image](说明/控件信息jpg)    
+   ![image](说明/控件信息.jpg)    
    
      1. bounds(左上角x，左上角y，右下角宽度w，右下角高度h)：这是一个矩形
      2. center(x，y):矩形中心坐标，选这个
