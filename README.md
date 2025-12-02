@@ -275,7 +275,7 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
      控件信息：  
      ![image](说明/控件信息.jpg)    
      1. bounds[左上角x，左上角y，从左上角到最右边宽度w，从左上角到下边高度h]：这是一个矩形
-     $\color{red}{2. center[x，y]:矩形中心坐标，选这个坐标}$
+    $\color{red}{2. center[x，y]:矩形中心坐标，选这个坐标}$
    
    
    ```
