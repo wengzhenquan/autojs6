@@ -95,7 +95,9 @@ if (update_proxy) {
 // 代理来源
 const proxySources = [
     "https://api.akams.cn/github",
-    "https://git.mxg.pub/api/github/list"
+    "https://xiake.pro/static/node.json",
+    "https://git.mxg.pub/api/github/list",
+    "https://yishijie.gitlab.io/ziyuan/gh.txt"
 ];
 
 // 测试地址
@@ -619,7 +621,7 @@ function updateProxys() {
                 });
                 if (res.statusCode === 200) {
                     // log('请求成功！')
-                    let json = res.json;
+                    let json = convertUrlStrToJson(res.body);
                     let proxyData = json.data || json;
                     if (Array.isArray(proxyData)) {
                         log('成功获取代理数量：' + proxyData.length)
@@ -729,6 +731,34 @@ function updateProxys() {
         return null;
     }
 
+}
+
+// url返回请求响应体json
+function convertUrlStrToJson(urlStr) {
+    let result = null;
+
+    try {
+        result = JSON.parse(urlStr);
+    } catch (e) {
+        // 处理URL字符串：按换行/逗号分割，过滤空值，去除首尾空格
+        let urlList = urlStr
+            .split(/[\n,]/) // 支持换行、逗号分隔
+            .map(url => url.trim()) // 去除每个URL首尾空格
+            .filter(url => url); // 过滤空字符串（避免分割后出现空元素）
+
+        result = {
+            code: 200,
+            msg: "success",
+            data: urlList.map(url => ({
+                url
+            })),
+            total: urlList.length
+        };
+
+    }
+
+    // 构建返回JSON对象
+    return result
 }
 
 // 同步代理池
