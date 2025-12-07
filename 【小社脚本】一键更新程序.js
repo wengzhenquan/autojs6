@@ -821,7 +821,7 @@ function synProxys() {
 
 // -----------程序完整性检查---------------------//
 function integrityCheck() {
-    log(">>>>→程序完整性校验←<<<<")
+    console.info(">>>>→程序完整性校验←<<<<")
 
     let fileList = localVersion.updateFile;
 
@@ -1235,6 +1235,7 @@ function startUpdate() {
                 wait(() => false, 1000)
 
                 if (!packageName('org.autojs.autojs6').exists()) {
+                    console.error("发现不在AutoJS6界面，尝试打开…");
                     launchAPP('org.autojs.autojs6')
                     wait(() => false, 1000);
                 }
