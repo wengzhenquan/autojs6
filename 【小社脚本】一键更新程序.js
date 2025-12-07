@@ -537,9 +537,9 @@ function launchAPP(packageN) {
     console.info(">>>>>→启动" + appName + "←<<<<<")
     toastLog("尝试调起应用：" + appName, "forcible");
     // app.launch(packageN);
-    let n = 0;
+    let n = 3;
     // 这个循环走一遍至少需要1秒
-    while (!wait(() => packageName(packageN).exists(), 3, 500)) {
+    while (n-- && !wait(() => packageName(packageN).exists(), 3, 500)) {
         //链式调用权限触发，点“始终允许”
         if (textContains("想要打开").exists() ||
             textContains("尝试开启").exists() ||
@@ -575,7 +575,6 @@ function launchAPP(packageN) {
         if (n % 2 === 0) app.launchPackage(packageN)
         else app.launchApp(app.getAppName(packageN));
         wait(() => false, 2000)
-        n++;
     }
     toastLog("成功打开" + appName + "！！！", "forcible");
 
