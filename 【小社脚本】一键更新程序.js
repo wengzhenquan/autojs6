@@ -1201,6 +1201,15 @@ function startUpdate() {
 
     try {
         if (refreshDir) {
+            // 调用 Android KeyguardManager 检查锁屏状态
+            var KeyguardManager = context.getSystemService(context.KEYGUARD_SERVICE);
+            var isLocked = KeyguardManager.isKeyguardLocked(); // 是否锁屏
+
+            if (isLocked) {
+                console.error("锁屏状态下，取消自动下滑文件列表操作！")
+                return;
+            }
+
             if (!auto.isRunning() ||
                 !auto.service ||
                 !auto.root) {
