@@ -76,6 +76,9 @@ const xmUpdateUrl2 = "https://www.123912.com/s/RYmDVv-bwUch";
 const serviceId_file = "./tmp/service_id.txt";
 var serviceId = "org.autojs.autojs6/org.autojs.autojs.core.accessibility.AccessibilityServiceUsher";
 
+// autojs6包名
+const autojspn = autojs.packageName;
+
 // 设备信息
 const dwidth = device.width;
 const dheight = device.height;
@@ -2725,7 +2728,7 @@ function getServiceId() {
         let services = am.getEnabledAccessibilityServiceList(-1);
         for (let i = 0; i < services.size(); i++) {
             let id = services.get(i).getId();
-            if (id.startsWith("org.autojs.autojs6/"))
+            if (id.startsWith(autojspn + "/"))
                 sid = id;
         }
         //}
@@ -2936,7 +2939,7 @@ function permissionv() {
     // 获取应用包名和电源管理服务
     let powerManager = context.getSystemService(context.POWER_SERVICE);
     // 检测是否已忽略电池优化
-    if (powerManager.isIgnoringBatteryOptimizations(autojs.packageName)) {
+    if (powerManager.isIgnoringBatteryOptimizations(autojspn)) {
         log("忽略电池优化，[已启用]");
     } else {
         console.error("忽略电池优化，[未启用]!");
