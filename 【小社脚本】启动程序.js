@@ -1899,41 +1899,45 @@ processArrays(proxys, proxys2);
 
 var api_proxys = [
 
-    "https://github.dpik.top/",
-    "https://gh.dpik.top/",
-    "https://gh.catmak.name/",
-    "https://ghproxy.monkeyray.net/",
-    "https://ghfile.geekertao.top/",
-    "https://git.yylx.win/",
+    "https://gh.llkk.cc/", // 请求时间：0.61s
+    "http://gh.927223.xyz/", // 请求时间：0.63s
+    "https://github.cnxiaobai.com/", // 请求时间：0.74s
+    "https://gh-proxy.top/", // 请求时间：0.80s
+    "https://github.dpik.top/", // 请求时间：0.81s
+    "https://ghfile.geekertao.top/", // 请求时间：0.81s
+    "https://cdn.akaere.online/", // 请求时间：1.04s
+    "https://ghpxy.hwinzniej.top/", // 请求时间：1.05s
+    "https://gh.bugdey.us.kg/", // 请求时间：1.11s
+    "https://ghm.078465.xyz/", // 请求时间：1.19s
+    "https://git.yylx.win/", // 请求时间：1.20s
+    "https://gh.chaoyi996.com/", // 请求时间：1.24s
+    "https://gh.dpik.top/", // 请求时间：1.35s
+    "https://ghproxy.monkeyray.net/", // 请求时间：1.36s
+    "https://gh.zhaojun.im/", // 请求时间：1.38s
+    "https://tvv.tw/", // 请求时间：1.40s
+    "https://ghf.无名氏.top/", // 请求时间：1.47s
+    "https://cdn.gh-proxy.com/", // 请求时间：1.69s
+    "https://gh.noki.icu/", // 请求时间：1.69s
+    "https://gh.catmak.name/", // 请求时间：1.83s
+    "https://gh.qninq.cn/", // 请求时间：2.12s
+    "https://gh-proxy.com/", // 请求时间：2.42s
+    "https://gh.inkchills.cn/", // 请求时间：2.67s
+
     "https://hub.mwm.moe/",
-    "https://gh.bugdey.us.kg/",
-    "https://tvv.tw/",
-    "https://ghm.078465.xyz/",
-    "http://gh.927223.xyz/",
-    "https://github.cnxiaobai.com/", // 请求时间：0.73s
-    "https://gh.qninq.cn/", // 请求时间：0.97s
-    "https://gh.noki.icu/",
-    "https://gh.llkk.cc/",
     "https://xiazai.de/",
     "https://99z.top/",
-    "https://ghpxy.hwinzniej.top/",
-    // "https://github.cn86.dev/",
+
     "https://githubproxy.cc/",
-    "https://gh-proxy.com/",
     "https://hk.gh-proxy.com/",
-    "https://cdn.gh-proxy.com/",
-    "https://gh.inkchills.cn/",
-    "https://cdn.akaere.online/",
-    "https://gh.chaoyi996.com/", // 请求时间：1.62s
-
-
 
     "https://j.1win.ggff.net/",
     "https://j.n1win.dpdns.org/",
     "https://j.1lin.dpdns.org/",
     "https://jiashu.1win.eu.org/",
     "https://j.1win.ip-ddns.com/",
-    "https://j.1win.ddns-ip.net",
+    "https://j.1win.ddns-ip.net/",
+
+
 
 ]
 
