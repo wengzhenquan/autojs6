@@ -67,8 +67,11 @@ const xmPckageName = "com.xiaomi.vipaccount"; // 社区APP包名
 const wchatpn = "com.tencent.mm"; //微信包名，用来校验小程序是否打开
 const xmVersionName = getAppVersionName(xmPckageName);
 const wchatVersionName = getAppVersionName(wchatpn);
-//社区APP最低支持跳转入口的版本
-const xmAtLeastVersionName = "5.3.2";
+//社区APP最低支持的版本
+const xmAtLeastVersionName = "6.0.0";
+const xmUpdateUrl1 = "https://www.123865.com/s/RYmDVv-bwUch";
+const xmUpdateUrl2 = "https://www.123912.com/s/RYmDVv-bwUch";
+
 
 const serviceId_file = "./tmp/service_id.txt";
 var serviceId = "org.autojs.autojs6/org.autojs.autojs.core.accessibility.AccessibilityServiceUsher";
@@ -198,6 +201,8 @@ if (!config || !config.更新代理池)
 
 //AutoJS6版本检查
 checkAutoJS6();
+// 检查小米社区APP
+checkXmsq();
 
 // 维护期禁止更新
 maintain();
@@ -234,6 +239,23 @@ function checkAutoJS6() {
     if (!(v650 || vAtLest)) {
         console.error('不支持的AutoJS6版本');
         console.error('请升级AutoJS6');
+        abnormalInterrupt = 0;
+        wait(() => false, 2000);
+        exit();
+        wait(() => false, 2000);
+    }
+}
+
+//社区APP版本检查
+function checkXmsq() {
+    // 最低支持
+    let isEnabled = isAtLeast(xmVersionName, xmAtLeastVersionName);
+    if (!isEnabled) {
+        console.error('社区APP版本过低');
+        console.error('请升级小米社区APP');
+        console.error('网盘地址：')
+        console.error(xmUpdateUrl1)
+        console.error(xmUpdateUrl2)
         abnormalInterrupt = 0;
         wait(() => false, 2000);
         exit();
