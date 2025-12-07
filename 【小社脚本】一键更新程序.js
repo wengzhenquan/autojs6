@@ -530,7 +530,57 @@ function printJVMMemory() {
         " MB (" + info.usagePercentage + "%)");
 }
 
+//打开程序
+function launchAPP(packageN) {
+    if (packageName(packageN).exists()) return true;
+    var appName = app.getAppName(packageN);
+    console.info(">>>>>→启动" + appName + "←<<<<<")
+    toastLog("尝试调起应用：" + appName, "forcible");
+    // app.launch(packageN);
+    let n = 0;
+    // 这个循环走一遍至少需要1秒
+    while (!wait(() => packageName(packageN).exists(), 3, 500)) {
+        //链式调用权限触发，点“始终允许”
+        if (textContains("想要打开").exists() ||
+            textContains("尝试开启").exists() ||
+            textContains("是否").exists()) {
+            wait(() => false, 200)
+            let yx = className("android.widget.Button")
+                .contentContains("允许").findOne(1000);
+            ableClick(yx);
+            break;
+        }
+        // 残留微信分身选项
+        if (textContains("选择").exists() &&
+            text("取消").exists()) {
+            log("发现分身选项")
+            wait(() => false, 500);
+            let two = contentContains(appName)
+                .find(2000);
 
+            let index = Math.min(dualRow, two.length);
+
+            if (two.length > 1) {
+                log("选择第" + (index + 1) + "个")
+                ableClick(two[index]);
+                break;
+            } else {
+                log('点击：取消')
+                whileClick('取消');
+            }
+        }
+
+        if (packageName(packageN).exists()) break;
+
+        if (n % 2 === 0) app.launchPackage(packageN)
+        else app.launchApp(app.getAppName(packageN));
+        wait(() => false, 2000)
+        n++;
+    }
+    toastLog("成功打开" + appName + "！！！", "forcible");
+
+    return true;
+}
 // ----------- 脚本更新 ---------------------//
 
 //--------------- 更新代理池 ---------
@@ -995,7 +1045,7 @@ function startUpdate() {
 
             runtime.gc;
             java.lang.System.gc();
-            sleep(500);
+            wait(() => false, 500);
             aMem = device.getAvailMem();
             if (!isText && aMem < g1 &&
                 fileInfo && fileInfo.size > m1) {
@@ -1171,18 +1221,30 @@ function startUpdate() {
                 }
                 console.log("自动重启无障碍服务")
                 auto(true);
-                sleep(500)
+                wait(() => false, 500)
             }
 
-            //sleep(3000)
+
+            //wait(() => false,3000)
             if (packageName('org.autojs.autojs6').exists()) {
                 console.info(">>>→即将自动下滑刷新←<<<")
-                sleep(1000)
+                wait(() => false, 1000)
                 //  ---------------- 下面是刷新列表 --------//
 
                 back();
+                wait(() => false, 1000)
+
+                if (!packageName('org.autojs.autojs6').exists()) {
+                    launchAPP('org.autojs.autojs6')
+                    wait(() => false, 1000);
+                }
+                if (!packageName('org.autojs.autojs6').text('AutoJs6').exists()) {
+                    console.error("没找到目标，取消操作！");
+                    return;
+                }
+
                 ableClick('文件')
-                sleep(1000);
+                wait(() => false, 1000);
                 refreshDirList();
 
             }
@@ -1234,7 +1296,7 @@ function refreshDirList() {
         if (text(currentPart).exists()) {
             toastLog("--→进入目录：" + currentPart)
             ableClick(currentPart);
-            sleep(1000);
+            wait(() => false, 1000);
             //return;
         }
     }
@@ -1242,9 +1304,9 @@ function refreshDirList() {
     let r = 3;
     while (r--) {
         swipe(dwidth * 0.4, dheight * 0.4, dwidth * 0.6, dheight * 0.8, 100);
-        sleep(1000);
+        wait(() => false, 1000);
     }
-    sleep(1500)
+    wait(() => false, 1500)
 
     updateDir.forEach((dir) => {
         if (!content(dir).exists())
@@ -1256,11 +1318,11 @@ function refreshDirList() {
             r = 2;
             while (r--) {
                 swipe(dwidth * 0.4, dheight * 0.4, dwidth * 0.6, dheight * 0.8, 100);
-                sleep(1000);
+                wait(() => false, 1000);
             }
             log("--→返回！！！")
             back();
-            sleep(1000);
+            wait(() => false, 1000);
         }
     });
 
