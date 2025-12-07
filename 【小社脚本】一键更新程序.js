@@ -57,6 +57,8 @@ var ignoreList = [
 // 设备信息
 const dwidth = device.width;
 const dheight = device.height;
+// autojs6包名
+const autojspn = autojs.packageName;
 
 const g1 = Math.pow(1024, 3); //1G
 const m1 = Math.pow(1024, 2); //1M
@@ -1234,7 +1236,7 @@ function startUpdate() {
 
 
             //wait(() => false,3000)
-            if (packageName('org.autojs.autojs6').exists()) {
+            if (packageName(autojspn).exists()) {
                 console.info(">>>→即将自动下滑刷新←<<<")
                 wait(() => false, 1000)
                 //  ---------------- 下面是刷新列表 --------//
@@ -1242,12 +1244,12 @@ function startUpdate() {
                 back();
                 wait(() => false, 1000)
 
-                if (!packageName('org.autojs.autojs6').exists()) {
+                if (!packageName(autojspn).exists()) {
                     console.error("发现不在AutoJS6界面，尝试打开…");
-                    launchAPP('org.autojs.autojs6')
+                    launchAPP(autojspn)
                     wait(() => false, 1000);
                 }
-                if (!packageName('org.autojs.autojs6').text('AutoJs6').exists()) {
+                if (!packageName(autojspn).text('AutoJs6').exists()) {
                     console.error("没找到目标，取消操作！");
                     return;
                 }
