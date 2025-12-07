@@ -10,7 +10,7 @@ if (!files.exists(locked)) {
         events.on("exit", () => files.remove(locked));
     } else {
         console.error('已经存在正在运行的程序，请勿重复运行')
-        console.info('若是误报，可重启AutoJs，或删除下面文件，再运行')
+        console.info('若是误报，可重启AutoJs，或删除下面的文件，再运行')
         console.error('tmp/update_locked')
         //确保只运行一个程序
         exit();
