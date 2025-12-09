@@ -648,11 +648,11 @@ function console3() {
 
 
 
-//悬浮窗控制台变成18%
+//悬浮窗控制台变成15%
 function consoleMin() {
     console.setPosition(0.02, 0);
     wait(() => false, 300);
-    let h = 0.18;
+    let h = 0.15;
 
     // 自动适配
     if (config &&
