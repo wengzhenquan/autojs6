@@ -159,16 +159,21 @@ function sortAndProcessResults(data) {
                 console.error('可能验证码区域有遮挡');
                 console.error('请检查tmp/pic.png验证码截图');
                 console.error('    或tmp/error/local/目录');
-                console.warn('若无遮挡——→')
-                console.error("请尝试：");
+                if (len === 0) {
+                    console.error("如果你发现截图是黑屏，可能由于屏幕保护导致不允许截图")
+                    console.error("可尝试将社区APP加入截图白名单(移出黑名单)，或者关闭屏幕保护")
+                } else {
+                    console.warn('若无遮挡——→')
+                    console.error("请尝试：");
 
-                if (nmsThreshold < 0.9) {
-                    console.error('   1.提高[YOLO重叠率阈值]值');
-                    console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
-                }
-                if (confThreshold > 0.1) {
-                    console.error('   2.降低[YOLO置信度阈值]值');
-                    console.warn(`当前 (置信度阈值: ${confThreshold})`);
+                    if (nmsThreshold < 0.9) {
+                        console.error('   1.提高[YOLO重叠率阈值]值');
+                        console.warn(`当前 (重叠率阈值: ${nmsThreshold})`);
+                    }
+                    if (confThreshold > 0.1) {
+                        console.error('   2.降低[YOLO置信度阈值]值');
+                        console.warn(`当前 (置信度阈值: ${confThreshold})`);
+                    }
                 }
                 return new Array();
             }
