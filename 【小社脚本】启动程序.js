@@ -648,11 +648,11 @@ function console3() {
 
 
 
-//悬浮窗控制台变成15%
+//悬浮窗控制台变成17%
 function consoleMin() {
     console.setPosition(0.02, 0);
     wait(() => false, 300);
-    let h = 0.15;
+    let h = 0.17;
 
     // 自动适配
     if (config &&
@@ -766,9 +766,9 @@ function toHome() {
 function whileClick(obj) {
     try {
         if (obj) {
-            if (typeof obj === 'string') {
-                while (click(obj));
-            }
+            // if (typeof obj === 'string') {
+            while (click(obj));
+            //  }
         }
     } catch (e) {}
 }
