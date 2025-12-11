@@ -721,7 +721,7 @@ function toSign() {
         ableClick('我的');
         clickCenter('我的')
         log('→连续签到');
-        qd = context('连续签到');
+        qd = content('连续签到');
     }
 
     console.info("进入签到页……")
