@@ -330,7 +330,7 @@ function startTimeoutMonitor() {
             const startTime = new Date(date.replace(/-/g, '/')).getTime();
             let currentTime = new Date().getTime();
 
-            if (currentTime - startTime < (13 * 1000)) {
+            if (currentTime - startTime < (18 * 1000)) {
                 // 悬浮窗配置纠正
                 if (console.isShowing()) {
                     consoleShow();
