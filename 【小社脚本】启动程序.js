@@ -582,7 +582,7 @@ function consoleShow() {
             //悬浮窗控制台配置
             // console.reset();
             console.build({
-                size: [0.96, 0.3],
+               // size: [0.96, 0.3],
                 position: [0.02, 0.02],
                 title: '会装逼的控制台',
                 titleTextSize: 18,
@@ -624,9 +624,9 @@ function consoleShow() {
                 console.setTitleTextSize(config.悬浮窗控制台_字体大小 + 3);
             }
 
-            console3();
 
             if (!console.isShowing()) {
+                console3();
                 console.show();
                 return;
             }
@@ -723,7 +723,11 @@ function consoleMax() {
     }
 }
 
-
+function consoleH(h) {
+    console.setPosition(0.02, 0.02);
+    //let h = (config && config.悬浮窗控制台_运行高度) || 0.3;
+    console.setSize(0.96, h);
+}
 
 //悬浮窗控制台最小化
 function consoleCollapse() {
@@ -3232,13 +3236,13 @@ function main() {
     // 点亮屏幕
     screenOn();
 
-
+    consoleH(0.7)
     //权限验证
     permissionv();
 
     // 再次加载悬浮窗控制台配置，以便纠正悬浮窗控制台错误
     //consoleShow();
-
+    consoleH(0.7)
     // 系统修改
     systemSetting();
 
@@ -3271,6 +3275,7 @@ function main() {
     try {
         // 再次加载悬浮窗控制台配置，以便纠正悬浮窗控制台错误
         consoleShow();
+        console3();
 
         //逻辑程序
         run();
