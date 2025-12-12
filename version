@@ -28,7 +28,8 @@
         "YOLO重叠率阈值": 0.1,
         "社区APP签到": 1,
         "社区APP签到方式": 1,
-        "fast模式": 0
+        "fast模式": 0,
+        "空白页检查": 1
     },
     "configValueTransform": {
         "社区APP签到": {
