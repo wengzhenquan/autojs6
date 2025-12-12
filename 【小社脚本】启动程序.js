@@ -428,6 +428,11 @@ function blankMaintain() {
                 console.error("请稍后再试")
                 console.error("——————")
                 console.error("若是误报，可以从配置关闭[空白页检查]")
+
+                if (config && config.通知提醒)
+                    notice(String('出错了(' + nowDate().substr(5, 14) + ')'), String('社区打开了空白页！！'));
+
+
                 abnormalInterrupt = 0;
                 wait(() => false, 2000);
                 exit();
@@ -582,7 +587,7 @@ function consoleShow() {
             //悬浮窗控制台配置
             // console.reset();
             console.build({
-               // size: [0.96, 0.3],
+                // size: [0.96, 0.3],
                 position: [0.02, 0.02],
                 title: '会装逼的控制台',
                 titleTextSize: 18,
