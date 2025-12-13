@@ -992,7 +992,7 @@ function startUpdate() {
     if (!hasNewVersion && !updateAll && updateList < 1)
         return;
 
-    log(">>>>>★开始更新★<<<<<")
+    console.info(">>>>>★开始更新★<<<<<")
     log("开始下载文件……")
     log("请不要终止脚本")
     // 文件循环
