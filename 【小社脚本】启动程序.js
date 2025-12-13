@@ -2581,9 +2581,9 @@ function unLock() {
 
                     if (n === 2) {
                         if (!config.上滑起始位置)
-                            config.上滑起始位置 === 1
+                            config.上滑起始位置 = 1
                         else
-                            config.上滑起始位置 === 0;
+                            config.上滑起始位置 = 0;
 
                         console.error('尝试自动修改配置：')
                         console.error('{上滑起始位置: ' + config.上滑起始位置 + '}')
