@@ -96,10 +96,10 @@ if (update_proxy) {
 
 // 代理来源
 const proxySources = [
-    "https://api.akams.cn/github",
-    "https://xiake.pro/static/node.json",
     "https://git.mxg.pub/api/github/list",
-    "https://yishijie.gitlab.io/ziyuan/gh.txt"
+    "https://yishijie.gitlab.io/ziyuan/gh.txt",
+    "https://xiake.pro/static/node.json",
+    "https://api.akams.cn/github"
 ];
 
 // 测试地址
