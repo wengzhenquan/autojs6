@@ -32,7 +32,7 @@ var config = {
     
     
 // ——————|||【 多账号(以下配置分身无用) 】|||——————\\
-
+    // >>>这里是小号
     // 不支持短信验证码登录，必须通过账号密码登录
     // ["账号","密码"]
     // 最后一行末尾没有逗号，多行末尾需要英文逗号结尾，格式跟图形解锁坐标一样
@@ -42,9 +42,11 @@ var config = {
       ["13101420093","password000"],
       ["wengsfzhenquan@gmail.com","password000"],
       ["wengzhenquansf@gmail.com","password000"],
-      ["wengzhenquanfm@gmail.com","password000"]
+      ["wengzhenquanfm@gmail.com","password000"],
+      ["wengzhenquan001@gmail.com","password000"]
     ],
     
+    //>>>这里是主账号，就是大号
     // 默认账号遵从config.js中的配置执行，与本配置上方配置无关，所以小程序签到有效
     // 每次程序执行完毕末尾会用默认账号重新登录
     // 如果程序中途中断，会导致程序末尾无法登录默认账号
