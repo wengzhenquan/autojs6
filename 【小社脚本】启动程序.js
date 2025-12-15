@@ -1122,7 +1122,7 @@ const HttpUtils = {
      * @param {object} [options.headers] - 请求头
      * @param {object} [options.body] - 请求体 (仅POST)
      * @param {number} [options.timeout=30] - 超时时间(秒)
-     * @param {boolean} [options.ignoreSSL=false] - 是否忽略SSL验证
+     * @param {boolean} [options.ignoreTLS=false] - 是否忽略TLS验证
      * @returns {okhttp3.Response} HTTP响应对象
      */
     executeRequest: function(url, options = {}) {
@@ -1131,7 +1131,7 @@ const HttpUtils = {
                 headers = {},
                 body = null,
                 timeout = 30,
-                ignoreSSL = false
+                ignoreTLS = false
         } = options;
 
         try {
@@ -1140,7 +1140,7 @@ const HttpUtils = {
                 .connectTimeout(timeout, java.util.concurrent.TimeUnit.SECONDS)
                 .readTimeout(timeout, java.util.concurrent.TimeUnit.SECONDS);
 
-            if (ignoreSSL) {
+            if (ignoreTLS) {
                 let trustAllCerts = [
                     new javax.net.ssl.X509TrustManager({
                         checkClientTrusted: function(chain, authType) {},
@@ -1151,7 +1151,7 @@ const HttpUtils = {
                     })
                 ];
 
-                let sslContext = javax.net.ssl.SSLContext.getInstance("SSL");
+                let sslContext = javax.net.ssl.SSLContext.getInstance("TLS");
                 sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
 
                 clientBuilder = clientBuilder
@@ -1200,7 +1200,7 @@ const HttpUtils = {
      * @param {object} [options.headers] - 请求头
      * @param {object} [options.body] - 请求体 (仅POST)
      * @param {number} [options.timeout=30] - 超时时间(秒)
-     * @param {boolean} [options.ignoreSSL=false] - 是否忽略SSL验证
+     * @param {boolean} [options.ignoreTLS=false] - 是否忽略TLS验证
      * @returns {object} 响应对象
      */
     request: function(url, options = {}) {
@@ -1237,7 +1237,7 @@ const HttpUtils = {
      * @param {string} savePath - 保存路径
      * @param {object} [options] - 配置选项
      * @param {number} [options.timeout=300] - 超时时间(秒)
-     * @param {boolean} [options.ignoreSSL=false] - 是否忽略SSL验证
+     * @param {boolean} [options.ignoreTLS=false] - 是否忽略TLS验证
      * @param {boolean} [options.isTextFile=false] - 是否为文本文件
      * @param {function} [options.onProgress] - 进度回调函数
      * @returns {object} 下载结果对象
@@ -1245,7 +1245,7 @@ const HttpUtils = {
     download: function(url, savePath, options = {}) {
         let {
             timeout = 300,
-                ignoreSSL = false,
+                ignoreTLS = false,
                 isTextFile = false,
                 onProgress = null
         } = options;
@@ -1266,7 +1266,7 @@ const HttpUtils = {
                 method: 'GET',
                 headers: {},
                 timeout,
-                ignoreSSL
+                ignoreTLS
             });
 
             if (!response.isSuccessful()) {
@@ -1957,7 +1957,7 @@ function updateProxys() {
 
     if (config && config.更新代理池) {
         if (config.更新代理池 > 1 || !gh_p || !gh_api_p ||
-            gh_p.length < 20 || gh_api_p < 5) {
+            gh_p.length < 20 || gh_api_p.length < 5) {
             console.info("---→>→ 更新代理池 ←<←---")
 
             // 存在正在更新的程序，放弃更新
@@ -1970,11 +1970,12 @@ function updateProxys() {
                 sto_gh_proxys.put("update", true);
                 // 1. 获取代理列表
                 var proxyData = fetchProxyList();
-                if (!proxyData || proxyData.length < 1) {
+                if (proxyData.length < 1) {
                     console.error("代理获取失败！");
                     console.error("将使用内置代理！");
                     return;
                 }
+                console.warn("去重后数量：" + proxyData.length)
                 console.info("---->→ 测试代理：")
 
                 // 2. 测试代理（使用多线程加速测试）
@@ -2023,7 +2024,7 @@ function updateProxys() {
                 let res = HttpUtils.request(url, {
                     method: "GET",
                     timeout: 10,
-                    ignoreSSL: true
+                    ignoreTLS: true
                 });
                 if (res.statusCode === 200) {
                     // log('请求成功！')
@@ -2109,7 +2110,7 @@ function updateProxys() {
             let res = HttpUtils.request(url + separator + "t=" + start, {
                 method: "GET",
                 timeout: 5,
-                ignoreSSL: true
+                ignoreTLS: true
             });
 
             if (res && res.statusCode === 200) {
@@ -2196,7 +2197,7 @@ function checkVersion() {
                 let res = HttpUtils.request(url, {
                     method: "GET",
                     timeout: 5,
-                    ignoreSSL: true
+                    ignoreTLS: true
                 });
                 if (res && res.statusCode === 200) {
                     serverVersion = res.json;
@@ -2348,7 +2349,7 @@ function updateScript() {
                     url,
                     "./" + update_script, {
                         timeout: 5,
-                        ignoreSSL: true,
+                        ignoreTLS: true,
                         isTextFile: true,
                         onProgress: (progress) => {
                             console.log(progress.progressBar + (" " + progress.percent + "%").padStart(5, "\u3000"));
@@ -2452,7 +2453,7 @@ function checkAutoJS6Version() {
                 let res = HttpUtils.request(url, {
                     method: "GET",
                     timeout: 8,
-                    ignoreSSL: true
+                    ignoreTLS: true
                 });
                 if (res && res.statusCode === 200) {
                     result = res.json;
