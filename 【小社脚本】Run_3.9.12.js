@@ -3227,11 +3227,7 @@ function loginAccounts(accounts, password) {
         .findOne(1000)
     while (!acc) {
         text('取消').exists() && ableClick(text('取消'))
-
-        sleep(1000)
-        acc = idEndsWith('_nickname')
-            .findOne(1500)
-
+        
         if (!acc && text('小米账号登录').exists()) {
             console.error("账号密码不匹配")
             back()
@@ -3243,6 +3239,12 @@ function loginAccounts(accounts, password) {
             return false;
         }
         text('我的').exists() && ableClick("我的")
+        sleep(1000)
+        
+        acc = idEndsWith('_nickname')
+            .findOne(1500)
+            
+        sleep(1000)
     }
 
     log("登录成功！")
