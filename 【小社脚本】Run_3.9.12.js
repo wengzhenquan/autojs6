@@ -3238,13 +3238,12 @@ function loginAccounts(accounts, password) {
             console.error("登录失败！")
             return false;
         }
-        text('我的').exists() && ableClick("我的")
+        ableClick("我的")
         sleep(1000)
         
         acc = idEndsWith('_nickname')
             .findOne(1500)
             
-        sleep(1000)
     }
 
     log("登录成功！")
