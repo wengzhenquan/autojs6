@@ -3227,7 +3227,7 @@ function loginAccounts(accounts, password) {
         .findOne(1000)
     while (!acc) {
         text('取消').exists() && ableClick(text('取消'))
-        
+
         if (!acc && text('小米账号登录').exists()) {
             console.error("账号密码不匹配")
             back()
@@ -3240,10 +3240,10 @@ function loginAccounts(accounts, password) {
         }
         ableClick("我的")
         sleep(1000)
-        
+
         acc = idEndsWith('_nickname')
             .findOne(1500)
-            
+
     }
 
     log("登录成功！")
@@ -3432,14 +3432,13 @@ function run() {
 
         } else {
             // 关闭小米社区APP
-            if (!mulAccounts || row === runLen)
-                killAPP(xmPckageName);
-
-            if (!mulAccounts) {
+            if (!mulAccounts || row === runLen) {
+                killAPP(xmPckageName)
                 toHome();
                 sleep(300);
                 toHome();
             }
+
             if (config && config.通知提醒) {
                 let name = 成长值记录.昵称 ?? "已完成";
                 notice(String('(' + nowDate().substr(5, 14) + ')[' + getDurTime(date) + ']' + name), String(lResult));
