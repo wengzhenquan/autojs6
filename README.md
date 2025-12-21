@@ -54,11 +54,11 @@ $\color{red}{那么请不要使用此脚本。}$
 --- 
 ## 使用方法：  
 
-### **下载 AutoJs6 $\color{red}{(建议使用最新版)}$：**    
+### **安装 AutoJs6 $\color{red}{(建议使用最新版)}$：**    
 （最低支持6.6.2，额外兼容6.5.0）   
 （不支持6.6.0、6.6.1）   
 
-[官网下载](https://github.com/SuperMonster003/AutoJs6/releases)  
+[GitHub官方下载](https://github.com/SuperMonster003/AutoJs6/releases)  
 
 [123云盘渠道下载(推荐)](https://www.123912.com/s/RYmDVv-X3Sch)  
 
@@ -96,11 +96,11 @@ $\color{red}{那么请不要使用此脚本。}$
 
 ### 【小社脚本】下载：
 
-[在线加速下载版（推荐）](https://github.com/wengzhenquan/autojs6/releases/main)  
+[GitHub在线加速下载版（推荐）](https://github.com/wengzhenquan/autojs6/releases/main)  
 
 [123云盘渠道下载(小社脚本.zip)](https://www.123912.com/s/RYmDVv-X3Sch) 
 
-[完整包下载](https://github.com/wengzhenquan/autojs6/archive/refs/heads/main.zip)   
+[GitHub完整包下载](https://github.com/wengzhenquan/autojs6/archive/refs/heads/main.zip)   
 
 
    你可以修改`文件夹`名称，里面的`文件`别改名就行。  
