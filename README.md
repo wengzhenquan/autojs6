@@ -98,7 +98,7 @@ $\color{red}{那么请不要使用此脚本。}$
 
 [GitHub在线加速下载版（推荐）](https://github.com/wengzhenquan/autojs6/releases/main)  
 
-[123云盘渠道下载(小社脚本.zip)](https://www.123912.com/s/RYmDVv-X3Sch) 
+[123云盘渠道下载(小社脚本.zip)（推荐)](https://www.123912.com/s/RYmDVv-X3Sch) 
 
 [GitHub完整包下载](https://github.com/wengzhenquan/autojs6/archive/refs/heads/main.zip)   
 
