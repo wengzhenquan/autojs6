@@ -325,8 +325,8 @@ function killAPP(packageN) {
     while (i-- && !( //textStartsWith("清除").exists() ||
             (text("结束运行").exists() ||
                 text("强行停止").exists()) &&
-            textStartsWith("权限").exists() &&
-            textStartsWith("通知").exists() &&
+            text(appName).exists() &&
+          //  textStartsWith("通知").exists() &&
             textStartsWith("卸载").exists())) {
 
         if (text("应用详情").exists()) {
