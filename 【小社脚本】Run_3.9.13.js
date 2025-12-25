@@ -326,7 +326,7 @@ function killAPP(packageN) {
             (text("结束运行").exists() ||
                 text("强行停止").exists()) &&
             text(appName).exists() &&
-          //  textStartsWith("通知").exists() &&
+            //  textStartsWith("通知").exists() &&
             textStartsWith("卸载").exists())) {
 
         if (text("应用详情").exists()) {
@@ -392,8 +392,16 @@ function launchAPP(packageN) {
             textContains("是否").exists()) {
             sleep(200)
             let yx = className("android.widget.Button")
-                .textContains("允许").findOne(1500);
-            ableClick(yx);
+                .textContains("始终允许").findOne(1000);
+            if (!ableClick(yx)) {
+                yx = className("android.widget.Button")
+                    .textContains("永久").textContains("允许").findOne(1000);
+                if (!ableClick(yx)) {
+                    yx = className("android.widget.Button")
+                        .textContains("允许").findOne(1500);
+                    ableClick(yx);
+                }
+            }
             break;
         }
         // 残留微信分身选项
@@ -470,6 +478,7 @@ function launchAPP(packageN) {
             return false;
         }
         n++;
+        sleep(500)
     }
     toastLog("成功打开" + appName + "！！！", "forcible");
 
@@ -3249,7 +3258,7 @@ function loginAccounts(accounts, password) {
             console.error("登录失败！")
             if (config && config.通知提醒)
                 notice(String('账号登录失败(' + nowDate().substr(5, 14) + ')'), String('小米社区账号登录失败'));
-                
+
             exit()
             return false;
         }
