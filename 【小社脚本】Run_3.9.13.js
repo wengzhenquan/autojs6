@@ -3153,9 +3153,9 @@ function loginAccounts(accounts, password) {
     ableClick("我的")
     sleep(1000)
     //log("→登录")
-    ableClick(text('登录'))
+    ableClick(id('mine_tv_personal_homepage').text('登录'))
     sleep(1000)
-    ableClick(desc('头像'))
+    ableClick(text('未登录账号'))
     sleep(1000)
     text('注册天数').exists() && ableClick(text('注册天数'))
 
