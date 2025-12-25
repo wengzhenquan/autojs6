@@ -389,7 +389,8 @@ function launchAPP(packageN) {
         //链式调用权限触发，点“始终允许”
         if (textContains("想要打开").exists() ||
             textContains("尝试开启").exists() ||
-            textContains("是否").exists()) {
+            textContains("是否").exists() ||
+            textContains("允许").exists()) {
             sleep(200)
             let yx = className("android.widget.Button")
                 .textContains("始终允许").findOne(1000);
