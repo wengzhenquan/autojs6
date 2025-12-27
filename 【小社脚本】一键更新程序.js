@@ -1337,8 +1337,8 @@ function fileVerify(fileInfo, filePath) {
     filePath = files.path(filePath);
     let file = new File(filePath);
     let fileSize = file.length();
-    console.info('已下载文件大小：' + fileSize);
-    console.info('已下载文件SHA-1：');
+    log('已下载文件大小：' + fileSize);
+    log('已下载文件SHA-1：');
     let sha1 = getGitFileSha(filePath);
     console.error(sha1);
 
@@ -1353,7 +1353,7 @@ function fileVerify(fileInfo, filePath) {
 
 // 获取GitHub文件信息
 function getGitHubFileInfo(filePath, branch) {
-    console.info('正在获取Github API版本信息')
+    log('正在获取Github API版本信息')
     let result = null;
 
     // let lun = Math.ceil(api_proxys.length * 0.5);
@@ -1361,7 +1361,7 @@ function getGitHubFileInfo(filePath, branch) {
     while (lun--) {
         //let startTime = new Date().getTime();
         let proxy = api_proxys[api_proxy_index];
-        console.warn('API加速器：' + proxy)
+        log('API加速器：' + proxy)
         let url = proxy +
             api_github +
             filePath +
