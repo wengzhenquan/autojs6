@@ -554,7 +554,7 @@ function rePosts() {
 
     backAppIndex();
 
-    posts(0);
+    posts();
 
     toSign();
 
@@ -563,7 +563,7 @@ function rePosts() {
 
 
 //浏览帖子
-function posts(n) {
+function posts() {
     while (!packageName(xmPckageName).exists()) sleep(500);
 
     console.info(">>>>>>>→浏览帖子←<<<<<<<")
@@ -3375,7 +3375,7 @@ function run() {
 
             //backAppIndex();
 
-            if (config.浏览帖子) posts(1);
+            if (config.浏览帖子) posts();
 
             //sleep(1666);
 
@@ -3388,11 +3388,12 @@ function run() {
                 // if (config.加入圈子) join();
 
                 if (config.拔萝卜) pullingCarrots(config.拔萝卜);
+                if (config.浏览帖子) rePosts();
                 if (config.米粉节) fans(config.米粉节);
                 //  if (config.观看视频) watchVideo();
 
                 if (!config.执行顺序) {
-                    rePosts()
+                    
                     if (config.双旗舰) dualFlagships(config.双旗舰);
                     if (config.感恩季) ganenji(config.感恩季);
                 }
@@ -3408,7 +3409,6 @@ function run() {
                         //回到小米社区app
                         launchAPP(xmPckageName);
                     }
-                    rePosts();
                     if (config.双旗舰) dualFlagships(config.双旗舰);
                     if (config.感恩季) ganenji(config.感恩季);
                 }
