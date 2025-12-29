@@ -553,6 +553,10 @@ function rePosts() {
     ableClick(button);
 
     backAppIndex();
+    
+    sleep(1000)
+    swipe(dwidth * 0.5, dheight * 0.4, dwidth * 0.5, dheight * 0.8, 200);
+    wait(() => false, 2000);
 
     posts();
 
@@ -3393,7 +3397,7 @@ function run() {
                 //  if (config.观看视频) watchVideo();
 
                 if (!config.执行顺序) {
-                    
+
                     if (config.双旗舰) dualFlagships(config.双旗舰);
                     if (config.感恩季) ganenji(config.感恩季);
                 }
