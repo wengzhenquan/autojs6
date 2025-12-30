@@ -2614,7 +2614,7 @@ function unLock() {
                         console.error(`第${index+1}个坐标：[${coord[0]}, ${coord[1]}]`);
                     });
                 }
-                gesture(password.length * 200, config.锁屏图案坐标);
+                gesture(600, config.锁屏图案坐标);
             }
             if (config.解锁方式 === 2) {
                 let password = config.锁屏数字密码;
