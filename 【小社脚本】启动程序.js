@@ -2574,7 +2574,12 @@ function unLock() {
         // 有安全加密
         if (isSecure) {
             // 有加密的情况下，才有解密页面
-            if (!wait(() => (contentStartsWith('紧急').exists() || content('返回').exists()), 3)) {
+            if (!wait(() => (
+                    contentStartsWith('紧急').exists() ||
+                    content('返回').exists() ||
+                    contentContains('解锁').exists() ||
+                    content('输入密码').exists()
+                ), 3)) {
                 console.error('上滑失败，重试！')
                 if (n < 3) {
                     console.error('可以尝试修改配置：')
@@ -2598,6 +2603,8 @@ function unLock() {
                 // screenOn();
                 continue;
             }
+            content('输入密码').exists() && clickCenter('输入密码');
+
             if (config.解锁方式 === 1) {
                 log("→图案解锁");
                 let password = config.锁屏图案坐标;
