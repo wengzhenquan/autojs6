@@ -1103,9 +1103,6 @@ function 开盒() {
 
             } else {
                 log('[摸黑]关闭弹窗')
-                console.error('若关闭失败，')
-                console.error('可修改配置[开盒活动关闭坐标]')
-                console.error('修改X按钮坐标')
                 let x_button = getXButton();
                 if (x_button) {
                     log("发现自动自动识别的X按钮坐标：")
@@ -1113,6 +1110,9 @@ function 开盒() {
                     sleep(500)
                     click(x_button[0], x_button[1]);
                 } else {
+                    console.error('若关闭失败，')
+                    console.error('可修改配置[开盒活动关闭坐标]')
+                    console.error('修改X按钮坐标')
                     // 关闭提示
                     for (let i = 0; i < 3; i++) {
                         click(dwidth * 0.5, navBarY * (0.82 + 0.01 * i));
@@ -1135,11 +1135,11 @@ function 开盒() {
             //开盒有3秒间隔限制
             if (j > 0) {
                 log('等待3秒开下一个');
-                sleep(3000);
+                sleep(2500);
             }
             //开盒
-            ableClick(text('可解锁').findOne(2000));
             log("尝试第" + (j + 1) + "次解锁！(/≧▽≦)/~┴┴ ");
+            ableClick(text('可解锁').findOne(2000));
             sleep(500);
 
             let result = textStartsWith('恭喜获得')
@@ -1171,7 +1171,7 @@ function 开盒() {
             }
             if (!result)
                 result = className("android.widget.Button")
-                .content("炫耀一下").findOne(1000);
+                .content("炫耀一下").findOne(1500);
 
             // 关闭炫耀一下
             if (result) {
@@ -1181,14 +1181,37 @@ function 开盒() {
                 // 关闭图形❌组件
                 //clickCenter(xyyx);
             } else {
+                console.error("无法识别X关闭按钮!!!");
                 // 无法识别到“炫耀一下”弹窗，也无法识别关闭图形❌组件
                 // 只能靠坐标关闭
-                for (let i = 0; i < 3; i++) {
-                    click(dwidth * 0.5, navBarY * (0.82 + 0.01 * i));
+                if (config.开盒活动关闭坐标) {
+                    log('开盒活动关闭坐标：')
+                    log('X_x：' + config.X_x)
+                    log('X_y：' + config.X_y)
+                    log('点击坐标关闭弹窗：' + click(config.X_x, config.X_y))
+
+                } else {
+                    log('[摸黑]关闭弹窗')
+                    let x_button = getXButton();
+                    if (x_button) {
+                        log("发现自动自动识别的X按钮坐标：")
+                        console.error("[" + x_button[0] + ", " + x_button[1] + "]")
+                        sleep(500)
+                        click(x_button[0], x_button[1]);
+                    } else {
+                        console.error('若关闭失败，')
+                        console.error('可修改配置[开盒活动关闭坐标]')
+                        console.error('修改X按钮坐标')
+                        // 关闭提示
+                        for (let i = 0; i < 3; i++) {
+                            click(dwidth * 0.5, navBarY * (0.82 + 0.01 * i));
+                        }
+                    }
                 }
             }
             j++;
-        } while (wait(() => text('可解锁').exists(), 3));
+        }
+        while (wait(() => text('可解锁').exists(), 3));
         toastLog("解锁次数已耗尽！", "forcible")
     } else {
         toastLog("本次无解锁次数！", "forcible");
