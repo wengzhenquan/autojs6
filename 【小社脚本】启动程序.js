@@ -2715,7 +2715,8 @@ function appUnLock(packageN) {
 
     let n = 5;
     while (n--) {
-        if (!contentEndsWith('解锁').exists()) {
+        if (!contentEndsWith('解锁').exists() &&
+            !contentEndsWith('验证').exists()) {
 
             if (packageName(packageN)) return true;
 
@@ -2725,11 +2726,12 @@ function appUnLock(packageN) {
             }
             wait(() => false, 2000);
         }
-        if (contentEndsWith('解锁').exists()) {
+        if (contentEndsWith('解锁').exists() ||
+            contentEndsWith('验证').exists()) {
             break;
         }
     }
-    clickCenter(contentEndsWith('密码解锁').findOne(1000));
+    clickCenter(contentContains('密码').findOne(1000));
 
     console.info("-----→");
     log('发现应用锁')
