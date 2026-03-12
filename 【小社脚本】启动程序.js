@@ -2709,6 +2709,100 @@ function unLock() {
 }
 
 
+//应用锁解锁
+function appUnLock(packageN) {
+    if (!config.应用锁) return false;
+
+    let n = 5;
+    while (n--) {
+        if (!contentEndsWith('解锁').exists()) {
+
+            if (packageName(packageN)) return true;
+
+            if (n < 1) {
+                console.error('未知错误');
+                return false;
+            }
+            wait(() => false, 2000);
+        }
+        if (contentEndsWith('解锁').exists()) {
+            break;
+        }
+    }
+    clickCenter(contentEndsWith('密码解锁').findOne(1000));
+
+    console.info("-----→");
+    log('发现应用锁')
+    log('启动解锁程序……')
+
+    console.info(">>>>>>>→应用锁←<<<<<<<")
+
+    log("开始解锁……");
+    //解锁
+    if (config.应用锁_解锁方式 === 1) {
+        log("→图案解锁");
+        let password = config.应用锁_图案坐标;
+        if (config.输出密码) {
+            log("坐标：");
+            password.forEach((coord, index) => {
+                console.error(`第${index+1}个坐标：[${coord[0]}, ${coord[1]}]`);
+            });
+        }
+        gesture(600, config.应用锁_图案坐标);
+    }
+    if (config.应用锁_解锁方式 === 2) {
+        let password = config.应用锁_数字密码;
+        if (typeof password !== 'string') {
+            console.error('密码格式错误！');
+            console.error('密码开始和结束，必须有英文双引号！');
+            return false;
+        }
+
+        passwrd = String(password).trim();
+
+        if (password.length < 4) {
+            console.error('密码长度必须>=4位！');
+            return false;
+        }
+
+        if (textContains('混合').exists()) {
+            log("→数字密码(混合密码)解锁");
+            let b = 20;
+            while (clickCenter('删除') && b--);
+        } else {
+            log("→数字密码解锁");
+        }
+
+        for (let i = 0; i < password.length; i++) {
+            if (config.输出密码) {
+                console.error(`第${i+1}个密码字符：[${password[i]}]`);
+            }
+            let num = content(password[i]).findOne(1000);
+            if (!clickCenter(num)) {
+                console.error('[' + password[i] + '] 点击失败!')
+            };
+            wait(() => false, 300);
+        }
+        if (textContains('混合').exists()) {
+            clickCenter(desc('回车').findOne(1000));
+        }
+    }
+    wait(() => false, 666);
+
+    if (!packageName(packageN).exists()) {
+        console.error("应用锁解锁失败！！！");
+        if (config && config.通知提醒)
+            notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String('应用锁解锁失败了！'));
+
+        return false;
+    }
+    log("应用锁解锁成功！！！(∗❛ั∀❛ั∗)✧*。");
+    console.info("-----√√√");
+
+    return true;
+}
+
+
 
 //--------- 重启无障碍 ------//
 
