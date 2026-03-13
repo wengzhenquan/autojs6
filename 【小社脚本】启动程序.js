@@ -2792,7 +2792,7 @@ function appUnLock(packageN) {
     }
     wait(() => false, 666);
 
-    if (!packageName(packageN).exists()) {
+    if (!wait(() => packageName(packageN).exists(), 3)) {
         console.error("应用锁解锁失败！！！");
         if (config && config.通知提醒)
             notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String('应用锁解锁失败了！'));
