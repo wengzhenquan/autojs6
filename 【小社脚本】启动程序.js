@@ -2736,6 +2736,7 @@ function appUnLock(packageN) {
     console.info("-----→");
     log('发现应用锁')
     log('启动解锁程序……')
+    sleep(1500)
 
     console.info(">>>>>>>→应用锁←<<<<<<<")
 
