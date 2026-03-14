@@ -899,7 +899,7 @@ function getDurTime(startTimeStr) {
 // 获取已安装应用版本名称
 function getAppVersionName(packageName) {
     try {
-        if (!app.isInstalled(packageName)) {
+        if (!app.getAppName(packageName)) {
             return "[未安装]";
         }
         // 获取应用程序的包信息
@@ -1669,7 +1669,7 @@ function init() {
     if (apks) {
         for (var key in apks) {
             let value = apks[key];
-            let name = app.isInstalled(value);
+            let name = app.getAppName(value);
             if (!name) {
                 //根据配置不检查YOLO
                 if (key.toLowerCase().includes('yolo')) {
