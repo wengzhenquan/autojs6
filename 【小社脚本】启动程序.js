@@ -2644,8 +2644,8 @@ function unLock() {
                 }
 
                 if (textContains('混合').exists() ||
-                    textContains('空格').exists() ||
-                    textContains('回车').exists()) {
+                    contentContains('空格').exists() ||
+                    contentContains('回车').exists()) {
                     log("→数字密码(混合密码)解锁");
                     let b = 20;
                     while (clickCenter('删除') && b--);
@@ -2664,8 +2664,8 @@ function unLock() {
                     wait(() => false, 300);
                 }
                 if (textContains('混合').exists() ||
-                    textContains('空格').exists() ||
-                    textContains('回车').exists()) {
+                    contentContains('空格').exists() ||
+                    contentContains('回车').exists()) {
                     clickCenter(desc('回车').findOne(1000));
                 }
             }
