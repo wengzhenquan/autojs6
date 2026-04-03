@@ -165,7 +165,7 @@ log(("Android 版本：").padStart(0) + device.release +
     ("（sdk：").padStart(0) + device.sdkInt + "）")
 log("制造商：" + manufacturer + "，品牌：" + brand);
 log("产品：" + device.product + "，型号：" + device.model);
-log("市场名：" + marketName); 
+log("市场名：" + marketName);
 log(`设备分辨率：${dwidth}x${dheight}`);
 log(`导航模式：${gestureMode ? "全面手势" : "虚拟按键"}（H：${navBarY}`);
 log("运存：" + formatFileSize(device.getTotalMem()) + "（可用：" + formatFileSize(device.getAvailMem()) + "）");
@@ -2643,7 +2643,9 @@ function unLock() {
                     wait(() => false, 2000);
                 }
 
-                if (textContains('混合').exists()) {
+                if (textContains('混合').exists() ||
+                    textContains('空格').exists() ||
+                    textContains('回车').exists()) {
                     log("→数字密码(混合密码)解锁");
                     let b = 20;
                     while (clickCenter('删除') && b--);
@@ -2661,7 +2663,9 @@ function unLock() {
                     };
                     wait(() => false, 300);
                 }
-                if (textContains('混合').exists()) {
+                if (textContains('混合').exists() ||
+                    textContains('空格').exists() ||
+                    textContains('回车').exists()) {
                     clickCenter(desc('回车').findOne(1000));
                 }
             }
