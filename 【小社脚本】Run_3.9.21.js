@@ -219,7 +219,7 @@ function initImageReco(enforce) {
             console.error("YOLO 模块加载成功");
         } catch (e) {
             console.error(`加载本地 YOLO 模块失败: ${e}`);
-            if (e.message.includes('未在插件中心启用') &&
+            if (e.message.includes('未在插件中心') &&
                 autojs.version.isAtLeast('6.7.0')) {
                 exit();
             }
