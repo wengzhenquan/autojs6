@@ -1152,7 +1152,7 @@ function 开盒() {
         console.warn('滑到最下面↓')
         for (let i = 0; i < 5; i++) {
             swipe(dwidth * (2 + i) / 8, navBarY * (0.5 + 0.02 * i), dwidth * (2 + i) / 8, navBarY * (0.3 + 0.02 * i), 100);
-            gesture(100, [dwidth * (2 + (5 - i)) / 8, navBarY * (0.5 + 0.02 * i)], [dwidth * (2 + (5 - i)) / 8, navBarY * (0.3 + 0.02 * i)]);
+            gesture(100, [dwidth * (2 + (4 - i)) / 8, navBarY * (0.5 + 0.02 * i)], [dwidth * (2 + (4 - i)) / 8, navBarY * (0.3 + 0.02 * i)]);
             sleep(100);
         }
         sleep(600);
