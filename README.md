@@ -55,8 +55,7 @@ $\color{red}{那么请不要使用此脚本。}$
 ## 使用方法：  
 
 ### **安装 AutoJs6 $\color{red}{(建议使用最新版)}$：**    
-（最低支持6.6.2，额外兼容6.5.0）   
-（不支持6.6.0、6.6.1）   
+（最低支持6.6.2）
 
 [GitHub官方下载](https://github.com/SuperMonster003/AutoJs6/releases)  
 
