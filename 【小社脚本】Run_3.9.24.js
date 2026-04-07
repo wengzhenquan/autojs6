@@ -105,7 +105,8 @@ const 成长值记录 = {
             gain.put("update_date", today);
             gain.put("historyValue", total);
             gain.put("todayUsedValue", total);
-        } else if (update_date !== today) {
+        } else if (update_date !== today ||
+            (total > todayUsedValue && total > historyValue)) {
             // 抛弃偶尔的活动过大值，只保留合理范围内的值变化，否则不更新值
             if (Math.abs(total - todayUsedValue) < 6 || total < 10) {
                 gain.put("historyValue", todayUsedValue);
