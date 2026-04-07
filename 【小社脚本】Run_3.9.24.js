@@ -94,62 +94,75 @@ const 成长值记录 = {
                 return 叠加量 + 记录.值();
             }, 0);
 
-        // 更新历史成长值
-        let today = date.split(' ')[0];
-        let update_date = gain.get("update_date");
-        // 今天之前的历史值
-        let historyValue = gain.get("historyValue");
-        // 今天实际使用的值
-        let todayUsedValue = gain.get("todayUsedValue");
-        if (!update_date || !historyValue || !todayUsedValue) {
-            gain.put("update_date", today);
-            gain.put("historyValue", total);
-            gain.put("todayUsedValue", total);
-        } else if (update_date !== today ||
-            (total > todayUsedValue && total > historyValue)) {
-            // 抛弃偶尔的活动过大值，只保留合理范围内的值变化，否则不更新值
-            if (Math.abs(total - todayUsedValue) < 6 || total < 10) {
-                gain.put("historyValue", todayUsedValue);
+        if (total > 0) {
+            // 更新历史成长值
+            let today = date.split(' ')[0];
+            let update_date = gain.get("update_date");
+            // 今天实际使用的值
+            let todayUsedValue = gain.get("todayUsedValue");
+            // 今天之前的历史值
+            let val = gain.get("historyValue");
+            let historyValue = Array.isArray(val) ? val : [val ?? total];
+
+            if (!update_date || !todayUsedValue) {
+                gain.put("update_date", today);
+                gain.put("historyValue", historyValue);
                 gain.put("todayUsedValue", total);
-            }
+            } else if (update_date !== today ||
+                (total > todayUsedValue && total > historyValue[0])) {
+                // 抛弃偶尔的活动过大值，只保留合理范围内的值变化，否则不更新值
+                if (Math.abs(total - todayUsedValue) < 6 || total < 10) {
+                    // 头部插入数据
+                    historyValue.unshift(todayUsedValue);
+                    // 保留7天数据
+                    historyValue = historyValue.slice(0, 7);
 
-            gain.put("update_date", today);
+                    gain.put("historyValue", historyValue);
+                    gain.put("todayUsedValue", total);
+                }
+
+                gain.put("update_date", today);
+            }
+            
+            // 历史值
+            historyValue = [gain.get("historyValue") ?? 0].flat();
+            // 插入今天
+            historyValue.unshift(gain.get("todayUsedValue"));
+
+            // 计算历史平均值
+            let sum = historyValue.reduce((a, b) => a + b, 0);
+            let avg = sum / historyValue.length;
+
+            total = avg;
+
+            if (xmsq_act) {
+                // 当有活动时(预估结果，不准确，就是日常结果加那么一点）
+                // 取值最小的一项
+                let prizePoints = this.详细记录
+                    .filter(item => !(item.项目.length < 8 &&
+                        !item.项目.includes("活动") &&
+                        !item.项目.includes("报名") &&
+                        !item.项目.includes("奖励") &&
+                        !item.项目.includes("补偿")))
+                    .reduce((min, item) => Math.min(min, item.值() || min), Infinity);
+                // 有匹配取最小，无匹配0
+                prizePoints = isFinite(prizePoints) ? prizePoints : 0;
+
+
+                let prizePoint = xmsq_active.get("prizePoints");
+                if (prizePoints < 1 && prizePoint)
+                    prizePoints = prizePoint;
+
+                if (prizePoints > 0) {
+                    // 每17分开一次盒，中奖概率0.6
+                    total *= (prizePoints / 17 * 0.6 + 1);
+
+                    xmsq_active.put("prizePoints", prizePoints);
+                }
+
+            } else storages.remove("xmsq_active");
+
         }
-        // 今天之前的历史值
-        historyValue = gain.get("historyValue") || 0;
-        // 今天实际使用的值
-        todayUsedValue = gain.get("todayUsedValue") || 0;
-
-        total = (todayUsedValue + historyValue) / 2;
-
-        if (xmsq_act) {
-            // 当有活动时(预估结果，不准确，就是日常结果加那么一点）
-            // 取值最小的一项
-            let prizePoints = this.详细记录
-                .filter(item => !(item.项目.length < 8 &&
-                    !item.项目.includes("活动") &&
-                    !item.项目.includes("报名") &&
-                    !item.项目.includes("奖励") &&
-                    !item.项目.includes("补偿")))
-                .reduce((min, item) => Math.min(min, item.值() || min), Infinity);
-            // 有匹配取最小，无匹配0
-            prizePoints = isFinite(prizePoints) ? prizePoints : 0;
-
-
-            let prizePoint = xmsq_active.get("prizePoints");
-            if (prizePoints < 1 && prizePoint)
-                prizePoints = prizePoint;
-
-            if (prizePoints > 0) {
-                // 每17分开一次盒，中奖概率0.6
-                total *= (prizePoints / 17 * 0.6 + 1);
-
-                xmsq_active.put("prizePoints", prizePoints);
-            }
-
-        } else storages.remove("xmsq_active");
-
-
         return total;
     },
     // 直接新增
