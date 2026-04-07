@@ -217,11 +217,13 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
    * 本地YOLO识图: 1，**(推荐，识别成功率95\%以上):** 
      * 需 $\color{red}{安装Yolo-plugin.apk}$插件，文件在yolov11目录下。($\color{red}{若没看到文件，可下滑刷新}$) 
      
-     $\color{red}{6.7.0以上版本需要插件中心授权/启用，其它版本不需要}$  
+     $\color{red}{6.7.0以上版本需要插件中心授权/启用}$  
      ![image](说明/插件中心.jpg)   
      $\color{red}{安装插件后，如果不显示：}$  
      ![image](说明/插件中心_筛选.jpg)   
      ![image](说明/插件中心_筛选2.jpg)   
+     $\color{red}{Autojs6低于6.7.0版本不需要插件中心设置}$  
+
      
     
    * 本地YOLO识图: 0(不推荐)：
