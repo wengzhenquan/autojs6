@@ -123,7 +123,7 @@ const 成长值记录 = {
 
                 gain.put("update_date", today);
             }
-            
+
             // 历史值
             historyValue = [gain.get("historyValue") ?? 0].flat();
             // 插入今天
@@ -1502,8 +1502,7 @@ function 小程序签到(pram) {
     let open = false;
     let wcl = 99;
     while (!open) {
-        if (xxcx.exists() ||
-            (text('我知道了').exists() && ableClick(text('我知道了')))) {
+        if ((text('我知道了').exists() && ableClick(text('我知道了'))) || xxcx.exists()) {
             open = true;
             break;
         }
