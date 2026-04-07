@@ -334,6 +334,8 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
     ![image](说明/前台服务.jpg)   
     
   * 如果定时任务无效，需要 **$\color{red}{重启设备(手机)}$**   
+    * **$\color{red}{如果Autojs6是 6.7.0以上版本，可以更换调度引擎$**   
+    ![image](说明/定时任务调度引擎.jpg)   
  
  
 --- 
