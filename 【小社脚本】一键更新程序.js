@@ -836,12 +836,9 @@ function integrityCheck() {
         log("----------------------------");
     }
     log("文件检查结束");
-    if (!missing) {
-        console.info("没有缺失的文件");
-        console.error("如果有问题，可按照下面步骤操作：");
-        console.error("  1、将version文件删除");
-        console.error("  2、重新执行更新程序");
-    }
+
+    return missing;
+
 }
 
 // 检查脚本更新。
@@ -911,7 +908,17 @@ function checkVersion() {
         if (!hasNewVersion) {
             console.info("已经是最新版");
             log("开始文件完整性检查……");
-            integrityCheck();
+            let missing = integrityCheck();
+
+            // 删除残留历史文件
+            deleteResidueFiles();
+
+            if (!missing) {
+                console.info("没有缺失的文件");
+                console.error("如果有问题，可按照下面步骤操作：");
+                console.error("  1、将version文件删除");
+                console.error("  2、重新执行更新程序");
+            }
 
             return;
         }
@@ -1273,7 +1280,7 @@ function deleteResidueFiles() {
     // 残留文件
     let residue = logcalFiles.filter(item => !updateFile.includes(item));
     if (residue.length > 0) {
-        console.log("删除历史残留文件:");
+        console.log("→删除历史残留文件:");
         residue.forEach((file) => {
             console.error(file);
             files.remove('./' + file)
