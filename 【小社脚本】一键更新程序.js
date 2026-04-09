@@ -911,7 +911,7 @@ function checkVersion() {
             let missing = integrityCheck();
 
             // 删除残留历史文件
-            deleteResidueFiles();
+           // deleteResidueFiles();
 
             if (!missing) {
                 console.info("没有缺失的文件");
