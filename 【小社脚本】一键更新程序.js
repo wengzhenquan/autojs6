@@ -1185,6 +1185,9 @@ function startUpdate() {
         log("----------------------------");
     }
 
+    // 删除残留历史文件
+    deleteResidueFiles();
+
     console.error("在文件列表下滑刷新，可查看更新结果！");
     wait(() => false, 1000);
     console.error("在文件列表下滑刷新，可查看更新结果！");
@@ -1255,6 +1258,28 @@ function startUpdate() {
 
     }
 
+}
+// 删除残留历史文件
+function deleteResidueFiles() {
+    let updateFile = Object.keys(serverVersion.updateFile)
+        .filter(item => item.includes("小社"));
+
+    let logcalFiles = files.listDir('./', function(name) {
+        return name.endsWith(".js") &&
+            name.includes("小社") &&
+            files.isFile(files.join('./', name));
+    });
+
+    // 残留文件
+    let residue = logcalFiles.filter(item => !updateFile.includes(item));
+    if (residue.length > 0) {
+        console.log("删除历史残留文件:");
+        residue.forEach((file) => {
+            console.error(file);
+            files.remove('./' + file)
+        });
+        log("----------------------------");
+    }
 }
 
 // 刷新目录列表
