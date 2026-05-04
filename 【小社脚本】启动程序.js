@@ -143,6 +143,8 @@ var ableScreenOff = 0;
 // 程序最大运行时间，超过该时间会强制停止(ms)。  3分钟
 global.maxRuntime = (config && config.运行超时时间 || 3) * 60 * 1000;
 
+var toBright = false; //改变亮度
+
 //设置参考坐标，不能动，开发环境标准比例。
 setScaleBaseX(1080);
 setScaleBaseY(2400);
@@ -1475,10 +1477,20 @@ function systemSetting() {
     const brightMode = device.getBrightnessMode();
     // 返回当前的(手动)亮度. 范围为0~255.
     const bright = device.getBrightness();
+
     if (config && config.运行亮度) {
-        device.setBrightnessMode(0);
-        device.setBrightness(130 * config.运行亮度);
-        console.error("提示：已修改亮度为：" + config.运行亮度 * 100 + "%");
+        let hours = new Date().getHours();
+        let dayu = (config && config.调节亮度时间范围_大于等于) || 0;
+        let xiaoyu = (config && config.调节亮度时间范围_小于等于) || 8;
+
+        if ((hours >= dayu && hours <= xiaoyu) ||
+            (xiaoyu < dayu && (hours >= dayu || hours <= xiaoyu))) {
+            device.setBrightnessMode(0);
+            device.setBrightness(130 * config.运行亮度);
+            console.error("提示：已修改亮度为：" + config.运行亮度 * 100 + "%");
+            toBright = true;
+        }
+
     }
 
     events.on("exit", function() {
@@ -3437,7 +3449,7 @@ function main() {
 
     } finally {
         if (true) {
-            if (config && config.运行亮度)
+            if (config && config.运行亮度 && toBright)
                 console.error("提示：亮度已恢复！");
             if (config && config.静音级别) {
                 if (config && config.静音级别 === 1)
