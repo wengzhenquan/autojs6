@@ -3003,7 +3003,7 @@ function getRestartValue() {
 function restart() {
     if (!files.exists(restart_main_locked)) {
         files.create(restart_main_locked);
-        files.write(restart_main_locked, restart_value, "utf-8");
+
     } else {
         let mode = getRestartValue();
 
@@ -3018,7 +3018,7 @@ function restart() {
             wait(() => false, 2000);
         }
     }
-
+    files.write(restart_main_locked, restart_value, "utf-8");
     let fileName = engines.myEngine().getSource().getFullName();
     console.info("即将重启本脚本：" + fileName)
     console.error("提示：启动→" + fileName)
