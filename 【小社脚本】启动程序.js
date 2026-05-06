@@ -2985,37 +2985,56 @@ function restartAccessibilityService() {
 //--------- 重启程序 ------//
 
 // 重启标志
-var restart_main_locked = "./tmp/restart_main_locked";
+var restart_main_locked = "./tmp/restart_main_locked.txt";
+// 重启写入值
+var restart_value;
+
+// 获取重启方式
+function getRestartValue() {
+    if (!files.exists(restart_main_locked))
+        return 0;
+
+    restart_value = files.read(restart_main_locked, "utf-8");
+    return restart_value;
+
+}
 
 // 重启
 function restart() {
     if (!files.exists(restart_main_locked)) {
         files.create(restart_main_locked);
-        let fileName = engines.myEngine().getSource().getFullName();
-        console.info("即将重启本脚本：" + fileName)
-        console.error("提示：启动→" + fileName)
-
-        for (let i = 0; i < 12; i++) {
-            log('→起飞'.padStart(i * 2 + 3, '-'));
-        }
-
-        // 执行主程序
-        engines.execScriptFile("./" + fileName, {
-            delay: 2000
-        });
-
-        abnormalInterrupt = 0;
-        //退出本线程
-        exit();
+        files.write(restart_main_locked, restart_value, "utf-8");
     } else {
-        files.remove(restart_main_locked);
-        console.error('重启失败');
+        let mode = getRestartValue();
 
-        abnormalInterrupt = 0;
-        wait(() => false, 2000);
-        exit();
-        wait(() => false, 2000);
+        if (mode > 4) {
+            files.remove(restart_main_locked);
+            console.error('无障碍自动启用失败!');
+            console.error('程序停止');
+
+            abnormalInterrupt = 0;
+            wait(() => false, 2000);
+            exit();
+            wait(() => false, 2000);
+        }
     }
+
+    let fileName = engines.myEngine().getSource().getFullName();
+    console.info("即将重启本脚本：" + fileName)
+    console.error("提示：启动→" + fileName)
+
+    for (let i = 0; i < 12; i++) {
+        log('→起飞'.padStart(i * 2 + 3, '-'));
+    }
+
+    // 执行主程序
+    engines.execScriptFile("./" + fileName, {
+        delay: 2000
+    });
+
+    abnormalInterrupt = 0;
+    //退出本线程
+    exit();
 }
 
 
@@ -3303,7 +3322,8 @@ function permissionv() {
         console.warn('可尝试重启无障碍服务')
         console.error('正在重启无障碍服务......')
         console.info('-----------------')
-        if (canRestarAuto) {
+        let mode = getRestartValue();
+        if (canRestarAuto && mode < 1) {
             log('使用AutoJS6方法重启无障碍服务...')
             try {
                 auto(true);
@@ -3319,34 +3339,48 @@ function permissionv() {
                 } catch (e) {}
                 wait(() => false, 1000);
             }
+            restart_value = 1;
+            // 重启程序
+            restart();
         }
         if (!auto.isRunning() &&
-            !auto.service && rootAuto) {
+            !auto.service && rootAuto && mode < 2) {
             log('使用Root权限重启无障碍服务...')
             try {
                 restartAccessibilityByRoot();
             } catch (e) {}
             wait(() => false, 1000);
+            restart_value = 2;
+            // 重启程序
+            restart();
         }
         if (!auto.isRunning() &&
-            !auto.service && shizukuAuto) {
+            !auto.service && shizukuAuto && mode < 3) {
             log('使用Shizuku权限重启无障碍服务...')
             try {
                 restartAccessibilityByShizuku();
             } catch (e) {}
             wait(() => false, 1000);
+            restart_value = 3;
+            // 重启程序
+            restart();
         }
         if (!auto.isRunning() &&
-            !auto.service && secureSettingAuto) {
+            !auto.service && secureSettingAuto && mode < 4) {
             log('使用修改安全设置权限重启无障碍服务...')
             try {
                 restartAccessibilityService();
             } catch (e) {}
             wait(() => false, 1000);
-        }
+            restart_value = 4;
+            // 重启程序
+            restart();
 
+        }
+        restart_value = 5;
         // 重启程序
         restart();
+
     }
     if (!autoRun) {
         console.error("需重新启用无障碍服务");
