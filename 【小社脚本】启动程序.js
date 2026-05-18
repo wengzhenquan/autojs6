@@ -2557,8 +2557,31 @@ function swipesUp(swipeCount, n) {
             endY,
             duration
         );
-        wait(() => false, 500 + (3 - n) * 50);
-        if (p < 1) wait(() => false, 500);
+        //  wait(() => false, 500 + (3 - n) * 50);
+        //  if (p < 1) wait(() => false, 500);
+
+        // 有安全加密
+        if (isSecure) {
+            // 有加密的情况下，才有解密页面
+            if (wait(() => (
+                    contentStartsWith('紧急').exists() ||
+                    content('返回').exists()
+                ), 1)) {
+                log(`上滑成功！`)
+                log(`需要密码解锁才能进桌面……`)
+                return;
+
+            }
+        } else {
+            isLocked = KeyguardManager.isKeyguardLocked();
+            if (!isLocked) {
+                log(`上滑成功！`);
+                log(`已经成功进入桌面……`)
+                return;
+            }
+        }
+
+
     }
     console.warn(`————————————→ `)
     log("上滑结束！");
@@ -2594,9 +2617,7 @@ function unLock() {
             // 有加密的情况下，才有解密页面
             if (!wait(() => (
                     contentStartsWith('紧急').exists() ||
-                    content('返回').exists() ||
-                    contentContains('解锁').exists() ||
-                    content('输入密码').exists()
+                    content('返回').exists()
                 ), 3)) {
                 console.error('上滑失败，重试！')
                 if (n < 3) {
@@ -2621,6 +2642,7 @@ function unLock() {
                 // screenOn();
                 continue;
             }
+
             content('输入密码').exists() && clickCenter('输入密码');
 
             if (config.解锁方式 === 1) {
