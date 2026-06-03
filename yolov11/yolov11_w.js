@@ -49,7 +49,7 @@ var isYoloInitialized = false;
 const REFER_Y = 130;
 
 
-// global.x_refer表示截图上的文案“请在下图依次点击：”末尾的x，也就是小图标的开始
+// global.x_refer表示截图上的文案"请在下图依次点击："末尾的x，也就是小图标的开始
 // global.x_refer由前置程序根据控件获取，小图标有效分界x
 // 小图标x必须大于global.x_refer，在它右边。
 if (typeof global.x_refer === 'undefined' ||
@@ -127,7 +127,7 @@ function initializeYolo() {
 /**
  * @description 对原始检测结果进行排序和处理。
  * 规则: 根据实际情况，验证码有两组数据，一组是小图标，另一组是大图标。
-        小图标是上方“请在下图依次点击：”后面，大图标是下面点击区域。
+        小图标是上方"请在下图依次点击："后面，大图标是下面点击区域。
         根据数据y的大小分类大小图标、label成对匹配，
         小图标的x大小确定先后顺序。prob置信度越高优先匹配。
         以及未能label成功匹配的补偿方案。
@@ -140,7 +140,7 @@ function sortAndProcessResults(data) {
     // 输入验证
     if (!Array.isArray(data)) {
         console.error("结果处理: 输入数据不是数组。");
-        return new Array();
+        return [];
     }
 
 
@@ -175,7 +175,7 @@ function sortAndProcessResults(data) {
                         console.warn(`当前 (置信度阈值: ${confThreshold})`);
                     }
                 }
-                return new Array();
+                return [];
             }
 
             console.log(tag + "开始尝试进行修正...");
@@ -274,7 +274,7 @@ function sortAndProcessResults(data) {
                 for (let i = 0; i < y_limit_single.length; i++) {
                     let single_b = B_data[i];
                     // 成对匹配
-                    if (typeof single_b !== 'undefined' || !single_b)
+                    if (typeof single_b !== 'undefined' && single_b)
                         result.push(y_limit_single[i], single_b);
                 }
             }
@@ -285,7 +285,7 @@ function sortAndProcessResults(data) {
             if (result.length !== 4 && result.length !== 6) {
                 //log(data)
                 console.error('结果依旧不符合预期')
-                //return new Array();
+                //return [];
             }
             //替换数据
             data = result;
@@ -307,29 +307,35 @@ function sortAndProcessResults(data) {
 
         // 1.3 创建分组A（y值较小的部分，按x升序排序），定义为小图标
         // 收集小于分界y的图标，且去重
-        var groupA = Array.from(
-            sortedByY.slice()
-            .filter(item => item.y < y_limit && item.x > global.x_refer)
-            .reduce((m, i) =>
-                // 然后执行去重逻辑
-                m.has(i.label) && m.get(i.label).prob >= i.prob ? m : m.set(i.label, i),
-                new Map()
-            ).values()
-        ).sort((a, b) => a.x - b.x);
+        var seenA = {};
+        for (var i = 0; i < sortedByY.length; i++) {
+            var item = sortedByY[i];
+            if (item.y < y_limit && item.x > global.x_refer) {
+                if (!seenA[item.label] || seenA[item.label].prob < item.prob) {
+                    seenA[item.label] = item;
+                }
+            }
+        }
+        var groupA = [];
+        for (var k in seenA) groupA.push(seenA[k]);
+        groupA.sort((a, b) => a.x - b.x);
 
         //log(groupA)
 
         // 1.4 创建分组B（y值较大的部分，按prob倒序），定义为大图标
         // 收集大于分界y的图标，且去重
-        var groupB = Array.from(
-            sortedByY.slice()
-            .filter(item => item.y > y_limit)
-            .reduce((m, i) =>
-                // 然后执行去重逻辑
-                m.has(i.label) && m.get(i.label).prob >= i.prob ? m : m.set(i.label, i),
-                new Map()
-            ).values()
-        ).sort((a, b) => b.prob - a.prob);
+        var seenB = {};
+        for (var i = 0; i < sortedByY.length; i++) {
+            var item = sortedByY[i];
+            if (item.y > y_limit) {
+                if (!seenB[item.label] || seenB[item.label].prob < item.prob) {
+                    seenB[item.label] = item;
+                }
+            }
+        }
+        var groupB = [];
+        for (var k in seenB) groupB.push(seenB[k]);
+        groupB.sort((a, b) => b.prob - a.prob);
 
         //log(groupB)
 
@@ -390,7 +396,7 @@ function sortAndProcessResults(data) {
                     console.warn(`当前 (置信度阈值: ${confThreshold})`);
                 }
             }
-            return new Array();
+            return [];
         }
 
 
@@ -455,24 +461,48 @@ function sortAndProcessResults(data) {
 
         // 5. 格式化 groupC 的结果
         var finalResult = finalGroupC.map(item => {
+            // 防御：跳过占位符或无效项，避免 undefined 计算导致 Numberx 异常
+            if (!item || item.label === "PLACEHOLDER" || typeof item.prob !== 'number') {
+                return null;
+            }
             let centerX = item.x + (item.width / 2);
             let centerY = item.y + (item.height / 2);
+            // 替代 toFixed+parseFloat，纯数学运算，不经过字符串转换
+            let prob = Math.round(item.prob * 100) / 100;
             return {
                 centerX: Math.round(centerX),
                 centerY: Math.round(centerY),
-                prob: parseFloat(item.prob.toFixed(2)), // 保留两位小数
+                prob: prob,
                 label: item.label
             };
-        });
+        }).filter(item => item !== null);
 
         log(tag + '处理完毕，图标数量: ' + finalResult.length);
+
+        // 释放大引用，帮助 GC
+        data = null;
+        sortedByY = null;
+        groups = null;
+        result = null;
+        y_limit_single = null;
+        B_data = null;
+        seenA = null;
+        seenB = null;
+        groupA = null;
+        groupB = null;
+        labelMap = null;
+        groupC = null;
+        finalGroupC = null;
+        usedItems = null;
+        unusedItems = null;
+        if (typeof gc === 'function') gc();
 
         return finalResult;
 
     } catch (error) {
         console.error(`结果处理: 排序或格式化过程中发生错误: ${error}`);
         console.error(error.lineNumber);
-        return new Array();
+        return [];
     }
 }
 
@@ -499,12 +529,12 @@ function getYRefer(data) {
         return y;
 
     // -------- global.y_refer由前置程序根据控件获取，真实有效
-    // global.y_refer表示截图上的文案“请在下图依次点击：”后面的小图标，与下方点击区域的分界，主要点击区域上边缘y
+    // global.y_refer表示截图上的文案"请在下图依次点击："后面的小图标，与下方点击区域的分界，主要点击区域上边缘y
     //log(global.y_refer)
     if (global.y_refer > y) return global.y_refer;
 
     if (global.y_refer > maxProb.y)
-        return (y + random(15, 20)).toFixed(2);
+        return y + random(15, 20);
 
     return -1;
 }
@@ -563,11 +593,12 @@ function detectAndProcess(imagePath) {
     } catch (error) {
         console.error(`${tag}识别过程中发生错误: ${error}`);
         console.error(error.lineNumber);
-        return new Array();
+        return [];
     } finally {
-        // 释放图片资源（如果需要）
+        // 释放图片资源（只在 finally 中释放一次）
         if (cardImg) {
             cardImg.recycle(); // 回收图片对象，防止内存泄漏
+            cardImg = null;
         }
     }
 }
