@@ -796,7 +796,7 @@ function clickCenter(obj) {
     try {
         if (obj) {
             if (typeof obj === 'string') {
-                obj = contentStartsWith(obj);
+                obj = content(obj);
             }
 
             if (obj instanceof UiSelector) {
@@ -828,7 +828,7 @@ function ableClick(obj) {
     try {
         if (obj) {
             if (typeof obj === 'string') {
-                obj = contentStartsWith(obj);
+                obj = content(obj);
             }
 
             if (obj instanceof UiSelector) {
