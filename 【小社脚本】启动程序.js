@@ -2569,15 +2569,12 @@ function swipesUp(swipeCount, n) {
                 ), 1)) {
                 log(`上滑成功！`)
                 log(`需要密码解锁才能进桌面……`)
-                return;
-
             }
         } else {
             isLocked = KeyguardManager.isKeyguardLocked();
             if (!isLocked) {
                 log(`上滑成功！`);
                 log(`已经成功进入桌面……`)
-                return;
             }
         }
 
