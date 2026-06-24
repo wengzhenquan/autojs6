@@ -862,6 +862,158 @@ function ableClick(obj) {
 }
 
 
+/**
+ * @param {string} targetPkg - 目标App的包名
+ * @param {number} [timeout] - (可选) 全局超时时间(毫秒)，默认为 0 (不等待)
+ * @returns {boolean} - 匹配成功返回 true，超时或全部失败返回 false
+ */
+function checkCurrentApp(targetPkg, timeout) {
+    auto.waitFor(); // 确保无障碍服务已开启
+
+    // 记录全局起始时间
+    let startTime = new Date().getTime();
+    let isTimeout = timeout && timeout > 0;
+
+    // === 1. 基础全局函数 ===
+    if (currentPackage() === targetPkg) {
+        return true;
+    }
+
+    // === 2. UI控件树查找 ===
+    if (packageName(targetPkg).exists()) {
+        return true;
+    }
+
+    // === 3. Activity前缀匹配 ===
+    let currentAct = currentActivity();
+    if (currentAct && currentAct.indexOf(targetPkg) !== -1) {
+        return true;
+    }
+
+    // === 4. 底层任务栈双重校验 ===
+    try {
+        let am = context.getSystemService(context.ACTIVITY_SERVICE);
+        let tasks = am.getRunningTasks(1);
+        if (tasks && tasks.size() > 0) {
+            let top = tasks.get(0).topActivity;
+            let fgPkg = top.getPackageName();
+            let fgAct = top.getClassName();
+            if (fgPkg === targetPkg || (fgAct && fgAct.indexOf(targetPkg) !== -1)) {
+                return true;
+            }
+        }
+    } catch (e) { /* 忽略异常 */ }
+
+    // === 5. 无障碍根节点反查 ===
+    try {
+        let rootNode = auto.rootInActiveWindow;
+        if (rootNode && rootNode.getPackageName() === targetPkg) {
+            return true;
+        }
+    } catch (e) { /* 忽略异常 */ }
+
+    // === 6. 进程列表重要性校验 ===
+    try {
+        let ams = context.getSystemService(context.ACTIVITY_SERVICE);
+        let processes = ams.getRunningAppProcesses();
+        for (let i = 0; i < processes.size(); i++) {
+            let proc = processes.get(i);
+            if (proc.importance == 100 && proc.pkgList && proc.pkgList.length > 0) {
+                if (proc.pkgList[0] === targetPkg) {
+                    return true;
+                }
+            }
+        }
+    } catch (e) { /* 忽略异常 */ }
+
+    // === 7. Shell 命令终极兜底 ===
+    try {
+        let result = shell("dumpsys activity top | head -n 1", true).result;
+        if (result && result.indexOf(targetPkg) !== -1) {
+            return true;
+        }
+    } catch (e) { /* 忽略异常 */ }
+
+    if (!isTimeout) return false;
+
+    // === 8. 带超时的轮询等待 ===
+    // 【核心修正】：条件不仅要求传入 timeout > 0，还要求【当前已耗时 < timeout】
+    // 如果前7步耗时 >= timeout，这个 if 直接为 false，连里面的 log 都不会执行
+    if (isTimeout && (new Date().getTime() - startTime < timeout)) {
+        while (new Date().getTime() - startTime < timeout) {
+            try {
+                let amLoop = context.getSystemService(context.ACTIVITY_SERVICE);
+                let tasksLoop = amLoop.getRunningTasks(1);
+                if (tasksLoop && tasksLoop.size() > 0) {
+                    let topLoop = tasksLoop.get(0).topActivity;
+                    if (topLoop.getPackageName() === targetPkg ||
+                        (topLoop.getClassName() && topLoop.getClassName().indexOf(targetPkg) !== -1)) {
+                        return true;
+                    }
+                }
+            } catch (e) { /* 忽略异常 */ }
+            sleep(200);
+        }
+    }
+
+    // 全部判断完毕，均未通过
+    log("全部判断未通过：当前包名为 " + currentPackage());
+    log("总耗时：" + (new Date().getTime() - startTime) + "ms");
+    return false;
+}
+
+
+/**
+ * root权限启动程序
+ * @param {string} targetPkg - 目标App的包名
+ * @returns {boolean} - 匹配成功返回 true，超时或全部失败返回 false
+ */
+function launchAppByRoot(packageName) {
+    let launched = false;
+    if (autojs.isRootAvailable()) {
+
+        // 强制停止以确保干净启动
+        shell(`su -c 'am force-stop ${packageName}'`, true);
+        sleep(300);
+
+        // 优先使用 monkey 启动（兼容性最好，最接近真实用户点击）
+        let result = shell(`su -c 'monkey -p ${packageName} -c android.intent.category.LAUNCHER 1'`, true);
+
+        launched = checkCurrentApp(packageName, 0);
+
+        if (!launched) {
+            // 兜底：尝试 am start
+            shell(`su -c 'am start $(cmd package dump ${packageName} | grep -A1 "android.intent.action.MAIN" | tail -1 | awk "{print \\$2}")'`, true);
+            launched = checkCurrentApp(packageName, 0);
+        }
+    }
+
+    return launched; // 直接返回布尔值，与真实前台状态严格一致
+}
+
+
+/**
+ * 启动程序
+ * @param {string} targetPkg - 目标App的包名
+ * @returns {boolean} - 匹配成功返回 true，超时或全部失败返回 false
+ */
+function launchApp(packageName) {
+    //先尝试使用root权限启动
+    let launched = launchAppByRoot(packageName);
+    if (!launched) {
+        app.launchPackage(packageN)
+        launched = checkCurrentApp(packageName, 0);
+    }
+
+    if (!launched) {
+        app.launchApp(app.getAppName(packageN))
+        launched = checkCurrentApp(packageName, 0);
+    }
+
+    return launched; // 直接返回布尔值，与真实前台状态严格一致
+}
+
+
 // 格式化后的实时时间
 function nowDate() {
     return formatDate(new Date());
@@ -2569,6 +2721,7 @@ function swipesUp(swipeCount, n) {
                 ), 1)) {
                 log(`上滑成功！`)
                 log(`需要密码解锁才能进桌面……`)
+                wait(() => false, 1000);
                 return;
 
             }
@@ -2762,7 +2915,7 @@ function appUnLock(packageN) {
         if (!contentEndsWith('解锁').exists() &&
             !contentEndsWith('验证').exists()) {
 
-            if (packageName(packageN)) return true;
+            if (checkCurrentApp(packageN, 0)) return true;
 
             if (n < 1) {
                 console.error('未知错误');
@@ -2840,7 +2993,7 @@ function appUnLock(packageN) {
     }
     wait(() => false, 666);
 
-    if (!wait(() => packageName(packageN).exists(), 3)) {
+    if (!checkCurrentApp(packageN, 7000)) {
         console.error("应用锁解锁失败！！！");
         if (config && config.通知提醒)
             notice(String('出错了！(' + nowDate().substr(5, 14) + ')'), String('应用锁解锁失败了！'));
