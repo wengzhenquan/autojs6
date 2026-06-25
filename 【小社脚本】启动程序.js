@@ -1001,12 +1001,12 @@ function launchApp(packageName) {
     //先尝试使用root权限启动
     let launched = launchAppByRoot(packageName);
     if (!launched) {
-        app.launchPackage(packageN)
+        app.launchPackage(packageName)
         launched = checkCurrentApp(packageName, 0);
     }
 
     if (!launched) {
-        app.launchApp(app.getAppName(packageN))
+        app.launchApp(app.getAppName(packageName))
         launched = checkCurrentApp(packageName, 0);
     }
 
