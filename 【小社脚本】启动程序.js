@@ -107,6 +107,12 @@ const navBarY = dheight - navBarHeight;
 // 判断当前是否为全面屏手势模式
 const gestureMode = isGestureMode();
 
+// 获取当前屏幕物理方向：0=竖屏, 1=左横屏, 2=反向竖屏, 3=右横屏
+const originalRotation = getScreenRotation();
+// 获取当前自动旋转锁定状态：1=开启自动旋转, 0=锁定方向
+const originalLockState = getLockState();
+
+
 // 代理存储桶
 const sto_gh_proxys = storages.create('gh_proxys');
 // 代理来源
@@ -170,6 +176,8 @@ log("产品：" + device.product + "，型号：" + device.model);
 log("市场名：" + marketName);
 log(`设备分辨率：${dwidth}x${dheight}`);
 log(`导航模式：${gestureMode ? "全面手势" : "虚拟按键"}（H：${navBarY}`);
+log("当前屏幕物理方向: " + originalRotation);
+log("当前屏幕锁定状态: " + (originalLockState ? "未锁定" : "已锁定"));
 log("运存：" + formatFileSize(device.getTotalMem()) + "（可用：" + formatFileSize(device.getAvailMem()) + "）");
 checkMem();
 printJVMMemory();
@@ -364,6 +372,17 @@ function startTimeoutMonitor() {
                 exit();
             }
 
+            let rotation = getScreenRotation();
+            if (rotation !== originalRotation) {
+                console.warn('发现屏幕方向变化，正在恢复')
+                setScreenRotation(originalRotation);
+            }
+
+            let lockState = getLockState();
+            if (lockState !== originalLockState) {
+                console.warn('发现屏幕旋转锁变化，正在恢复')
+                setLockState(originalLockState);
+            }
             // 尝试刷新
             //tryRefresh();
         }, 5 * 1000); // 每 5 秒检查一次
@@ -544,6 +563,83 @@ function isGestureMode() {
 // console.log("底部可用高度: " + navBarY + "px");
 // console.log("当前模式: " + mode);
 
+/**
+ * 1. 获取当前屏幕物理方向（AutoJs6 自带 API）
+ * @returns {number} 0=竖屏, 1=左横屏, 2=反向竖屏, 3=右横屏
+ */
+function getScreenRotation() {
+    let rotation = device.rotation;
+    //   console.log("当前屏幕物理方向: " + rotation);
+    return rotation;
+}
+
+/**
+ * 2. 获取当前自动旋转锁定状态（Java API）
+ * @returns {number} 1=开启自动旋转, 0=锁定方向
+ */
+function getLockState() {
+    try {
+        let resolver = context.getContentResolver();
+        let state = android.provider.Settings.System.getInt(resolver, "accelerometer_rotation", 1);
+        // console.log("当前屏幕锁定状态: " + (state ? "未锁定" : "已锁定"));
+        return state;
+    } catch (e) {
+        console.error("获取锁定状态失败: " + e);
+        return -1;
+    }
+}
+
+/**
+ * 3. 设置屏幕方向（Java API）
+ * @param {number} rotation - 0=竖屏, 1=左横屏, 2=反向竖屏, 3=右横屏
+ */
+function setScreenRotation(rotation) {
+    if (rotation < 0 || rotation > 3) {
+        console.error("方向值非法，应为 0-3");
+        return;
+    }
+    try {
+        let resolver = context.getContentResolver();
+        android.provider.Settings.System.putInt(resolver, "user_rotation", rotation);
+        console.error("屏幕方向已设置为: " + rotation);
+    } catch (e) {
+        console.error("设置屏幕方向失败: " + e);
+    }
+}
+
+/**
+ * 4. 设置自动旋转锁定状态（Java API）
+ * @param {number} state - 1=开启自动旋转, 0=锁定方向
+ */
+function setLockState(state) {
+    if (state !== 0 && state !== 1) {
+        console.error("锁定状态值非法，应为 0 或 1");
+        return;
+    }
+    try {
+        let resolver = context.getContentResolver();
+        android.provider.Settings.System.putInt(resolver, "accelerometer_rotation", state);
+        console.error("锁定状态已设置为: " + (state ? "未锁定" : "已锁定"));
+    } catch (e) {
+        console.error("设置锁定状态失败: " + e);
+    }
+}
+
+
+// ================= 使用示例 =================
+
+
+// 强制锁定竖屏
+// setLockState(0);        // Java API
+// sleep(200);
+// setScreenRotation(1);   // Java API
+
+// // 执行业务逻辑...
+//  sleep(3000);
+
+// // 恢复原状
+// setScreenRotation(originalRotation);   // Java API
+// setLockState(originalLockState);       // Java API
 
 
 //------------ 左下角“停止脚本”按钮 ----------//
@@ -1007,6 +1103,111 @@ function launchApp(packageName) {
 
     if (!launched) {
         app.launchApp(app.getAppName(packageName))
+        launched = checkCurrentApp(packageName, 0);
+    }
+
+    return launched; // 直接返回布尔值，与真实前台状态严格一致
+}
+
+/**
+ * 使用 Root 权限精准启动应用分身（不触发布局/原应用）
+ * @param {string} pkg - 目标应用的主包名 (例如: com.tencent.mm)
+ */
+function startAppCloneDirectly(pkg) {
+    if (!pkg) return false;
+    if (!autojs.isRootAvailable()) return false;
+
+    // 1. 获取分身用户 ID
+    let userRes = shell("dumpsys user", true);
+    if (userRes.code !== 0) return false;
+
+    // 提取非主用户的 ID (如 999, 10, 100)
+    let matches = userRes.result.match(/UserInfo\{(\d+):/g);
+    let cloneUserId = null;
+
+    if (matches) {
+        for (let i = 0; i < matches.length; i++) {
+            let uid = parseInt(matches[i].match(/\d+/)[0]);
+            if (uid !== 0) { // 排除主用户 0
+                cloneUserId = uid;
+                break;
+            }
+        }
+    }
+
+    if (!cloneUserId) {
+        toast("未找到分身空间");
+        return false;
+    }
+
+    // 2. 核心修正：使用 am start 显式调用 Launcher
+    // -S: 强制停止目标应用后再启动（防止后台已有进程干扰，确保是冷启动分身）
+    // -a android.intent.action.MAIN: 声明这是主入口
+    // -c android.intent.category.LAUNCHER: 声明这是桌面图标对应的启动页
+    // -n <pkg>/<pkg>.ui.LauncherUI: 显式指定组件名（针对微信等大厂应用优化，如果是通用应用可去掉 -n 仅保留 -a -c）
+
+    // 这里的逻辑是：如果是指定包名启动，必须带上 Component 才能区分是哪个 App 的 Launcher
+    // 但为了兼容性，我们使用通用的 Action 启动方式，配合 --user 即可
+
+    let cmd = "am start -S --user " + cloneUserId +
+        " -a android.intent.action.MAIN" +
+        " -c android.intent.category.LAUNCHER" +
+        " -n " + pkg + "/$(cmd package resolve-activity --brief -c android.intent.category.LAUNCHER " + pkg + " | grep " + pkg + "/)";
+
+    // 上面的 $(...) 是为了动态获取该包名的真实 Activity 名称，防止不同软件 Activity 名字不同
+    // 但为了脚本稳定性，我们通常可以直接简化为以下通用命令（大部分手机支持）：
+
+    let simpleCmd = "am start -S --user " + cloneUserId +
+        " -a android.intent.action.MAIN" +
+        " -c android.intent.category.LAUNCHER" +
+        " -n " + pkg + "/" + getLauncherActivity(pkg);
+
+    log("执行命令: " + simpleCmd);
+    let result = shell(simpleCmd, true);
+
+    if (result.code === 0) {
+        toast("已启动分身 (User:" + cloneUserId + ")");
+        return true;
+    } else {
+        toast("启动失败，尝试通用模式...");
+        // 兜底方案：如果不指定 Activity 能成功且不弹窗最好，如果弹窗则说明该系统必须指定 Activity
+        shell("am start -S --user " + cloneUserId + " -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -p " + pkg, true);
+    }
+    return false;
+}
+
+
+
+// 辅助函数：获取应用的 Launcher Activity
+function getLauncherActivity(packageName) {
+    // 通过 dumpsys 获取该包名的主 Activity
+    let res = shell("dumpsys package " + packageName + " | grep -A 1 'android.intent.action.MAIN' | grep " + packageName, true);
+    if (res.code === 0 && res.result) {
+        // 提取类似 com.tencent.mm/.ui.LauncherUI 中的 .ui.LauncherUI 部分
+        let line = res.result.split("\n")[0]; // 取第一行
+        if (line.indexOf("/") > -1) {
+            return line.split("/")[1].trim();
+        }
+    }
+    // 如果获取失败，返回最常见的默认值（针对微信、QQ等）
+    return ".ui.LauncherUI";
+}
+
+/**
+ * 启动分身
+ * @param {string} targetPkg - 目标App的包名
+ * @returns {boolean} - 匹配成功返回 true，超时或全部失败返回 false
+ */
+function launchAppClone(packageName) {
+    //先尝试使用root权限启动
+    let launched = startAppCloneDirectly(packageName);
+    if (!launched) {
+        app.launchDualPackage(packageName);
+        launched = checkCurrentApp(packageName, 0);
+    }
+
+    if (!launched) {
+        app.launchDualApp(app.getAppName(packageName));
         launched = checkCurrentApp(packageName, 0);
     }
 
