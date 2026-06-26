@@ -1110,8 +1110,9 @@ function launchApp(packageName) {
 }
 
 /**
- * 使用 Root 权限精准启动应用分身（不触发布局/原应用）
+ * 使用 Root 权限精准启动应用分身（不触发原应用、不弹窗）
  * @param {string} pkg - 目标应用的主包名 (例如: com.tencent.mm)
+ * @returns {boolean} 启动是否成功
  */
 function startAppCloneDirectly(pkg) {
     if (!pkg) return false;
@@ -1119,79 +1120,64 @@ function startAppCloneDirectly(pkg) {
 
     // 1. 获取分身用户 ID
     let userRes = shell("dumpsys user", true);
-    if (userRes.code !== 0) return false;
+    if (userRes.code !== 0) {
+      //  toast("获取用户列表失败");
+        return false;
+    }
 
-    // 提取非主用户的 ID (如 999, 10, 100)
+    // 提取非主用户的 ID (通常是 999, 10, 100 等)
     let matches = userRes.result.match(/UserInfo\{(\d+):/g);
     let cloneUserId = null;
-
     if (matches) {
         for (let i = 0; i < matches.length; i++) {
             let uid = parseInt(matches[i].match(/\d+/)[0]);
             if (uid !== 0) { // 排除主用户 0
                 cloneUserId = uid;
-                break;
+                break; 
             }
         }
     }
 
     if (!cloneUserId) {
-       // toast("未找到分身空间");
+      //  toast("未找到分身空间");
         return false;
     }
 
-    // 2. 核心修正：使用 am start 显式调用 Launcher
-    // -S: 强制停止目标应用后再启动（防止后台已有进程干扰，确保是冷启动分身）
-    // -a android.intent.action.MAIN: 声明这是主入口
-    // -c android.intent.category.LAUNCHER: 声明这是桌面图标对应的启动页
-    // -n <pkg>/<pkg>.ui.LauncherUI: 显式指定组件名（针对微信等大厂应用优化，如果是通用应用可去掉 -n 仅保留 -a -c）
-
-    // 这里的逻辑是：如果是指定包名启动，必须带上 Component 才能区分是哪个 App 的 Launcher
-    // 但为了兼容性，我们使用通用的 Action 启动方式，配合 --user 即可
-
-    let cmd = "am start -S --user " + cloneUserId +
-        " -a android.intent.action.MAIN" +
-        " -c android.intent.category.LAUNCHER" +
-        " -n " + pkg + "/$(cmd package resolve-activity --brief -c android.intent.category.LAUNCHER " + pkg + " | grep " + pkg + "/)";
-
-    // 上面的 $(...) 是为了动态获取该包名的真实 Activity 名称，防止不同软件 Activity 名字不同
-    // 但为了脚本稳定性，我们通常可以直接简化为以下通用命令（大部分手机支持）：
-
-    let simpleCmd = "am start -S --user " + cloneUserId +
-        " -a android.intent.action.MAIN" +
-        " -c android.intent.category.LAUNCHER" +
-        " -n " + pkg + "/" + getLauncherActivity(pkg);
-
-   // log("执行命令: " + simpleCmd);
-    let result = shell(simpleCmd, true);
-
-    if (result.code === 0) {
-      //  toast("已启动分身 (User:" + cloneUserId + ")");
-        return true;
-    } else {
-      //  toast("启动失败，尝试通用模式...");
-        // 兜底方案：如果不指定 Activity 能成功且不弹窗最好，如果弹窗则说明该系统必须指定 Activity
-        shell("am start -S --user " + cloneUserId + " -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -p " + pkg, true);
-    }
-    return false;
-}
-
-
-
-// 辅助函数：获取应用的 Launcher Activity
-function getLauncherActivity(packageName) {
-    // 通过 dumpsys 获取该包名的主 Activity
-    let res = shell("dumpsys package " + packageName + " | grep -A 1 'android.intent.action.MAIN' | grep " + packageName, true);
-    if (res.code === 0 && res.result) {
+    // 2. 动态获取该应用真实的 Launcher Activity 名称
+    let launcherActivity = null;
+    let res = shell("dumpsys package " + pkg + " | grep -A 5 'android.intent.action.MAIN' | grep " + pkg, true);
+    if (res.code === 0 && res.result && res.result.trim() !== "") {
         // 提取类似 com.tencent.mm/.ui.LauncherUI 中的 .ui.LauncherUI 部分
-        let line = res.result.split("\n")[0]; // 取第一行
+        let line = res.result.split("\n")[0].trim();
         if (line.indexOf("/") > -1) {
-            return line.split("/")[1].trim();
+            launcherActivity = line.split("/")[1].trim();
         }
     }
-    // 如果获取失败，返回最常见的默认值（针对微信、QQ等）
-    return ".ui.LauncherUI";
+    
+    // 如果动态获取失败，使用最常见的默认值（兼容微信等）
+    if (!launcherActivity) {
+        launcherActivity = ".ui.LauncherUI"; 
+    }
+
+    // 3. 构造最终启动命令
+    // -S: 强制停止目标应用后再启动（防止后台进程复用导致跳回主应用）
+    // --user: 指定分身空间
+    // -n: 显式指定包名和Activity，彻底杜绝弹窗和跳错
+    let cmd = "am start -S --user " + cloneUserId + " -n " + pkg + "/" + launcherActivity;
+
+  //  log("执行启动命令: " + cmd);
+    let result = shell(cmd, true);
+    
+    if (result.code === 0) {
+      //  toast("成功启动分身 (User: " + cloneUserId + ")");
+        return true;
+    } else {
+      //  toast("启动失败，请检查包名是否正确");
+      //  log("Shell 错误: " + result.error);
+        return false;
+    }
 }
+
 
 /**
  * 启动分身
