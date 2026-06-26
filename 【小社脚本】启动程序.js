@@ -1136,7 +1136,7 @@ function startAppCloneDirectly(pkg) {
     }
 
     if (!cloneUserId) {
-        toast("未找到分身空间");
+       // toast("未找到分身空间");
         return false;
     }
 
@@ -1162,14 +1162,14 @@ function startAppCloneDirectly(pkg) {
         " -c android.intent.category.LAUNCHER" +
         " -n " + pkg + "/" + getLauncherActivity(pkg);
 
-    log("执行命令: " + simpleCmd);
+   // log("执行命令: " + simpleCmd);
     let result = shell(simpleCmd, true);
 
     if (result.code === 0) {
-        toast("已启动分身 (User:" + cloneUserId + ")");
+      //  toast("已启动分身 (User:" + cloneUserId + ")");
         return true;
     } else {
-        toast("启动失败，尝试通用模式...");
+      //  toast("启动失败，尝试通用模式...");
         // 兜底方案：如果不指定 Activity 能成功且不弹窗最好，如果弹窗则说明该系统必须指定 Activity
         shell("am start -S --user " + cloneUserId + " -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -p " + pkg, true);
     }
