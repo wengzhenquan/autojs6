@@ -1131,7 +1131,7 @@ function launchAppByRoot(packageName) {
  * @param {string} targetPkg - 目标App的包名
  * @returns {boolean} - 匹配成功返回 true，超时或全部失败返回 false
  */
-function launchApp(packageName) {
+function runAppBy(packageName) {
     //先尝试使用root权限启动
     let launched = launchAppByRoot(packageName);
     if (!launched) {
@@ -1222,7 +1222,7 @@ function startAppCloneDirectly(pkg) {
  * @param {string} targetPkg - 目标App的包名
  * @returns {boolean} - 匹配成功返回 true，超时或全部失败返回 false
  */
-function launchAppClone(packageName) {
+function runAppClone(packageName) {
     //先尝试使用root权限启动
     let launched = startAppCloneDirectly(packageName);
     if (!launched) {
