@@ -109,8 +109,10 @@ const gestureMode = isGestureMode();
 
 // 获取当前屏幕物理方向：0=竖屏, 1=左横屏, 2=反向竖屏, 3=右横屏
 const originalRotation = getScreenRotation();
+var updateRotation = originalRotation;
 // 获取当前自动旋转锁定状态：1=开启自动旋转, 0=锁定方向
 const originalLockState = getLockState();
+var updateLockState = originalLockState;
 
 
 // 代理存储桶
@@ -189,7 +191,16 @@ console.error('QQ群：197511003');
 
 
 events.on("exit", function() {
-
+    if (config.运行时屏幕旋转) {
+        if (originalRotation !== updateRotation) {
+            console.warn('恢复屏幕方向')
+            setScreenRotation(originalRotation);
+        }
+        if (originalLockState !== updateLockState) {
+            console.warn('恢复屏幕旋转锁')
+            setLockState(originalLockState);
+        }
+    }
     console.setTouchable(true);
     device.cancelKeepingAwake();
     if (window) window.close();
@@ -373,15 +384,15 @@ function startTimeoutMonitor() {
             }
 
             let rotation = getScreenRotation();
-            if (rotation !== originalRotation) {
+            if (rotation !== updateRotation) {
                 console.warn('发现屏幕方向变化，正在恢复')
-                setScreenRotation(originalRotation);
+                setScreenRotation(updateRotation);
             }
 
             let lockState = getLockState();
-            if (lockState !== originalLockState) {
+            if (lockState !== updateLockState) {
                 console.warn('发现屏幕旋转锁变化，正在恢复')
-                setLockState(originalLockState);
+                setLockState(updateLockState);
             }
             // 尝试刷新
             //tryRefresh();
@@ -641,6 +652,27 @@ function setLockState(state) {
 // setScreenRotation(originalRotation);   // Java API
 // setLockState(originalLockState);       // Java API
 
+
+/**
+ * 更改屏幕方向
+ */
+function updateScreenRotation() {
+
+    if (!config || !config.运行时屏幕旋转)
+        return;
+
+    let newRotation = config.屏幕方向 || 0;
+
+    if (newRotation !== updateRotation) {
+        console.info('修改屏幕方向：' + newRotation)
+        setLockState(0);
+        updateLockState = 0;
+        setScreenRotation(newRotation);
+        wait(() => false, 300);
+        console.info('屏幕方向修改成功！')
+    }
+
+}
 
 //------------ 左下角“停止脚本”按钮 ----------//
 //悬浮窗停止按钮
@@ -1048,7 +1080,7 @@ function checkCurrentApp(targetPkg, timeout) {
                     }
                 }
             } catch (e) { /* 忽略异常 */ }
-            sleep(200);
+            wait(() => false, 300);
         }
     }
 
@@ -1069,19 +1101,25 @@ function launchAppByRoot(packageName) {
     if (autojs.isRootAvailable()) {
 
         // 强制停止以确保干净启动
-        shell(`su -c 'am force-stop ${packageName}'`, true);
-        sleep(300);
+       // shell(`am force-stop ${packageName}`, true);
+      //  sleep(300);
 
         // 优先使用 monkey 启动（兼容性最好，最接近真实用户点击）
-        let result = shell(`su -c 'monkey -p ${packageName} -c android.intent.category.LAUNCHER 1'`, true);
-
-        launched = checkCurrentApp(packageName, 0);
-
-        if (!launched) {
-            // 兜底：尝试 am start
-            shell(`su -c 'am start $(cmd package dump ${packageName} | grep -A1 "android.intent.action.MAIN" | tail -1 | awk "{print \\$2}")'`, true);
-            launched = checkCurrentApp(packageName, 0);
+        let result = shell(`monkey -p ${packageName} -c android.intent.category.LAUNCHER 1`, true);
+        if (result.code !== 127 &&
+            result.result.includes("Events injected")) {
+            //console.log("已执行");
+            launched = true;
         }
+
+
+        //launched = checkCurrentApp(packageName, 0);
+
+        // if (!launched) {
+        //     // 兜底：尝试 am start
+        //     shell(`am start $(cmd package dump ${packageName} | grep -A1 "android.intent.action.MAIN" | tail -1 | awk "{print \\$2}")`, true);
+        //     launched = checkCurrentApp(packageName, 0);
+        // }
     }
 
     return launched; // 直接返回布尔值，与真实前台状态严格一致
@@ -1121,7 +1159,7 @@ function startAppCloneDirectly(pkg) {
     // 1. 获取分身用户 ID
     let userRes = shell("dumpsys user", true);
     if (userRes.code !== 0) {
-      //  toast("获取用户列表失败");
+        //  toast("获取用户列表失败");
         return false;
     }
 
@@ -1133,13 +1171,13 @@ function startAppCloneDirectly(pkg) {
             let uid = parseInt(matches[i].match(/\d+/)[0]);
             if (uid !== 0) { // 排除主用户 0
                 cloneUserId = uid;
-                break; 
+                break;
             }
         }
     }
 
     if (!cloneUserId) {
-      //  toast("未找到分身空间");
+        //  toast("未找到分身空间");
         return false;
     }
 
@@ -1153,10 +1191,10 @@ function startAppCloneDirectly(pkg) {
             launcherActivity = line.split("/")[1].trim();
         }
     }
-    
+
     // 如果动态获取失败，使用最常见的默认值（兼容微信等）
     if (!launcherActivity) {
-        launcherActivity = ".ui.LauncherUI"; 
+        launcherActivity = ".ui.LauncherUI";
     }
 
     // 3. 构造最终启动命令
@@ -1165,15 +1203,15 @@ function startAppCloneDirectly(pkg) {
     // -n: 显式指定包名和Activity，彻底杜绝弹窗和跳错
     let cmd = "am start -S --user " + cloneUserId + " -n " + pkg + "/" + launcherActivity;
 
-  //  log("执行启动命令: " + cmd);
+    //  log("执行启动命令: " + cmd);
     let result = shell(cmd, true);
-    
+
     if (result.code === 0) {
-      //  toast("成功启动分身 (User: " + cloneUserId + ")");
+        //  toast("成功启动分身 (User: " + cloneUserId + ")");
         return true;
     } else {
-      //  toast("启动失败，请检查包名是否正确");
-      //  log("Shell 错误: " + result.error);
+        //  toast("启动失败，请检查包名是否正确");
+        //  log("Shell 错误: " + result.error);
         return false;
     }
 }
@@ -3268,19 +3306,19 @@ function restartAccessibilityByRoot() {
 
     readdingServiceId();
     // 获取当前已启用的服务列表
-    let enabledServices = shell("su -c 'settings get secure enabled_accessibility_services'", true).result;
+    let enabledServices = shell("settings get secure enabled_accessibility_services", true).result;
 
     // 移除目标服务（确保彻底关闭）
     let newServices = enabledServices
         .replace(serviceId, "")
         .replace(/::+/g, ":")
         .replace(/^:|:$/g, "");
-    shell(`su -c 'settings put secure enabled_accessibility_services "${newServices}"'`, true);
+    shell(`settings put secure enabled_accessibility_services "${newServices}"`, true);
     wait(() => false, 1500); // 等待系统卸载服务
 
     // 重新追加服务 ID 并激活全局开关
-    shell(`su -c 'settings put secure enabled_accessibility_services "${newServices}:${serviceId}"'`, true);
-    shell("su -c 'settings put secure accessibility_enabled 1'", true); // 强制开启总开关
+    shell(`settings put secure enabled_accessibility_services "${newServices}:${serviceId}"`, true);
+    shell("settings put secure accessibility_enabled 1", true); // 强制开启总开关
 }
 
 
@@ -3808,6 +3846,9 @@ function main() {
         // 再次加载悬浮窗控制台配置，以便纠正悬浮窗控制台错误
         consoleShow();
         console3();
+
+        // 修改屏幕方向
+        updateScreenRotation();
 
         //逻辑程序
         run();
