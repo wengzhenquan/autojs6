@@ -906,6 +906,25 @@ function toHome() {
     } catch (e) {}
 }
 
+// 开始操作社区前，确保不在用户之前打开的其他应用里点击。
+function returnToLauncher() {
+    let intent = new android.content.Intent(android.content.Intent.ACTION_MAIN);
+    intent.addCategory(android.content.Intent.CATEGORY_HOME);
+    let resolved = context.getPackageManager().resolveActivity(intent, 65536);
+    if (!resolved || !resolved.activityInfo)
+        throw Error("无法确定系统桌面，停止应用操作");
+    let launcher = String(resolved.activityInfo.packageName);
+    home();
+    for (let i = 0; i < 10; i++) {
+        wait(() => false, 500);
+        if (currentPackage() === launcher) {
+            console.info("已回到系统桌面");
+            return;
+        }
+    }
+    throw Error("返回桌面未成功，停止应用操作以避免误点");
+}
+
 
 //  连续点击
 function whileClick(obj) {
@@ -3843,6 +3862,8 @@ function main() {
     unLock();
 
     try {
+        returnToLauncher();
+
         // 再次加载悬浮窗控制台配置，以便纠正悬浮窗控制台错误
         consoleShow();
         console3();
