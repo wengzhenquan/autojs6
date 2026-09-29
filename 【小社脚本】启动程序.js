@@ -45,6 +45,19 @@ try {
     config = {};
 }
 
+// 在进入社区或权限检查前静音，退出时恢复启动前的媒体音量。
+function beginMediaQuiet() {
+    if (!config || config.静音级别 !== 1) return;
+    let original = device.getMusicVolume();
+    events.on("exit", function() {
+        device.setMusicVolume(original);
+        console.info("媒体音量已恢复");
+    });
+    device.setMusicVolume(0);
+    console.info("媒体音量已暂时设为 0");
+}
+beginMediaQuiet();
+
 //快速模式. 该模式下会启用控件缓存
 if (config && config.fast模式)
     auto.setMode("fast");
@@ -1833,16 +1846,9 @@ function systemSetting() {
         });
     }
 
-    // 媒体声音
-    const musicVolume = device.getMusicVolume();
     // 通知声音
     const nVolume = device.getNotificationVolume();
     if (config && config.静音级别) {
-        //关掉媒体声音
-        if (config.静音级别 === 1) {
-            device.setMusicVolume(0);
-            console.error("提示：已媒体静音！");
-        }
         // 关掉通知声音
         if (config.静音级别 === 2) {
             device.setNotificationVolume(0);
@@ -1876,8 +1882,6 @@ function systemSetting() {
             device.setBrightnessMode(brightMode);
         }
         if (config && config.静音级别) {
-            if (config.静音级别 === 1)
-                device.setMusicVolume(musicVolume);
             if (config.静音级别 === 2)
                 device.setNotificationVolume(nVolume);
         }
@@ -3889,8 +3893,6 @@ function main() {
             if (config && config.运行亮度 && toBright)
                 console.error("提示：亮度已恢复！");
             if (config && config.静音级别) {
-                if (config && config.静音级别 === 1)
-                    console.error("提示：媒体静音已解除！");
                 if (config && config.静音级别 === 2)
                     console.error("提示：通知静音已解除！");
             }
