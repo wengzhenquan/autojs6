@@ -9,11 +9,14 @@
         "【小社脚本】Run_3.9.40.js": 20260827,
         "【小社脚本】Run_3.9.39.js": 20260701,
         "【小社脚本】Run_3.9.41.js": 20260829,
-        "yolov11/yolov11_w.js": 20260601,
-        "yolov11/Yolo-plugin.apk": 20250513,
-        "yolov11/model/yzm.bin": 20250513,
-        "yolov11/model/yzm.param": 20250513,
-        "tmp/公益梯子[魔法].txt": 20260501
+        "yolov11/yolov11_w.js": 20261110,
+        "yolov11/Yolo-plugin.apk": 20261110,
+        "yolov11/model/yzm.bin": 20261110,
+        "yolov11/model/yzm.param": 20261110,
+        "tmp/公益梯子[魔法].txt": 20260501,
+        "yolov11/model/matcher.bin": 20261110,
+        "yolov11/model/matcher.param": 20261110,
+        "yolov11/model/classes.txt": 20261110
     },
     "main": "【小社脚本】启动程序.js",
     "run": "【小社脚本】Run_3.9.41.js",
@@ -31,7 +34,10 @@
     },
     "configValueTransform": {
         "社区APP签到": {
-            "oldV": ["1", "立即签到"],
+            "oldV": [
+                "1",
+                "立即签到"
+            ],
             "newV": "立即签到"
         }
     }
