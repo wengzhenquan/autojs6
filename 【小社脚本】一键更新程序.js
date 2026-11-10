@@ -34,7 +34,7 @@ console.launch();
 //      100~300Mbps宽带 30s，
 //      300~500Mbps宽带 20s，
 //      千兆 10s
-var download_timeout = 30;
+var download_timeout = 60;
 
 // 是否更新代理池(0=不更新(使用内置代理)，1=可用代理数量少时更新)
 const update_proxy = 1;
