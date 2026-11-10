@@ -1091,7 +1091,8 @@ function startUpdate() {
                         throw new Error("校验失败");
                     }
                 }
-                if (res.fileSize > filemin && res.success)
+                if ((res.fileSize > filemin ||fileName.includes('classes.txt'))
+                && res.success)
                     break;
             } catch (e) {
                 console.error("下载失败: " + e);
