@@ -7,6 +7,7 @@
 #### 原作者：  @PJxiaoyu  
 #### 修改： 风中拾叶 
 #### 三改： wengzhenquan
+#### 模型提供：BusyPlayer0
 * 此脚本是基于AutoJs6，依靠安卓无障碍服务的小米社区自动化脚本
 * 区别于青龙面板，该脚本免登录，模拟真人操作，类似“按键精灵”、连点器APP。
 * 支持的功能：
@@ -644,6 +645,8 @@ Yolo-Plugins.apk     # Yolo插件(需安装）
 修改    by：风中拾叶
 
 三改   by：wengzhenquan（就是俺啦）   
+
+模型提供：BusyPlayer0
 github：https://github.com/wengzhenquan/autojs6
 镜像一：https://bgithub.xyz/wengzhenquan/autojs6
 镜像二：https://kkgithub.com/wengzhenquan/autojs6

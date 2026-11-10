@@ -3667,10 +3667,19 @@ function permissionv() {
     let canRestarAuto = 0;
 
     let secureSettingAuto = 0;
+    
+    const Pref = Packages.org.autojs.autojs.core.pref.Pref;
+
+    const KEY = {
+      root:     "key_$_enable_a11y_service_with_root_access",
+      secure:   "key_$_enable_a11y_service_with_secure_settings",
+      shizuku:  "key_$_enable_a11y_service_with_shizuku",
+    };
+
     if (autojs.canWriteSecureSettings()) {
         log("修改安全设置权限，[已启用]");
         secureSettingAuto = 1;
-        if (Pref.shouldStartA11yServiceWithSecureSettings()) {
+        if (Pref.getBoolean(KEY.secure, true)) {
             console.warn('→自动启用无障碍，[已开启]');
             canRestarAuto = 1;
         } else {
@@ -3690,7 +3699,7 @@ function permissionv() {
     if (autojs.isRootAvailable()) {
         log("Root授权，[已授权]");
         rootAuto = 1;
-        if (Pref.shouldStartA11yServiceWithRoot()) {
+        if (Pref.getBoolean(KEY.root, true)) {
             console.warn('→自动启用无障碍，[已开启]');
             canRestarAuto = 1;
         } else {
