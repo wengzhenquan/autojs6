@@ -18,18 +18,9 @@ const MODEL_SUBDIR = "/yolov11/model"; // 模型文件夹相对于本脚本的�
 const MODEL_NAME = "yzm"; // 模型名
 const MODEL_USE_GPU = config && config.YOLO启用GPU ? true : false;
 
-const MODEL_LABELS = ["面条", "牙齿", "喷漆", "戒指", "汉堡", "双串", "气球", "三星",
-    "四方角", "拉力器", "垃圾桶", "纽扣", "保龄球", "吊灯", "蚂蚱", "电脑", "网球", "地雷",
-    "干杯", "猫头鹰", "胭脂", "橄榄球", "熊脚印", "锤子", "磁带", "五色球", "打拳击", "拉提琴",
-    "项链模特", "吉他", "柜子", "开关", "小杯", "乒乓球拍", "BUG", "鸭子", "鼓", "钱袋", "照相",
-    "方蛇", "乌龟", "车钥匙", "蜻蜓", "蜗牛", "两片叶子", "墨水", "小号", "路灯", "蛇", "双色帆",
-    "工具箱", "木鱼", "铃铛", "音乐盒", "天平", "怀表", "辣椒", "鹤", "麻脑", "电机", "未知02",
-    "小熊", "沙漏", "墓碑", "排球", "讲台", "汽车", "生化", "浴缸", "闹钟", "西瓜", "大树",
-    "一枝花", "摩天轮", "吊钩", "别墅", "热水浴缸", "三圆", "飞机", "弓箭", "瞳孔", "创可贴",
-    "蝴蝶", "圆柱", "指南针", "飞碟", "苹果", "冰淇淋", "机器人", "磁铁", "蒸汽火车", "鹰头",
-    "一个铃铛", "双手提东西", "五环", "打火机", "风力发电", "派大星", "鸟嘴", "手掌", "树叶",
-    "火龙", "大炮", "风车", "胡萝卜", "甜筒", "木鱼", "自行车", "战斗", "香烟"
-];
+// 检测模型：yolo11n 单类 icon，但检测头扩到 111 类以兼容插件的老解码逻辑
+// （插件按原 111 类模型的通道数读输出；class 0 为真正的图标类，其余类恒为 0）
+const MODEL_LABELS = ["icon", "unused1", "unused2", "unused3", "unused4", "unused5", "unused6", "unused7", "unused8", "unused9", "unused10", "unused11", "unused12", "unused13", "unused14", "unused15", "unused16", "unused17", "unused18", "unused19", "unused20", "unused21", "unused22", "unused23", "unused24", "unused25", "unused26", "unused27", "unused28", "unused29", "unused30", "unused31", "unused32", "unused33", "unused34", "unused35", "unused36", "unused37", "unused38", "unused39", "unused40", "unused41", "unused42", "unused43", "unused44", "unused45", "unused46", "unused47", "unused48", "unused49", "unused50", "unused51", "unused52", "unused53", "unused54", "unused55", "unused56", "unused57", "unused58", "unused59", "unused60", "unused61", "unused62", "unused63", "unused64", "unused65", "unused66", "unused67", "unused68", "unused69", "unused70", "unused71", "unused72", "unused73", "unused74", "unused75", "unused76", "unused77", "unused78", "unused79", "unused80", "unused81", "unused82", "unused83", "unused84", "unused85", "unused86", "unused87", "unused88", "unused89", "unused90", "unused91", "unused92", "unused93", "unused94", "unused95", "unused96", "unused97", "unused98", "unused99", "unused100", "unused101", "unused102", "unused103", "unused104", "unused105", "unused106", "unused107", "unused108", "unused109", "unused110"];
 
 // --- 模型参数 ---
 //类别置信度阈值
@@ -133,9 +124,10 @@ function initializeYolo() {
         以及未能label成功匹配的补偿方案。
         实际验证码图片小图标应该有2、3个，成对匹配应该有4或6个。
  * @param {Array<object>} data - YOLO 检测原始结果数组，格式: [{x, y, width, height, prob, label}, ...]
- * @returns {Array<object>|null} - 处理后的 C 组结果数组 [{centerX, centerY, prob, label}, ...]，或在失败/无效输入时返回 null。
+ * @param {object} [bitmap] - 原图 Bitmap，用于 matcher 双塔特征提取（插件 JNI 接入后生效）
+ * @returns {Array<object>|null} - 处理后的结果数组 [{centerX, centerY, prob, label}, ...]（A 顺序，依次点击对应 B 位置），或在失败/无效输入时返回 null。
  */
-function sortAndProcessResults(data) {
+function sortAndProcessResults(data, bitmap) {
     // log(data)
     // 输入验证
     if (!Array.isArray(data)) {
@@ -151,7 +143,10 @@ function sortAndProcessResults(data) {
 
         var len = data.length;
         // 检查数据长度是否满足处理逻辑要求 (4或6)
-        if (len !== 4 && len !== 6) {
+        // [DSH 补丁] nc=1 + matcher 方案下，现版面是 n 参照 + n 目标 + 1 干扰 = 5 或 7 框，
+        // 属于正常情况。只有"框太少"才是错误；绝不能进下面那段按 label 分组的修正逻辑
+        // （nc=1 时所有框 label 都是 icon，分组会把 7 个框压成 1 对，直接毁掉数据）。
+        if (len < 4) {
             console.error("预期长度为 4 或 6");
             // console.error("实际长度为：" + len);
             if (len < 4) {
@@ -306,36 +301,50 @@ function sortAndProcessResults(data) {
         //const height = Math.max(minY, 50);
 
         // 1.3 创建分组A（y值较小的部分，按x升序排序），定义为小图标
-        // 收集小于分界y的图标，且去重
-        var seenA = {};
+        // 新方案（nc=1）：所有框 label 均为 icon，不再按 label 去重
+        // 直接收集小于分界y且在小图标有效x区内的框，按x升序（点击顺序）
+        var groupA = [];
         for (var i = 0; i < sortedByY.length; i++) {
             var item = sortedByY[i];
             if (item.y < y_limit && item.x > global.x_refer) {
-                if (!seenA[item.label] || seenA[item.label].prob < item.prob) {
-                    seenA[item.label] = item;
-                }
+                groupA.push(item);
             }
         }
-        var groupA = [];
-        for (var k in seenA) groupA.push(seenA[k]);
-        groupA.sort((a, b) => a.x - b.x);
+        // 同x高度重叠的重复框只保留置信度最高者
+        groupA.sort((a, b) => a.x - b.x || b.prob - a.prob);
+        var dedupA = [];
+        for (var i = 0; i < groupA.length; i++) {
+            if (i === 0 || Math.abs(groupA[i].x - groupA[i - 1].x) > 5) {
+                dedupA.push(groupA[i]);
+            }
+        }
+        groupA = dedupA;
 
         //log(groupA)
 
         // 1.4 创建分组B（y值较大的部分，按prob倒序），定义为大图标
-        // 收集大于分界y的图标，且去重
-        var seenB = {};
+        // 新方案：全量收集大于分界y的框，按中心点距离去重
+        var groupB = [];
         for (var i = 0; i < sortedByY.length; i++) {
             var item = sortedByY[i];
             if (item.y > y_limit) {
-                if (!seenB[item.label] || seenB[item.label].prob < item.prob) {
-                    seenB[item.label] = item;
-                }
+                groupB.push(item);
             }
         }
-        var groupB = [];
-        for (var k in seenB) groupB.push(seenB[k]);
         groupB.sort((a, b) => b.prob - a.prob);
+        var dedupB = [];
+        for (var i = 0; i < groupB.length; i++) {
+            var dup = false;
+            for (var j = 0; j < dedupB.length; j++) {
+                if (Math.abs(groupB[i].x - dedupB[j].x) < 5 &&
+                    Math.abs(groupB[i].y - dedupB[j].y) < 5) {
+                    dup = true;
+                    break;
+                }
+            }
+            if (!dup) dedupB.push(groupB[i]);
+        }
+        groupB = dedupB;
 
         //log(groupB)
 
@@ -400,67 +409,108 @@ function sortAndProcessResults(data) {
         }
 
 
-        // ==================== 2. 建立快速查找索引 ====================
-        // 2.1 使用Map结构存储分组B的元素（label作为key）
-        var labelMap = new Map();
-
-        // 2.2 遍历分组B，建立label到元素的映射关系
-        groupB.forEach(item => {
-            if (!labelMap.has(item.label)) {
-                labelMap.set(item.label, []); // 初始化空数组
-            }
-            labelMap.get(item.label).push(item); // 添加到对应label的数组
-        });
-
-        // ==================== 3. 核心匹配阶段 ====================
-        // 3.1 定义占位符对象（用于标记未匹配的位置）
-        const placeholder = {
-            label: "PLACEHOLDER"
-        };
+        // ==================== 2. matcher 双塔特征配对（新方案）====================
+        // 配对不再依赖类别标签（nc=1 全为 icon），改用双塔特征相似度：
+        // A 区第 i 个参照图标（按 x 升序）→ B 区相似度最高且未被占用的候选
+        // ===== matcher 特征提取（预留插件 JNI 接入点）=====
+        // 插件 libandroid_ncnn_yolo11.so 待实现 extractMatcher 接口：
+        //   yoloV11.extractMatcher(bitmap, [{x,y,w,h},...]) -> JSON string
+        //   或 Array [{feat:[128]}]（feat 已 L2 归一化）
+        // 未接入时返回 null，配对降级为置信度启发式并告警。
         var groupC = [];
-        var usedItems = new Set(); // 新增：记录已使用的元素
-
-        // 3.2 第一轮匹配：按分组A的顺序处理
-        groupA.forEach(item => {
-            let candidates = labelMap.get(item.label);
-
-            // 检查候选元素是否存在且未被使用过
-            if (candidates && candidates.length > 0 &&
-                !usedItems.has(candidates[0])) {
-
-                let matchedItem = candidates.shift();
-                groupC.push(matchedItem);
-                usedItems.add(matchedItem); // 标记为已使用
-            } else {
-                groupC.push(placeholder); // 无匹配则占位
+        var featA = null;
+        var featB = null;
+        if (bitmap && yoloV11 && typeof yoloV11.extractMatcher === 'function') {
+            try {
+                var needA = groupA.map(function(it) {
+                    return { x: it.x, y: it.y, w: it.width, h: it.height };
+                });
+                var needB = groupB.map(function(it) {
+                    return { x: it.x, y: it.y, w: it.width, h: it.height };
+                });
+                var rawA = yoloV11.extractMatcher(bitmap, needA, files.cwd() + MODEL_SUBDIR, "matcher");
+                var rawB = yoloV11.extractMatcher(bitmap, needB, files.cwd() + MODEL_SUBDIR, "matcher");
+                featA = typeof rawA === 'string' ? JSON.parse(rawA) : rawA;
+                featB = typeof rawB === 'string' ? JSON.parse(rawB) : rawB;
+            } catch (e) {
+                console.error(tag + 'matcher 特征提取失败: ' + e);
+                featA = featB = null;
             }
-        });
-        //log(groupC)
-        var finalGroupC = groupC;
+        }
 
-        // ==================== 4. 处理未匹配元素 ====================
-        // 使用placeholder占位的数据，需再次替换成真实数据
-        if (groupC.includes(placeholder)) {
-            // 4.1 收集所有未被使用的groupB元素（按原始顺序）
-            let unusedItems = groupB.filter(item => !usedItems.has(item));
-            //log(unusedItems)
-
-            // 4.2 替换占位符（按groupC原始顺序填充）
-            let replaceIndex = 0;
-            finalGroupC = groupC.map(item => {
-                if (item === placeholder && replaceIndex < unusedItems.length) {
-                    return unusedItems[replaceIndex++];
+        if (featA && featB && featA.length === groupA.length &&
+            featB.length === groupB.length) {
+            // ---- 双塔相似度：穷举最优分配（参照 n<=3、候选 m<=4，最多 24 种排列）----
+            // 不能用贪心：若两个参照都最看好同一个候选，贪心会先到先得，
+            // 导致"两个都配错"（实测样例：R1 抢了 R2 的 0.940 候选，两个全反）。
+            var nA = featA.length, nB = featB.length;
+            var S = [], featOk = true;
+            for (var i0 = 0; i0 < nA && featOk; i0++) {
+                var fa0 = featA[i0].feat;
+                if (!fa0) { featOk = false; break; }
+                var row0 = [];
+                for (var j0 = 0; j0 < nB; j0++) {
+                    var fb0 = featB[j0].feat;
+                    if (!fb0) { featOk = false; break; }
+                    var s0 = 0;
+                    for (var d0 = 0; d0 < fa0.length; d0++) {
+                        s0 += fa0[d0] * fb0[d0];
+                    }
+                    row0.push(s0);
                 }
-                return item;
-            });
+                S.push(row0);
+            }
 
-            console.error('存在占位匹配，结果不确保正确！');
+            if (featOk && nA > 0 && nB >= nA) {
+                var usedTmp = {}, curPick = [], bestSum = -1e9, bestPick = null;
+                var recAssign = function (i, sum) {
+                    if (i === nA) {
+                        if (sum > bestSum) {
+                            bestSum = sum;
+                            bestPick = curPick.slice(0);
+                        }
+                        return;
+                    }
+                    for (var j = 0; j < nB; j++) {
+                        if (usedTmp[j]) continue;
+                        usedTmp[j] = true;
+                        curPick.push(j);
+                        recAssign(i + 1, sum + S[i][j]);
+                        curPick.pop();
+                        usedTmp[j] = false;
+                    }
+                };
+                recAssign(0, 0);
+                if (bestPick && bestPick.length === nA) {
+                    var simMean = 0;
+                    for (var i1 = 0; i1 < nA; i1++) {
+                        groupC.push(groupB[bestPick[i1]]);   // 保持 A 顺序 = 点击顺序
+                        simMean += S[i1][bestPick[i1]];
+                    }
+                    simMean /= nA;
+                    console.log(tag + 'matcher 配对完成（最优分配），参照数: ' + groupA.length +
+                        ', 配对相似度均值: ' + simMean.toFixed(3));
+                }
+            }
+        } else {
+            // ---- 降级：matcher 未接入或特征不足，按 B 区置信度顺序配对 ----
+            // B 已按 prob 降序；A 数量 <= B 数量时按顺序一一对应
+            if (groupB.length >= groupA.length) {
+                groupC = groupB.slice(0, groupA.length);
+            } else {
+                groupC = groupB.slice();
+            }
+            if (!(featA && featB)) {
+                console.warn(tag + 'matcher 未接入（插件需实现 extractMatcher），当前使用置信度启发式配对，结果可能不正确！');
+            } else {
+                console.warn(tag + 'matcher 特征数量不匹配，已降级为置信度启发式配对。');
+            }
         }
 
         // ==================== 5. 最终结果处理 ====================
 
         // 5. 格式化 groupC 的结果
-        var finalResult = finalGroupC.map(item => {
+        var finalResult = groupC.map(item => {
             // 防御：跳过占位符或无效项，避免 undefined 计算导致 Numberx 异常
             if (!item || item.label === "PLACEHOLDER" || typeof item.prob !== 'number') {
                 return null;
@@ -486,15 +536,11 @@ function sortAndProcessResults(data) {
         result = null;
         y_limit_single = null;
         B_data = null;
-        seenA = null;
-        seenB = null;
         groupA = null;
         groupB = null;
-        labelMap = null;
         groupC = null;
-        finalGroupC = null;
-        usedItems = null;
-        unusedItems = null;
+        featA = null;
+        featB = null;
         if (typeof gc === 'function') gc();
 
         return finalResult;
@@ -587,8 +633,8 @@ function detectAndProcess(imagePath) {
         let rawResults = yoloV11.detect(cardImg.bitmap, confThreshold, nmsThreshold, 640);
         console.log(`${tag}识别完成，数据数量: ${rawResults ? rawResults.length : 'N/A'}`);
         //log(rawResults)
-        // 处理并返回结果
-        return sortAndProcessResults(rawResults);
+        // 处理并返回结果（新方案：检测 + matcher 双塔配对，bitmap 供特征提取）
+        return sortAndProcessResults(rawResults, cardImg.bitmap);
 
     } catch (error) {
         console.error(`${tag}识别过程中发生错误: ${error}`);
